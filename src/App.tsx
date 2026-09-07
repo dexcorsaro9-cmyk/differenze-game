@@ -810,10 +810,10 @@ export const App: React.FC = () => {
     setIsTutorialOpen(false);
     setHasCompletedTutorial(true);
     localStorage.setItem(STORAGE_KEY_TUTORIAL, 'true');
-    // DO NOT start level 1 directly! Open 3D Mappamondo so player chooses Level 1 from the globe
-    setIsTimerRunning(false);
-    setIsTreasureMapOpen(true);
-  }, []);
+    setIsTreasureMapOpen(false);
+    loadLevel(1);
+    setIsTimerRunning(true);
+  }, [loadLevel]);
 
   return (
     <div className="w-full h-screen h-[100dvh] flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
