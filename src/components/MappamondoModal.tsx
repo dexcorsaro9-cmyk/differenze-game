@@ -13,7 +13,8 @@ import {
   MapPin,
   Play,
   Plane,
-  FastForward
+  FastForward,
+  ScrollText
 } from 'lucide-react';
 import { SAGA_MILESTONES_120 } from '../data/sagaLore';
 import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
@@ -27,6 +28,7 @@ interface MappamondoModalProps {
   currentLevelId: number;
   completedLevelIds: number[];
   onSelectLevel?: (levelId: number) => void;
+  onOpenStageBriefing?: (stageNumber: number) => void;
   profile?: ExplorerProfile;
 }
 
@@ -131,6 +133,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   currentLevelId,
   completedLevelIds,
   onSelectLevel,
+  onOpenStageBriefing,
   profile,
 }) => {
   const explorer = EXPLORERS[profile?.avatarId || 'samira'];
@@ -1080,41 +1083,64 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                 <span className="truncate">{selectedMilestone.unlockedRelic}</span>
               </div>
 
-              {onSelectLevel && (
-                <button
-                  disabled={isFlightActive}
-                  onClick={() => {
-                    sound.playTap();
-                    const targetLevel = isSelectedCurrent
-                      ? currentLevelId
-                      : isSelectedCompleted
-                      ? (selectedMilestone.stageNumber - 1) * 10 + 1
-                      : (selectedMilestone.stageNumber - 1) * 10 + 1;
-                    onSelectLevel(targetLevel);
-                    onClose();
-                  }}
-                  className={`px-3 py-1.5 rounded-xl font-black text-[10px] sm:text-[11px] uppercase tracking-wider shadow-lg flex items-center gap-1 active:scale-95 transition-all shrink-0 cursor-pointer ${
-                    selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0
-                      ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-stone-950 animate-pulse shadow-[0_0_15px_rgba(245,158,11,0.6)] border border-yellow-200'
-                      : isSelectedCurrent
-                      ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
-                      : isSelectedCompleted
-                      ? 'bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-500/40'
-                      : 'bg-stone-850 text-stone-500 border border-stone-800'
-                  }`}
-                >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>
-                    {selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0
-                      ? '🧭 Inizia Livello 1'
-                      : isSelectedCurrent
-                      ? `▶ Gioca Livello ${currentLevelId}`
-                      : isSelectedCompleted
-                      ? '🔄 Rigioca Tappa'
-                      : '🔒 Tappa Bloccata'}
-                  </span>
-                </button>
-              )}
+              <div className="flex items-center gap-1.5 shrink-0">
+                {onOpenStageBriefing && (
+                  <button
+                    disabled={isFlightActive}
+                    onClick={() => {
+                      sound.playTap();
+                      onOpenStageBriefing(selectedMilestone.stageNumber);
+                      onClose();
+                    }}
+                    className="px-2.5 py-1.5 rounded-xl font-bold text-[10px] sm:text-[11px] bg-[#2a1b0d] hover:bg-[#3d2713] text-amber-300 border border-amber-500/50 shadow flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                    title={`Leggi Dispaccio di Spedizione Tappa ${selectedMilestone.stageNumber}`}
+                  >
+                    <ScrollText className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="hidden xs:inline">Dispaccio</span>
+                  </button>
+                )}
+
+                {onSelectLevel && (
+                  <button
+                    disabled={isFlightActive}
+                    onClick={() => {
+                      sound.playTap();
+                      if (selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0 && onOpenStageBriefing) {
+                        onOpenStageBriefing(1);
+                        onClose();
+                        return;
+                      }
+                      const targetLevel = isSelectedCurrent
+                        ? currentLevelId
+                        : isSelectedCompleted
+                        ? (selectedMilestone.stageNumber - 1) * 10 + 1
+                        : (selectedMilestone.stageNumber - 1) * 10 + 1;
+                      onSelectLevel(targetLevel);
+                      onClose();
+                    }}
+                    className={`px-3 py-1.5 rounded-xl font-black text-[10px] sm:text-[11px] uppercase tracking-wider shadow-lg flex items-center gap-1 active:scale-95 transition-all shrink-0 cursor-pointer ${
+                      selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0
+                        ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-stone-950 animate-pulse shadow-[0_0_15px_rgba(245,158,11,0.6)] border border-yellow-200'
+                        : isSelectedCurrent
+                        ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
+                        : isSelectedCompleted
+                        ? 'bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-500/40'
+                        : 'bg-stone-850 text-stone-500 border border-stone-800'
+                    }`}
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>
+                      {selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0
+                        ? '🧭 Inizia Livello 1'
+                        : isSelectedCurrent
+                        ? `▶ Gioca Livello ${currentLevelId}`
+                        : isSelectedCompleted
+                        ? '🔄 Rigioca Tappa'
+                        : '🔒 Tappa Bloccata'}
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 

@@ -17,6 +17,7 @@ import { AvatarCreatorModal } from './components/AvatarCreatorModal';
 import { WardrobeModal } from './components/WardrobeModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
+import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
 import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
 import {
@@ -39,6 +40,7 @@ export const App: React.FC = () => {
   const STORAGE_KEY_RELICS = 'differenze_relics_v1';
   const STORAGE_KEY_AVATAR = 'differenze_avatar_v1';
   const STORAGE_KEY_TUTORIAL = 'differenze_tutorial_v1';
+  const STORAGE_KEY_SEEN_BRIEFINGS = 'differenze_seen_briefings_v1';
 
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 
@@ -187,6 +189,19 @@ export const App: React.FC = () => {
   const [isPrologueOpen, setIsPrologueOpen] = useState<boolean>(() => initialView === 'prologue');
   const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => initialView === 'tutorial');
   const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
+  const [activeStageBriefing, setActiveStageBriefing] = useState<number | null>(() => {
+    if (initialView === 'briefing') return 1;
+    return null;
+  });
+  const [seenStageBriefings, setSeenStageBriefings] = useState<number[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_SEEN_BRIEFINGS);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return [];
+  });
 
   // Active Explorer Perks Calculation
   const activeOutfit = ALL_OUTFITS.find(o => o.id === explorerProfile.equippedOutfitId);
@@ -620,11 +635,47 @@ export const App: React.FC = () => {
     setCoins(c => c + 60);
   }, []);
 
-  // Next Level Handler
+  // Stage Lore Briefing Handlers
+  const handleOpenStageBriefing = useCallback((stageNumber: number) => {
+    setIsTimerRunning(false);
+    setActiveStageBriefing(stageNumber);
+  }, []);
+
+  const handleCloseStageBriefing = useCallback(() => {
+    setActiveStageBriefing(null);
+    setIsTimerRunning(true);
+  }, []);
+
+  const handleStartStageFromBriefing = useCallback((stageNumber: number) => {
+    setActiveStageBriefing(null);
+    setSeenStageBriefings(prev => {
+      if (prev.includes(stageNumber)) return prev;
+      const next = [...prev, stageNumber];
+      localStorage.setItem(STORAGE_KEY_SEEN_BRIEFINGS, JSON.stringify(next));
+      return next;
+    });
+
+    const firstLevelInStage = (stageNumber - 1) * 10 + 1;
+    if (currentLevel.id !== firstLevelInStage) {
+      loadLevel(firstLevelInStage);
+    } else {
+      setIsTimerRunning(true);
+    }
+  }, [currentLevel.id, loadLevel]);
+
+  // Next Level Handler: Triggers Stage Lore Briefing whenever entering a new Stage (every 10 levels)!
   const handleNextLevel = () => {
     const currentIndex = levels.findIndex(l => l.id === currentLevelId);
     if (currentIndex < levels.length - 1) {
-      loadLevel(levels[currentIndex + 1].id);
+      const nextLevel = levels[currentIndex + 1];
+      const isNewStage = nextLevel.chapterNumber !== currentLevel.chapterNumber;
+      if (isNewStage) {
+        setIsLevelCompleteOpen(false);
+        setIsTimerRunning(false);
+        setActiveStageBriefing(nextLevel.chapterNumber);
+        return;
+      }
+      loadLevel(nextLevel.id);
     } else {
       loadLevel(levels[0].id);
     }
@@ -707,6 +758,8 @@ export const App: React.FC = () => {
             setIsRelicMuseumOpen(true);
             setHasUnreadRelics(false);
           }}
+          onOpenStageBriefing={() => handleOpenStageBriefing(currentLevel.chapterNumber)}
+          hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
           hasUnreadJournal={hasUnreadJournal}
           hasUnreadRelics={hasUnreadRelics}
           hasNewStageUnlocked={hasNewStageUnlocked}
@@ -841,6 +894,7 @@ export const App: React.FC = () => {
         currentLevelId={currentLevel.id}
         completedLevelIds={completedLevelIds}
         onSelectLevel={id => loadLevel(id)}
+        onOpenStageBriefing={handleOpenStageBriefing}
         profile={explorerProfile}
       />
 
@@ -857,6 +911,7 @@ export const App: React.FC = () => {
           localStorage.removeItem(STORAGE_KEY_RELICS);
           localStorage.removeItem(STORAGE_KEY_AVATAR);
           localStorage.removeItem(STORAGE_KEY_TUTORIAL);
+          localStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
           setCompletedLevelIds([]);
           setDiscoveredClues([]);
           setDiscoveredRelicIds([]);
@@ -927,6 +982,17 @@ export const App: React.FC = () => {
         profile={explorerProfile}
         onComplete={handleTutorialComplete}
       />
+
+      {/* Immersive 12-Stage Expedition Lore & Mission Briefing Dossier */}
+      {activeStageBriefing !== null && (
+        <StageLoreBriefingModal
+          isOpen={activeStageBriefing !== null}
+          stageNumber={activeStageBriefing}
+          profile={explorerProfile}
+          onClose={handleCloseStageBriefing}
+          onStartStage={handleStartStageFromBriefing}
+        />
+      )}
     </div>
   );
 };

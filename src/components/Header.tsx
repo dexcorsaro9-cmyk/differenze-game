@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, BookOpen, Settings, LayoutGrid, Globe, Clock, Star, Snowflake, Shield, Coins, Landmark } from 'lucide-react';
+import { Heart, BookOpen, Settings, LayoutGrid, Globe, Clock, Star, Snowflake, Shield, Coins, Landmark, ScrollText } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS } from '../data/avatarData';
@@ -23,6 +23,8 @@ interface HeaderProps {
   onOpenShop: () => void;
   onOpenMuseum: () => void;
   onOpenWardrobe: () => void;
+  onOpenStageBriefing?: () => void;
+  hasUnreadBriefing?: boolean;
   hasUnreadJournal?: boolean;
   hasUnreadRelics?: boolean;
   hasNewStageUnlocked?: boolean;
@@ -47,6 +49,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenShop,
   onOpenMuseum,
   onOpenWardrobe,
+  onOpenStageBriefing,
+  hasUnreadBriefing,
   hasUnreadJournal,
   hasUnreadRelics,
   hasNewStageUnlocked,
@@ -152,6 +156,23 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-500 rounded-full border border-slate-900" />
             )}
           </button>
+
+          {/* Dispaccio Archeologico di Tappa */}
+          {onOpenStageBriefing && (
+            <button
+              onClick={onOpenStageBriefing}
+              className="relative p-2 rounded-full bg-gradient-to-b from-amber-600/35 via-yellow-700/35 to-amber-900/35 hover:from-amber-500/40 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
+              title={`Dispaccio di Spedizione • Tappa ${currentLevel.chapterNumber}`}
+            >
+              <ScrollText className="w-4 h-4" />
+              {hasUnreadBriefing && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-400 rounded-full border border-slate-900 animate-ping" />
+              )}
+              {hasUnreadBriefing && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-400 rounded-full border border-slate-900" />
+              )}
+            </button>
+          )}
         </div>
 
         {/* Right: Coins (Click to open Shop) & Settings Button */}
