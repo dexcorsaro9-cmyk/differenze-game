@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
-import { Compass, Sparkles, Volume2, VolumeX, ArrowRight } from 'lucide-react';
+import { Compass, Sparkles, ArrowRight } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
@@ -132,33 +132,23 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
       {/* Cinematic Frame Border */}
       <div className="absolute inset-0 border-y-8 sm:border-y-12 border-black pointer-events-none z-10" />
 
-      {/* Top Controls: Skip & Audio */}
-      <div className="absolute top-4 inset-x-4 z-20 flex items-center justify-between safe-pt">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif">
-          <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
-          {!hasVideoError ? 'Prologo Cinematografico' : 'Prologo Narrativo'}
-        </div>
-
-        <div className="flex items-center gap-2">
-          {!hasVideoError && (
-            <button
-              type="button"
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-2 rounded-full bg-black/60 border border-stone-700 text-stone-300 hover:text-white backdrop-blur-md transition cursor-pointer"
-            >
-              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            </button>
-          )}
+      {/* Top Controls: Only shown in fallback narrative mode if video cannot be played */}
+      {hasVideoError && (
+        <div className="absolute top-4 inset-x-4 z-20 flex items-center justify-between safe-pt">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif">
+            <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
+            <span>Prologo Narrativo</span>
+          </div>
 
           <button
             type="button"
             onClick={handleFinish}
             className="px-3.5 py-1.5 rounded-full bg-black/70 border border-amber-500/40 hover:border-amber-400 text-amber-300 text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition cursor-pointer"
           >
-            {!hasVideoError ? 'Salta Video' : 'Salta Prologo'}
+            Salta Prologo
           </button>
         </div>
-      </div>
+      )}
 
       {/* Bottom Subtitle / Narrative Box: ONLY SHOWN IN PROCEDURAL FALLBACK MODE (hasVideoError) */}
       {hasVideoError && (
