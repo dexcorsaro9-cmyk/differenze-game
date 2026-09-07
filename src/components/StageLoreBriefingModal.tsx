@@ -170,12 +170,29 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span>Reliquia di Tappa</span>
                 </div>
-                <h4 className="text-xs font-black text-amber-200 font-serif mt-1.5">
-                  {briefing.targetRelic.name}
-                </h4>
-                <p className="text-[11px] text-stone-400 font-serif italic mt-0.5 leading-snug">
-                  {briefing.targetRelic.description}
-                </p>
+                <div className="flex items-start gap-2.5 mt-2">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 via-yellow-600/30 to-amber-950 border border-amber-400/50 flex items-center justify-center text-lg shrink-0 shadow-md">
+                    {briefing.stageNumber === 1 ? '🏷️' :
+                     briefing.stageNumber === 2 ? '✝️' :
+                     briefing.stageNumber === 3 ? '🏺' :
+                     briefing.stageNumber === 4 ? '📜' :
+                     briefing.stageNumber === 5 ? '🔍' :
+                     briefing.stageNumber === 6 ? '𓆣' :
+                     briefing.stageNumber === 7 ? '🔱' :
+                     briefing.stageNumber === 8 ? '🏆' :
+                     briefing.stageNumber === 9 ? '🪶' :
+                     briefing.stageNumber === 10 ? '☀️' :
+                     briefing.stageNumber === 11 ? '🗝️' : '👑'}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-black text-amber-200 font-serif leading-tight">
+                      {briefing.targetRelic.name}
+                    </h4>
+                    <p className="text-[11px] text-stone-400 font-serif italic mt-0.5 leading-snug">
+                      {briefing.targetRelic.description}
+                    </p>
+                  </div>
+                </div>
               </div>
               <div className="pt-1 text-[10px] text-emerald-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3" />
@@ -186,16 +203,22 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
 
           {/* Explorer Voice Card */}
           <div className="bg-gradient-to-r from-[#1f1207] via-[#170e06] to-[#1f1207] border border-amber-500/50 rounded-2xl p-3 sm:p-3.5 shadow-md flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full border-2 border-amber-400/80 overflow-hidden shadow-md shrink-0 bg-stone-900">
+            <div className="w-12 h-12 rounded-full border-2 border-amber-400/80 overflow-hidden shadow-md shrink-0 bg-stone-900 flex items-center justify-center relative">
               <img 
-                src={assetUrl(explorer.portrait)} 
+                src={explorer.portrait} 
                 alt={explorer.name}
                 className="w-full h-full object-cover object-top"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
               />
+              <div className="absolute inset-0 -z-10 flex items-center justify-center bg-amber-950/80 text-amber-300 font-serif font-black text-sm">
+                {profile.playerName.slice(0, 2).toUpperCase()}
+              </div>
             </div>
             <div className="space-y-0.5 flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
-                <Feather className="w-3 h-3 text-amber-400" />
+                <Feather className="w-3.5 h-3.5 text-amber-400" />
                 <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider font-serif">
                   Note di Campo di {profile.playerName} ({explorer.title})
                 </span>

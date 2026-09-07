@@ -126,11 +126,15 @@ export const JournalModal: React.FC<JournalModalProps> = ({
 
             {/* Discovered Clues Section */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                I 5 Enigmi Archeologici Risolti
+              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  I 10 Reperti Archeologici Decifrati
+                </span>
+                <span className="text-[10px] font-mono text-amber-300">
+                  {selectedLevel.differences.filter(d => discoveredDifferenceIds.includes(d.id) || isCompleted).length} / {selectedLevel.differences.length}
+                </span>
               </h4>
-
 
               <div className="space-y-2.5">
                 {selectedLevel.differences.map((diff, index) => {
@@ -139,29 +143,33 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                   return (
                     <div
                       key={diff.id}
-                      className={`p-3.5 rounded-2xl border transition-all ${
+                      className={`p-3 rounded-2xl border transition-all ${
                         isFound
-                          ? 'bg-slate-900/90 border-slate-700/80 text-slate-200'
-                          : 'bg-slate-950/40 border-slate-900/80 text-slate-600'
+                          ? 'bg-slate-900/90 border-slate-700/80 text-slate-200 shadow-sm'
+                          : 'bg-slate-950/40 border-slate-900/80 text-slate-500'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold text-amber-300">
-                          #{index + 1} {diff.name}
+                        <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                          <span className="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center text-[10px] font-mono font-bold">
+                            {index + 1}
+                          </span>
+                          <span>{diff.name}</span>
                         </span>
                         {isFound ? (
-                          <span className="text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30">
-                            Ripristinata
+                          <span className="text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30 flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" />
+                            <span>Decifrata</span>
                           </span>
                         ) : (
-                          <span className="text-[10px] text-slate-600 font-semibold">
+                          <span className="text-[10px] text-stone-500 font-semibold px-2 py-0.5 rounded-full bg-stone-900 border border-stone-800">
                             Non ancora scoperta
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-300 leading-relaxed italic">
-                        {isFound ? `"${diff.loreClue}"` : "??? [Trova questa anomalia nel gioco per svelare l'indizio temporale]"}
+                      <p className="text-xs text-slate-300 leading-relaxed italic font-serif">
+                        {isFound ? `"${diff.loreClue}"` : "🔒 [Annotazione protetta: individua questa anomalia durante il livello per trascriverla nel taccuino]"}
                       </p>
                     </div>
                   );
@@ -182,8 +190,8 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                 </p>
               </div>
             ) : (
-              <div className="border border-dashed border-slate-800 rounded-2xl p-5 text-center text-slate-500 text-xs sm:text-sm">
-                🔒 Completa tutte e 5 le differenze di questo capitolo per sbloccare la pagina segreta del diario di Elia.
+              <div className="border border-dashed border-amber-900/40 bg-black/30 rounded-2xl p-5 text-center text-stone-400 text-xs sm:text-sm">
+                🔒 Completa tutte e 10 le differenze di questa tavola per decifrare la nota segreta del Professor Bellini.
               </div>
             )}
           </div>

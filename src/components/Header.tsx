@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, BookOpen, Settings, LayoutGrid, Globe, Clock, Star, Snowflake, Shield, Coins, Landmark, ScrollText, Calendar, VolumeX } from 'lucide-react';
+import { Heart, Clock, Star, Snowflake, Shield, Coins, Compass, Sparkles } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS } from '../data/avatarData';
@@ -16,23 +16,10 @@ interface HeaderProps {
   coins: number;
   isShieldActive: boolean;
   profile: ExplorerProfile;
-  onOpenSettings: () => void;
-  onOpenLevelSelect: () => void;
-  onOpenJournal: () => void;
-  onOpenTreasureMap: () => void;
-  onOpenShop: () => void;
-  onOpenMuseum: () => void;
-  onOpenWardrobe: () => void;
-  onOpenStageBriefing?: () => void;
-  onOpenDaily?: () => void;
-  hasUnreadDaily?: boolean;
-  isBgmPlaying?: boolean;
-  onToggleBgm?: () => void;
+  onOpenHub: () => void;
+  hasHubNotification?: boolean;
   isCoinBouncing?: boolean;
-  hasUnreadBriefing?: boolean;
-  hasUnreadJournal?: boolean;
-  hasUnreadRelics?: boolean;
-  hasNewStageUnlocked?: boolean;
+  onOpenShop?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -47,25 +34,12 @@ export const Header: React.FC<HeaderProps> = ({
   coins,
   isShieldActive,
   profile,
-  onOpenSettings,
-  onOpenLevelSelect,
-  onOpenJournal,
-  onOpenTreasureMap,
+  onOpenHub,
+  hasHubNotification = false,
+  isCoinBouncing = false,
   onOpenShop,
-  onOpenMuseum,
-  onOpenWardrobe,
-  onOpenStageBriefing,
-  onOpenDaily,
-  hasUnreadDaily,
-  isBgmPlaying,
-  onToggleBgm,
-  isCoinBouncing,
-  hasUnreadBriefing,
-  hasUnreadJournal,
-  hasUnreadRelics,
-  hasNewStageUnlocked,
 }) => {
-  const currentExplorer = EXPLORERS[profile.avatarId];
+  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
 
   // Star rating calculation based on time elapsed
   // Under 105s (1m 45s) = 3 stars, Under 210s (3m 30s) = 2 stars, otherwise 1 star
@@ -78,175 +52,64 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="w-full leather-belt safe-pt px-2.5 sm:px-4 py-2 select-none z-30 flex flex-col gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
-      {/* ROW 1: Mobile Navigation Bar (Level, Relics, Map, Journal, Coins, Settings) */}
-      <div className="flex items-center justify-between w-full gap-1.5">
-        {/* Left: Avatar Wardrobe Button & Level Select Pill Button */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* Circular Explorer Avatar Portrait */}
-          <button
-            onClick={onOpenWardrobe}
-            className="relative w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 p-[1.5px] shadow-[0_2px_10px_rgba(245,158,11,0.4)] active:scale-90 transition-all cursor-pointer group shrink-0"
-            title={`Guardaroba Esploratore • ${profile.playerName} (${currentExplorer.title})`}
-          >
-            <div className="w-full h-full rounded-full overflow-hidden bg-stone-900 border border-amber-950">
-              <img
-                src={currentExplorer.portrait}
-                alt={profile.playerName}
-                className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform"
-              />
-            </div>
-            {/* Tiny status indicator */}
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-stone-950 flex items-center justify-center shadow-sm" />
-          </button>
+    <header className="w-full leather-belt safe-pt px-3 py-2 select-none z-30 flex flex-col gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
+      {/* ROW 1: Level Badge & Campo Base QG Button */}
+      <div className="flex items-center justify-between w-full gap-2">
+        {/* Left: Level Pill with Explorer Avatar */}
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-full border border-amber-400 overflow-hidden shadow-sm bg-stone-900 shrink-0">
+            <img
+              src={currentExplorer.portrait}
+              alt={profile.playerName}
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
 
-          {/* Level Select Pill Button */}
-          <button
-            onClick={onOpenLevelSelect}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-gradient-to-b from-[#3a2211] via-[#2a1b0d] to-[#1a1007] hover:from-[#4a2c16] text-amber-200 border-2 border-amber-400/60 active:scale-95 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
-            title="Seleziona Livello / Capitolo"
-          >
-            <div className="p-1 rounded-full bg-amber-500/20 text-amber-300">
-              <LayoutGrid className="w-3 h-3" />
-            </div>
-            <div className="flex flex-col text-left leading-none pr-0.5">
-              <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 font-serif">
+          <div className="flex flex-col leading-none truncate">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-300 font-serif">
                 LIV. {currentLevel.id}
               </span>
-              <span className="text-[9px] text-amber-400/80 font-medium truncate max-w-[65px] sm:max-w-[80px]">
-                {currentLevel.title.replace(/^(Lo |Il |La |L'|I |Gli |Le )/i, '').split(' ')[0]}
+              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-200 border border-amber-500/30 font-bold">
+                Tappa {currentLevel.chapterNumber}
               </span>
             </div>
-          </button>
+            <span className="text-[10px] text-amber-200/80 font-medium truncate mt-0.5 max-w-[150px] sm:max-w-[200px]">
+              {currentLevel.title}
+            </span>
+          </div>
         </div>
 
-        {/* Center: Quick Expedition Tools Dock */}
-        <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-1.5 py-1 rounded-full border border-amber-500/30 shadow-inner">
-          {/* Spedizione Quotidiana (Daily Challenge) */}
-          {onOpenDaily && (
-            <button
-              onClick={onOpenDaily}
-              className="relative p-2 rounded-full bg-gradient-to-b from-amber-600/35 via-orange-600/35 to-amber-900/35 hover:from-orange-500/40 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-              title="Spedizione Quotidiana Archeologica • Sfida del Giorno"
-            >
-              <Calendar className="w-4 h-4 text-amber-300" />
-              {hasUnreadDaily && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full border border-slate-900 animate-ping" />
-              )}
-              {hasUnreadDaily && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full border border-slate-900" />
-              )}
-            </button>
-          )}
-
-          {/* Museo delle Reliquie 3D */}
+        {/* Right: Coins counter & Prominent CAMPO BASE button */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Coins Counter */}
           <button
-            onClick={onOpenMuseum}
-            className="relative p-2 rounded-full bg-gradient-to-b from-amber-500/30 to-amber-700/40 hover:from-amber-500/40 hover:to-amber-700/50 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-            title="Museo delle Reliquie 3D"
-          >
-            <Landmark className="w-4 h-4 text-amber-300" />
-            {hasUnreadRelics && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border border-slate-900 animate-ping" />
-            )}
-            {hasUnreadRelics && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border border-slate-900" />
-            )}
-          </button>
-
-          {/* Mappamondo 3D delle 12 Tappe (Sblocco ogni 10 Livelli) */}
-          <button
-            onClick={onOpenTreasureMap}
-            className="relative p-2 rounded-full bg-gradient-to-b from-amber-500/30 to-yellow-600/40 hover:from-amber-500/40 hover:to-yellow-600/50 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-            title="Mappamondo 3D (12 Tappe di Spedizione • Sblocco ogni 10 Livelli)"
-          >
-            <Globe className="w-4 h-4 text-amber-300 animate-spin-slow" />
-            {hasNewStageUnlocked && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-yellow-400 rounded-full border border-slate-900 animate-ping" />
-            )}
-            {hasNewStageUnlocked && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-yellow-400 rounded-full border border-slate-900" />
-            )}
-          </button>
-
-          {/* Taccuino del Professore */}
-          <button
-            onClick={onOpenJournal}
-            className="relative p-2 rounded-full bg-[#2a1b0d]/90 hover:bg-[#3d2713] text-amber-300 border border-amber-500/40 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-            title="Taccuino di Spedizione"
-          >
-            <BookOpen className="w-4 h-4" />
-            {hasUnreadJournal && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-500 rounded-full border border-slate-900 animate-ping" />
-            )}
-            {hasUnreadJournal && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-500 rounded-full border border-slate-900" />
-            )}
-          </button>
-
-          {/* Dispaccio Archeologico di Tappa */}
-          {onOpenStageBriefing && (
-            <button
-              onClick={onOpenStageBriefing}
-              className="relative p-2 rounded-full bg-gradient-to-b from-amber-600/35 via-yellow-700/35 to-amber-900/35 hover:from-amber-500/40 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-              title={`Dispaccio di Spedizione • Tappa ${currentLevel.chapterNumber}`}
-            >
-              <ScrollText className="w-4 h-4" />
-              {hasUnreadBriefing && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-400 rounded-full border border-slate-900 animate-ping" />
-              )}
-              {hasUnreadBriefing && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-400 rounded-full border border-slate-900" />
-              )}
-            </button>
-          )}
-        </div>
-
-        {/* Right: BGM Toggle, Coins & Settings Button */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* Continuous BGM Orchestral Soundscape Toggle */}
-          {onToggleBgm && (
-            <button
-              onClick={onToggleBgm}
-              className={`p-2 rounded-full border active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px] ${
-                isBgmPlaying
-                  ? 'bg-amber-500/25 border-amber-400/70 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.35)]'
-                  : 'bg-[#2a1b0d]/90 hover:bg-[#3d2713] text-stone-500 border-stone-700/80'
-              }`}
-              title={isBgmPlaying ? 'Musica Orchestrale Attiva (Tocca per disattivare)' : 'Musica Disattivata (Tocca per riprodurre)'}
-            >
-              {isBgmPlaying ? (
-                <div className="flex items-end gap-[2px] h-3.5 w-3.5 justify-center">
-                  <span className="w-[3px] bg-amber-300 rounded-full animate-eq-1" />
-                  <span className="w-[3px] bg-amber-400 rounded-full animate-eq-2" />
-                  <span className="w-[3px] bg-amber-200 rounded-full animate-eq-3" />
-                </div>
-              ) : (
-                <VolumeX className="w-4 h-4 text-stone-500" />
-              )}
-            </button>
-          )}
-
-          {/* Golden Coins Pill Counter with Landing Animation */}
-          <button
+            type="button"
             id="header-coin-counter"
-            onClick={onOpenShop}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-b from-amber-500/30 via-yellow-600/35 to-amber-700/25 hover:from-amber-500/40 border-2 border-amber-400/70 text-amber-200 shadow-[0_2px_8px_rgba(0,0,0,0.6)] active:scale-95 transition-all ${
+            onClick={onOpenShop || onOpenHub}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/40 border border-amber-500/40 text-amber-200 shadow-sm active:scale-95 transition ${
               isCoinBouncing ? 'animate-coin-bounce' : ''
             }`}
-            title="Monete d'Oro • Apri Emporio"
+            title="Monete d'Oro"
           >
             <Coins className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-            <span className="text-xs font-black tracking-wide font-mono text-amber-200">{coins}</span>
-            <span className="text-[10px] text-amber-400 font-bold bg-amber-900/80 px-1 rounded-full">+</span>
+            <span className="text-xs font-black font-mono text-amber-200">{coins}</span>
           </button>
 
+          {/* Dedicated Expedition Hub / Campo Base Button */}
           <button
-            onClick={onOpenSettings}
-            className="p-2 rounded-full bg-[#2a1b0d]/90 hover:bg-[#3d2713] text-amber-400/90 hover:text-amber-200 border border-amber-500/40 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
-            title="Impostazioni"
+            type="button"
+            onClick={onOpenHub}
+            className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-500 text-stone-950 font-black text-xs font-serif uppercase tracking-wider shadow-[0_2px_12px_rgba(245,158,11,0.4)] border border-yellow-300 active:scale-95 transition cursor-pointer"
+            title="Apri Quartier Generale di Spedizione (Mappamondo, Museo, Guardaroba, Sfide)"
           >
-            <Settings className="w-4 h-4" />
+            <Compass className="w-3.5 h-3.5 text-stone-950 animate-spin-slow" />
+            <span>Campo Base</span>
+            {hasHubNotification && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-stone-950 animate-pulse flex items-center justify-center">
+                <Sparkles className="w-2 h-2 text-white" />
+              </span>
+            )}
           </button>
         </div>
       </div>

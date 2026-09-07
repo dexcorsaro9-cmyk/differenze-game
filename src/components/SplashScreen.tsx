@@ -46,10 +46,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
     if (!isReady || isFadingOut) return;
     sound.playSelect();
     triggerHaptic('medium');
+    onStart();
     setIsFadingOut(true);
-    setTimeout(() => {
-      onStart();
-    }, 600);
   };
 
   const currentMsgIndex = Math.min(

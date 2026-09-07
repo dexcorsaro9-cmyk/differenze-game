@@ -144,10 +144,10 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
         }}
       >
         {/* Volumetric Artifact Glow & Museum Spotlight */}
-        <div className="absolute -top-16 w-44 h-44 rounded-full bg-amber-500/25 blur-2xl pointer-events-none animate-pulse" />
+        <div className="absolute -top-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-amber-500/25 blur-2xl pointer-events-none animate-pulse" />
 
         {/* 3D Glass & Brass Showcase with AAA Render */}
-        <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden border-2 border-amber-400/80 shadow-[0_15px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(245,158,11,0.4)] bg-gradient-to-b from-[#180f08] via-[#0d0704] to-black flex items-center justify-center group">
+        <div className="relative w-36 h-36 xs:w-44 xs:h-44 sm:w-52 sm:h-52 rounded-3xl overflow-hidden border-2 border-amber-400/80 shadow-[0_15px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(245,158,11,0.4)] bg-gradient-to-b from-[#180f08] via-[#0d0704] to-black flex items-center justify-center group">
           <img
             src={assetUrl(imgSrc)}
             alt={relic.name}
@@ -316,29 +316,29 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
 
             {/* THE BACKLIT GLASS DISPLAY CASE (TECA DI CRISTALLO RETROILLUMINATA) */}
             <div 
-              className="relative flex flex-col items-center justify-center transition-transform duration-100 ease-out"
+              className="relative flex flex-col items-center justify-center transition-transform duration-100 ease-out py-2 sm:py-4 scale-[0.82] xs:scale-[0.9] sm:scale-100 origin-center"
               style={{
                 transform: `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg)`,
                 transformStyle: 'preserve-3d',
               }}
             >
               {/* Glass Display Cylindrical Case */}
-              <div className="relative w-64 sm:w-80 h-80 sm:h-96 rounded-t-3xl border-2 border-amber-400/60 bg-gradient-to-b from-amber-500/10 via-sky-400/5 to-amber-500/20 backdrop-blur-xs flex items-center justify-center shadow-[0_0_50px_rgba(245,158,11,0.35),inset_0_0_30px_rgba(255,255,255,0.2)] overflow-hidden">
+              <div className="relative w-56 sm:w-72 h-64 sm:h-80 rounded-t-3xl border-2 border-amber-400/60 bg-gradient-to-b from-amber-500/10 via-sky-400/5 to-amber-500/20 backdrop-blur-xs flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.35),inset_0_0_25px_rgba(255,255,255,0.2)] overflow-hidden">
                 {/* Curved Glass Specular Highlight Refraction */}
-                <div className="absolute top-0 left-4 w-6 h-full bg-gradient-to-r from-white/20 via-white/10 to-transparent blur-[2px] pointer-events-none transform -skew-x-6" />
-                <div className="absolute top-0 right-4 w-4 h-full bg-gradient-to-l from-white/15 to-transparent blur-[1px] pointer-events-none" />
+                <div className="absolute top-0 left-4 w-5 h-full bg-gradient-to-r from-white/20 via-white/10 to-transparent blur-[2px] pointer-events-none transform -skew-x-6" />
+                <div className="absolute top-0 right-4 w-3 h-full bg-gradient-to-l from-white/15 to-transparent blur-[1px] pointer-events-none" />
 
                 {/* Crimson Velvet Base Inside Case */}
-                <div className="absolute bottom-0 w-full h-12 bg-gradient-to-t from-[#4c0519] to-[#881337] border-t-2 border-amber-400/60 shadow-inner" />
+                <div className="absolute bottom-0 w-full h-10 bg-gradient-to-t from-[#4c0519] to-[#881337] border-t-2 border-amber-400/60 shadow-inner" />
 
                 {/* THE 3D ARTIFACT SUSPENDED INSIDE */}
-                <div className="relative z-10 -translate-y-4">
+                <div className="relative z-10 -translate-y-2">
                   {render3DRelic(selectedRelic, isSelectedDiscovered)}
                 </div>
 
                 {/* BACKLIGHT BEAM (RETROILLUMINAZIONE VOLUMETRICA DAL BASSO) */}
                 <div 
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-36 pointer-events-none"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 h-28 pointer-events-none"
                   style={{
                     background: 'radial-gradient(ellipse at 50% 100%, rgba(251, 191, 36, 0.75) 0%, rgba(217, 119, 6, 0.4) 40%, transparent 75%)',
                   }}
@@ -346,25 +346,25 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
               </div>
 
               {/* RETRO-ILLUMINATED PEDESTAL BASE (BASAMENTO IN MOGANO & OTTONE) */}
-              <div className="relative w-72 sm:w-92 h-20 bg-gradient-to-b from-[#382312] via-[#231509] to-[#120a04] border-2 border-amber-500 rounded-b-2xl shadow-[0_20px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(245,158,11,0.5)] flex flex-col items-center justify-center">
+              <div className="relative w-64 sm:w-80 h-16 sm:h-18 bg-gradient-to-b from-[#382312] via-[#231509] to-[#120a04] border-2 border-amber-500 rounded-b-2xl shadow-[0_15px_30px_rgba(0,0,0,0.9),0_0_25px_rgba(245,158,11,0.5)] flex flex-col items-center justify-center">
                 {/* Glowing LED Ring around Pedestal */}
-                <div className="absolute -top-1 w-full h-2 bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 shadow-[0_0_15px_#f59e0b] rounded-full" />
+                <div className="absolute -top-1 w-full h-1.5 bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 shadow-[0_0_12px_#f59e0b] rounded-full" />
                 
                 {/* Brass Plaque with Inscribed Name */}
-                <div className="px-4 py-1 rounded-xl bg-gradient-to-r from-amber-700/60 via-amber-500/40 to-amber-700/60 border border-amber-400/80 text-center shadow-md">
-                  <span className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-amber-200 font-serif">
+                <div className="px-3.5 py-0.5 rounded-xl bg-gradient-to-r from-amber-700/60 via-amber-500/40 to-amber-700/60 border border-amber-400/80 text-center shadow-md">
+                  <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-amber-200 font-serif">
                     {isSelectedDiscovered ? selectedRelic.name : '??? REPERTO SEPOLTO'}
                   </span>
                 </div>
-                <span className="text-[9px] text-amber-400/70 font-mono mt-1">
+                <span className="text-[8px] sm:text-[9px] text-amber-400/70 font-mono mt-0.5">
                   TECA ARCHEOLOGICA N. {selectedIndex + 1} • {selectedRelic.era.split(' (')[0]}
                 </span>
               </div>
 
               {/* Interactive Drag Hint */}
-              <div className="mt-4 pointer-events-none bg-stone-900/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-amber-500/40 text-[11px] text-amber-200/90 flex items-center gap-2 shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
-                <span>Trascina con mouse/touch per ruotare ed esaminare la teca 3D</span>
+              <div className="mt-2.5 pointer-events-none bg-stone-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-amber-500/40 text-[10px] text-amber-200/90 flex items-center gap-1.5 shadow-lg">
+                <Sparkles className="w-3 h-3 text-amber-400 animate-spin-slow" />
+                <span>Trascina per ruotare ed esaminare la teca 3D</span>
               </div>
             </div>
           </div>

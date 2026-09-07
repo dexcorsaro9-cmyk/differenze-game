@@ -17,6 +17,7 @@ import { AvatarCreatorModal } from './components/AvatarCreatorModal';
 import { WardrobeModal } from './components/WardrobeModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
+import { ExpeditionHubModal } from './components/ExpeditionHubModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
 import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
 import { DailyExpeditionModal } from './components/DailyExpeditionModal';
@@ -38,7 +39,7 @@ import {
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
-import { Shield } from 'lucide-react';
+import { Shield, Compass } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Persistence keys
@@ -131,7 +132,7 @@ export const App: React.FC = () => {
         return [];
       }
     }
-    return ['relic_chachapoya_idol', 'relic_jade_mask'];
+    return [];
   });
   const [activeFoundRelic, setActiveFoundRelic] = useState<CollectibleRelic | null>(null);
   const [isRelicFoundModalOpen, setIsRelicFoundModalOpen] = useState<boolean>(false);
@@ -211,6 +212,7 @@ export const App: React.FC = () => {
   const [isPrologueOpen, setIsPrologueOpen] = useState<boolean>(() => initialView === 'prologue');
   const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => initialView === 'tutorial');
   const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
+  const [isExpeditionHubOpen, setIsExpeditionHubOpen] = useState<boolean>(false);
   const [activeStageBriefing, setActiveStageBriefing] = useState<number | null>(() => {
     if (initialView === 'briefing') return 1;
     return null;
@@ -827,7 +829,7 @@ export const App: React.FC = () => {
 
       {/* The Mobile Game Viewport Container (100% on phones, max-w-[440px] smartphone shell on desktop) */}
       <div className="w-full max-w-[440px] h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_60px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden">
-        {/* Indiana Jones Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Museo Reliquie */}
+        {/* Indiana Jones Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Campo Base Hub Button */}
         <Header
           currentLevel={currentLevel}
           foundCount={foundDifferenceIds.length}
@@ -840,50 +842,50 @@ export const App: React.FC = () => {
           coins={coins}
           isShieldActive={isShieldActive}
           profile={explorerProfile}
-          onOpenWardrobe={() => setIsWardrobeOpen(true)}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onOpenLevelSelect={() => setIsLevelSelectOpen(true)}
-          onOpenDaily={() => setIsDailyModalOpen(true)}
-          hasUnreadDaily={hasUnreadDaily}
-          isBgmPlaying={isBgmPlaying}
-          onToggleBgm={handleToggleBgm}
+          onOpenHub={() => setIsExpeditionHubOpen(true)}
+          hasHubNotification={
+            hasUnreadDaily ||
+            hasUnreadRelics ||
+            hasNewStageUnlocked ||
+            hasUnreadJournal ||
+            !seenStageBriefings.includes(currentLevel.chapterNumber)
+          }
           isCoinBouncing={isCoinBouncing}
-          onOpenJournal={() => {
-            setIsJournalOpen(true);
-            setHasUnreadJournal(false);
-          }}
-          onOpenTreasureMap={() => {
-            setIsTreasureMapOpen(true);
-            setHasNewStageUnlocked(false);
-          }}
           onOpenShop={() => setIsShopOpen(true)}
-          onOpenMuseum={() => {
-            setIsRelicMuseumOpen(true);
-            setHasUnreadRelics(false);
-          }}
-          onOpenStageBriefing={() => handleOpenStageBriefing(currentLevel.chapterNumber)}
-          hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
-          hasUnreadJournal={hasUnreadJournal}
-          hasUnreadRelics={hasUnreadRelics}
-          hasNewStageUnlocked={hasNewStageUnlocked}
         />
 
-        {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom */}
-        <ImageComparisonView
-          imageA={currentLevel.imageA}
-          imageB={currentLevel.imageB}
-          differences={currentLevel.differences}
-          foundDifferenceIds={foundDifferenceIds}
-          activeHint={activeHint}
-          activeRadar={activeRadar}
-          isTimeFrozen={isTimeFrozen}
-          hiddenRelic={currentLevelHiddenRelic}
-          isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
-          onDiscoverRelic={handleDiscoverRelic}
-          onDifferenceClick={handleDifferenceClick}
-          onErrorClick={handleErrorClick}
-          layoutMode={settings.layoutMode}
-        />
+        {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Shielded during setup/prologue/splash) */}
+        {!hasCompletedAvatarSetup || isPrologueOpen || isSplashVisible ? (
+          <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-b from-stone-950 via-[#0e0a07] to-stone-950 rounded-2xl border border-amber-900/30 p-6 select-none my-1">
+            <div className="flex flex-col items-center gap-3 opacity-40 animate-pulse">
+              <Compass className="w-16 h-16 text-amber-400 animate-[spin_30s_linear_infinite]" />
+              <div className="text-center">
+                <span className="text-xs font-serif tracking-[0.25em] text-amber-300 uppercase block font-bold">
+                  Spedizione Archeologica
+                </span>
+                <span className="text-[10px] text-amber-500/80 font-sans tracking-wide">
+                  Preparazione sito di scavo in corso...
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <ImageComparisonView
+            imageA={currentLevel.imageA}
+            imageB={currentLevel.imageB}
+            differences={currentLevel.differences}
+            foundDifferenceIds={foundDifferenceIds}
+            activeHint={activeHint}
+            activeRadar={activeRadar}
+            isTimeFrozen={isTimeFrozen}
+            hiddenRelic={currentLevelHiddenRelic}
+            isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
+            onDiscoverRelic={handleDiscoverRelic}
+            onDifferenceClick={handleDifferenceClick}
+            onErrorClick={handleErrorClick}
+            layoutMode={settings.layoutMode}
+          />
+        )}
 
         {/* Floating Shield Blocked Notice */}
         {shieldBlockedNotice && (
@@ -1038,6 +1040,63 @@ export const App: React.FC = () => {
           setHasCompletedAvatarSetup(false);
           setHasCompletedTutorial(false);
           loadLevel(1);
+        }}
+      />
+
+      {/* Central Expedition Headquarters / Campo Base Modal */}
+      <ExpeditionHubModal
+        isOpen={isExpeditionHubOpen}
+        onClose={() => setIsExpeditionHubOpen(false)}
+        currentLevel={currentLevel}
+        profile={explorerProfile}
+        coins={coins}
+        discoveredRelicCount={discoveredRelicIds.length}
+        totalRelics={ALL_COLLECTIBLE_RELICS.length}
+        hasUnreadDaily={hasUnreadDaily}
+        hasUnreadRelics={hasUnreadRelics}
+        hasNewStageUnlocked={hasNewStageUnlocked}
+        hasUnreadJournal={hasUnreadJournal}
+        hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
+        isBgmPlaying={isBgmPlaying}
+        onToggleBgm={handleToggleBgm}
+        onOpenTreasureMap={() => {
+          setIsExpeditionHubOpen(false);
+          setIsTreasureMapOpen(true);
+          setHasNewStageUnlocked(false);
+        }}
+        onOpenMuseum={() => {
+          setIsExpeditionHubOpen(false);
+          setIsRelicMuseumOpen(true);
+          setHasUnreadRelics(false);
+        }}
+        onOpenWardrobe={() => {
+          setIsExpeditionHubOpen(false);
+          setIsWardrobeOpen(true);
+        }}
+        onOpenDaily={() => {
+          setIsExpeditionHubOpen(false);
+          setIsDailyModalOpen(true);
+        }}
+        onOpenJournal={() => {
+          setIsExpeditionHubOpen(false);
+          setIsJournalOpen(true);
+          setHasUnreadJournal(false);
+        }}
+        onOpenStageBriefing={() => {
+          setIsExpeditionHubOpen(false);
+          handleOpenStageBriefing(currentLevel.chapterNumber);
+        }}
+        onOpenShop={() => {
+          setIsExpeditionHubOpen(false);
+          setIsShopOpen(true);
+        }}
+        onOpenSettings={() => {
+          setIsExpeditionHubOpen(false);
+          setIsSettingsOpen(true);
+        }}
+        onOpenLevelSelect={() => {
+          setIsExpeditionHubOpen(false);
+          setIsLevelSelectOpen(true);
         }}
       />
 
