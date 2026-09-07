@@ -16,7 +16,12 @@ interface ImageComparisonViewProps {
   hiddenRelic?: CollectibleRelic | null;
   isRelicDiscovered?: boolean;
   onDiscoverRelic?: (relic: CollectibleRelic) => void;
-  onDifferenceClick: (diff: Difference, clickPercentage: { x: number; y: number }, imageIndex: 0 | 1) => void;
+  onDifferenceClick: (
+    diff: Difference,
+    clickPercentage: { x: number; y: number },
+    imageIndex: 0 | 1,
+    screenPos?: { x: number; y: number }
+  ) => void;
   onErrorClick: (clickPercentage: { x: number; y: number }, imageIndex: 0 | 1) => void;
   layoutMode?: 'auto' | 'vertical' | 'horizontal';
 }
@@ -48,6 +53,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
+  const [isShaking, setIsShaking] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRefA = useRef<HTMLImageElement>(null);
@@ -100,6 +106,9 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
   // Remove error ripple after animation
   const addErrorFeedback = (x: number, y: number, imageIndex: 0 | 1) => {
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 380);
+
     const newRipple: ErrorRipple = {
       id: `${Date.now()}_${Math.random()}`,
       x,
@@ -195,7 +204,12 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     }
 
     if (matchedDiff) {
-      onDifferenceClick(matchedDiff, { x: clickXPercent, y: clickYPercent }, imageIndex);
+      onDifferenceClick(
+        matchedDiff,
+        { x: clickXPercent, y: clickYPercent },
+        imageIndex,
+        { x: e.clientX, y: e.clientY }
+      );
     } else {
       addErrorFeedback(clickXPercent, clickYPercent, imageIndex);
       onErrorClick({ x: clickXPercent, y: clickYPercent }, imageIndex);
@@ -213,7 +227,9 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="relative w-full flex-1 min-h-0 bg-[#0b0704] overflow-hidden flex flex-col items-center justify-between p-1 sm:p-1.5 gap-1 select-none"
+      className={`relative w-full flex-1 min-h-0 bg-[#0b0704] overflow-hidden flex flex-col items-center justify-between p-1 sm:p-1.5 gap-1 select-none transition-all duration-75 ${
+        isShaking ? 'animate-screen-shake ring-2 ring-red-500/50' : ''
+      }`}
       style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'crosshair' }}
     >
       {/* Viewport 1 (Originale / Image A - Sopra) */}

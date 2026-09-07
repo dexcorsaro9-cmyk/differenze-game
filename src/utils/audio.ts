@@ -398,6 +398,388 @@ class SoundManager {
     osc1.stop(now + durationSec);
     osc2.stop(now + durationSec);
   }
+
+  // =========================================================================
+  // AAA JUICINESS & PHYSICAL IMPACT SOUND EFFECTS
+  // =========================================================================
+
+  // Tactile wax seal stamp impact ("Timbro di Ceralacca")
+  public playStamp() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Heavy physical mechanical/brass thud (75Hz -> 28Hz)
+    const thudOsc = ctx.createOscillator();
+    const thudGain = ctx.createGain();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(75, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(28, now + 0.18);
+
+    thudGain.gain.setValueAtTime(0.45, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    thudOsc.connect(thudGain);
+    thudGain.connect(ctx.destination);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.23);
+
+    // 2. Crisp brass seal metallic ring on wax
+    const ringOsc = ctx.createOscillator();
+    const ringGain = ctx.createGain();
+    ringOsc.type = 'triangle';
+    ringOsc.frequency.setValueAtTime(640, now);
+    ringOsc.frequency.exponentialRampToValueAtTime(220, now + 0.14);
+
+    ringGain.gain.setValueAtTime(0.2, now);
+    ringGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    ringOsc.connect(ringGain);
+    ringGain.connect(ctx.destination);
+    ringOsc.start(now);
+    ringOsc.stop(now + 0.16);
+
+    // 3. Subtle wax crackle / parchment friction burst
+    const noiseLen = Math.floor(ctx.sampleRate * 0.08);
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const output = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (noiseLen * 0.3));
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuf;
+
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(1200, now);
+    noiseFilter.Q.setValueAtTime(2.0, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.18, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noiseSource.start(now);
+  }
+
+  // Cascading coin flurry sound when flying coins reach the top counter
+  public playCoinBurst() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    // Fast melodic arpeggio of golden coin clinks
+    const freqs = [987.77, 1174.66, 1318.51, 1567.98, 1760.0]; // B5, D6, E6, G6, A6
+
+    freqs.forEach((f, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const t = now + idx * 0.05;
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(f, t);
+
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.18, t + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.2);
+    });
+  }
+
+  // Low dull physical vibration when tapping wrong spot
+  public playScreenShakeImpact() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.18);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Triumphant daily expedition completion fanfare
+  public playDailyRewardClaim() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    // Choral brass fanfare (D4 -> F#4 -> A4 -> D5 -> F#5)
+    const notes = [293.66, 369.99, 440.0, 587.33, 739.99];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const t = now + i * 0.09;
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.22, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.75);
+    });
+  }
+
+  // =========================================================================
+  // CONTINUOUS PROCEDURAL ORCHESTRAL BGM ENGINE (1928 ADVENTURE SOUNDSCAPE)
+  // =========================================================================
+  private bgmGainNode: GainNode | null = null;
+  private bgmFilterNode: BiquadFilterNode | null = null;
+  private isBgmPlaying: boolean = false;
+  private bgmEnabled: boolean = (() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('differenze_bgm_enabled');
+      return saved !== 'false';
+    }
+    return true;
+  })();
+  private bgmVolume: number = 0.38;
+  private bgmLoopTimer: number | null = null;
+  private bgmStepIndex: number = 0;
+  private currentTheme: 'exploration' | 'excavation' = 'exploration';
+
+  // Chord progressions in ancient Dorian / D minor mode (Indiana Jones / Howard Shore archaeological style)
+  // Each chord has [RootBass, HarpArpNotes...]
+  private readonly chordsExploration = [
+    { bass: 146.83, harp: [293.66, 349.23, 440.0, 523.25, 587.33] }, // Dm (D3, F3, A4, C5, D5)
+    { bass: 116.54, harp: [233.08, 293.66, 349.23, 466.16, 587.33] }, // Bb (Bb2, D3, F3, Bb4, D5)
+    { bass: 130.81, harp: [261.63, 329.63, 392.0, 523.25, 659.25] }, // C  (C3, E3, G4, C5, E5)
+    { bass: 110.00, harp: [220.00, 261.63, 329.63, 440.00, 523.25] }, // Am (A2, C3, E3, A4, C5)
+  ];
+
+  private readonly chordsExcavation = [
+    { bass: 110.00, harp: [220.00, 261.63, 329.63, 392.00, 440.00] }, // Am mystic
+    { bass: 123.47, harp: [246.94, 293.66, 369.99, 440.00, 493.88] }, // Bm
+    { bass: 98.00,  harp: [196.00, 246.94, 293.66, 392.00, 493.88] }, // G
+    { bass: 146.83, harp: [293.66, 349.23, 440.00, 523.25, 587.33] }, // Dm
+  ];
+
+  public setBGMEnabled(enabled: boolean) {
+    this.bgmEnabled = enabled;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('differenze_bgm_enabled', enabled ? 'true' : 'false');
+    }
+    if (!enabled) {
+      this.pauseBGM();
+    } else {
+      this.startBGM(this.currentTheme);
+    }
+  }
+
+  public getBGMEnabled(): boolean {
+    return this.bgmEnabled;
+  }
+
+  public isBgmActive(): boolean {
+    return this.isBgmPlaying && this.bgmEnabled;
+  }
+
+  public setBGMTheme(theme: 'exploration' | 'excavation') {
+    if (this.currentTheme === theme) return;
+    this.currentTheme = theme;
+    if (this.isBgmPlaying && this.bgmEnabled) {
+      this.startBGM(theme);
+    }
+  }
+
+  // Start continuous orchestral atmospheric music loop
+  public startBGM(theme: 'exploration' | 'excavation' = 'exploration') {
+    this.currentTheme = theme;
+    if (!this.bgmEnabled) return;
+
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    // Ensure audio context is active
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
+
+    if (this.isBgmPlaying && this.bgmLoopTimer !== null) {
+      // Smooth theme transition
+      return;
+    }
+
+    // Master BGM Gain Node
+    if (!this.bgmGainNode) {
+      this.bgmGainNode = ctx.createGain();
+      this.bgmFilterNode = ctx.createBiquadFilter();
+      this.bgmFilterNode.type = 'lowpass';
+      this.bgmFilterNode.frequency.setValueAtTime(3200, ctx.currentTime);
+      this.bgmFilterNode.Q.setValueAtTime(1.0, ctx.currentTime);
+
+      this.bgmGainNode.connect(this.bgmFilterNode);
+      this.bgmFilterNode.connect(ctx.destination);
+    }
+
+    const now = ctx.currentTime;
+    this.bgmGainNode.gain.cancelScheduledValues(now);
+    this.bgmGainNode.gain.setValueAtTime(this.bgmGainNode.gain.value, now);
+    this.bgmGainNode.gain.linearRampToValueAtTime(this.bgmVolume, now + 1.2);
+
+    this.isBgmPlaying = true;
+    this.bgmStepIndex = 0;
+
+    // Schedule initial bar immediately
+    this.scheduleNextBGMBar();
+
+    // Start precise bar scheduler loop (every 3.6 seconds per 4-beat bar)
+    if (this.bgmLoopTimer !== null) clearInterval(this.bgmLoopTimer);
+    this.bgmLoopTimer = window.setInterval(() => {
+      if (this.isBgmPlaying && this.bgmEnabled) {
+        this.scheduleNextBGMBar();
+      }
+    }, 3600);
+  }
+
+  public pauseBGM() {
+    if (!this.bgmGainNode || !this.ctx) {
+      this.isBgmPlaying = false;
+      return;
+    }
+    const now = this.ctx.currentTime;
+    this.bgmGainNode.gain.cancelScheduledValues(now);
+    this.bgmGainNode.gain.linearRampToValueAtTime(0.001, now + 0.6);
+
+    if (this.bgmLoopTimer !== null) {
+      clearInterval(this.bgmLoopTimer);
+      this.bgmLoopTimer = null;
+    }
+    this.isBgmPlaying = false;
+  }
+
+  public stopBGM() {
+    this.pauseBGM();
+  }
+
+  public toggleBGM(): boolean {
+    const next = !this.bgmEnabled;
+    this.setBGMEnabled(next);
+    return next;
+  }
+
+  // Synthesizes one bar of rich cinematic adventure music
+  private scheduleNextBGMBar() {
+    const ctx = this.getContext();
+    if (!ctx || !this.bgmGainNode || !this.isBgmPlaying || !this.bgmEnabled) return;
+
+    const chords = this.currentTheme === 'exploration' ? this.chordsExploration : this.chordsExcavation;
+    const currentChord = chords[this.bgmStepIndex % chords.length];
+    this.bgmStepIndex++;
+
+    const startTime = ctx.currentTime + 0.05;
+    const barDuration = 3.6; // seconds
+
+    // 1. Warm Cello / Double-Bass Pedal Drone
+    const bassOsc = ctx.createOscillator();
+    const bassGain = ctx.createGain();
+    const bassFilter = ctx.createBiquadFilter();
+
+    bassFilter.type = 'lowpass';
+    bassFilter.frequency.setValueAtTime(280, startTime);
+
+    bassOsc.type = 'triangle';
+    bassOsc.frequency.setValueAtTime(currentChord.bass, startTime);
+
+    bassGain.gain.setValueAtTime(0, startTime);
+    bassGain.gain.linearRampToValueAtTime(0.14, startTime + 0.8);
+    bassGain.gain.setValueAtTime(0.14, startTime + barDuration - 0.7);
+    bassGain.gain.linearRampToValueAtTime(0.001, startTime + barDuration);
+
+    bassOsc.connect(bassFilter);
+    bassFilter.connect(bassGain);
+    bassGain.connect(this.bgmGainNode);
+
+    bassOsc.start(startTime);
+    bassOsc.stop(startTime + barDuration + 0.1);
+
+    // 2. Acoustic Celtic Harp / Classical Arpeggios (5 delicate notes across the bar)
+    const harpNotes = currentChord.harp;
+    const noteInterval = barDuration / harpNotes.length;
+
+    harpNotes.forEach((freq, idx) => {
+      const noteTime = startTime + idx * noteInterval;
+
+      const harpOsc = ctx.createOscillator();
+      const harpGain = ctx.createGain();
+
+      harpOsc.type = 'sine';
+      harpOsc.frequency.setValueAtTime(freq, noteTime);
+
+      // Acoustic pluck envelope: fast attack, natural exponential ring
+      harpGain.gain.setValueAtTime(0, noteTime);
+      harpGain.gain.linearRampToValueAtTime(0.09, noteTime + 0.02);
+      harpGain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.85);
+
+      harpOsc.connect(harpGain);
+      harpGain.connect(this.bgmGainNode!);
+
+      harpOsc.start(noteTime);
+      harpOsc.stop(noteTime + 0.9);
+    });
+
+    // 3. Ancient Flute / Whistle Lyrical Fragment (Every second bar)
+    if (this.bgmStepIndex % 2 === 0) {
+      const fluteOsc = ctx.createOscillator();
+      const fluteGain = ctx.createGain();
+      const fluteLfo = ctx.createOscillator();
+      const fluteLfoGain = ctx.createGain();
+
+      const fluteStartTime = startTime + 0.6;
+      const fluteFreq = harpNotes[harpNotes.length - 1]; // High melodic note
+
+      // Gentle breathy vibrato
+      fluteLfo.type = 'sine';
+      fluteLfo.frequency.setValueAtTime(4.8, fluteStartTime);
+      fluteLfoGain.gain.setValueAtTime(3.5, fluteStartTime);
+      fluteLfo.connect(fluteLfoGain);
+      fluteLfoGain.connect(fluteOsc.frequency);
+
+      fluteOsc.type = 'triangle';
+      fluteOsc.frequency.setValueAtTime(fluteFreq, fluteStartTime);
+
+      fluteGain.gain.setValueAtTime(0, fluteStartTime);
+      fluteGain.gain.linearRampToValueAtTime(0.08, fluteStartTime + 0.4);
+      fluteGain.gain.exponentialRampToValueAtTime(0.001, fluteStartTime + 2.0);
+
+      fluteOsc.connect(fluteGain);
+      fluteGain.connect(this.bgmGainNode);
+
+      fluteLfo.start(fluteStartTime);
+      fluteOsc.start(fluteStartTime);
+
+      fluteLfo.stop(fluteStartTime + 2.1);
+      fluteOsc.stop(fluteStartTime + 2.1);
+    }
+  }
 }
 
 export const sound = new SoundManager();
+

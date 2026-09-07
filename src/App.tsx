@@ -18,6 +18,15 @@ import { WardrobeModal } from './components/WardrobeModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
+import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
+import { DailyExpeditionModal } from './components/DailyExpeditionModal';
+import {
+  hasPendingDaily,
+  completeDailyExpedition,
+  isTodayCompleted,
+  getLevelIdForDate,
+  getTodayDateString,
+} from './utils/dailyChallenge';
 import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
 import {
@@ -142,6 +151,19 @@ export const App: React.FC = () => {
   const [hasNewStageUnlocked, setHasNewStageUnlocked] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const [hasUnreadJournal, setHasUnreadJournal] = useState<boolean>(false);
+
+  // Continuous Procedural Orchestral BGM State
+  const [isBgmPlaying, setIsBgmPlaying] = useState<boolean>(() => sound.getBGMEnabled());
+
+  // Flying Coins Particle Bursts & Counter Bounce
+  const [coinBursts, setCoinBursts] = useState<CoinBurstEvent[]>([]);
+  const [isCoinBouncing, setIsCoinBouncing] = useState<boolean>(false);
+
+  // Daily Challenge State & Modal
+  const [isDailyModalOpen, setIsDailyModalOpen] = useState<boolean>(false);
+  const [isDailyActive, setIsDailyActive] = useState<boolean>(false);
+  const [hasUnreadDaily, setHasUnreadDaily] = useState<boolean>(() => hasPendingDaily());
+
   // Explorer Avatar & Wardrobe State
   const [explorerProfile, setExplorerProfile] = useState<ExplorerProfile>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_AVATAR);
@@ -330,7 +352,8 @@ export const App: React.FC = () => {
       isTreasureMapOpen ||
       isShopOpen ||
       isRelicMuseumOpen ||
-      isRelicFoundModalOpen;
+      isRelicFoundModalOpen ||
+      isDailyModalOpen;
 
     if (!isPaused) {
       interval = setInterval(() => {
@@ -357,7 +380,52 @@ export const App: React.FC = () => {
     isShopOpen,
     isRelicMuseumOpen,
     isRelicFoundModalOpen,
+    isDailyModalOpen,
   ]);
+
+  // Auto-ignite procedural orchestral BGM on first user interaction (compliant with mobile autoplay policies)
+  useEffect(() => {
+    const handleFirstGesture = () => {
+      if (sound.getBGMEnabled()) {
+        sound.startBGM(currentLevel.chapterNumber <= 3 ? 'exploration' : 'excavation');
+        setIsBgmPlaying(true);
+      }
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+    };
+
+    window.addEventListener('pointerdown', handleFirstGesture);
+    window.addEventListener('keydown', handleFirstGesture);
+    return () => {
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+    };
+  }, [currentLevel.chapterNumber]);
+
+  // Adjust theme dynamically when switching chapters
+  useEffect(() => {
+    sound.setBGMTheme(currentLevel.chapterNumber <= 3 ? 'exploration' : 'excavation');
+  }, [currentLevel.chapterNumber]);
+
+  const handleToggleBgm = useCallback(() => {
+    const newState = sound.toggleBGM();
+    setIsBgmPlaying(newState);
+  }, []);
+
+  const handleCoinBurstComplete = useCallback((burstId: string) => {
+    setCoinBursts(prev => prev.filter(b => b.id !== burstId));
+  }, []);
+
+  const handleCoinLanded = useCallback(() => {
+    setIsCoinBouncing(true);
+    setTimeout(() => setIsCoinBouncing(false), 450);
+  }, []);
+
+  const handleStartDailyLevel = useCallback((levelId: number) => {
+    setIsDailyActive(true);
+    setIsDailyModalOpen(false);
+    loadLevel(levelId);
+  }, []);
 
   // Freeze Time Countdown Tick (20 seconds duration)
   useEffect(() => {
@@ -399,12 +467,30 @@ export const App: React.FC = () => {
 
   // Handle Finding a Difference
   const handleDifferenceClick = useCallback(
-    (diff: Difference) => {
+    (
+      diff: Difference,
+      _clickPercentage?: { x: number; y: number },
+      _imageIndex?: 0 | 1,
+      screenPos?: { x: number; y: number }
+    ) => {
       if (foundDifferenceIds.includes(diff.id)) return;
 
       // Sound & Haptics
       sound.playSuccess();
       triggerHaptic('success', settings.vibrationEnabled);
+
+      // Trigger flying coin particles directly from the screen click coordinate!
+      if (screenPos) {
+        setCoinBursts(prev => [
+          ...prev,
+          {
+            id: `${Date.now()}_${Math.random()}`,
+            startX: screenPos.x,
+            startY: screenPos.y,
+            count: 8,
+          },
+        ]);
+      }
 
       // Award coins with explorer perk bonus!
       const baseCoins = 20;
@@ -445,7 +531,18 @@ export const App: React.FC = () => {
         const starBonus = timeElapsed <= 105 ? 100 : timeElapsed <= 210 ? 60 : 30;
         const isMilestone = currentLevel.id % 10 === 0;
         const milestoneBonus = isMilestone ? 300 : 0;
-        const totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
+        let totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
+
+        // Check if level was played as Daily Challenge or matches today's daily
+        const todayStr = getTodayDateString();
+        const todayLvlId = getLevelIdForDate(todayStr);
+        if (isDailyActive || (currentLevel.id === todayLvlId && !isTodayCompleted())) {
+          const dailyResult = completeDailyExpedition();
+          totalBonus += dailyResult.bonusCoins;
+          setHasUnreadDaily(false);
+          setIsDailyActive(false);
+          sound.playDailyRewardClaim();
+        }
 
         setCoins(c => c + totalBonus);
         setLevelCoinsEarned(c => c + totalBonus);
@@ -471,6 +568,7 @@ export const App: React.FC = () => {
       timeElapsed,
       settings.vibrationEnabled,
       coinBonusPercent,
+      isDailyActive,
     ]
   );
 
@@ -745,6 +843,11 @@ export const App: React.FC = () => {
           onOpenWardrobe={() => setIsWardrobeOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLevelSelect={() => setIsLevelSelectOpen(true)}
+          onOpenDaily={() => setIsDailyModalOpen(true)}
+          hasUnreadDaily={hasUnreadDaily}
+          isBgmPlaying={isBgmPlaying}
+          onToggleBgm={handleToggleBgm}
+          isCoinBouncing={isCoinBouncing}
           onOpenJournal={() => {
             setIsJournalOpen(true);
             setHasUnreadJournal(false);
@@ -993,6 +1096,21 @@ export const App: React.FC = () => {
           onStartStage={handleStartStageFromBriefing}
         />
       )}
+
+      {/* AAA Flying Coins & Golden Sparks Particles */}
+      <FlyingCoinParticles
+        bursts={coinBursts}
+        onBurstComplete={handleCoinBurstComplete}
+        onCoinLanded={handleCoinLanded}
+      />
+
+      {/* 30-Day Expedition Daily Challenge & Streak Modal */}
+      <DailyExpeditionModal
+        isOpen={isDailyModalOpen}
+        onClose={() => setIsDailyModalOpen(false)}
+        onStartDailyLevel={handleStartDailyLevel}
+        coins={coins}
+      />
     </div>
   );
 };

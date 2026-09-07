@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, BookOpen, Settings, LayoutGrid, Globe, Clock, Star, Snowflake, Shield, Coins, Landmark, ScrollText } from 'lucide-react';
+import { Heart, BookOpen, Settings, LayoutGrid, Globe, Clock, Star, Snowflake, Shield, Coins, Landmark, ScrollText, Calendar, VolumeX } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS } from '../data/avatarData';
@@ -24,6 +24,11 @@ interface HeaderProps {
   onOpenMuseum: () => void;
   onOpenWardrobe: () => void;
   onOpenStageBriefing?: () => void;
+  onOpenDaily?: () => void;
+  hasUnreadDaily?: boolean;
+  isBgmPlaying?: boolean;
+  onToggleBgm?: () => void;
+  isCoinBouncing?: boolean;
   hasUnreadBriefing?: boolean;
   hasUnreadJournal?: boolean;
   hasUnreadRelics?: boolean;
@@ -50,6 +55,11 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenMuseum,
   onOpenWardrobe,
   onOpenStageBriefing,
+  onOpenDaily,
+  hasUnreadDaily,
+  isBgmPlaying,
+  onToggleBgm,
+  isCoinBouncing,
   hasUnreadBriefing,
   hasUnreadJournal,
   hasUnreadRelics,
@@ -112,6 +122,23 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Center: Quick Expedition Tools Dock */}
         <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-1.5 py-1 rounded-full border border-amber-500/30 shadow-inner">
+          {/* Spedizione Quotidiana (Daily Challenge) */}
+          {onOpenDaily && (
+            <button
+              onClick={onOpenDaily}
+              className="relative p-2 rounded-full bg-gradient-to-b from-amber-600/35 via-orange-600/35 to-amber-900/35 hover:from-orange-500/40 text-amber-300 border border-amber-400/60 active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px]"
+              title="Spedizione Quotidiana Archeologica • Sfida del Giorno"
+            >
+              <Calendar className="w-4 h-4 text-amber-300" />
+              {hasUnreadDaily && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full border border-slate-900 animate-ping" />
+              )}
+              {hasUnreadDaily && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full border border-slate-900" />
+              )}
+            </button>
+          )}
+
           {/* Museo delle Reliquie 3D */}
           <button
             onClick={onOpenMuseum}
@@ -175,11 +202,38 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Right: Coins (Click to open Shop) & Settings Button */}
+        {/* Right: BGM Toggle, Coins & Settings Button */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Continuous BGM Orchestral Soundscape Toggle */}
+          {onToggleBgm && (
+            <button
+              onClick={onToggleBgm}
+              className={`p-2 rounded-full border active:scale-90 transition-all shadow-md flex items-center justify-center min-w-[34px] min-h-[34px] ${
+                isBgmPlaying
+                  ? 'bg-amber-500/25 border-amber-400/70 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.35)]'
+                  : 'bg-[#2a1b0d]/90 hover:bg-[#3d2713] text-stone-500 border-stone-700/80'
+              }`}
+              title={isBgmPlaying ? 'Musica Orchestrale Attiva (Tocca per disattivare)' : 'Musica Disattivata (Tocca per riprodurre)'}
+            >
+              {isBgmPlaying ? (
+                <div className="flex items-end gap-[2px] h-3.5 w-3.5 justify-center">
+                  <span className="w-[3px] bg-amber-300 rounded-full animate-eq-1" />
+                  <span className="w-[3px] bg-amber-400 rounded-full animate-eq-2" />
+                  <span className="w-[3px] bg-amber-200 rounded-full animate-eq-3" />
+                </div>
+              ) : (
+                <VolumeX className="w-4 h-4 text-stone-500" />
+              )}
+            </button>
+          )}
+
+          {/* Golden Coins Pill Counter with Landing Animation */}
           <button
+            id="header-coin-counter"
             onClick={onOpenShop}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-b from-amber-500/30 via-yellow-600/35 to-amber-700/25 hover:from-amber-500/40 border-2 border-amber-400/70 text-amber-200 shadow-[0_2px_8px_rgba(0,0,0,0.6)] active:scale-95 transition-all"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-b from-amber-500/30 via-yellow-600/35 to-amber-700/25 hover:from-amber-500/40 border-2 border-amber-400/70 text-amber-200 shadow-[0_2px_8px_rgba(0,0,0,0.6)] active:scale-95 transition-all ${
+              isCoinBouncing ? 'animate-coin-bounce' : ''
+            }`}
             title="Monete d'Oro • Apri Emporio"
           >
             <Coins className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />

@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Star, Clock, ArrowRight, BookOpen, RotateCcw, Coins, Sparkles } from 'lucide-react';
+import { Star, Clock, ArrowRight, BookOpen, RotateCcw, Coins, Sparkles, CheckCircle2 } from 'lucide-react';
 import type { Level } from '../types/game';
 import { sound } from '../utils/audio';
+import { triggerHaptic } from '../utils/haptics';
 
 interface LevelCompleteModalProps {
   level: Level;
@@ -23,13 +24,22 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
   onReplay,
   onOpenJournal,
 }) => {
+  const [isStamped, setIsStamped] = useState(false);
+
   // Calculate 1 to 3 stars based on completion time:
   // Under 105s (1m 45s) = 3 stars, under 210s (3m 30s) = 2 stars, otherwise 1 star
   const stars = timeElapsed <= 105 ? 3 : timeElapsed <= 210 ? 2 : 1;
 
   useEffect(() => {
-    // Sound effect
+    // Sound effect victory
     sound.playVictory();
+
+    // Trigger tactile wax seal stamp with mechanical thud and haptic vibration
+    const stampTimer = setTimeout(() => {
+      setIsStamped(true);
+      sound.playStamp();
+      triggerHaptic('medium');
+    }, 450);
 
     // Fire fireworks confetti
     const duration = 2.5 * 1000;
@@ -48,7 +58,10 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       });
     }, 250);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(stampTimer);
+      clearInterval(interval);
+    };
   }, []);
 
   const formatTime = (seconds: number) => {
@@ -63,11 +76,28 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         {/* Ambient Top Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
 
+        {/* Tactile Wax Seal Stamp ("Timbro di Ceralacca") */}
+        {isStamped && (
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 pointer-events-none z-20">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full wax-seal flex flex-col items-center justify-center text-white border-2 border-rose-300/80 shadow-[0_8px_25px_rgba(225,29,72,0.65)] animate-stamp-slam rotate-[-8deg]">
+              {/* Embossed concentric ring & seal insignia */}
+              <div className="w-[88%] h-[88%] rounded-full border border-dashed border-rose-200/50 flex flex-col items-center justify-center p-1 text-center">
+                <span className="text-[7px] font-black uppercase tracking-wider text-rose-200/90 font-serif leading-none">
+                  RGS • 1928
+                </span>
+                <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-rose-100 my-0.5 drop-shadow" />
+                <span className="text-[7px] font-black uppercase tracking-widest text-rose-200/90 font-serif leading-none">
+                  VERIFICATO
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header Ribbon */}
         <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-bold tracking-wide uppercase mb-3">
           Sito Archeologico Decifrato!
         </span>
-
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           {level.title}
