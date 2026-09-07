@@ -1,0 +1,17 @@
+{
+  "name": "Il Taccuino di Paititi - Trova le Differenze",
+  "short_name": "Paititi",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0703",
+  "theme_color": "#120904",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

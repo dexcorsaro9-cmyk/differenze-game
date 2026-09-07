@@ -1,0 +1,226 @@
+﻿export interface LevelStoryData {
+  title: string;
+  subtitle: string;
+  prologue: string;
+  resolution: string;
+  unlockedSecret: string;
+}
+
+// Full 120-Level Credible Archaeological Expedition Saga
+// Following Professor Evelyn Bellini across 12 distinct historical chapters towards Paititi
+export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
+  // --- TAPPA 1: LO STUDIO DI OXFORD E IL MANOSCRITTO LOPEZ (Livelli 1-10) ---
+  1: {
+    title: "Lo Studio Notturno di Oxford",
+    subtitle: "Dipartimento di Archeologia • Scena del Furto",
+    prologue: "Qualcuno si è introdotto nello studio notturno del Professor Bellini frugando tra i reperti andini. Trova le 10 anomalie fisiche per ricostruire la dinamica dell'irruzione.",
+    resolution: "Hai individuato il cassetto segreto forzato: la lettera originale del gesuita Padre Lopez del 1600 è intatta! Conferma che il tesoro di Paititi non è un mito, ma la riserva reale dell'oro sacro degli Inca.",
+    unlockedSecret: "'Il tempo stringe. L'ombra della Confraternita dell'Ossidiana è già sulle mie tracce. Devo raggiungere gli archivi parigini prima che brucino i registri.' - Diario di Bellini, pag. 1",
+  },
+  2: {
+    title: "I Sotterranei della Bodleian Library",
+    subtitle: "Archivio dei Testi Proibiti • Oxford",
+    prologue: "Nei sotterranei della biblioteca secolare, cerca tra i faldoni del XVI secolo il registro della Compagnia delle Indie con la testimonianza dei frati spagnoli.",
+    resolution: "Trovato il manoscritto autografo: cita 40 lama carichi d'oro fusi partiti da Cusco nel 1533 sotto la guida del Sommo Sacerdote Willaq Umu.",
+    unlockedSecret: "'Non cercate oro nelle valli conosciute. L'oro degli dèi riposa dove il fiume scorre all'indietro verso le nubi.' - Annotazione a margine del 1588",
+  },
+  3: {
+    title: "Il Laboratorio di Archeometria",
+    subtitle: "Analisi Spettrografica • Ashmolean Museum",
+    prologue: "Sottoponi la pergamena alla lampada di Wood per rivelare i tracciati in inchiostro simpatico a base di cinabro e allume.",
+    resolution: "Sotto la scrittura latina compare una rotta nautica cifrata: le coordinate non partono dall'Atlantico, ma dai sotterranei di Parigi!",
+    unlockedSecret: "'L'inchiostro è una miscela di cinabro peruviano e resina d'acacia. Chi ha vergato questa mappa conosceva la chimica alchemica veneziana.' - Note di laboratorio",
+  },
+  4: {
+    title: "La Cripta di St. Peter-in-the-East",
+    subtitle: "Navata Normanna del XII Secolo",
+    prologue: "Esplora la cripta medievale dove fu inumato Sir Arthur Harrington, il mecenate che finanziò la spedizione navale del 1595.",
+    resolution: "Sulla lastra tombale è incisa una meridiana portatile in rilievo: indica un allineamento col meridiano di Parigi.",
+    unlockedSecret: "'Chi cerca la luce del sole eterno deve prima scendere nelle tenebre della Senna.' - Epitaffio latino decifrato",
+  },
+  5: {
+    title: "Il Gabinetto Numismatico",
+    subtitle: "Collezione di Monete Coloniali Spagnole",
+    prologue: "Esamina la collezione di dobloni d'oro e reales coniate a Lima e Potosí per individuare il punzone segreto dei fonditori di Paititi.",
+    resolution: "Una moneta d'argento grezza reca il punzone del Serpente a Due Teste: il metallo proviene dalla miniera segreta degli Antisuyu.",
+    unlockedSecret: "'La purezza dell'argento è del 98%, impossibile per le tecnologie coloniali. È opera diretta degli argentieri reali inca.' - Registro di zecca",
+  },
+  6: {
+    title: "L'Osservatorio di Radcliffe",
+    subtitle: "Torre delle Stelle di Oxford",
+    prologue: "Orienta il telescopio riflettore per ricalcolare l'azimut stellare riportato nel manoscritto rispetto all'equinozio di primavera.",
+    resolution: "I calcoli corretti confermano una deviazione magnetica di 3 gradi est: il punto di convergenza terrestre è l'ossario di Parigi.",
+    unlockedSecret: "'Gli Inca calcolavano il movimento dell'ammasso delle Pleiadi con una precisione sovrapponibile a quella dei nostri orologi da marina.'",
+  },
+  7: {
+    title: "Il Salone dei Carteggi di Christ Church",
+    subtitle: "Archivio Geografico Riservato",
+    prologue: "Ispeziona le carte nautiche del corsaro Francis Drake alla ricerca del foglio strappato sul passaggio di Drake.",
+    resolution: "Tra le carte di navigazione trovi la ricevuta di pegno per un astrolabio d'argento ceduto all'ambasciatore francese nel 1603.",
+    unlockedSecret: "'Drake sapeva. Nelle sue memorie segrete parlava di una città di pietra bianca oltre le cascate che i nativi chiamavano la Casa del Sole.'",
+  },
+  8: {
+    title: "La Bottega dell'Antiquario sul Tamigi",
+    subtitle: "Magazzino degli Strumenti d'Epoca",
+    prologue: "Trova gli strumenti da campo indispensabili prima della partenza: teodolite, barometro aneroide e il cannocchiale di ottone.",
+    resolution: "L'antiquario riconosce il simbolo sul taccuino e ti consegna una chiave a stella lasciata in custodia cinquant'anni prima.",
+    unlockedSecret: "'Un vecchio professore mi disse che questa chiave apre il cancello dell'ossario sotto Montparnasse. Ora appartiene a voi.'",
+  },
+  9: {
+    title: "La Stazione Postale verso Dover",
+    subtitle: "Vagone Letto del Treno Notturno",
+    prologue: "Verifica che tutte le pergamene e i rilievi fotografici siano al sicuro nel baule rinforzato mentre il treno corre verso la costa.",
+    resolution: "Riconosci un pedinatore sulla banchina: la fuga ha avuto successo, il piroscafo per Calais salpa all'alba.",
+    unlockedSecret: "'La Manica è coperta di nebbia. Parigi ci attende: la prima pietra miliare della mappa è a portata di mano.'",
+  },
+  10: {
+    title: "IL PRIMO FRAMMENTO: Il Sigillo di Cera di Bellini",
+    subtitle: "Piroscafo della Manica • Tappa 1 Completata!",
+    prologue: "Decifra l'ultimo crittogramma per saldare la ceralacca sul primo settore del grande taccuino di spedizione.",
+    resolution: "TAPPA 1 CONCLUSA! Hai ricomposto il primo segmento della Mappa del Tesoro. Coordinate sbloccate: Parigi!",
+    unlockedSecret: "'Il Sigillo di Cera è impresso. Abbiamo superato il primo cerchio di guardiani. Davanti a noi si aprono le viscere di pietra di Parigi!' - Diario di Bellini",
+  },
+
+  // --- TAPPA 2: LE CATACOMBE DEI TEMPLARI A PARIGI (Livelli 11-20) ---
+  11: {
+    title: "La Biblioteca Nazionale di Rue de Richelieu",
+    subtitle: "Dipartimento dei Manoscritti Orientali • Parigi",
+    prologue: "Consulta il codice cartaceo dell'Ordine del Tempio confiscato durante il processo del 1307 sotto Filippo il Bello.",
+    resolution: "Nel codice è allegata una planimetria idraulica delle cave sotterranee medievali sotto il colle di Sainte-Geneviève.",
+    unlockedSecret: "'I cavalieri non nascosero reliquie religiose comuni, ma la guida geografica donata loro dagli astronomi arabi di Cordova.'",
+  },
+  12: {
+    title: "I Sotterranei di Saint-Sulpice",
+    subtitle: "La Meridiana Gnomonica e la Cripta",
+    prologue: "Segui la linea d'ottone incastonata nel pavimento della chiesa fino alla camera cieca situata sotto il coro.",
+    resolution: "Un blocco di pietra ruota rivelando la scala a chiocciola che scende nelle cave della Parigi sotterranea.",
+    unlockedSecret: "'Il raggio di sole tocca l'obelisco all'equinozio. Il segreto è custodito 35 metri sotto il calpestio stradale.'",
+  },
+  13: {
+    title: "L'Entrata Proibita delle Catacombe",
+    subtitle: "Cunicoli di Calcare • Barrière d'Enfer",
+    prologue: "Avanza nel labirinto di pietra con le lampade ad acetilene, schivando i pozzi artesiani e i franamenti recenti.",
+    resolution: "Raggiungi la sala dei sarcofagi medievali: la parete di fondo è contrassegnata dalla croce templare a otto punte.",
+    unlockedSecret: "'L'aria odora di calce e terra umida. Qui sotto il rumore della città svanisce, sostituito dal gocciolio perenne della roccia.'",
+  },
+  14: {
+    title: "L'Ossario dei Cavalieri",
+    subtitle: "Galleria delle Ossa Incise",
+    prologue: "Ispeziona la catasta d'ossa: alcuni teschi presentano incisioni geometriche con simboli navali e nodi marinari.",
+    resolution: "Allineando tre teschi secondo le tacche incise, scatta il meccanismo a perno di una porta di ferro arrugginito.",
+    unlockedSecret: "'Non erano guerrieri qualunque. Erano i piloti della flotta templare di La Rochelle che attraversò l'Atlantico prima di Colombo.'",
+  },
+  15: {
+    title: "La Sala dell'Acquedotto Sotterraneo",
+    subtitle: "Condotte Romane della Bièvre",
+    prologue: "Attraversa il canale d'acqua sorgiva sotterranea usando le paratoie di quercia plurisecolari.",
+    resolution: "Sul pilastro centrale trovi una placca di piombo con incise le rotte dei venti alisei meridionali.",
+    unlockedSecret: "'I venti del sud soffiano costanti verso la costa del Brasile. I costruttori sapevano dove conduceva la corrente.'",
+  },
+  16: {
+    title: "La Cassa d'Ebano del Gran Maestro",
+    subtitle: "Nicchia Murata di Rue Saint-Jacques",
+    prologue: "Rimuovi lo strato di malta medievale per estrarre la cassetta d'ebano sigillata con resina fossile.",
+    resolution: "All'interno è preservato un rotolo su pergamena di vitello: descrive l'officina alchemica di Venezia che fuse il secondo sigillo.",
+    unlockedSecret: "'A Venezia, sull'isola dove il fuoco trasforma la sabbia in cristallo, cercate colui che legge i cieli senza cannocchiale.'",
+  },
+  17: {
+    title: "L'Atelier Segreto del Louvre",
+    subtitle: "Laboratorio di Restauro dei Dipinti Fiamminghi",
+    prologue: "Analizza il dipinto allegorico attribuito a Philippe de Champaigne con una lente a filtro rosso.",
+    resolution: "Sotto la mano dell'ammiraglio ritratto compare l'esatta planimetria del palazzo veneziano sul Canal Grande.",
+    unlockedSecret: "'L'arte è il miglior nascondiglio per la verità: milioni di occhi la guardano ogni giorno senza vederla.'",
+  },
+  18: {
+    title: "Il Pozzo dei Minatori di Montmartre",
+    subtitle: "Cave di Gesso Sotterranee",
+    prologue: "Recupera il teodolite d'emergenza caduto nella fessura della parete calcarea prima che la falda acquifera salga.",
+    resolution: "Il livello dell'acqua defluisce rivelando il simbolo della Repubblica di Venezia scolpito nel gesso.",
+    unlockedSecret: "'I maestri scalpellini veneziani lavorarono qui nel 1480. Hanno lasciato la loro firma per chi fosse venuto dopo.'",
+  },
+  19: {
+    title: "La Stazione di Gare de Lyon",
+    subtitle: "Piattaforma dell'Espresso Orientale",
+    prologue: "Organizza gli appunti di viaggio sul treno d'epoca mentre lasci Parigi in direzione delle Alpi e della laguna veneta.",
+    resolution: "Confrontando i rilievi, il secondo cerchio di coordinate si chiude con esattezza millimetrica su Venezia.",
+    unlockedSecret: "'Il treno scivola nella notte verso l'Italia. Il mistero si infittisce: templari, alchimisti e sacerdoti inca uniti dallo stesso filo.'",
+  },
+  20: {
+    title: "IL SECONDO FRAMMENTO: La Croce Patente d'Argento",
+    subtitle: "Venezia, Bacino di San Marco • Tappa 2 Completata!",
+    prologue: "Ricomponi il secondo frammento della mappa del tesoro unendo il sigillo parigino con la chiave a stella templare.",
+    resolution: "TAPPA 2 CONCLUSA! Hai sbloccato la reliquia 'La Croce Patente d'Argento' e il 2° quadrante della Mappa del Tesoro!",
+    unlockedSecret: "'La croce d'argento vibra leggermente vicino all'acqua della laguna. Ci guiderà fino alla bottega dell'alchimista!' - Diario di Bellini",
+  },
+
+  // --- TAPPE SUCCESSIVE FINO AL LIVELLO 120 ---
+  // (Tappa 3: Venezia, Tappa 4: Creta, Tappa 5: Alessandria, Tappa 6: Luxor, Tappa 7: Siwa, Tappa 8: Petra, Tappa 9: Iguazu, Tappa 10: Nazca, Tappa 11: Machu Picchu, Tappa 12: Paititi)
+};
+
+// Procedural generator fallback with credible archeological lore for any level not explicitly listed
+export function getCredibleLevelStory(levelId: number, stageNumber: number, levelInStage: number): LevelStoryData {
+  if (LEVEL_NARRATIVES_120[levelId]) {
+    return LEVEL_NARRATIVES_120[levelId];
+  }
+
+  const STAGE_THEMES = [
+    { name: "Oxford & la Bodleian Library", act: "L'Enigma delle Biblioteche", era: "1928 / Archivi del 1600" },
+    { name: "Le Catacombe dei Templari a Parigi", act: "L'Ordre du Temple", era: "1307 / Sotterranei di Parigi" },
+    { name: "L'Officina degli Astrolabi a Venezia", act: "La Repubblica Marinara", era: "1459 / Canal Grande" },
+    { name: "Il Labirinto Minoico di Creta", act: "Il 30° Parallelo", era: "1400 a.C. / Cnosso" },
+    { name: "La Biblioteca Sommersa di Alessandria", act: "I Custodi di Tolomeo", era: "280 a.C. / Porto Antico" },
+    { name: "La Valle dei Re a Luxor", act: "I Sacerdoti del Sole", era: "1279 a.C. / Tebe d'Egitto" },
+    { name: "L'Oracolo di Amon a Siwa", act: "La Pista delle Dune", era: "331 a.C. / Sahara Libico" },
+    { name: "La Gola di Roccia di Petra", act: "I Mercanti Nabatei", era: "I Secolo d.C. / Wadi Musa" },
+    { name: "Le Missioni Gesuite di Iguazú", act: "La Giungla del Guaranì", era: "1680 / Paranà e Missioni" },
+    { name: "I Geoglifi Celesti di Nazca", act: "La Mappa delle Stelle", era: "500 d.C. / Pampa di Nazca" },
+    { name: "L'Intihuatana di Machu Picchu", act: "La Valle Sacra degli Inca", era: "1450 d.C. / Antisuyu" },
+    { name: "IL SANTUARIO PERDUTO DI PAITITI", act: "Il Tesoro Supremo dell'Inti", era: "1533 d.C. / Madre de Dios" },
+  ];
+
+  const theme = STAGE_THEMES[stageNumber - 1] || STAGE_THEMES[0];
+  const isFinal = levelId === 120;
+  const isMilestone = levelInStage === 10;
+
+  if (isFinal) {
+    return {
+      title: "LA CAMERA D'ORO DI PAITITI: IL TESORO SUPREMO!",
+      subtitle: "Il Sancta Sanctorum dell'Inti • Epilogo della Spedizione",
+      prologue: "Hai superato 119 livelli di enigmi e scavi. Davanti a te si erge il portale ciclopico della Camera d'Oro di Paititi. Risolvi le ultime 10 differenze per spalancare il Tesoro Supremo dell'Umanità!",
+      resolution: "LIVELLO 120 COMPLETATO! LA MAPPA È DECIFRATA AL 100%! Il colossale Disco Solare d'Oro Puro di Coricancha risplende davanti ai tuoi occhi tra piramidi di manufatti sacri e smeraldi. La spedizione archeologica più epica della storia è compiuta!",
+      unlockedSecret: "'Ce l'abbiamo fatta! Il tesoro di Paititi non è una favola per sognatori: è la testimonianza vivente della grandezza dello spirito umano. Hai scritto la storia dell'archeologia!' - Professor Evelyn Bellini",
+    };
+  }
+
+  if (isMilestone) {
+    return {
+      title: `Il Traguardo della Tappa ${stageNumber}: Il ${stageNumber}° Sigillo`,
+      subtitle: `${theme.name} • Frammento ${stageNumber}/12 Rivelato`,
+      prologue: `Sei giunto al termine del settore di ${theme.name}. Risolvi quest'ultimo enigma per unire il ${stageNumber}° frammento della mappa del tesoro.`,
+      resolution: `Tappa ${stageNumber} completata con successo! Hai sbloccato il frammento cartografico e la reliquia di tappa. La rotta verso Paititi è sempre più nitida!`,
+      unlockedSecret: `'Ogni settore completato ci avvicina al cuore impenetrabile dell'Antisuyu. La mappa sta prendendo vita sotto i nostri occhi.' - Diario di Bellini`,
+    };
+  }
+
+  const SUB_AREAS = [
+    "L'Ingresso del Sito e la Prima Ricognizione",
+    "La Camera delle Iscrizioni Rupestri",
+    "Il Meccanismo Idraulico della Volta",
+    "Il Pozzo dei Rilievi Sacri",
+    "Il Corridoio della Declinazione Stellare",
+    "La Fessura Murata con Sigillo di Bronzo",
+    "Il Basamento degli Allineamenti Astronomici",
+    "La Galleria dei Bassorilievi Cifrati",
+    "L'Anticamera dell'Altare Principale",
+  ];
+
+  const subAreaTitle = SUB_AREAS[levelInStage - 1] || `Settore ${levelInStage} dello Scavo`;
+
+  return {
+    title: `${subAreaTitle}`,
+    subtitle: `${theme.name} • Settore ${levelInStage}/10 (${theme.era})`,
+    prologue: `Esplora il settore ${levelInStage} di ${theme.name}. Esamina attentamente ogni elemento per scovare le 10 differenze fisiche celate tra i reperti.`,
+    resolution: `Settore ${levelInStage} decifrato! Hai individuato tutti gli indizi archeologici necessari. Il passaggio al settore successivo è sgombro.`,
+    unlockedSecret: `'Le tracce confermano l'accuratezza dei manoscritti di Padre Lopez. Proseguiamo l'esplorazione senza indugio.' - Diario di Bellini`,
+  };
+}
