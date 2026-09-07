@@ -136,7 +136,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
       <div className="absolute top-4 inset-x-4 z-20 flex items-center justify-between safe-pt">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif">
           <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
-          Prologo Narrativo
+          {!hasVideoError ? 'Prologo Cinematografico' : 'Prologo Narrativo'}
         </div>
 
         <div className="flex items-center gap-2">
@@ -155,13 +155,14 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
             onClick={handleFinish}
             className="px-3.5 py-1.5 rounded-full bg-black/70 border border-amber-500/40 hover:border-amber-400 text-amber-300 text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition cursor-pointer"
           >
-            Salta Prologo
+            {!hasVideoError ? 'Salta Video' : 'Salta Prologo'}
           </button>
         </div>
       </div>
 
-      {/* Bottom Subtitle / Narrative Box */}
-      <div className="absolute bottom-6 inset-x-3 max-w-md mx-auto z-20 space-y-3">
+      {/* Bottom Subtitle / Narrative Box: ONLY SHOWN IN PROCEDURAL FALLBACK MODE (hasVideoError) */}
+      {hasVideoError && (
+        <div className="absolute bottom-6 inset-x-3 max-w-md mx-auto z-20 space-y-3">
         {/* Explorer Voice Card */}
         <div className="bg-stone-950/90 border-2 border-amber-500/50 rounded-3xl p-4 shadow-[0_0_40px_rgba(0,0,0,0.9)] backdrop-blur-md space-y-2.5 animate-slideUp">
           
@@ -223,6 +224,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

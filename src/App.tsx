@@ -978,7 +978,7 @@ export const App: React.FC = () => {
 
       {/* High-Level Guided Expedition Graphic Tutorial (Guided by Avatar Face & Spotlight) */}
       <ExpeditionTutorialModal
-        isOpen={isTutorialOpen}
+        isOpen={isTutorialOpen && !isPrologueOpen}
         profile={explorerProfile}
         onComplete={handleTutorialComplete}
       />
