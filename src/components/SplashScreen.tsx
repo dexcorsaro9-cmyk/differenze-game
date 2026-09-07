@@ -79,7 +79,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md shadow-2xl">
           <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
           <span className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-300 font-serif">
-            Edizione Esplorativa Tripla A
+            Spedizione Archeologica • 1928
           </span>
         </div>
       </div>
@@ -123,7 +123,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
         )}
 
         <div className="text-[10px] text-stone-400 tracking-wider">
-          Unity 6 WebGL PWA • Spedizione Archeologica
+          Royal Geographical Society • Londra 1928
         </div>
       </div>
     </div>
