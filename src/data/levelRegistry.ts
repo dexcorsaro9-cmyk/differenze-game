@@ -24,6 +24,7 @@ export function generateAll120Levels(): Level[] {
     }
 
     const isMilestoneLevel = id % 10 === 0;
+    const isLevelOne = id === 1;
     const isLevelTwo = id === 2;
     const isLevelThree = id === 3;
     const isLevelFour = id === 4;
@@ -726,7 +727,20 @@ export function generateAll120Levels(): Level[] {
 
     // Exactly 10 calibrated, physical non-color differences per level
     let diffsForLevel: Difference[];
-    if (isLevelTwo) {
+    if (isLevelOne) {
+      diffsForLevel = [
+        { id: `lvl${id}_d1`, x: 76.50, y: 47.99, radius: 5.0, name: "La Lampada da Banchiere in Vetro Rosso Rubino", loreClue: "Il caratteristico paralume in vetro opalino della lampada da tavolo è passato da verde smeraldo a un radioso rosso rubino fiammeggiante." },
+        { id: `lvl${id}_d2`, x: 71.83, y: 62.50, radius: 4.0, name: "La Tazza da Tè di Porcellana Rosso Carminio", loreClue: "La preziosa tazza da tè in porcellana cinese sulla scrivania è smaltata in rosso carminio con filigrana dorata anziché blu cobalto." },
+        { id: `lvl${id}_d3`, x: 74.17, y: 13.95, radius: 4.5, name: "Il Barometro Navale Vittoriano in Ottone", loreClue: "Al posto del casco coloniale in sughero, sulla boiserie in mogano è appeso un antico barometro di precisione della Royal Navy in ottone dorato." },
+        { id: `lvl${id}_d4`, x: 78.33, y: 27.90, radius: 4.0, name: "La Rotta della Spedizione Tracciata in Rosso", loreClue: "Sulla mappa emisferica delle Americhe compare una rotta tracciata a inchiostro rosso con spilla d'orientamento verso il bacino amazzonico." },
+        { id: `lvl${id}_d5`, x: 64.33, y: 63.62, radius: 4.0, name: "La Rosa dei Venti Incisa nella Lente", loreClue: "Nel cristallo ottico della lente d'ingrandimento in ottone è incisa a rilievo una stella nautica a otto punte per il calcolo delle coordinate." },
+        { id: `lvl${id}_d6`, x: 65.17, y: 51.90, radius: 3.5, name: "La Cravatta di Seta Bordeaux del Professore", loreClue: "Il professor Bellini indossa una cravatta in pura seta bordeaux luminescente al posto della sobria cravatta in tweed marrone." },
+        { id: `lvl${id}_d7`, x: 63.33, y: 59.71, radius: 3.5, name: "Il Segnalibro di Seta Rossa con Nappa d'Oro", loreClue: "Tra le pagine ingiallite del grande codice aperto sulla scrivania pende un nastro segnalibro in seta vermiglia con nappa dorata." },
+        { id: `lvl${id}_d8`, x: 96.00, y: 31.47, radius: 4.5, name: "Il Calice Cerimoniale d'Oro Massiccio", loreClue: "Al posto della scura macchina fotografica a soffietto, sul ripiano della libreria brilla un calice d'oro rituale precolombiano." },
+        { id: `lvl${id}_d9`, x: 22.50, y: 90.96, radius: 4.5, name: "La Chiave Monumentale d'Archivio con Ceralacca", loreClue: "Sul parquet a spina di pesce accanto al tappeto persiano giace un'antica chiave in ferro battuto con cartiglio sigillato in ceralacca rossa." },
+        { id: `lvl${id}_d10`, x: 16.33, y: 10.49, radius: 4.5, name: "La Vetrata Araldica nella Bifora Gotica", loreClue: "Nel lobo superiore della finestra ad arco acuto spicca un rosone in vetrata policroma con lo stemma di Oxford in vetro cobalto e rubino." },
+      ];
+    } else if (isLevelTwo) {
       diffsForLevel = [
         { id: `lvl${id}_d1`, x: 52.92, y: 72.54, radius: 5.0, name: "La Lente d'Ingrandimento sulla Pergamena", loreClue: "La monumentale lente d'ingrandimento in argento cesellato è stata rimossa, lasciando visibili le antiche righe in corsivo latino." },
         { id: `lvl${id}_d2`, x: 77.50, y: 63.62, radius: 4.5, name: "Lo Stemma d'Oro di Oxford sul Tomo", loreClue: "Lo stemma nobiliare impresso in foglia d'oro sulla copertina in cuoio del codice scompare nel secondo faldone." },
