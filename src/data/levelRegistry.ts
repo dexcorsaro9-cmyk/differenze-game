@@ -417,7 +417,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_A.jpg'
       : isStageOne
-      ? '/oxford_study_A.jpg'
+      ? '/oxford_study_A.jpg?v=4'
       : isStageTwo
       ? '/stage2_crypt_A.jpg?v=3'
       : isStageThree
@@ -700,7 +700,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_B.jpg'
       : isStageOne
-      ? '/oxford_study_B.jpg'
+      ? '/oxford_study_B.jpg?v=4'
       : isStageTwo
       ? '/stage2_crypt_B.jpg?v=3'
       : isStageThree
@@ -729,16 +729,16 @@ export function generateAll120Levels(): Level[] {
     let diffsForLevel: Difference[];
     if (isLevelOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.25, y: 58.71, radius: 4.5, name: "Astrolabio Medievale in Ottone", loreClue: "Un autentico astrolabio astronomico in ottone cesellato per calcolare la rotta celeste verso Paititi, trafugato dal ripiano sotto la bifora." },
-        { id: `lvl${id}_d2`, x: 23.17, y: 57.25, radius: 4.5, name: "Effigie Sacra del Lama d'Argento", loreClue: "Una statuetta votiva incaica in argento massiccio e oro, venerata guida rituale attraverso le Ande, sottratta dal davanzale." },
-        { id: `lvl${id}_d3`, x: 8.83, y: 55.47, radius: 4.5, name: "Calice d'Argento con Iscrizione Greca", loreClue: "Un calice cerimoniale in argento sbalzato con formule sacre elleniche per i riti propiziatori, rimosso dalla pila di libri." },
-        { id: `lvl${id}_d4`, x: 40.25, y: 64.84, radius: 4.5, name: "Chiave Gotica con Ingegno a Croce", loreClue: "Un'antica chiave monumentale in ferro battuto che dischiude gli archivi segreti del collegio, scomparsa dal piano della scrivania." },
-        { id: `lvl${id}_d5`, x: 54.83, y: 70.20, radius: 4.5, name: "Meridiana Solare Tascabile", loreClue: "Una bussola solare ottagonale in ottone con gnomone pieghevole, trafugata dal bordo della mappa del Sud America." },
-        { id: `lvl${id}_d6`, x: 61.92, y: 70.87, radius: 4.5, name: "Cronometro da Tasca Smaltato", loreClue: "Un orologio da tasca in oro con smalti policromi e cifre romane, rubato accanto alla lampada da tavolo." },
-        { id: `lvl${id}_d7`, x: 66.25, y: 64.17, radius: 4.5, name: "Daga Cerimoniale con Impugnatura in Corno", loreClue: "Un pugnale rituale con lama forgiata e impugnatura intagliata, sottratto dalla pila di tomi sulla scrivania." },
-        { id: `lvl${id}_d8`, x: 44.75, y: 74.11, radius: 4.5, name: "Medaglione d'Oro del Sole Inti", loreClue: "Un disco aureo con i raggi del dio Sole indicante le coordinate dell'altopiano perduto, svanito dal lembo della mappa." },
-        { id: `lvl${id}_d9`, x: 32.92, y: 89.84, radius: 4.5, name: "Chiave Forgiata a Cuore sul Tappeto", loreClue: "Una pesante chiave quattrocentesca caduta sul tappeto persiano nella fuga precipitosa della Mano Occulta." },
-        { id: `lvl${id}_d10`, x: 71.17, y: 54.69, radius: 4.5, name: "Idolo Aureo di Chachapoya", loreClue: "Il leggendario idolo d'oro delle popolazioni delle nubi, la reliquia cardine di tutta la spedizione, trafugata dallo scaffale a destra." },
+        { id: `lvl${id}_d1`, x: 74.58, y: 14.51, radius: 6.0, name: "Il Casco Coloniale sulla Boiserie", loreClue: "Il casco da spedizione in tela e sughero appeso al pannello ligneo è stato trafugato dalla Mano Occulta." },
+        { id: `lvl${id}_d2`, x: 92.92, y: 6.14, radius: 5.0, name: "Il Casco Coloniale sulla Libreria", loreClue: "Il copricapo d'ordinanza riposto sulla cornice superiore della libreria è svanito nel nulla." },
+        { id: `lvl${id}_d3`, x: 73.75, y: 41.29, radius: 5.5, name: "La Maschera Rituale Africana", loreClue: "L'antica scultura tribale in legno fissata alla boiserie alle spalle dello studioso è stata asportata." },
+        { id: `lvl${id}_d4`, x: 80.42, y: 46.32, radius: 5.5, name: "Lo Stemma Araldico con Ali di Bronzo", loreClue: "La placca cerimoniale in bronzo cesellato montata sulla parete in mogano è scomparsa." },
+        { id: `lvl${id}_d5`, x: 82.08, y: 17.58, radius: 5.0, name: "La Carta Nautica Minore in Cornice", loreClue: "Il piccolo rilievo topografico incorniciato sulla parete destra è stato sottratto dagli archivi." },
+        { id: `lvl${id}_d6`, x: 69.58, y: 25.67, radius: 5.5, name: "La Tavola Botanica Superiore", loreClue: "La tavola botanica con gli erbari delle specie amazzoniche è stata staccata dalla boiserie." },
+        { id: `lvl${id}_d7`, x: 69.58, y: 37.67, radius: 5.5, name: "La Tavola Botanica Inferiore", loreClue: "La seconda tavola di catalogazione botanica è svanita dalla parete in legno scuro." },
+        { id: `lvl${id}_d8`, x: 85.00, y: 53.57, radius: 4.5, name: "La Fotocamera d'Epoca a Soffietto", loreClue: "La fotocamera da spedizione a lastre d'argento posata sullo scaffale destro della libreria è sparita." },
+        { id: `lvl${id}_d9`, x: 15.83, y: 57.20, radius: 4.5, name: "La Litografia Archeologica sul Davanzale", loreClue: "La lastra litografica appoggiata sulla mensola sotto la bifora gotica è stata rimossa." },
+        { id: `lvl${id}_d10`, x: 44.17, y: 35.71, radius: 4.5, name: "I Rotoli di Pergamena sulla Libreria", loreClue: "I preziosi rotoli cartografici riposti in cima allo scaffale sinistro sono svaniti." },
       ];
     } else if (isLevelTwo) {
       diffsForLevel = [
