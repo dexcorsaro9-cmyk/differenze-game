@@ -729,16 +729,16 @@ export function generateAll120Levels(): Level[] {
     let diffsForLevel: Difference[];
     if (isLevelOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 76.50, y: 47.99, radius: 5.0, name: "Il Paralume in Vetro Rosso Rubino", loreClue: "Il classico paralume in vetro opalino della lampada da tavolo è passato da verde smeraldo a un caldo rosso rubino." },
-        { id: `lvl${id}_d2`, x: 71.83, y: 62.50, radius: 4.5, name: "La Tazza in Porcellana Rosso Cremisi", loreClue: "La tazza da tè in fine porcellana sulla scrivania presenta uno smalto rosso cremisi con filigrana dorata al posto del blu cobalto." },
-        { id: `lvl${id}_d3`, x: 65.17, y: 52.23, radius: 4.0, name: "La Cravatta in Seta Bordeaux", loreClue: "Il professor Bellini indossa una cravatta in pura seta color bordeaux scuro al posto della cravatta in tweed marrone." },
-        { id: `lvl${id}_d4`, x: 64.58, y: 63.62, radius: 4.5, name: "La Lente d'Ingrandimento in Argento Sterling", loreClue: "La montatura e il manico cesellato della lente d'ingrandimento sulla mappa sono in argento lucido anziché in ottone dorato." },
-        { id: `lvl${id}_d5`, x: 45.00, y: 59.15, radius: 4.5, name: "Il Sestante Astronomico in Argento e Peltro", loreClue: "Il corpo e l'arco graduato del sestante nautico sull'angolo sinistro della scrivania sono forgiati in argento antico e peltro anziché in ottone." },
-        { id: `lvl${id}_d6`, x: 53.75, y: 56.03, radius: 4.5, name: "Il Tomo in Pelle Blu Oxford", loreClue: "La copertina in cuoio del tomo superiore posato dietro il calamaio di cristallo è in pregiata pelle blu notte anziché marrone rossiccio." },
-        { id: `lvl${id}_d7`, x: 73.83, y: 12.83, radius: 5.0, name: "Il Barometro Navale Vittoriano in Ottone", loreClue: "Sulla boiserie in mogano della parete, al posto del casco coloniale è montato un autentico barometro aneroide d'epoca con quadrante a numeri romani." },
-        { id: `lvl${id}_d8`, x: 97.92, y: 31.25, radius: 4.0, name: "L'Obiettivo in Ottone della Fotocamera", loreClue: "Il barilotto ottico della macchina fotografica vintage sullo scaffale di destra è rifinito in ottone dorato brunito anziché in alluminio cromato." },
-        { id: `lvl${id}_d9`, x: 73.75, y: 41.29, radius: 4.5, name: "La Maschera Rituale in Bronzo del Benin", loreClue: "La maschera etnica appesa al pannello di legno dietro la lampada è un'antica fusione in bronzo dorato del Benin anziché in legno scuro." },
-        { id: `lvl${id}_d10`, x: 91.25, y: 5.58, radius: 4.5, name: "Il Casco Coloniale in Tessuto Bianco Panama", loreClue: "Il casco da spedizione posato sulla cornice superiore della grande libreria è in tela bianca panama d'ordinanza anziché color cachi." },
+        { id: `lvl${id}_d1`, x: 18.25, y: 58.71, radius: 4.5, name: "Astrolabio Medievale in Ottone", loreClue: "Un autentico astrolabio astronomico in ottone cesellato per calcolare la rotta celeste verso Paititi, trafugato dal ripiano sotto la bifora." },
+        { id: `lvl${id}_d2`, x: 23.17, y: 57.25, radius: 4.5, name: "Effigie Sacra del Lama d'Argento", loreClue: "Una statuetta votiva incaica in argento massiccio e oro, venerata guida rituale attraverso le Ande, sottratta dal davanzale." },
+        { id: `lvl${id}_d3`, x: 8.83, y: 55.47, radius: 4.5, name: "Calice d'Argento con Iscrizione Greca", loreClue: "Un calice cerimoniale in argento sbalzato con formule sacre elleniche per i riti propiziatori, rimosso dalla pila di libri." },
+        { id: `lvl${id}_d4`, x: 40.25, y: 64.84, radius: 4.5, name: "Chiave Gotica con Ingegno a Croce", loreClue: "Un'antica chiave monumentale in ferro battuto che dischiude gli archivi segreti del collegio, scomparsa dal piano della scrivania." },
+        { id: `lvl${id}_d5`, x: 54.83, y: 70.20, radius: 4.5, name: "Meridiana Solare Tascabile", loreClue: "Una bussola solare ottagonale in ottone con gnomone pieghevole, trafugata dal bordo della mappa del Sud America." },
+        { id: `lvl${id}_d6`, x: 61.92, y: 70.87, radius: 4.5, name: "Cronometro da Tasca Smaltato", loreClue: "Un orologio da tasca in oro con smalti policromi e cifre romane, rubato accanto alla lampada da tavolo." },
+        { id: `lvl${id}_d7`, x: 66.25, y: 64.17, radius: 4.5, name: "Daga Cerimoniale con Impugnatura in Corno", loreClue: "Un pugnale rituale con lama forgiata e impugnatura intagliata, sottratto dalla pila di tomi sulla scrivania." },
+        { id: `lvl${id}_d8`, x: 44.75, y: 74.11, radius: 4.5, name: "Medaglione d'Oro del Sole Inti", loreClue: "Un disco aureo con i raggi del dio Sole indicante le coordinate dell'altopiano perduto, svanito dal lembo della mappa." },
+        { id: `lvl${id}_d9`, x: 32.92, y: 89.84, radius: 4.5, name: "Chiave Forgiata a Cuore sul Tappeto", loreClue: "Una pesante chiave quattrocentesca caduta sul tappeto persiano nella fuga precipitosa della Mano Occulta." },
+        { id: `lvl${id}_d10`, x: 71.17, y: 54.69, radius: 4.5, name: "Idolo Aureo di Chachapoya", loreClue: "Il leggendario idolo d'oro delle popolazioni delle nubi, la reliquia cardine di tutta la spedizione, trafugata dallo scaffale a destra." },
       ];
     } else if (isLevelTwo) {
       diffsForLevel = [
