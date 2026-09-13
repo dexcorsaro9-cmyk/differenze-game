@@ -139,9 +139,8 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Center: 10 Difference Progress Orbs with Counter */}
-        <div className="flex items-center gap-1.5">
-          {/* 10 Gem Indicators */}
+        {/* Center: Wax Seal Evidence Indicators of the Mano Oscura */}
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/40 border border-amber-900/60 shadow-inner">
           <div className="flex items-center gap-1">
             {Array.from({ length: totalDifferences }).map((_, idx) => {
               const isFound = idx < foundCount;
@@ -150,18 +149,25 @@ export const Header: React.FC<HeaderProps> = ({
                   key={idx}
                   className={`transition-all duration-300 rounded-full flex items-center justify-center ${
                     isFound
-                      ? 'w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gradient-to-tr from-emerald-600 via-emerald-400 to-emerald-200 shadow-[0_0_8px_#10b981] scale-110 ring-1 ring-emerald-300'
-                      : 'w-2 h-2 sm:w-2.5 sm:h-2.5 border border-stone-600 bg-stone-900/80'
+                      ? 'w-3.5 h-3.5 sm:w-4 sm:h-4 bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-200 shadow-[0_0_10px_rgba(245,158,11,0.8)] scale-110 ring-1 ring-amber-300'
+                      : 'w-3 h-3 sm:w-3.5 sm:h-3.5 border border-amber-950 bg-stone-900/90 shadow-inner'
                   }`}
-                  title={isFound ? `Differenza ${idx + 1} trovata!` : `Differenza ${idx + 1}`}
-                />
+                  title={isFound ? `Prova ${idx + 1} recuperata!` : `Prova ${idx + 1} occultata dalla Mano Oscura`}
+                >
+                  {isFound ? (
+                    <span className="text-[8px] font-black text-amber-950 font-serif leading-none">✓</span>
+                  ) : (
+                    <span className="text-[7px] text-amber-500/50 font-serif leading-none font-bold">?</span>
+                  )}
+                </div>
               );
             })}
           </div>
 
           {/* Number indicator */}
-          <div className="text-[11px] font-black text-amber-200 font-mono tracking-tight shrink-0">
-            {foundCount}/{totalDifferences}
+          <div className="text-[11px] font-black text-amber-300 font-serif tracking-tight shrink-0 flex items-center gap-1 pl-1 border-l border-amber-800/40">
+            <span className="text-[9px] uppercase tracking-wider text-amber-400/80 hidden sm:inline">Prove:</span>
+            <span className="font-mono text-amber-200">{foundCount}/{totalDifferences}</span>
           </div>
         </div>
 

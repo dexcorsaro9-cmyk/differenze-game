@@ -6,6 +6,7 @@ export interface Difference {
   name: string; // Brief name
   loreClue: string; // Story clue revealed when spotted
   description?: string;
+  clueType?: 'stolen_relic' | 'sabotage' | 'dark_seal' | 'forced_lock' | 'torn_evidence';
 }
 
 export interface SagaMilestone {

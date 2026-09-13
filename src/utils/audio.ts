@@ -249,6 +249,31 @@ class SoundManager {
     osc.stop(now + 0.36);
   }
 
+  // Optical archive lens / camera shutter past-vision reveal
+  public playArchiveLens() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    // Mechanical click + brass shimmer
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(1040, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(330, now + 0.25);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
   // Protective rune shield activate
   public playShield() {
     if (!this.isEnabled) return;
