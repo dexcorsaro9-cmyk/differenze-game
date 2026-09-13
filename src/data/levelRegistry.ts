@@ -277,25 +277,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelSixty
       ? '/levels/stage6_lvl60_A.jpg?v=2'
       : isLevelSixtyOne
-      ? '/levels/stage7_lvl61_A.jpg'
+      ? '/levels/stage7_lvl61_A.jpg?v=2'
       : isLevelSixtyTwo
-      ? '/levels/stage7_lvl62_A.jpg'
+      ? '/levels/stage7_lvl62_A.jpg?v=2'
       : isLevelSixtyThree
-      ? '/levels/stage7_lvl63_A.jpg'
+      ? '/levels/stage7_lvl63_A.jpg?v=2'
       : isLevelSixtyFour
-      ? '/levels/stage7_lvl64_A.jpg'
+      ? '/levels/stage7_lvl64_A.jpg?v=2'
       : isLevelSixtyFive
-      ? '/levels/stage7_lvl65_A.jpg'
+      ? '/levels/stage7_lvl65_A.jpg?v=2'
       : isLevelSixtySix
-      ? '/levels/stage7_lvl66_A.jpg'
+      ? '/levels/stage7_lvl66_A.jpg?v=2'
       : isLevelSixtySeven
-      ? '/levels/stage7_lvl67_A.jpg'
+      ? '/levels/stage7_lvl67_A.jpg?v=2'
       : isLevelSixtyEight
-      ? '/levels/stage7_lvl68_A.jpg'
+      ? '/levels/stage7_lvl68_A.jpg?v=2'
       : isLevelSixtyNine
-      ? '/levels/stage7_lvl69_A.jpg'
+      ? '/levels/stage7_lvl69_A.jpg?v=2'
       : isLevelSeventy
-      ? '/levels/stage7_lvl70_A.jpg'
+      ? '/levels/stage7_lvl70_A.jpg?v=2'
       : isLevelSeventyOne
       ? '/levels/stage8_lvl71_A.jpg'
       : isLevelSeventyTwo
@@ -560,25 +560,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelSixty
       ? '/levels/stage6_lvl60_B.jpg?v=2'
       : isLevelSixtyOne
-      ? '/levels/stage7_lvl61_B.jpg'
+      ? '/levels/stage7_lvl61_B.jpg?v=2'
       : isLevelSixtyTwo
-      ? '/levels/stage7_lvl62_B.jpg'
+      ? '/levels/stage7_lvl62_B.jpg?v=2'
       : isLevelSixtyThree
-      ? '/levels/stage7_lvl63_B.jpg'
+      ? '/levels/stage7_lvl63_B.jpg?v=2'
       : isLevelSixtyFour
-      ? '/levels/stage7_lvl64_B.jpg'
+      ? '/levels/stage7_lvl64_B.jpg?v=2'
       : isLevelSixtyFive
-      ? '/levels/stage7_lvl65_B.jpg'
+      ? '/levels/stage7_lvl65_B.jpg?v=2'
       : isLevelSixtySix
-      ? '/levels/stage7_lvl66_B.jpg'
+      ? '/levels/stage7_lvl66_B.jpg?v=2'
       : isLevelSixtySeven
-      ? '/levels/stage7_lvl67_B.jpg'
+      ? '/levels/stage7_lvl67_B.jpg?v=2'
       : isLevelSixtyEight
-      ? '/levels/stage7_lvl68_B.jpg'
+      ? '/levels/stage7_lvl68_B.jpg?v=2'
       : isLevelSixtyNine
-      ? '/levels/stage7_lvl69_B.jpg'
+      ? '/levels/stage7_lvl69_B.jpg?v=2'
       : isLevelSeventy
-      ? '/levels/stage7_lvl70_B.jpg'
+      ? '/levels/stage7_lvl70_B.jpg?v=2'
       : isLevelSeventyOne
       ? '/levels/stage8_lvl71_B.jpg'
       : isLevelSeventyTwo
@@ -4201,146 +4201,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelSixtyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 89.42, y: 24.55, radius: 6.0, name: "La Lanterna a Cherosene sulla Trave", loreClue: "Una lanterna ad uragano in ottone è appesa al palo di sostegno della tenda da campo." },
-        { id: `lvl${id}_d2`, x: 36.67, y: 22.32, radius: 5.5, name: "Il Disco Solare Alato sull'Architrave", loreClue: "Il blocco monolitico del tempio reca il sacro disco solare alato scolpito nella roccia calcarea." },
-        { id: `lvl${id}_d3`, x: 68.50, y: 47.99, radius: 5.5, name: "La Palina Metrica nel Trincerone", loreClue: "Una palina geodetica a bande bianche e nere da rilievo topografico è piantata nella sabbia vicino allo scavo." },
-        { id: `lvl${id}_d4`, x: 34.17, y: 69.75, radius: 5.5, name: "Il Filo a Piombo del Treppiede", loreClue: "Un pesante piombino conico in ottone pende dall'asse centrale del treppiede geodetico." },
-        { id: `lvl${id}_d5`, x: 16.50, y: 76.56, radius: 6.0, name: "Il Piccone da Geologo nella Cesta", loreClue: "Un martello da geologo per l'assaggio della roccia poggia sull'orlo della cesta di vimini." },
-        { id: `lvl${id}_d6`, x: 75.25, y: 71.09, radius: 5.0, name: "L'Etichetta Museale sulla Fiasca", loreClue: "Un cartellino di catalogazione legato con spago pende dal collo della bottiglia di reagenti chimici." },
-        { id: `lvl${id}_d7`, x: 64.33, y: 74.89, radius: 5.5, name: "Il Nastro di Seta Rossa nel Giornale", loreClue: "Un nastro segnalibro scarlatto spunta dalle pagine aperte del giornale di rilievo dell'oasi." },
-        { id: `lvl${id}_d8`, x: 41.25, y: 87.05, radius: 5.0, name: "La Moneta di Bronzo di Alessandro", loreClue: "Un'antica moneta tolemaica con l'effigie di Alessandro Magno con le corna d'Ammone è posata accanto ai cocci." },
-        { id: `lvl${id}_d9`, x: 71.67, y: 82.25, radius: 5.0, name: "Il Sigillo di Ceralacca sulla Mappa", loreClue: "Un sigillo in ceralacca cremisi con lo stemma della Società Geografica è impresso sulla planimetria." },
-        { id: `lvl${id}_d10`, x: 95.83, y: 84.15, radius: 6.0, name: "La Borraccia Militare sulla Sedia", loreClue: "Una borraccia in metallo rivestita di panno con tracolla di cuoio pende dal bracciolo della sedia da campo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 95.42,
+          y: 82.76,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lanterna a Petrolio sulla Trave della Tenda",
+          loreClue: "La lanterna da campo antivento in ottone è stata staccata dal tirante per operare nell'oscurità dell'oasi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 89.71,
+          y: 24.5,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Teodolite Geodetico sulla Duna",
+          loreClue: "Il treppiede topografico con il filo a piombo conico è stato inclinato per falsare i rilievi dell'altopiano."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 16.88,
+          y: 76.56,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Barile di Legno con le Provviste d'Acqua",
+          loreClue: "La botte di rovere contenente la riserva idrica per la traversata delle dune è stata aperta e svuotata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 36.62,
+          y: 22.32,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Affresco Murale del Tempio con il Sole Alato",
+          loreClue: "Il sacro disco solare alato scolpito sul pilastro mostra tracce di scalpellatura recente."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 41.25,
+          y: 87.22,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Palina Metrica nel Trincerone",
+          loreClue: "L'asta graduata da scavo dipinta a bande alternate è stata rimossa dal fronte della trincea."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 75.17,
+          y: 70.81,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Borsa da Sella Tuareg in Cuoio",
+          loreClue: "La bisaccia berbera con i registri delle rotte carovaniere attraverso il deserto libico è scomparsa."
+        }
       ];
     } else if (isLevelSixtyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Pinnacolo di Sale e Fango del Torrione Nord", loreClue: "La punta conica in kershef che svetta sul bastione superiore è erosa dal vento." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "La Feritoia Cieca della Torre Centrale", loreClue: "L'apertura triangolare per il controllo del palmeto svanisce dalla muratura d'argilla." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.06, radius: 4.0, name: "Il Comignolo Tradizionale del Quartiere Alto", loreClue: "Il condotto di ventilazione in argilla salata della vecchia rocca è stato rimosso." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.04, radius: 4.0, name: "Il Portale d'Accesso alla Labirintica Cittadella", loreClue: "L'arco irregolare scavato nelle mura di fango indurito appare colmato a filo." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Trave in Tronco di Palma del Solaio", loreClue: "Il tronco nodoso di dattero che sostiene l'aggetto dell'abitazione è scomparso." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Finestrella ad Ogiva con Grata in Canne", loreClue: "Il piccolo vano luce schermato da steli di palma intrecciati è stato murato." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Il Muro a Scarpa in Kershef Levigato", loreClue: "La robusta base inclinata che proteggeva la fortezza dalle piogge appare spianata." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Scala a Chiocciola Esterna Scavata nel Muro", loreClue: "I gradini irregolari in terra salina che salgono ai piani alti sono livellati." },
-        { id: `lvl${id}_d9`, x: 82.01, y: 64.95, radius: 4.0, name: "Il Sostegno Ligneo del Passaggio Coperto", loreClue: "Il puntone obliquo in legno di tamarisco tra le due case è stato tolto." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "I Blocchi di Sale Minerale alla Base della Fortezza", loreClue: "I frammenti cristallini di roccia salina sparsi sul sentiero sono svaniti nella terra." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Tripode Oracolare in Bronzo di Amon",
+          loreClue: "Il sacro tripode cerimoniale su cui sedeva la profetessa di Siwa è stato asportato dalla cella."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "L'Architrave Monolitico con Iscrizioni Demotiche",
+          loreClue: "Il blocco in arenaria sopra il portale d'ingresso presenta una linea di geroglifici raschiata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Fessura dell'Eco nella Parete d'Aghurmi",
+          loreClue: "Il condotto acustico segreto attraverso cui i sacerdoti sussurravano i vaticini è stato ostruito con malta."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Nicchia Murata del Tesoro Votivo",
+          loreClue: "L'incavo nella roccia calcarea che custodiva le offerte dei sovrani ellenistici è stato scassinato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lampada ad Olio Berbera in Pietra Tenera",
+          loreClue: "La lucerna a tre beccucci scolpita nel gesso locale è stata rovesciata sulla scalinata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo del Serpente con le Corna d'Ariete",
+          loreClue: "L'effigie sacra del dio Amon-Zeus cornuto incisa sul plinto mostra incisioni alterate."
+        }
       ];
     } else if (isLevelSixtyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.95, radius: 4.0, name: "La Chioma della Palma da Dattero a Sinistra", loreClue: "Il grande fascio di fronde verdi che ombreggia la vasca sacra è scomparso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Riflesso del Cielo nella Piscina Termale", loreClue: "Il limpido bagliore celeste sulla superficie sorgiva appare torbido e opaco." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "La Palma da Dattero Inclinata verso l'Acqua", loreClue: "Il tronco ricurvo della palma che sporgeva sopra la sorgente è stato rimosso." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "I Conci Circolari in Pietra del Bordo Vasca", loreClue: "I blocchi squadrati in calcare che formano il perimetro della piscina sono uniformati." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.97, radius: 4.0, name: "Lo Zampillo Centrale delle Bolle Termali", loreClue: "Il gorgoglio d'acqua calda sorgiva che risale dal fondo della fonte è svanito." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.97, radius: 4.0, name: "La Scaletta Sommersa per l'Immersione", loreClue: "I gradini scavati nella roccia per consentire il bagno rituale sono scomparsi." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "La Panchina in Tronchi di Palma dei Bagnanti", loreClue: "Il sedile rustico ombreggiato sul bordo orientale della sorgente è stato tolto." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.01, radius: 4.0, name: "Il Condotto di Pietra per l'Irrigazione dell'Oasi", loreClue: "La canaletta che porta l'acqua sorgiva verso i frutteti appare interrotta." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Pavimento a Selciato Lastricato della Riva", loreClue: "Le pietre piatte levigate dal passaggio dei pellegrini sono sostituite da terra." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 74.99, radius: 4.0, name: "L'Anfora d'Argilla per l'Acqua Minerale", loreClue: "La brocca in terracotta posata sul muretto di pietra è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Spada Cerimoniale di Alessandro Magno",
+          loreClue: "Il gladio macedone con elsa forgiata a testa di leone d'oro è stato rimosso dalla teca funeraria."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Lo Scudo di Bronzo con la Stella di Verghina",
+          loreClue: "Lo scudo da parata con l'emblema solare a sedici raggi presenta il bossolo centrale ammaccato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Papiro della Profezia di Divina Discendenza",
+          loreClue: "Il rotolo sacro che proclamava il conquistatore figlio di Amon mostra bruciature sui bordi."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Bussola Solare da Sabbia Alessandrina",
+          loreClue: "Lo strumento gnomonico a quadrante mobile usato dall'esercito nelle tempeste di sabbia è sparito."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Miliario Macedone della Via Reale",
+          loreClue: "Il cippo confinario in calcare che indicava la distanza da Alessandria è stato abbattuto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa delle Monete d'Oro di Babilonia",
+          loreClue: "Lo scrigno con i tetradrammi con Alessandro raffigurato con le corna d'Ariete è stato forzato."
+        }
       ];
     } else if (isLevelSixtyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Crinale Roccioso dell'Altopiano Libico", loreClue: "Il profilo dell'arida falesia calcarea che chiude la depressione scompare all'orizzonte." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Contrasto Cromatico tra Deserto e Salina", loreClue: "La linea di demarcazione tra le sabbie ocra e il bacino minerale è attenuata." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.95, radius: 4.0, name: "La Vetta Bianca del Tumulo Salino a Destra", loreClue: "La collina di sale candido accumulato dall'estrazione svanisce nel cielo." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.98, radius: 4.0, name: "La Crosta Cristallina Bianca del Bordo Bacino", loreClue: "L'orlo di cristalli di sale puro che circonda l'acqua turchese appare levigato." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.95, radius: 4.0, name: "L'Incredibile Tonalità Smeraldo della Pozza", loreClue: "Il trasparente colore verde-azzurro ipersalino della piscina naturale è opacizzato." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.97, radius: 4.0, name: "La Lingua di Terra Salina tra i Due Bacini", loreClue: "Il sentiero naturale in roccia salina che separa le vasche è scomparso sott'acqua." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Le Geometrie Frattali delle Formazioni di Sale", loreClue: "I prismi esagonali di cloruro di sodio affioranti dall'acqua sono livellati." },
-        { id: `lvl${id}_d8`, x: 39.99, y: 69.98, radius: 4.0, name: "Il Gradino di Sale Sommerso per Galleggiare", loreClue: "La mensola cristallina subacquea su cui poggiano i bagnanti è assente." },
-        { id: `lvl${id}_d9`, x: 67.99, y: 69.96, radius: 4.0, name: "La Stalagmite di Sale Baciata dal Sole", loreClue: "La concrezione minerale bianchissima che emerge dai flutti salini è spezzata." },
-        { id: `lvl${id}_d10`, x: 88.01, y: 75.01, radius: 4.0, name: "Il Cumulo di Salgemma Grezzo Estratto a Mano", loreClue: "La piramide di blocchi di sale tagliati dai cavatori tradizionali è rimossa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "L'Affresco di Si-Amun Davanti alla Dea Nut",
+          loreClue: "La vivace pittura murale che unisce l'arte classica greca e la liturgia egizia è stata scheggiata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Corona di Mirto in Foglia d'Oro",
+          loreClue: "La preziosa ghirlanda funeraria ellenistica deposta sul capo del nobile è stata rubata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Pettorale con l'Occhio Uadjet e la Bilancia",
+          loreClue: "L'amuleto di giudizio dell'anima in oro e diaspro verde è svanito dal sarcofago."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Lastra di Chiusura dell'Ipogeo Rupestre",
+          loreClue: "Il massiccio blocco che sigillava la tomba nella Montagna dei Morti è stato scalzato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Cratere Ceramico Greco a Figure Rosse",
+          loreClue: "Il grande vaso cerimoniale attico per le libagioni d'olio è stato frantumato sul pavimento."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele Dipinta con Epigrafe Bilingue",
+          loreClue: "La lastrina con dedica in greco e geroglifico presenta le ultime righe raschiate."
+        }
       ];
     } else if (isLevelSixtyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.06, radius: 4.0, name: "La Cima Tronco-Conica della Collina Calcarea", loreClue: "Il profilo superiore della montagna rocciosa butterata di tombe svanisce nel cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "La Fenditura d'Accesso alla Tomba di Niperpathot", loreClue: "L'ingresso monumentale scavato nella viva roccia calcarea appare occluso." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.06, radius: 4.0, name: "Lo Sperone Roccioso sul Versante Orientale", loreClue: "La sporgenza naturale che sovrasta la necropoli greca e romana è stata rasa." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "L'Ingresso con Architrave della Tomba del Coccodrillo", loreClue: "Il portale rettangolare dell'ipogeo sacro a Sobek è svanito dalla parete." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.93, radius: 4.0, name: "Le Cavità a Nido d'Ape delle Sepolture Romane", loreClue: "I fori funerari aperti sul costone occidentale appaiono colmati da detriti." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Tomba di Si-Amun con Affreschi Ellenistici", loreClue: "La celebre camera sepolcrale dipinta con colori tolemaici è murata." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.97, radius: 4.0, name: "La Scarpata di Detriti Ghiaiosi alla Base", loreClue: "La conoide di ciottoli calcarei franati lungo il pendio è stata spianata." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Sentiero a Tornanti per i Visitatori", loreClue: "La traccia battuta che risale i fianchi della collina tombale è scomparsa." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Muretto di Protezione del Sentiero Basso", loreClue: "I cordoli in pietre a secco posti a riparo delle frane sono rimossi." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "I Massi Fossili con Conchiglie nel Calcare", loreClue: "I grandi blocchi ricchi di nummuliti e fossili marini in primo piano sono livellati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Pavimento a Mosaico Sommerso della Sorgente",
+          loreClue: "Le tessere di pasta vitrea azzurra che rivestono la vasca sorgiva mostrano lacune recenti."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Brocca di Terracotta con Marchio Tolemaico",
+          loreClue: "Il recipiente da libagione per le acque minerali curative è stato asportato dal bordo vasca."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Balustra di Pietra Calcarea del Belvedere",
+          loreClue: "Il parapetto ombreggiato dalle palme da dattero mostra una colonna divelta."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta con l'Analisi Chimica delle Acque",
+          loreClue: "Il registro lasciato dalla spedizione scientifica ottocentesca sulle proprietà delle fonti è stato strappato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lampada Galleggiante Cerimoniale",
+          loreClue: "La lucerna a coppa di bronzo usata per i riti notturni dell'equinozio è stata affondata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Cancello di Ferro Battuto del Bagno Reale",
+          loreClue: "La grata d'accesso alla camera ipogea della sorgente presenta il chiavistello spezzato."
+        }
       ];
     } else if (isLevelSixtySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.95, radius: 4.0, name: "Il Bastione d'Ingresso della Rocca di Aghurmi", loreClue: "Le mura in pietra e fango che cingono l'acropoli oracolare svaniscono nel cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Cima della Parete del Naos dell'Oracolo", loreClue: "Il coronamento in conci regolari della cella di Amon appare scalpellato a filo." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "La Torre Angolare dell'Antico Villaggio Fortificato", loreClue: "La garitta di guardia abbarbicata sulla roccia a destra è scomparsa dal panorama." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "La Nicchia Segreta del Sacerdote Oracolare", loreClue: "La cavità celata nel muro da cui il clero pronunciava i responsi ad Alessandro è murata." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "Il Portale Monolitico con Fregio Dorico-Egizio", loreClue: "L'architrave sacro che unisce lo stile faraonico all'influenza greca è levigato." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.97, radius: 4.0, name: "I Rilievi con le Divinità dell'Oasi sul Muro", loreClue: "Le figure scolpite del dio Ammone dalle corna d'ariete sono svanite dalla pietra." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "I Conci Squadrati dell'Anticamera Sacra", loreClue: "Le commettiture a secco tra i massi dell'atrio del santuario appaiono sigillate." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Pozzo Sacro dell'Oracolo sul Fondamento", loreClue: "La canna scavata nella roccia madre per i vaticini idromantici è colmata." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Rampa Gradonata che Risale lo Sperone", loreClue: "I gradini intagliati nel monte calcareo percorsi da Alessandro Magno sono spianati." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Terrapieno di Sostegno delle Fondazioni", loreClue: "La muratura a scarpa che impedisce il crollo del tempio sul burrone è rimossa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Muro di Sale e Fango (Kersheef) Forzato",
+          loreClue: "La caratteristica muratura in blocchi di sale fossile della cittadella medievale è stata perforata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porticina di Cedro Intagliata a Motivi Berberi",
+          loreClue: "Il battente ligneo con complessi simboli geometrici protettivi è stato scardinato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Tappeto Nomade Tradizionale alle Pareti",
+          loreClue: "Il pesante arazzo in lana di cammello con la mappa astrale dell'oasi è stato asportato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lucerna in Ferro Battuto dei Vicoli Ciechi",
+          loreClue: "La lanterna sospesa che illuminava il dedalo dei passaggi coperti è stata mandata in pezzi."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Registro Commerciale dei Mercanti di Sale",
+          loreClue: "Il libro mastro rilegato in pelle di capra con le rotte carovaniere è stato sottratto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Talismano d'Argento di Fatima con Turchese",
+          loreClue: "L'amuleto protettivo delle carovane contro gli spiriti del deserto è svanito dalla nicchia."
+        }
       ];
     } else if (isLevelSixtySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Cresta Affilata della Duna Seif a Sinistra", loreClue: "Il profilo a lama di coltello scolpito dal vento del Sahara scompare nel cielo terso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Onda di Calore all'Orizzonte Desertico", loreClue: "Il miraggio luminoso che unisce le sabbie infuocate al cielo dorato è attenuato." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Crinale della Grande Duna Longitudinale", loreClue: "La cresta sinuosa che si estende per centinaia di chilometri a destra è spianata." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Le Increspature Eoliche della Sabbia Dorata", loreClue: "I finissimi solchi geometrici a onde modellati dalla brezza desertica sono uniformati." },
-        { id: `lvl${id}_d5`, x: 50.01, y: 39.96, radius: 4.0, name: "Il Versante a Franamento della Duna Centrale", loreClue: "La parete ripida a scivolamento di sabbia finissima appare liscia e compatta." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "L'Ombra Netta del Crepuscolo sulla Gola di Sabbia", loreClue: "Il profondo contrasto bruno nell'avvallamento tra le dune è attenuato." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Le Tracce delle Ruote dei Fuoristrada Beduini", loreClue: "I solchi battuti dalle guide delle carovane nel deserto sono svaniti." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.97, radius: 4.0, name: "Il Frammento di Vetro Silicico del Deserto Libico", loreClue: "Il raro frammento vetroso giallo-verde di meteorite è scomparso dalla sabbia." },
-        { id: `lvl${id}_d9`, x: 67.99, y: 69.98, radius: 4.0, name: "La Conca Interdunale di Roccia Arenaria", loreClue: "L'affioramento lapideo piatto sul fondo della depressione è coperto da sabbia." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Velo di Polvere Dorata Sollevato dal Vento", loreClue: "La nuvola impalpabile di pulviscolo solare che danza sul colmo della duna è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Monolito Residuo del Tempio di Nectanebo II",
+          loreClue: "L'unico pilastro monumentale sopravvissuto al dinamite mostra i rilievi regali ulteriormente scalpellati."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Rilievo del Faraone che Offre la Maat ad Amon",
+          loreClue: "La sacra piuma dell'ordine cosmico consegnata alla divinità è stata cancellata dall'intonaco."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Fenditura nella Muraglia Dorata",
+          loreClue: "Una fessura orizzontale aperta tra i conci d'arenaria indica l'estrazione clandestina di papiri."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele Dedicatoria dell'Ultimo Faraone Indigeno",
+          loreClue: "L'epigrafe trionfale dell'ultimo sovrano egizio presenta il cartiglio regale frantumato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere in Granito Grigio delle Offerte",
+          loreClue: "La coppa per l'incenso sacro all'esterno del recinto sacro è stata spaccata in due."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Amuleto dello Scarabeo Cuore in Pietra Verde",
+          loreClue: "Lo scarabeo iscritto che proteggeva le fondamenta del santuario è stato rubato."
+        }
       ];
     } else if (isLevelSixtyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "La Parasta Angolare in Kershef della Casa Tradizionale", loreClue: "Il montante di terra cruda e sale all'angolo dell'edificio berbero è smussato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.05, radius: 4.0, name: "La Feritoia di Ventilazione per la Brezza Notturna", loreClue: "Il piccolo foro triangolare che rinfresca la dimora nel deserto è stato colmato." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Trave di Sostegno in Tronco di Dattero", loreClue: "Il puntone ligneo sporgente sotto il tetto a terrazza è scomparso dalla facciata." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Portale in Legno d'Ulivo Intagliato a Mano", loreClue: "La porta battente con tipici motivi geometrici siwiani è stata rimossa." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Mensoletta Rustica in Fango per la Lucerna", loreClue: "Il supporto sagomato accanto all'ingresso per la lampada ad olio è stato tolto." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.94, radius: 4.0, name: "La Grata in Canne di Giunco della Finestra", loreClue: "La stuoia traforata che protegge dal sole dell'oasi svanisce dal vano." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.95, radius: 4.0, name: "Lo Zoccolo di Fondazione in Argilla Rinforzata", loreClue: "La base ispessita a protezione delle pareti esterne appare uniformata." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "I Sedili in Terra Battuta del Cortiletto Esterno", loreClue: "Le panche continue integrate nel muro per accogliere gli ospiti sono spianate." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Canestro di Vimini e Foglie di Palma per i Datteri", loreClue: "La grande cesta intrecciata posata all'ombra del vicolo è scomparsa." },
-        { id: `lvl${id}_d10`, x: 50.01, y: 87.96, radius: 4.0, name: "Il Selciato del Vicolo Berbero in Pietra Calcare", loreClue: "I ciottoli chiari posati a secco lungo la stradina tradizionale sono livellati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Bussola da Carovana nel Cristallo di Selenite",
+          loreClue: "Lo strumento d'orientamento magnetico inserito in un blocco di selenite trasparente è sparito."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Rosa del Deserto Monumentale tra le Sabbie",
+          loreClue: "La colossale concrezione minerale di gesso e sabbia presenta un'intaccatura con il marchio dell'Ombra."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Fossile Marino di Balena Preistorica",
+          loreClue: "Lo scheletro fossilizzato emerso dal fondale primordiale del Sahara mostra una vertebra asportata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Tenda da Ricognizione della Spedizione",
+          loreClue: "Il telo mimetico dell'avamposto archeologico presenta squarci netti praticati con una lama."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Taccuino delle Coordinate GPS e Celesti",
+          loreClue: "Le pagine con la rotta trans-sahariana verso Petra sono state strappate dal quaderno di campo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Fucile da Campo degli Esploratori",
+          loreClue: "L'arma di difesa contro i predoni del deserto è stata sottratta dall'armeria della spedizione."
+        }
       ];
     } else if (isLevelSixtyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "Il Bagliore Cremisi del Sole Calante sulle Acque", loreClue: "Il riflesso infuocato del tramonto sulla laguna salata di Birket Siwa è spento." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Fascia di Nubi Violacee sopra il Deserto", loreClue: "I vapori color ametista che striano il cielo sopra l'oasi sono svaniti." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "La Silhouette delle Montagne All'Orizzonte Ovest", loreClue: "Il profilo scuro dei rilievi verso il confine libico scompare dal cielo serale." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "La Chioma della Palma Riflessa nello Specchio Lacustre", loreClue: "Le fronde della palma da cocco riflesse nell'acqua immobile sono svanite." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.97, radius: 4.0, name: "Il Tronco della Palma Gemella Curvata sull'Acqua", loreClue: "Il fusto flessuoso proteso sul lago salato per offrire ombra ai naviganti è assente." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Cima del Pontile di Legno sul Lago", loreClue: "La testata in assi di palma dove attraccano i barchetti dell'isola è stata rimossa." },
-        { id: `lvl${id}_d7`, x: 87.99, y: 44.99, radius: 4.0, name: "Il Canneto di Palude che Circonda la Riva", loreClue: "La cortina di giunchi selvatici lungo la battigia fangosa è stata tagliata." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "I Cuscini Tradizionali del Caffè all'Aperto", loreClue: "Le sedute in tessuto berbero colorato posate sulla riva del lago sono rimosse." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Tavolino Basso in Tronco Intagliato", loreClue: "La postazione rustica per la degustazione del tè alla menta siwiano è scomparsa." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "La Lucerna a Candela Protetta dal Vetro", loreClue: "La lanterna accesa per illuminare l'approdo all'imbrunire è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Le Impronte di Mani in Ocra Rossa Preistoriche",
+          loreClue: "Le antichissime impronte rupestri lasciate millenni prima dei faraoni mostrano solventi chimici."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Bassorilievo Rupestre della Giraffa e dell'Arciere",
+          loreClue: "La scena di caccia del Sahara verde incisa nella roccia arenaria è stata scheggiata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Ciotola in Pietra per la Miscelazione dei Pigmenti",
+          loreClue: "Il mortaio neolitico con residui di polvere d'ocra e grasso animale è stato rubato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Simbolo Astronomico delle Pleiadi sulla Volta",
+          loreClue: "I sette punti incisi che rappresentavano la costellazione guida dei nomadi sono stati levigati."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Lucerna a Olio Animale dei Primi Uomini",
+          loreClue: "La coppa in arenaria concava usata per illuminare la caverna preistorica è stata asportata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Fenditura d'Accesso alla Caverna Sotterranea",
+          loreClue: "Lo stretto passaggio tra i massi franati mostra segni di allargamento con scalpelli moderni."
+        }
       ];
     } else if (isLevelSeventy) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Vetta della Palma Reale con Grappoli di Datteri Siwi", loreClue: "I caschi dorati dei rinomati datteri dell'oasi pronti per la raccolta sono scomparsi." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Sole Filtrante Attraverso il Fogliame dei Palmizi", loreClue: "I raggi di luce che penetrano tra le fitte fronde creando giochi d'ombra sono attenuati." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Chioma dell'Albero di Melograno nel Sottobosco", loreClue: "I rami carichi di frutti vermigli che crescono all'ombra delle palme sono stati tagliati." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.97, radius: 4.0, name: "Il Tronco Scanalato della Palma Secolare", loreClue: "La corteccia a rombi e le fibre nodose del tronco principale appaiono lisce." },
-        { id: `lvl${id}_d5`, x: 50.02, y: 39.96, radius: 4.0, name: "L'Arancio Amaro Carico di Zagara", loreClue: "Il cespuglio di agrumi dell'oasi fiorito tra i datteri è svanito dal sottobosco." },
-        { id: `lvl${id}_d6`, x: 80.01, y: 41.97, radius: 4.0, name: "Il Fusto d'Ulivo Contorto delle Coltivazioni", loreClue: "Il tronco secolare dell'ulivo da cui si ricava l'olio di Siwa è stato rimosso." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.97, radius: 4.0, name: "La Canaletta di Irrigazione Fluviale in Pietra", loreClue: "Il condotto idraulico alimentato dalla sorgente per bagnare il frutteto è colmato." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.97, radius: 4.0, name: "La Paratoia in Legno per Deviare l'Acqua", loreClue: "La tavoletta che apre il flusso idrico verso i solchi coltivati è stata tolta." },
-        { id: `lvl${id}_d9`, x: 67.99, y: 69.97, radius: 4.0, name: "Il Sentiero Ombreggiato dei Contadini dell'Oasi", loreClue: "La traccia battuta coperta da foglie secche di dattero appare spianata." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.01, radius: 4.0, name: "Il Canestro di Palma Intrecciata per le Olive", loreClue: "La cesta artigianale in foglia di palma posata ai piedi dell'albero è assente." },
-      ];
-    } else if (isStageSeven) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 89.42, y: 24.55, radius: 6.0, name: "La Lanterna a Cherosene sulla Trave", loreClue: "Una lanterna ad uragano in ottone è appesa al palo di sostegno della tenda da campo." },
-        { id: `lvl${id}_d2`, x: 36.67, y: 22.32, radius: 5.5, name: "Il Disco Solare Alato sull'Architrave", loreClue: "Il blocco monolitico del tempio reca il sacro disco solare alato scolpito nella roccia calcarea." },
-        { id: `lvl${id}_d3`, x: 68.50, y: 47.99, radius: 5.5, name: "La Palina Metrica nel Trincerone", loreClue: "Una palina geodetica a bande bianche e nere da rilievo topografico è piantata nella sabbia vicino allo scavo." },
-        { id: `lvl${id}_d4`, x: 34.17, y: 69.75, radius: 5.5, name: "Il Filo a Piombo del Treppiede", loreClue: "Un pesante piombino conico in ottone pende dall'asse centrale del treppiede geodetico." },
-        { id: `lvl${id}_d5`, x: 16.50, y: 76.56, radius: 6.0, name: "Il Piccone da Geologo nella Cesta", loreClue: "Un martello da geologo per l'assaggio della roccia poggia sull'orlo della cesta di vimini." },
-        { id: `lvl${id}_d6`, x: 75.25, y: 71.09, radius: 5.0, name: "L'Etichetta Museale sulla Fiasca", loreClue: "Un cartellino di catalogazione legato con spago pende dal collo della bottiglia di reagenti chimici." },
-        { id: `lvl${id}_d7`, x: 64.33, y: 74.89, radius: 5.5, name: "Il Nastro di Seta Rossa nel Giornale", loreClue: "Un nastro segnalibro scarlatto spunta dalle pagine aperte del giornale di rilievo dell'oasi." },
-        { id: `lvl${id}_d8`, x: 41.25, y: 87.05, radius: 5.0, name: "La Moneta di Bronzo di Alessandro", loreClue: "Un'antica moneta tolemaica con l'effigie di Alessandro Magno con le corna d'Ammone è posata accanto ai cocci." },
-        { id: `lvl${id}_d9`, x: 71.67, y: 82.25, radius: 5.0, name: "Il Sigillo di Ceralacca sulla Mappa", loreClue: "Un sigillo in ceralacca cremisi con lo stemma della Società Geografica è impresso sulla planimetria." },
-        { id: `lvl${id}_d10`, x: 95.83, y: 84.15, radius: 6.0, name: "La Borraccia Militare sulla Sedia", loreClue: "Una borraccia in metallo rivestita di panno con tracolla di cuoio pende dal bracciolo della sedia da campo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL SETTIMO SIGILLO: Il Corno d'Oro di Amon-Zeus con Turchese",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 7: Il leggendario corno d'ariete in oro massiccio e turchese del Sinai! Il vertice della reliquia proietta la triangolazione trans-desertica verso la Città di Roccia di Petra."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Naos Segreta dell'Oracolo di Siwa",
+          loreClue: "Il tabernacolo monolitico di granito celato per oltre duemila anni è stato forzato dai cospiratori."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele con il Vaticinio di Alessandro",
+          loreClue: "La lastra di diorite recante le parole del sacerdote che proclamava la conquista del mondo è spezzata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Altare del Raggio Solare Equinoziale",
+          loreClue: "Il basamento in selenite che rifletteva la luce del primo sole d'autunno reca incisioni sacrileghe."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere d'Oro dei Sacerdoti Libici",
+          loreClue: "Il tripode d'oro per gli incensi rituali è stato rovesciato ai piedi del tabernacolo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Flauto d'Osso della Pizia del Deserto",
+          loreClue: "Lo strumento sacro con cui veniva invocato lo spirito dell'oracolo è stato trafugato dalla cripta."
+        }
       ];
     } else if (isLevelSeventyOne) {
       diffsForLevel = [
