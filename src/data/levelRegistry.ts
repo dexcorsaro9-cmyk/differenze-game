@@ -159,7 +159,7 @@ export function generateAll120Levels(): Level[] {
 
     // Realistic masterwork photographs for all levels in Stages 1 to 12
     const imageA = isLevelTwo
-      ? '/levels/stage1_lvl2_A.jpg'
+      ? '/stage2_crypt_A.jpg?v=5'
       : isLevelThree
       ? '/levels/stage1_lvl3_A.jpg'
       : isLevelFour
@@ -442,7 +442,7 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/levels/stage1_lvl2_B.jpg'
+      ? '/stage2_crypt_B.jpg?v=5'
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg'
       : isLevelFour
@@ -786,16 +786,60 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 52.92, y: 72.54, radius: 5.0, name: "La Lente d'Ingrandimento sulla Pergamena", loreClue: "La monumentale lente d'ingrandimento in argento cesellato è stata rimossa, lasciando visibili le antiche righe in corsivo latino." },
-        { id: `lvl${id}_d2`, x: 77.50, y: 63.62, radius: 4.5, name: "Lo Stemma d'Oro di Oxford sul Tomo", loreClue: "Lo stemma nobiliare impresso in foglia d'oro sulla copertina in cuoio del codice scompare nel secondo faldone." },
-        { id: `lvl${id}_d3`, x: 61.67, y: 64.73, radius: 4.0, name: "La Ceralacca da Sigillo sul Tavolo", loreClue: "Un bastoncino di ceralacca rosso carminio con testa sigillare riposa sul piano in mogano tra l'atlante e i libri." },
-        { id: `lvl${id}_d4`, x: 35.00, y: 50.22, radius: 4.5, name: "Il Segnalibro di Seta nel Leggio", loreClue: "Un nastro segnalibro di seta scarlatta pende tra le pagine del grande codice aperto sul leggio ligneo." },
-        { id: `lvl${id}_d5`, x: 53.33, y: 26.23, radius: 4.5, name: "La Staffa in Ottone della Scala", loreClue: "Una staffa di sicurezza con rotella d'ottone è fissata al montante della scala a pioli scorrevole." },
-        { id: `lvl${id}_d6`, x: 33.33, y: 17.86, radius: 4.5, name: "L'Asta di Chiusura della Bifora Gotica", loreClue: "Un'asta di fissaggio in ferro battuto blocca il battente della finestra gotica ad arco acuto." },
-        { id: `lvl${id}_d7`, x: 11.25, y: 40.18, radius: 4.5, name: "Il Volume Rosso Sporgente dallo Scaffale", loreClue: "Un pesante tomo rilegato in marocchino rosso sporge di alcuni pollici dalla fila di libri sulla sinistra." },
-        { id: `lvl${id}_d8`, x: 4.17, y: 70.87, radius: 4.0, name: "La Targhetta d'Archivio 'MSS. LOPEZ 1588'", loreClue: "Una piastrina di rame d'epoca con incisa la segnatura archivistica è inchiodata al bordo del ripiano inferiore." },
-        { id: `lvl${id}_d9`, x: 23.33, y: 93.75, radius: 4.0, name: "La Chiave Monumentale sul Tappeto", loreClue: "Un'antica chiave d'archivio in ferro brunito è caduta sulla frangia in lana del tappeto persiano." },
-        { id: `lvl${id}_d10`, x: 78.33, y: 40.18, radius: 4.5, name: "Il Rotolo di Pergamena Legato sui Tomi", loreClue: "Una pergamena arrotolata e sigillata con cordino di canapa riposa in orizzontale sui tomi dello scaffale destro." },
+        {
+          id: `lvl${id}_d1`,
+          x: 75.24,
+          y: 52.80,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "Il Teschio nella Nicchia di Pietra",
+          loreClue: "L'antico teschio umano custodito nella nicchia di pietra è stato asportato: i profanatori cercavano il codice segreto inciso sull'osso occipitale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 61.73,
+          y: 27.67,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Iscrizione Latina 'SECRETA' sull'Arco",
+          loreClue: "La parola iniziale 'SECRETA' della sacra epigrafe 'SECRETA MORTIS APERIUNTUR' è stata scalpellata via per occultare l'accesso al sepolcro."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 18.23,
+          y: 40.79,
+          radius: 9.5,
+          clueType: 'sabotage',
+          name: "La Torcia a Gabbia della Colonna",
+          loreClue: "Il braciere in ferro battuto sulla colonna sinistra è stato divelto e spento violentemente per gettare il corridoio dell'ossario nell'oscurità."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 71.39,
+          y: 82.24,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Le Boccette Alchemiche sul Tavolo",
+          loreClue: "Due preziose fiale di reagenti e tinture alchemiche con tappo in sughero sono state rubate dal ripiano in pietra accanto al calice."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 51.59,
+          y: 84.90,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Fermaglio in Cuoio del Tomo Medievale",
+          loreClue: "La bandella di chiusura in cuoio con borchia di bronzo dell'antico codice aperto è stata recisa per estrarre in fretta i fogli miniati."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 59.02,
+          y: 87.36,
+          radius: 7.5,
+          clueType: 'torn_evidence',
+          name: "Il Legaccio della Mappa Arrotolata",
+          loreClue: "La fascetta in cuoio brunito che sigillava il rotolo cartografico in primo piano è stata asportata, lasciando la pergamena srotolata."
+        },
       ];
     } else if (isLevelThree) {
       diffsForLevel = [
