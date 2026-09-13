@@ -436,30 +436,28 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 </div>
               )}
 
-              {/* Render Found Evidence Markers (Golden Wax Seal with Name Tag) */}
+              {/* Render Found Evidence Markers: Discreet, compact, non-invasive markers */}
               {differences
                 .filter(d => foundDifferenceIds.includes(d.id))
                 .map((diff, idx) => (
                   <div
                     key={`evidence_${diff.id}`}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-25 group/marker animate-fade-in"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20 group/marker animate-fade-in"
                     style={{ left: `${diff.x}%`, top: `${diff.y}%` }}
                     onClick={e => {
                       e.stopPropagation();
                       setSelectedClueId(diff.id);
                     }}
                   >
-                    {/* Pulsing Golden Seal Disc */}
+                    {/* Compact, elegant translucent checkmark ring (~20px) */}
                     <div className="relative flex items-center justify-center">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-amber-700 via-amber-500 to-yellow-300 border-2 border-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.8)] flex items-center justify-center ring-2 ring-amber-900/60 active:scale-95 transition cursor-pointer">
-                        <span className="text-[10px] sm:text-xs font-black text-amber-950 font-serif">
-                          #{idx + 1}
-                        </span>
+                      <div className="w-5 h-5 rounded-full bg-black/65 border border-emerald-400/90 shadow-[0_0_8px_rgba(52,211,153,0.5)] flex items-center justify-center backdrop-blur-[1px] active:scale-90 hover:scale-110 transition-transform cursor-pointer">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-300 stroke-[2.5]" />
                       </div>
 
-                      {/* Evidence Tag Banner */}
-                      <div className="absolute top-full mt-1 px-2 py-0.5 rounded-md bg-[#180f08]/90 border border-amber-400/60 shadow-lg text-[9px] sm:text-[10px] text-amber-200 font-serif font-bold whitespace-nowrap pointer-events-none opacity-90 group-hover/marker:opacity-100">
-                        {diff.name}
+                      {/* Tooltip shown ONLY on hover/tap, never cluttering the scene */}
+                      <div className="absolute bottom-full mb-1.5 px-2 py-0.5 rounded-md bg-stone-950/90 border border-emerald-500/60 shadow-lg text-[9px] text-emerald-200 font-serif font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover/marker:opacity-100 transition-opacity duration-150 z-30">
+                        #{idx + 1} {diff.name}
                       </div>
                     </div>
                   </div>

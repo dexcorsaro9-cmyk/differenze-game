@@ -417,7 +417,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_A.jpg'
       : isStageOne
-      ? '/oxford_study_A.jpg?v=4'
+      ? '/oxford_study_A.jpg?v=5'
       : isStageTwo
       ? '/stage2_crypt_A.jpg?v=3'
       : isStageThree
@@ -700,7 +700,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_B.jpg'
       : isStageOne
-      ? '/oxford_study_B.jpg?v=4'
+      ? '/oxford_study_B.jpg?v=5'
       : isStageTwo
       ? '/stage2_crypt_B.jpg?v=3'
       : isStageThree
@@ -776,12 +776,12 @@ export function generateAll120Levels(): Level[] {
         },
         {
           id: `lvl${id}_d6`,
-          x: 44.46,
-          y: 86.62,
-          radius: 10.0,
-          clueType: 'forced_lock',
-          name: "Serratura Forzata del Cassetto Segreto",
-          loreClue: "Il cassetto segreto della scrivania è stato forzato con un piede di porco, lasciando schegge di mogano e mappe frugate."
+          x: 58.33,
+          y: 76.23,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Chiave d'Oro nella Serratura del Cassetto",
+          loreClue: "La chiave d'ottone che custodiva il cassetto segreto delle mappe di Paititi è stata trafugata, lasciando la toppa della serratura spalancata."
         },
       ];
     } else if (isLevelTwo) {
