@@ -20,7 +20,7 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   2: {
     title: "I Sotterranei della Bodleian Library",
     subtitle: "Cripta dei Testi Proibiti • Oxford",
-    prologue: "Nei sotterranei medievali sotto Oxford, la Mano Oscura è scesa prima di noi per trafugare le reliquie e scalpellare le formule proibite incise nella pietra. Trova le 6 tracce della profanazione.",
+    prologue: "Nei sotterranei medievali sotto Oxford, la Mano Oscura è scesa prima di noi per trafugare reliquie sacre e sabotare l'indagine archeologica. Trova le 6 tracce fisiche della profanazione.",
     resolution: "Hai decifrato la cripta violata: la mappa andina rivela che 40 lama carichi d'oro sacro partirono da Cusco nel 1533 sotto la guida del Sommo Sacerdote Willaq Umu verso la città segreta di Paititi!",
     unlockedSecret: "'Non cercate oro nelle valli conosciute. L'oro degli dèi riposa dove il fiume scorre all'indietro verso le nubi.' - Annotazione a margine del 1588",
   },

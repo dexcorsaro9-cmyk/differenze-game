@@ -159,7 +159,7 @@ export function generateAll120Levels(): Level[] {
 
     // Realistic masterwork photographs for all levels in Stages 1 to 12
     const imageA = isLevelTwo
-      ? '/stage2_crypt_A.jpg?v=6'
+      ? '/stage2_crypt_A.jpg?v=8'
       : isLevelThree
       ? '/levels/stage1_lvl3_A.jpg'
       : isLevelFour
@@ -442,7 +442,7 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/stage2_crypt_B.jpg?v=6'
+      ? '/stage2_crypt_B.jpg?v=8'
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg'
       : isLevelFour
@@ -788,57 +788,57 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 75.34,
-          y: 52.69,
-          radius: 9.0,
+          x: 74.83,
+          y: 52.58,
+          radius: 8.5,
           clueType: 'stolen_relic',
           name: "Il Teschio nella Nicchia di Pietra",
           loreClue: "L'antico teschio umano custodito nella nicchia di pietra è stato asportato: i profanatori cercavano il codice segreto inciso sull'osso occipitale."
         },
         {
           id: `lvl${id}_d2`,
-          x: 61.63,
-          y: 27.48,
-          radius: 8.5,
-          clueType: 'dark_seal',
-          name: "L'Iscrizione Latina 'SECRETA' sull'Arco",
-          loreClue: "La parola iniziale 'SECRETA' della sacra epigrafe 'SECRETA MORTIS APERIUNTUR' è stata scalpellata via per occultare l'accesso al sepolcro."
-        },
-        {
-          id: `lvl${id}_d3`,
-          x: 18.01,
-          y: 41.23,
-          radius: 9.5,
-          clueType: 'sabotage',
-          name: "La Torcia a Gabbia della Colonna",
-          loreClue: "Il braciere in ferro battuto sulla colonna sinistra è stato divelto e spento violentemente per gettare il corridoio dell'ossario nell'oscurità."
-        },
-        {
-          id: `lvl${id}_d4`,
-          x: 71.56,
-          y: 81.78,
-          radius: 8.5,
-          clueType: 'stolen_relic',
-          name: "Le Boccette Alchemiche sul Tavolo",
-          loreClue: "Tre preziose fiale di reagenti e tinture alchemiche con tappo in sughero sono state rubate dal ripiano in pietra accanto al calice."
-        },
-        {
-          id: `lvl${id}_d5`,
-          x: 50.67,
-          y: 84.02,
-          radius: 8.5,
-          clueType: 'torn_evidence',
-          name: "Il Fermaglio in Cuoio del Tomo Medievale",
-          loreClue: "La bandella di chiusura in cuoio con borchia di bronzo dell'antico codice aperto è stata recisa per estrarre in fretta i fogli miniati."
-        },
-        {
-          id: `lvl${id}_d6`,
-          x: 61.87,
-          y: 70.57,
-          radius: 12.0,
+          x: 61.38,
+          y: 72.60,
+          radius: 11.5,
           clueType: 'stolen_relic',
           name: "Il Calice Sacro in Pietra",
           loreClue: "L'antico calice cerimoniale in pietra arenaria che troneggiava al centro del tavolo è stato asportato per i suoi simboli esoterici."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 87.11,
+          y: 70.39,
+          radius: 12.5,
+          clueType: 'sabotage',
+          name: "Il Piccone da Scavo sul Muro",
+          loreClue: "Il pesante piccone da scavo archeologico appoggiato alla parete di pietra è stato sottratto per forzare le cripte inferiori."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 36.36,
+          y: 71.19,
+          radius: 9.5,
+          clueType: 'sabotage',
+          name: "La Fiamma della Lanterna a Olio",
+          loreClue: "La fiamma viva all'interno della lanterna d'ottone è stata soffocata con violenza per far piombare la sala nell'oscurità."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 27.89,
+          y: 78.07,
+          radius: 9.5,
+          clueType: 'stolen_relic',
+          name: "Il Secondo Rotolo di Pergamena",
+          loreClue: "Il secondo rotolo di pergamena miniata sul ripiano in pietra è stato sfilato via dal legaccio di cuoio e trafugato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 67.95,
+          y: 80.32,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "Le Boccette Alchemiche sul Tavolo",
+          loreClue: "Le fiale di reagenti e tinture alchemiche con tappo in sughero sono state trafugate dal piano di pietra accanto al tomo."
         },
       ];
     } else if (isLevelThree) {
