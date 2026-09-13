@@ -23,10 +23,10 @@
 
 /* Safe Area Inset Support for iPhone / Mobile Nav Bars */
 .safe-pt {
-  padding-top: max(8px, env(safe-area-inset-top));
+  padding-top: max(4px, env(safe-area-inset-top, 4px));
 }
 .safe-pb {
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  padding-bottom: max(4px, env(safe-area-inset-bottom, 4px));
 }
 
 /* Animations for iOS Difference Spotting */

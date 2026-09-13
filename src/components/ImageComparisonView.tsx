@@ -628,84 +628,76 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
           <div className="brass-corner-bracket brass-corner-br pointer-events-none" />
 
-          {/* Top Status Plate / Dossier Header */}
-          <div className="absolute top-2.5 left-2.5 z-25 flex items-center gap-2 pointer-events-none">
-            {isArchiveLensActive ? (
-              <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-amber-300 flex items-center gap-1.5 shadow-xl border border-amber-400/80 font-serif animate-pulse bg-amber-950/95 backdrop-blur-md">
-                <Eye className="w-3.5 h-3.5 text-amber-400" />
-                <span className="tracking-wide">LENTE D'ARCHIVIO: STATO ORIGINALE (1928)</span>
-              </div>
-            ) : (
-              <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-emerald-300 flex items-center gap-1.5 shadow-xl border border-emerald-500/70 font-serif bg-stone-950/90 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                <span className="tracking-wide">SCENA DEL CRIMINE: INDAGA SULLE MANOMISSIONI</span>
-              </div>
-            )}
+          {/* Top Unified HUD Bar: Status on Left, Controls on Right (Non-overlapping) */}
+          <div className="absolute top-1.5 sm:top-2.5 inset-x-1.5 sm:inset-x-3 z-25 flex items-center justify-between gap-1 pointer-events-none">
+            {/* Left Status Badge */}
+            <div className="pointer-events-auto flex items-center gap-1 min-w-0">
+              {isArchiveLensActive ? (
+                <div className="cartouche-plate px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black text-amber-300 flex items-center gap-1 shadow-md border border-amber-400/80 font-serif animate-pulse bg-amber-950/95 backdrop-blur-md">
+                  <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 shrink-0" />
+                  <span className="tracking-wide hidden sm:inline">LENTE D'ARCHIVIO: STATO 1928</span>
+                  <span className="tracking-wide sm:hidden">ORIGINALE</span>
+                </div>
+              ) : (
+                <div className="cartouche-plate px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black text-emerald-300 flex items-center gap-1 shadow-md border border-emerald-500/70 font-serif bg-stone-950/90 backdrop-blur-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping shrink-0" />
+                  <span className="tracking-wide hidden sm:inline">SCENA DEL CRIMINE</span>
+                  <span className="tracking-wide sm:hidden">SABOTAGGIO</span>
+                </div>
+              )}
 
-            {isTimeFrozen && (
-              <div className="px-2.5 py-0.5 bg-cyan-950/90 border border-cyan-400/80 rounded-full text-[10px] font-bold text-cyan-300 flex items-center gap-1 animate-pulse shadow-lg">
-                <span>❄️ Tempo Fermo</span>
-              </div>
-            )}
-          </div>
+              {isTimeFrozen && (
+                <div className="px-1.5 sm:px-2 py-0.5 bg-cyan-950/90 border border-cyan-400/80 rounded-full text-[9px] sm:text-[10px] font-bold text-cyan-300 flex items-center gap-1 animate-pulse shadow-md">
+                  <span>❄️</span>
+                </div>
+              )}
+            </div>
 
-          {/* Top-Right: Atmosphere Diurnal Cycle + Vintage Plate Filter + Quick Switcher to Split View */}
-          <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1.5 flex-wrap justify-end">
-            {/* Diurnal Lighting Mode Pill */}
-            <button
-              onClick={cycleAtmosphere}
-              className="px-2.5 py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-lg text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
-              title={`Ciclo Orario Spedizione: ${atmosphereMode.toUpperCase()} (Clicca per cambiare ora del giorno)`}
-            >
-              {atmosphereMode === 'dawn' && <Sun className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '24s' }} />}
-              {atmosphereMode === 'noon' && <Sun className="w-3.5 h-3.5 text-yellow-300" />}
-              {atmosphereMode === 'dusk' && <Sunset className="w-3.5 h-3.5 text-orange-400" />}
-              {atmosphereMode === 'lantern' && <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />}
-              <span className="hidden sm:inline">
-                {atmosphereMode === 'dawn' && 'Alba 1928'}
-                {atmosphereMode === 'noon' && 'Mezzogiorno'}
-                {atmosphereMode === 'dusk' && 'Crepuscolo'}
-                {atmosphereMode === 'lantern' && 'Lanterna'}
-              </span>
-              <span className="sm:hidden">
-                {atmosphereMode === 'dawn' && 'Alba'}
-                {atmosphereMode === 'noon' && 'Merid.'}
-                {atmosphereMode === 'dusk' && 'Tram.'}
-                {atmosphereMode === 'lantern' && 'Notte'}
-              </span>
-            </button>
+            {/* Right: Atmosphere Diurnal Cycle + Vintage Plate Filter + Quick Switcher to Split View */}
+            <div className="pointer-events-auto flex items-center gap-1 sm:gap-1.5 shrink-0">
+              {/* Diurnal Lighting Mode Pill */}
+              <button
+                onClick={cycleAtmosphere}
+                className="p-1 sm:px-2.5 sm:py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-md text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1 active:scale-95 transition cursor-pointer"
+                title={`Ciclo Orario Spedizione: ${atmosphereMode.toUpperCase()} (Clicca per cambiare ora del giorno)`}
+              >
+                {atmosphereMode === 'dawn' && <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '24s' }} />}
+                {atmosphereMode === 'noon' && <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />}
+                {atmosphereMode === 'dusk' && <Sunset className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />}
+                {atmosphereMode === 'lantern' && <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500 animate-pulse" />}
+                <span className="hidden sm:inline">
+                  {atmosphereMode === 'dawn' && 'Alba'}
+                  {atmosphereMode === 'noon' && 'Mezzogiorno'}
+                  {atmosphereMode === 'dusk' && 'Crepuscolo'}
+                  {atmosphereMode === 'lantern' && 'Lanterna'}
+                </span>
+              </button>
 
-            {/* Historical Plate Filter Pill */}
-            <button
-              onClick={cyclePhotoFilter}
-              className="px-2.5 py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-lg text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
-              title={`Filtro Lastra Archeologica: ${photoFilter.toUpperCase()} (Clicca per cambiare emulsione fotografica)`}
-            >
-              <Camera className="w-3.5 h-3.5 text-amber-300" />
-              <span className="hidden sm:inline">
-                {photoFilter === 'silver' && "Bromuro '28"}
-                {photoFilter === 'cyanotype' && 'Cianotipia'}
-                {photoFilter === 'autochrome' && 'Autocromia'}
-                {photoFilter === 'natural' && 'HD Naturale'}
-              </span>
-              <span className="sm:hidden">
-                {photoFilter === 'silver' && 'Bromuro'}
-                {photoFilter === 'cyanotype' && 'Ciano'}
-                {photoFilter === 'autochrome' && 'Auto.'}
-                {photoFilter === 'natural' && 'HD'}
-              </span>
-            </button>
+              {/* Historical Plate Filter Pill */}
+              <button
+                onClick={cyclePhotoFilter}
+                className="p-1 sm:px-2.5 sm:py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-md text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1 active:scale-95 transition cursor-pointer"
+                title={`Filtro Lastra Archeologica: ${photoFilter.toUpperCase()} (Clicca per cambiare emulsione fotografica)`}
+              >
+                <Camera className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
+                <span className="hidden sm:inline">
+                  {photoFilter === 'silver' && "Bromuro"}
+                  {photoFilter === 'cyanotype' && 'Cianotipia'}
+                  {photoFilter === 'autochrome' && 'Autocromia'}
+                  {photoFilter === 'natural' && 'HD'}
+                </span>
+              </button>
 
-            {/* Quick Switcher to Split View */}
-            <button
-              onClick={() => setViewMode(v => (v === 'crime_scene' ? 'split' : 'crime_scene'))}
-              className="px-2.5 py-1 rounded-full bg-amber-950/90 hover:bg-amber-900 text-amber-200 border border-amber-500/70 shadow-lg text-[10px] sm:text-xs font-serif font-bold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
-              title="Passa a Vista Doppia Confronto (A / B)"
-            >
-              <Layers className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Vista Doppia (A/B)</span>
-              <span className="sm:hidden">A/B</span>
-            </button>
+              {/* Quick Switcher to Split View */}
+              <button
+                onClick={() => setViewMode(v => (v === 'crime_scene' ? 'split' : 'crime_scene'))}
+                className="px-2 sm:px-2.5 py-1 rounded-full bg-amber-950/90 hover:bg-amber-900 text-amber-200 border border-amber-500/70 shadow-md text-[9px] sm:text-xs font-serif font-bold flex items-center gap-1 active:scale-95 transition cursor-pointer"
+                title="Passa a Vista Doppia Confronto (A / B)"
+              >
+                <Layers className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
+                <span className="text-[9px] sm:text-xs">A/B</span>
+              </button>
+            </div>
           </div>
 
           {/* Zoom & Pan Container */}
@@ -946,15 +938,15 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
             </div>
           </div>
 
-          {/* INTERACTIVE FLOATING TOOLBAR: Lente d'Archivio + Lente d'Ingrandimento + Zoom */}
-          <div className="absolute bottom-3 right-3 z-30 flex flex-col items-end gap-2">
-            <div className="flex items-center gap-2 flex-wrap justify-end">
+          {/* INTERACTIVE FLOATING TOOLBAR: Lente d'Archivio + Lente d'Ingrandimento + Zoom (Compact on mobile) */}
+          <div className="absolute bottom-1.5 sm:bottom-3 right-1.5 sm:right-3 z-30 flex items-center sm:flex-col sm:items-end gap-1 sm:gap-2 pointer-events-auto">
+            <div className="flex items-center gap-1 sm:gap-2">
               {/* Brass Handheld Magnifying Loupe Toggle */}
               <button
                 onClick={toggleLoupe}
-                className={`group relative flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
+                className={`group relative flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-2.5 rounded-xl sm:rounded-2xl border shadow-md sm:shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
                   isLoupeActive
-                    ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
+                    ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_20px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
                     : 'bg-[#211409]/95 hover:bg-[#2e1c0d] border-amber-500/60 text-amber-200 hover:border-amber-400'
                 }`}
                 title="Attiva la Lente d'Ingrandimento Vittoriana in Ottone (2.5x)"
@@ -966,7 +958,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 >
                   <Search className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                 </div>
-                <div className="flex flex-col text-left leading-none">
+                <div className="hidden sm:flex flex-col text-left leading-none">
                   <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
                     <span>{isLoupeActive ? 'Riponi Lente' : 'Lente 2.5×'}</span>
                   </span>
@@ -985,9 +977,9 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 onClick={toggleArchiveLens}
                 onPointerDown={handleLensPointerDown}
                 onPointerUp={handleLensPointerUp}
-                className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
+                className={`group relative flex items-center gap-1.5 p-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border shadow-md sm:shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
                   isArchiveLensActive
-                    ? 'bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
+                    ? 'bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_20px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
                     : 'bg-gradient-to-r from-[#2c1a0e]/95 via-[#3d2513]/95 to-[#2c1a0e]/95 hover:from-[#3a2212] border-amber-500/60 text-amber-200 hover:border-amber-400'
                 }`}
                 title="Tieni premuto, clicca o premi [Spazio] per visualizzare la fotografia originale del 1928"
@@ -1000,11 +992,11 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   {isArchiveLensActive ? (
                     <EyeOff className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-pulse" />
                   ) : (
-                    <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-bounce" />
+                    <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                   )}
                 </div>
 
-                <div className="flex flex-col text-left leading-none">
+                <div className="hidden sm:flex flex-col text-left leading-none">
                   <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
                     <span>{isArchiveLensActive ? 'Torna alla Scena' : "Lente d'Archivio"}</span>
                     <span className="hidden sm:inline-block px-1 py-0.2 rounded bg-black/40 text-[8px] font-mono border border-amber-400/40">
@@ -1023,17 +1015,17 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
             </div>
 
             {/* Floating Minimal Zoom Controls */}
-            <div className="flex items-center gap-1 bg-[#1a0f07]/90 backdrop-blur-md p-1 rounded-full border border-amber-500/40 shadow-xl">
+            <div className="flex items-center gap-0.5 sm:gap-1 bg-[#1a0f07]/90 backdrop-blur-md p-0.5 sm:p-1 rounded-full border border-amber-500/40 shadow-lg">
               <button
                 onClick={handleZoomOut}
                 disabled={scale <= 1}
                 className="p-1 rounded-full hover:bg-stone-800 disabled:opacity-30 text-amber-300 active:scale-90 transition-all cursor-pointer"
                 title="Zoom Indietro"
               >
-                <ZoomOut className="w-3.5 h-3.5" />
+                <ZoomOut className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </button>
 
-              <span className="text-[10px] font-bold px-1 text-amber-200 min-w-[28px] text-center font-mono">
+              <span className="text-[9px] sm:text-[10px] font-bold px-0.5 sm:px-1 text-amber-200 min-w-[24px] sm:min-w-[28px] text-center font-mono">
                 {Math.round(scale * 100)}%
               </span>
 
@@ -1043,7 +1035,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 className="p-1 rounded-full hover:bg-stone-800 disabled:opacity-30 text-amber-300 active:scale-90 transition-all cursor-pointer"
                 title="Zoom Avanti"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
+                <ZoomIn className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </button>
 
               {scale > 1 && (
@@ -1052,7 +1044,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   className="p-1 rounded-full bg-amber-500/30 hover:bg-amber-500/50 text-amber-200 active:scale-90 transition-all cursor-pointer"
                   title="Reimposta (100%)"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </button>
               )}
             </div>
@@ -1146,8 +1138,40 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
         </div>
       )}
 
-      {/* BOTTOM PARCHMENT DOSSIER TRAY (RESPONSIVE ADAPTING TO ANY NUMBER OF DIFFERENCES) */}
-      <div className="w-full shrink-0 bg-gradient-to-r from-[#170e07] via-[#24160a] to-[#170e07] rounded-xl border border-amber-600/50 p-1.5 shadow-xl mt-1 flex flex-col gap-1">
+      {/* MOBILE COMPACT EVIDENCE STRIP (sm:hidden, saves 60px of vertical space) */}
+      <div className="w-full shrink-0 flex sm:hidden items-center justify-between px-2 py-0.5 bg-gradient-to-r from-[#170e07]/90 via-[#24160a]/90 to-[#170e07]/90 rounded-lg border border-amber-600/40 shadow-sm mt-0.5 text-[10px]">
+        <div className="flex items-center gap-1.5 font-serif text-amber-300 font-bold">
+          <span>Prove:</span>
+          <span className="text-amber-100 font-mono bg-amber-500/20 px-1.5 py-0.2 rounded border border-amber-500/30">
+            {foundDifferenceIds.length}/{differences.length}
+          </span>
+        </div>
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 max-w-[65%]">
+          {differences.map((diff, index) => {
+            const isFound = foundDifferenceIds.includes(diff.id);
+            return (
+              <button
+                key={diff.id}
+                type="button"
+                onClick={() => {
+                  if (isFound) setInspectingDiff(diff);
+                }}
+                className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-mono transition-all ${
+                  isFound
+                    ? 'bg-amber-400 text-stone-950 font-bold shadow-sm ring-1 ring-amber-200 cursor-pointer active:scale-95'
+                    : 'bg-stone-900 border border-stone-700 text-stone-500'
+                }`}
+                title={isFound ? `${diff.name} (Tocca per ispezionare)` : `Prova #${index + 1}`}
+              >
+                {isFound ? '✓' : index + 1}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* DESKTOP / TABLET RICH PARCHMENT TRAY (hidden sm:flex) */}
+      <div className="hidden sm:flex w-full shrink-0 bg-gradient-to-r from-[#170e07] via-[#24160a] to-[#170e07] rounded-xl border border-amber-600/50 p-1.5 shadow-xl mt-1 flex-col gap-1">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 font-serif">
