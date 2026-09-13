@@ -317,25 +317,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_A.jpg?v=2'
       : isLevelEightyOne
-      ? '/levels/stage9_lvl81_A.jpg'
+      ? '/levels/stage9_lvl81_A.jpg?v=2'
       : isLevelEightyTwo
-      ? '/levels/stage9_lvl82_A.jpg'
+      ? '/levels/stage9_lvl82_A.jpg?v=2'
       : isLevelEightyThree
-      ? '/levels/stage9_lvl83_A.jpg'
+      ? '/levels/stage9_lvl83_A.jpg?v=2'
       : isLevelEightyFour
-      ? '/levels/stage9_lvl84_A.jpg'
+      ? '/levels/stage9_lvl84_A.jpg?v=2'
       : isLevelEightyFive
-      ? '/levels/stage9_lvl85_A.jpg'
+      ? '/levels/stage9_lvl85_A.jpg?v=2'
       : isLevelEightySix
-      ? '/levels/stage9_lvl86_A.jpg'
+      ? '/levels/stage9_lvl86_A.jpg?v=2'
       : isLevelEightySeven
-      ? '/levels/stage9_lvl87_A.jpg'
+      ? '/levels/stage9_lvl87_A.jpg?v=2'
       : isLevelEightyEight
-      ? '/levels/stage9_lvl88_A.jpg'
+      ? '/levels/stage9_lvl88_A.jpg?v=2'
       : isLevelEightyNine
-      ? '/levels/stage9_lvl89_A.jpg'
+      ? '/levels/stage9_lvl89_A.jpg?v=2'
       : isLevelNinety
-      ? '/levels/stage9_lvl90_A.jpg'
+      ? '/levels/stage9_lvl90_A.jpg?v=2'
       : isLevelNinetyOne
       ? '/levels/stage10_lvl91_A.jpg'
       : isLevelNinetyTwo
@@ -600,25 +600,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighty
       ? '/levels/stage8_lvl80_B.jpg?v=2'
       : isLevelEightyOne
-      ? '/levels/stage9_lvl81_B.jpg'
+      ? '/levels/stage9_lvl81_B.jpg?v=2'
       : isLevelEightyTwo
-      ? '/levels/stage9_lvl82_B.jpg'
+      ? '/levels/stage9_lvl82_B.jpg?v=2'
       : isLevelEightyThree
-      ? '/levels/stage9_lvl83_B.jpg'
+      ? '/levels/stage9_lvl83_B.jpg?v=2'
       : isLevelEightyFour
-      ? '/levels/stage9_lvl84_B.jpg'
+      ? '/levels/stage9_lvl84_B.jpg?v=2'
       : isLevelEightyFive
-      ? '/levels/stage9_lvl85_B.jpg'
+      ? '/levels/stage9_lvl85_B.jpg?v=2'
       : isLevelEightySix
-      ? '/levels/stage9_lvl86_B.jpg'
+      ? '/levels/stage9_lvl86_B.jpg?v=2'
       : isLevelEightySeven
-      ? '/levels/stage9_lvl87_B.jpg'
+      ? '/levels/stage9_lvl87_B.jpg?v=2'
       : isLevelEightyEight
-      ? '/levels/stage9_lvl88_B.jpg'
+      ? '/levels/stage9_lvl88_B.jpg?v=2'
       : isLevelEightyNine
-      ? '/levels/stage9_lvl89_B.jpg'
+      ? '/levels/stage9_lvl89_B.jpg?v=2'
       : isLevelNinety
-      ? '/levels/stage9_lvl90_B.jpg'
+      ? '/levels/stage9_lvl90_B.jpg?v=2'
       : isLevelNinetyOne
       ? '/levels/stage10_lvl91_B.jpg'
       : isLevelNinetyTwo
@@ -5341,146 +5341,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelEightyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 40.42, y: 21.76, radius: 5.0, name: "Il Pennone Segnaletico sul Crinale", loreClue: "Un'asta topografica in legno con bandierina triangolare di segnalazione è eretta sul crinale roccioso sopra la cascata." },
-        { id: `lvl${id}_d2`, x: 15.00, y: 69.20, radius: 5.0, name: "La Lanterna a Cherosene sul Montante", loreClue: "Una lanterna ad uragano in ottone brunito è appesa al montante sinistro della passerella." },
-        { id: `lvl${id}_d3`, x: 25.00, y: 70.87, radius: 5.0, name: "La Fune di Canapa sul Parapetto", loreClue: "Una matassa di corda di canapa Manila da arrampicata è arrotolata e fissata alla ringhiera." },
-        { id: `lvl${id}_d4`, x: 35.83, y: 73.10, radius: 5.0, name: "Il Puntone d'Acciaio sotto la Trave", loreClue: "Un puntone diagonale di rinforzo in ferro battuto con rivetti è installato sotto la trave del ponteggio." },
-        { id: `lvl${id}_d5`, x: 48.75, y: 72.54, radius: 5.0, name: "La Sigla NGS 1928 sul Pilone", loreClue: "Sulla superficie del pilone centrale compare la sigla a stencil nero della spedizione: NGS 1928." },
-        { id: `lvl${id}_d6`, x: 59.58, y: 70.87, radius: 5.0, name: "La Palina Metrica a Bande", loreClue: "Una palina geodetica graduata a fasce alterne bianche e nere è appoggiata al parapetto." },
-        { id: `lvl${id}_d7`, x: 70.83, y: 71.99, radius: 4.5, name: "Il Nastro di Seta Rosso sul Montante", loreClue: "Un nastro segnaletico di seta rosso cardinale sventola legato al montante della ringhiera." },
-        { id: `lvl${id}_d8`, x: 81.67, y: 72.54, radius: 4.5, name: "La Targhetta in Bronzo della Passerella", loreClue: "Una piastrina d'ottone con la matricola del costruttore è rivettata al pilastro di destra." },
-        { id: `lvl${id}_d9`, x: 92.50, y: 74.22, radius: 5.0, name: "La Cassa di Spedizione sul Deck", loreClue: "Una cassa di rifornimenti in legno massiccio con rinforzi angolari poggia sulle assi della passerella." },
-        { id: `lvl${id}_d10`, x: 38.33, y: 90.40, radius: 5.0, name: "Il Martello da Geologo sulla Roccia", loreClue: "Un martello da geologo per l'assaggio della roccia basaltica è incastrato nella fessura tra i massi del torrente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 15.33,
+          y: 69.98,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Parapetto di Ferro della Garganta del Diablo",
+          loreClue: "La ringhiera della passerella affacciata sull'abisso delle cascate è stata allentata con chiavi inglesi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 25.25,
+          y: 71.37,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Targa Idrografica della Spedizione Fluviale",
+          loreClue: "La lamina in bronzo con la misurazione della portata d'acqua al minuto è stata divelta."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 49.17,
+          y: 72.94,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Faro di Segnalazione per la Nebbia Fluviale",
+          loreClue: "Il fanale a cherosene per orientare i battelli nella densa nube d'acqua è stato mandato in frantumi."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 41.0,
+          y: 22.27,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa Stagna dei Rilievi Batimetrici",
+          loreClue: "Il baule metallico galleggiante con i grafici delle profondità del baratro è stato forzato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 92.67,
+          y: 74.27,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Gesuita della Missione di San Ignacio",
+          loreClue: "L'emblema con la croce e il sole inciso sul pilastro di roccia basaltica reca un marchio scuro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 38.25,
+          y: 90.07,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Bussola Geologica ad Ago Fluido",
+          loreClue: "Lo strumento nautico da corrente per calcolare le anomalie magnetiche della cascata è scomparso."
+        }
       ];
     } else if (isLevelEightyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "Il Fronte Imponente del Salto San Martín", loreClue: "La possente cortina d'acqua che precipita per settanta metri scompare nel vapore." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Arcobaleno Rifratto tra gli Spruzzi", loreClue: "Il doppio arco di colori generato dalla luce solare sulla nube di goccioline è svanito." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Cengia Rocciosa di Basalto Nero", loreClue: "La sporgenza vulcanica che divide i due salti della cascata appare levigata." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Muro d'Acqua Spumeggiante a Sinistra", loreClue: "La colonna spumosa del getto laterale è stata sostituita da roccia asciutta." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "Il Bagliore del Sole Filtrante nella Nebbia", loreClue: "Il raggio dorato che squarcia il pulviscolo acqueo della gola è oscurato." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Parete di Scogliera Ricoperta di Muschio", loreClue: "I morbidi strati di muschio verde smeraldo abbarbicati alla roccia sono assenti." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Gorgo Ribollente alla Base del Salto", loreClue: "I vortici d'acqua biancastra che si formano nel bacino inferiore appaiono calmi." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "I Massi Basaltici Levigati dalla Corrente", loreClue: "I blocchi scuri affioranti tra i flutti spumeggianti sono stati tolti." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Velo di Spruzzi sulla Vegetazione Rivierasca", loreClue: "La rugiada perenne che bagna le felci arboree sul costone roccioso è scomparsa." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Fiume Iguazú a Valle della Cascata", loreClue: "Il corso d'acqua che defluisce impetuoso verso la confluenza appare prosciugato." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Scalinata in Roccia Basaltica del Salto San Martin",
+          loreClue: "I gradini intagliati nel basalto nero costantemente bagnati dalla nebbia presentano fori da mina."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 18.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Taccuino da Campo del Botanico",
+          loreClue: "Le pagine illustrate con le rare orchidee epifite endemiche dell'arcipelago sono state strappate."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statuetta Guaraní dello Spirito del Fiume",
+          loreClue: "L'idolo in legno di cedro consacrato a Tupã e Naipú è stato sottratto dalla cavità nella roccia."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Corda Guida con Moschettoni d'Ottone",
+          loreClue: "Il cavo di sicurezza teso tra i costoni rocciosi per superare i guadi è stato reciso."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassaforte Portatile della Compagnia Fluviale",
+          loreClue: "Lo scrigno blindato contenente le autorizzazioni di sbarco nell'area proibita è stato forzato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio del Serpente d'Acqua Mboi-Tu'i",
+          loreClue: "Il glifo protettivo indigeno sul basamento della cascata è stato profanato con pece nera."
+        }
       ];
     } else if (isLevelEightyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Chioma della Felce Arborea Gigante", loreClue: "La fronda a ombrello della felce preistorica nell'angolo alto è stata rimossa." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Fiore Scarlatto della Passiflora Selvatica", loreClue: "La corolla cremisi della liana fiorita che pende dalla volta vegetale è scomparsa." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Cascatella Segreta nel Cuore della Selva", loreClue: "Il sottile rivolo d'acqua sorgiva che scende tra le rocce umide è prosciugato." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Tronco Secolare Ricoperto di Bromeliacee", loreClue: "Le piante epifite aggrappate alla corteccia muschiosa del grande albero sono svanite." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "L'Orchidea Gialla delle Foreste Subtropicali", loreClue: "I petali dorati del raro fiore nativo dell'Iguazú sono stati cancellati." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Cortina di Liane Pendenti dalla Volta", loreClue: "I fusti flessibili che collegano i rami più alti al sottobosco appaiono recisi." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Le Grandi Foglie a Cuore del Filodendro", loreClue: "Il fitto strato di vegetazione palustre ai piedi della rupe è stato diradato." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Tappeto di Muschio sulla Roccia Vulcanica", loreClue: "La coltre vellutata che trattiene l'umidità sui sassi del torrente è assente." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "I Funghi Fosforescenti del Tronco Caduto", loreClue: "La colonia micotica che punteggia il legno marcescente è scomparsa dal sottobosco." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Pozza Limpida tra le Radici Aeree", loreClue: "Il piccolo specchio d'acqua formato dalle piogge tropicali appare colmato di fango." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Sentiero della Scogliera dell'Isla San Martin",
+          loreClue: "La staccionata in canne di bambù che protegge dal salto nel vuoto è stata abbattuta."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Binocolo Prismatico da Avvistamento",
+          loreClue: "Le lenti da campo con reticolo graduato usate per studiare le aperture nella parete rocciosa sono sparite."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Portale d'Ingresso alla Grotta dei Rondoni",
+          loreClue: "La grata a protezione del rifugio dei rondoni cascatori mostra il lucchetto spezzato con tenaglie."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Lettera del Governatore Coloniale del 1750",
+          loreClue: "Il documento pergamenaceo che intimava l'abbandono delle missioni gesuite è parzialmente bruciato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Medaglione d'Argento della Vergine di Caacupé",
+          loreClue: "La reliquia devozionale lasciata da padre Florian Paucke nel santuario insulare è stata trafugata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Cifra Alchemica sulla Pietra Smeraldo",
+          loreClue: "Un'anomala incisione a forma di spirale che riflette la luce solare sul basalto è stata scheggiata."
+        }
       ];
     } else if (isLevelEightyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Timpano Barocco Scolpito in Arenaria", loreClue: "Il coronamento curvilineo del portale della chiesa dei Gesuiti appare scalpellato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Bassorilievo dell'Angelo Guaraní Musicista", loreClue: "La figura alata intagliata nel pilastro con strumento a corda è svanita." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "La Parasta Angolare in Blocchi di Pietra Rossa", loreClue: "Il cantonale squadrato in pietra locale delle missioni è stato uniformato." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "L'Architrave del Grande Portale d'Ingresso", loreClue: "Il solenne trave orizzontale modanato che sovrasta il vano d'accesso è rimosso." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "Il Fregio a Volute e Motivi Floreali", loreClue: "I rilievi fogliacei d'ispirazione indigena sulla facciata risultano levigati." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Feritoia del Campanile delle Rovine", loreClue: "L'apertura ad arco per la campana che chiamava alla preghiera è stata murata." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "I Gradini del Sagrato in Arenaria Rossa", loreClue: "La gradinata monumentale consumata dai passi degli indigeni è spianata." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Muretto del Chiostro e del Collegio", loreClue: "I resti della corte quadrangolare dove risiedevano i padri gesuiti sono assenti." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "I Blocchi di Muratura a Secco Crollati", loreClue: "I massi squadrati caduti dall'abside durante l'abbandono sono stati rimossi." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Selciato Erboso dell'Antica Piazza d'Armi", loreClue: "I ciuffi d'erba che crescono tra i conci del cortile centrale sono livellati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Trave Sospesa della Passerella Superiore",
+          loreClue: "Il supporto in legno duro di quebracho Colorado che sostiene l'impalcato è stato segato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Filo di Rinvio del Termometro a Massima e Minima",
+          loreClue: "Lo strumento meteorologico appeso al montante della pensilina è stato strappato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Contenitore Ermetico di Mappe Idrografiche",
+          loreClue: "Il tubo cilindrico in zinco contenente i rilievi delle secche e delle rapide è stato svuotato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Bauletto degli Attrezzi dei Pionieri del Parco",
+          loreClue: "La cassetta con martelli e zeppe per la manutenzione dei pontili è stata scassinata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Lo Schizzo a Matita dell'Arco dell'Iride",
+          loreClue: "Il rilievo ottico della diffrazione della luce tra i vapori d'acqua è stato lacerato a metà."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Simbolo Astrologico dell'Acquario sulla Balustra",
+          loreClue: "L'incisione esoterica lasciata dal Professor Bellini durante la prima spedizione è stata deturpata."
+        }
       ];
     } else if (isLevelEightyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "Il Salto dei Tre Moschettieri sullo Sfondo", loreClue: "La triplice cascata che precipita con fragore è nascosta da una cortina di nebbia." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Arcobaleno Completo sopra il Gommone", loreClue: "L'arco iris a semicerchio che incornicia la prua dell'imbarcazione è svanito." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Parete di Basalto Verticale a Destra", loreClue: "Il costone roccioso lavico esposto alla furia delle acque appare appiattito." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Tubolare Arancione del Gommone d'Avventura", loreClue: "Il fianco pneumatico ad alta visibilità del battello è stato decolorato." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "I Giubbotti di Salvataggio dei Passeggeri", loreClue: "I salvagenti gialli e arancioni indossati dagli esploratori a bordo sono scomparsi." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Scia Spumeggiante dei Motori Fuoribordo", loreClue: "I turbini d'acqua sollevati dalle eliche nella risalita della corrente sono appiattiti." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Faro di Prora della Barca di Salvataggio", loreClue: "Il proiettore nautico stagno installato sul rollbar è stato rimosso." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "La Matassa di Cime d'Ormeggio a Prua", loreClue: "La corda arancione da traino fissata alla bitta della tolda scompare dalla vista." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Lo Schiaffo d'Acqua Polverizzata sulla Chiglia", loreClue: "La coltre di gocce che investe i turisti in primo piano è assente." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "La Corrente Turbine del Fiume Inferiore", loreClue: "Le rapide turbolente che scorrono attorno alla passerella sono uniformate." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Banchina d'Attracco dei Battelli a Motore",
+          loreClue: "I parabordi e le gallocce d'ormeggio della stazione inferiore sono stati sradicati dal cemento."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 18.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Ancora di Fiume in Ghisa della Lancia da Salvataggio",
+          loreClue: "L'ancorotto a quattro marre indispensabile per mantenere la barca nelle correnti è scomparso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Cofanetto delle Bussole Topografiche Guaraní",
+          loreClue: "La scatola di palissandro con aghi magnetici immersi in olio è stata aperta con un piede di porco."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Carta Cifrata della Spedizione Fawcett",
+          loreClue: "Il foglio di taccuino attribuito al celebre esploratore con le coordinate del salto è bruciato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Segnale d'Allarme della Stazione Idrometrica",
+          loreClue: "La campana di bronzo che avvertiva delle piene improvvise del Paranà è stata staccata dal giogo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Insegna Oscura Tracciata con Sangue di Drago",
+          loreClue: "Il simbolo della Mano Oscura dipinto con la resina rossa dell'albero indigeno compare sulla chiglia."
+        }
       ];
     } else if (isLevelEightySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Confluenza tra il Fiume Iguazú e il Paraná", loreClue: "Il punto d'incontro delle acque dai due diversi colori scompare all'orizzonte." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Obelisco Tripartito di Pietra Dipinta", loreClue: "Il cippo confinario con i colori nazionali al vertice del belvedere è rimosso." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Costa Brasiliana sulla Riva Opposta", loreClue: "La fitta scarpata verde del parco brasiliano appare priva di vegetazione." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Molo d'Ormeggio dei Traghetti Fluviali", loreClue: "La banchina d'imbarco per il passaggio tra le nazioni è stata cancellata." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Targa in Bronzo dell'Hito Tres Fronteras", loreClue: "L'iscrizione commemorativa dell'amicizia tra i tre popoli è stata scalpellata." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Fusto del Lampione Panoramico della Terrazza", loreClue: "Il palo d'illuminazione in ferro battuto che orna il piazzale è scomparso." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Ringhiera di Protezione a Strapiombo", loreClue: "La balaustra metallica che protegge i visitatori sul belvedere è assente." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "La Panchina in Pietra del Piazzale Belvedere", loreClue: "Il sedile affacciato sulla gola dei due fiumi è stato rimosso." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Bandiera Nazionale sul Pennone", loreClue: "Il vessillo che sventola alla brezza del fiume scompare dall'asta." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Pavimento in Porfido del Piazzale Panoramico", loreClue: "I ciottoli geometrici della piazza monumentale risultano spianati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Ponteccio di Legno davanti al Salto Bossetti",
+          loreClue: "L'impalcatura per i rilievi fotografici a lunga posa è stata sbilanciata e parzialmente smantellata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Teca Sigillata dei Campioni Botanici",
+          loreClue: "Il contenitore di vetro rinforzato con specie sconosciute di muschi fosforescenti è stato scassinato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Amuleti Guaraní a Forma di Giaguaro d'Ossidiana",
+          loreClue: "Il prezioso talismano del dio Kurupi protettore della selva è stato rubato dalla nicchia fluviale."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Registro delle Portate delle Due Sorelle",
+          loreClue: "Il bollettino idrologico che comparava i flussi delle due cascate parallele è stato macchiato d'inchiostro."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Torcia a Vento da Esplorazione Notturna",
+          loreClue: "Il fanale in rame a pressione d'aria è stato scagliato contro la parete di roccia."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Tatuaggio Sacro Inciso sulla Falesia Verde",
+          loreClue: "Il motivo a zig-zag dei fulmini celesti inciso dai primi abitanti è stato sfigurato."
+        }
       ];
     } else if (isLevelEightySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "L'Arcata Centrale della Cattedrale di Trinidad", loreClue: "Il grande arco trionfale della navata crollata appare murato a filo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Campanile a Torre in Pietra Arenaria", loreClue: "La torre campanaria che dominava la valle del Paraná è scomparsa." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "La Nicchia Votiva degli Angeli Musicisti", loreClue: "L'edicola scolpita con putti che suonano il clavicembalo è stata raschiata." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Portico della Cripta Sotterranea", loreClue: "L'accesso a volta che conduceva ai sepolcri dei missionari è occluso." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Colonna Flautata con Capitello Barocco", loreClue: "Il fusto cilindrico con scanalature dell'altare maggiore è stato asportato." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Pilastra della Sagrestia Monumentale", loreClue: "Il pilastro di sostegno che delimitava le stanze dei paramenti sacri è svanito." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Il Pavimento a Grandi Lastre di Pietra", loreClue: "I massi sagomati che formavano il pavimento della navata centrale sono spianati." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Fregio della Trabeazione con Rilievi Sacri", loreClue: "La modanatura con foglie d'acanto e simboli eucaristici è piallata." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "I Gradini del Presbiterio dell'Altare", loreClue: "La rampa di tre scalini che elevava il sacerdote durante i riti è rimossa." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "La Base del Battistero in Marmo Locale", loreClue: "Il piedistallo ottagonale della vasca battesimale dei Guaraní è assente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Trappola Fotografica per la Fauna Notturna",
+          loreClue: "Il congegno meccanico a scatto con magnesio per immortalare il giaguaro è stato sventrato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Machete Coloniale con Manico d'Osso",
+          loreClue: "La pesante lama d'acciaio usata per aprirsi il cammino nella fitta vegetazione è sparita dal fodero."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa delle Scorte di Siero Antiofidico",
+          loreClue: "La farmacia da campo metallica con gli antidoti contro il veleno delle vipere yarará è stata forzata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Foglio di Erbario con la Foglia d'Oro d'Iguazú",
+          loreClue: "La pressa botanica con il reperto vegetale a pigmentazione aurea è stata saccheggiata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Cippo di Confine della Missione della Selva",
+          loreClue: "La pietra miliare che delimitava la riduzione gesuita è stata rovesciata nel fango."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Marca di Catrame sui Tronchi di Guatambú",
+          loreClue: "Il contrassegno della Mano Oscura impresso con catrame vegetale per guidare i mercenari nella foresta."
+        }
       ];
     } else if (isLevelEightyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "La Cascata Frontale del Salto Bossetti", loreClue: "Il violento getto d'acqua che si getta nel vuoto a picco appare interrotto." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Muro di Roccia Nera Bagnato dagli Spruzzi", loreClue: "La parete basaltica lucida per l'acqua perenne risulta opaca e asciutta." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Nube di Vapore d'Acqua del Bacino", loreClue: "La nube perenne che si alza come fumo dalla base del salto è scomparsa." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Parapetto in Grigliato Zincato del Ponte", loreClue: "La ringhiera di sicurezza della passerella a sbalzo è stata tolta." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "I Bulloni Strutturali della Passerella Sospesa", loreClue: "I giunti metallici che ancorano il camminamento alla falesia sono svaniti." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "Il Montante Principale del Balcone Panoramico", loreClue: "La trave d'acciaio che sorregge la terrazza sopra il baratro è assente." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "I Ciuffi di Felce abbarbicati al Trave", loreClue: "Le piante nane che crescono sul metallo umido della passerella sono tolte." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Riflesso Argenteo dell'Acqua Spumosa", loreClue: "I bagliori metallici prodotti dai flutti contro i pilastri sono attenuati." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Cassa dei Rifiuti per i Parchi Nazionali", loreClue: "Il contenitore verde mimetico per i visitatori sul ponte è stato rimosso." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Camminamento in Doghe Antiscivolo", loreClue: "Le fessure drenanti della piattaforma calpestabile appaiono livellate." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Canoa Tradizionale Monossile Guaraní",
+          loreClue: "L'imbarcazione ricavata da un unico tronco di timbó ormeggiata sulla riva calma è stata manomessa."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Pagaia Rituale Intarsiata di Madreperla",
+          loreClue: "Il remo sacro usato durante le cerimonie delle piene è stato rubato dalla prua."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Forziere di Rifornimento della Spedizione Bellini",
+          loreClue: "La cassa metallica con viveri ed esplosivi da scavo mostra le cerniere strappate."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rilievo delle Correnti del Delta Superiore",
+          loreClue: "La carta topografica con le secche e i canali navigabili verso la cascata è stata tagliata con un pugnale."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Palo d'Idrometro Graduato del Porto di Salto",
+          loreClue: "L'asta di misurazione del livello fluviale è stata scalzata e spezzata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Disco Solare Indigeno Dipinto sulla Roccia",
+          loreClue: "La raffigurazione del dio Kuarahy che sorge sul fiume è stata coperta con fango acido."
+        }
       ];
     } else if (isLevelEightyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Punta Rossa del Becco del Tucano Toco", loreClue: "L'estremità cremisi del possente becco ricurvo è stata scolorita." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Macchia Nera Ovale sulla Mandibola", loreClue: "Il caratteristico ovale scuro che orna il becco arancione è scomparso." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Collare di Piume Bianche sul Petto", loreClue: "La candida bavetta piumata che contrasta con il corpo nero è assente." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "L'Occhio Cerchiato di Pelle Azzurra e Arancio", loreClue: "Il vivido anello perioculare celeste e giallo del volatile è sbiadito." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Il Piumaggio Nero Lucido dell'Ala Ripiegata", loreClue: "I riflessi corvini delle remiganti dell'ala sono stati uniformati." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Sottocoda Rosso Fiammante dell'Uccello", loreClue: "Le penne scarlatte sotto la coda del tucano sono state ingrigite." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "I Piedi Zigodattili con Artigli sulla Corteccia", loreClue: "Le zampe grigie che stringono saldamente il ramo sono cancellate." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Ramo Tropicale con Fiori d'Hibiscus", loreClue: "Il ramo nodoso costellato di boccioli esotici su cui posa è privo di fiori." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "I Frutti Tropicali della Pianta del Sottobosco", loreClue: "Le bacche rosse selvatiche di cui si nutre il tucano sono state rimosse." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Foglia di Palma Sfrangiata dal Vento", loreClue: "La fronda a ventaglio che fa da sfondo al ritratto naturalistico è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Arco in Pietra Arenaria Rossa della Riduzione Gesuita",
+          loreClue: "Il portale monumentale della chiesa diroccata sepolta dalle liane ha la chiave di volta crepata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Campana di Bronzo Fusa nelle Fonderie delle Missioni",
+          loreClue: "La pesante campana liturgica del 1720 con iscrizioni in latino e guaraní è stata abbattuta."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calice Liturgico d'Oro con Rubini del Paraguay",
+          loreClue: "Il sacro vaso nascosto dai padri prima dell'espulsione è stato asportato dal tabernacolo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cripta Sotto l'Altare Maggiore Scassinata",
+          loreClue: "I gradini d'accesso al sepolcro dei padri missionari mostrano le lastre sollevate con argani."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Manoscritto del Dizionario Spagnolo-Guaraní di Ruiz de Montoya",
+          loreClue: "Il volume compilato a mano con la traduzione dei miti sulla città nascosta è lacerato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Trigramma IHS Deturpato sul Frontone",
+          loreClue: "Il sacro monogramma gesuita scolpito sulla trabeazione della facciata è stato eroso con acido solforico."
+        }
       ];
     } else if (isLevelNinety) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Vortice Centrale della Gola del Diavolo", loreClue: "L'abisso profondo ottantadue metri dove convergono quattordici salti è velato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "L'Immenso Arcobaleno Circolare sul Baratro", loreClue: "L'arcobaleno a tutto tondo che fluttua sopra il canyon d'acqua è scomparso." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Balcone Panoramico Finale Affacciato sul Salto", loreClue: "La terrazza panoramica sospesa nel vuoto della cascata è stata rimossa." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Getto di Pulviscolo Sollevato a Cento Metri", loreClue: "La colossale colonna d'acqua nebulizzata che sale al cielo è assente." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Falesia Basaltica a Mezzaluna del Canyon", loreClue: "Il gigantesco anfiteatro roccioso che racchiude la gola appare appiattito." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "Il Volo dei Rondoni delle Cascate (Cypseloides)", loreClue: "I piccoli uccelli che nidificano dietro il muro d'acqua sono svaniti dal cielo." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Il Parapetto Finale della Piattaforma Belveder", loreClue: "La ringhiera d'acciaio terminale dove si accalcano gli sguardi è tolta." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Luce Dorata del Tramonto sulle Masse d'Acqua", loreClue: "I riflessi ambrati del sole calante sulla schiuma della gola sono spenti." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "I Getti Secondari del Salto Floriano", loreClue: "Le cascate laterali che alimentano il bacino sono state prosciugate." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "La Passerella a Pilastri che Guida al Belvedere", loreClue: "Il lungo ponte pedonale che attraversa le isole del fiume è scomparso." },
-      ];
-    } else if (isStageNine) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 40.42, y: 21.76, radius: 5.0, name: "Il Pennone Segnaletico sul Crinale", loreClue: "Un'asta topografica in legno con bandierina triangolare di segnalazione è eretta sul crinale roccioso sopra la cascata." },
-        { id: `lvl${id}_d2`, x: 15.00, y: 69.20, radius: 5.0, name: "La Lanterna a Cherosene sul Montante", loreClue: "Una lanterna ad uragano in ottone brunito è appesa al montante sinistro della passerella." },
-        { id: `lvl${id}_d3`, x: 25.00, y: 70.87, radius: 5.0, name: "La Fune di Canapa sul Parapetto", loreClue: "Una matassa di corda di canapa Manila da arrampicata è arrotolata e fissata alla ringhiera." },
-        { id: `lvl${id}_d4`, x: 35.83, y: 73.10, radius: 5.0, name: "Il Puntone d'Acciaio sotto la Trave", loreClue: "Un puntone diagonale di rinforzo in ferro battuto con rivetti è installato sotto la trave del ponteggio." },
-        { id: `lvl${id}_d5`, x: 48.75, y: 72.54, radius: 5.0, name: "La Sigla NGS 1928 sul Pilone", loreClue: "Sulla superficie del pilone centrale compare la sigla a stencil nero della spedizione: NGS 1928." },
-        { id: `lvl${id}_d6`, x: 59.58, y: 70.87, radius: 5.0, name: "La Palina Metrica a Bande", loreClue: "Una palina geodetica graduata a fasce alterne bianche e nere è appoggiata al parapetto." },
-        { id: `lvl${id}_d7`, x: 70.83, y: 71.99, radius: 4.5, name: "Il Nastro di Seta Rosso sul Montante", loreClue: "Un nastro segnaletico di seta rosso cardinale sventola legato al montante della ringhiera." },
-        { id: `lvl${id}_d8`, x: 81.67, y: 72.54, radius: 4.5, name: "La Targhetta in Bronzo della Passerella", loreClue: "Una piastrina d'ottone con la matricola del costruttore è rivettata al pilastro di destra." },
-        { id: `lvl${id}_d9`, x: 92.50, y: 74.22, radius: 5.0, name: "La Cassa di Spedizione sul Deck", loreClue: "Una cassa di rifornimenti in legno massiccio con rinforzi angolari poggia sulle assi della passerella." },
-        { id: `lvl${id}_d10`, x: 38.33, y: 90.40, radius: 5.0, name: "Il Martello da Geologo sulla Roccia", loreClue: "Un martello da geologo per l'assaggio della roccia basaltica è incastrato nella fessura tra i massi del torrente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL NONO SIGILLO: Il Sole d'Oro dei Guaraní con Smeraldo di Naipú",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 9: Il radioso disco solare in oro massiccio e smeraldo amazzonico! Trovato nella grotta segreta dietro la cortina della Garganta del Diablo, orienta l'azimut direttamente verso l'altopiano delle Linee di Nazca."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Naos Ipogea Dietro il Velo delle Cascate",
+          loreClue: "Il santuario rupestre celato dal ruggito delle acque per secoli è stato profanato dai cospiratori."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele Basaltica con la Mappa Stellare del Sudamerica",
+          loreClue: "La lastra millenaria con le costellazioni della Croce del Sud che guidano a Machu Picchu è spezzata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Occhio della Mano Oscura Inciso sul Basalto",
+          loreClue: "Il simbolo necromantico della confraternita è stato dipinto a sangue sulla parete della cripta."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere Ceremoniale in Rame Nativo",
+          loreClue: "Il tripode sacro per i fumi d'incenso d'araucaria è stato capovolto sul pavimento allagato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Prisma di Cristallo di Rocca dei Sacerdoti del Sole",
+          loreClue: "Lo strumento ottico che rifletteva la luce del tramonto creando arcobaleni sotterranei è stato trafugato."
+        }
       ];
     } else if (isLevelNinetyOne) {
       diffsForLevel = [
