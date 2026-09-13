@@ -167,7 +167,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelFive
       ? '/levels/stage1_lvl5_A.jpg?v=2'
       : isLevelSix
-      ? '/levels/stage1_lvl6_A.jpg'
+      ? '/levels/stage1_lvl6_A.jpg?v=2'
       : isLevelSeven
       ? '/levels/stage1_lvl7_A.jpg'
       : isLevelEight
@@ -450,7 +450,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelFive
       ? '/levels/stage1_lvl5_B.jpg?v=2'
       : isLevelSix
-      ? '/levels/stage1_lvl6_B.jpg'
+      ? '/levels/stage1_lvl6_B.jpg?v=2'
       : isLevelSeven
       ? '/levels/stage1_lvl7_B.jpg'
       : isLevelEight
@@ -1014,16 +1014,60 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelSix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 28.17, y: 51.34, radius: 3.5, name: "La Manopola di Fuoco del Telescopio in Ottone", loreClue: "La grande rotella zigrinata in ottone con incisione '01' per la messa a fuoco del telescopio principale è assente, mostrando solo la tenda in lino." },
-        { id: `lvl${id}_d2`, x: 24.67, y: 34.26, radius: 3.5, name: "La Vite a Farfalla del Collare del Cercatore", loreClue: "La vite a farfalla in ottone che serra l'anello del cannocchiale cercatore è scomparsa, lasciando la ghiera liscia." },
-        { id: `lvl${id}_d3`, x: 37.08, y: 29.02, radius: 3.5, name: "Il Raggio Radiale del Cerchio Graduato a Ore 12", loreClue: "La razza radiale in ottone a ore 12 che unisce il mozzo alla corona graduata è assente rivelando il corpo nero del tubo." },
-        { id: `lvl${id}_d4`, x: 56.00, y: 59.49, radius: 3.5, name: "Il Cappuccio di Fermo dell'Asse di Declinazione", loreClue: "Il cappuccio sagomato in ottone all'estremità dell'asta dei contrappesi è stato rimosso senza alterare il calcare della parete." },
-        { id: `lvl${id}_d5`, x: 56.50, y: 27.46, radius: 3.5, name: "La Guglia Terminale della Chiesa Gotica", loreClue: "Il pinnacolo acuto e la croce in pietra che sormontano la torre gotica visibile nel cielo crepuscolare sono assenti." },
-        { id: `lvl${id}_d6`, x: 65.67, y: 36.61, radius: 3.5, name: "La Maniglia in Ferro del Montante della Finestra", loreClue: "La maniglia a cricchetto in ferro battuto che chiude l'anta della bifora è stata rimossa dal montante verticale." },
-        { id: `lvl${id}_d7`, x: 69.58, y: 64.17, radius: 3.5, name: "La Cravatta in Seta dell'Astronomo", loreClue: "La cravatta in seta dell'astronomo appare in un elegante blu notte Oxford invece che nel bordeaux originario." },
-        { id: `lvl${id}_d8`, x: 78.75, y: 41.29, radius: 3.5, name: "Il Puntale dell'Asse Polare della Sfera Armillare", loreClue: "Il puntale tornito in ottone che corona l'anello meridiano della sfera armillare celeste è stato rimosso." },
-        { id: `lvl${id}_d9`, x: 82.33, y: 69.20, radius: 3.5, name: "La Catenella a Perline della Lampada Ministeriale", loreClue: "La catenella a perline in ottone che pende sotto il paralume in vetro verde smeraldo è scomparsa da sopra le dita dello studioso." },
-        { id: `lvl${id}_d10`, x: 89.25, y: 10.04, radius: 3.5, name: "Il Pinnacolo a Urna in Mogano della Pendola", loreClue: "L'urna intagliata in legno di mogano sul timpano spezzato dell'orologio regolatore a parete è stata rimossa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 79.71,
+          y: 51.00,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Sfera Armillare in Ottone",
+          loreClue: "Il prezioso strumento astronomico a cerchi concentrici per il calcolo delle coordinate equatoriali è stato asportato dal tavolino."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 94.08,
+          y: 73.77,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "I Registri delle Osservazioni sulla Scrivania",
+          loreClue: "I fascicoli con i calcoli dell'azimut stellare e le tabelle di declinazione sono stati sottratti dalla scrivania."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.50,
+          y: 62.83,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Lampada Ministeriale Spenta",
+          loreClue: "La lampada da lavoro con paralume in vetro verde è stata spenta dagli intrusi per occultare la loro fuga nel crepuscolo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.71,
+          y: 32.98,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Pendolo d'Ottone dell'Orologio a Parete",
+          loreClue: "Il disco oscillante in ottone del regolatore a pendolo astronomico è stato smontato per falsare il calcolo del tempo sidereo."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 28.00,
+          y: 51.34,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Manopola di Fuoco del Telescopio",
+          loreClue: "La manopola micrometrica in ottone per la messa a fuoco del rifrattore è stata svitata dal tubo ottico."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 65.54,
+          y: 35.77,
+          radius: 5.5,
+          clueType: 'sabotage',
+          name: "La Maniglia in Ferro della Bifora Gotica",
+          loreClue: "La maniglia a cricchetto in ferro battuto che bloccava l'anta della finestra è stata scardinata per consentire l'accesso."
+        },
       ];
     } else if (isLevelSeven) {
       diffsForLevel = [

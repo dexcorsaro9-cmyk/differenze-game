@@ -47,10 +47,10 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   },
   6: {
     title: "L'Osservatorio di Radcliffe",
-    subtitle: "Torre delle Stelle di Oxford",
-    prologue: "Orienta il telescopio riflettore per ricalcolare l'azimut stellare riportato nel manoscritto rispetto all'equinozio di primavera.",
-    resolution: "I calcoli corretti confermano una deviazione magnetica di 3 gradi est: il punto di convergenza terrestre è l'ossario di Parigi.",
-    unlockedSecret: "'Gli Inca calcolavano il movimento dell'ammasso delle Pleiadi con una precisione sovrapponibile a quella dei nostri orologi da marina.'",
+    subtitle: "Torre delle Stelle di Oxford • Scena dell'Intrusione",
+    prologue: "La Mano Oscura ha scalato la torre dell'osservatorio all'imbrunire per sabotare la triangolazione celeste della rotta verso Parigi. Gli emissari hanno forzato la bifora gotica, bloccato la pendola e rubato la sfera armillare con i rilievi stellari. Trova le 6 tracce fisiche della profanazione.",
+    resolution: "Hai recuperato i dati di triangolazione: ricalcolando l'azimut stellare con la deviazione magnetica di 3 gradi est, l'allineamento celeste punta dritto verso l'ossario sotterraneo di Parigi!",
+    unlockedSecret: "'Gli astronomi inca allineavano i templi del sole con l'ammasso delle Pleiadi. Chi ha costruito i sotterranei di Parigi ha seguito le medesime coordinate celesti.' - Quaderno d'osservazione dell'astronomo",
   },
   7: {
     title: "Il Salone dei Carteggi di Christ Church",
