@@ -177,25 +177,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelTen
       ? '/levels/stage1_lvl10_A.jpg?v=2'
       : isLevelEleven
-      ? '/levels/stage2_lvl11_A.jpg'
+      ? '/levels/stage2_lvl11_A.jpg?v=2'
       : isLevelTwelve
-      ? '/levels/stage2_lvl12_A.jpg'
+      ? '/levels/stage2_lvl12_A.jpg?v=2'
       : isLevelThirteen
-      ? '/levels/stage2_lvl13_A.jpg'
+      ? '/levels/stage2_lvl13_A.jpg?v=2'
       : isLevelFourteen
-      ? '/levels/stage2_lvl14_A.jpg'
+      ? '/levels/stage2_lvl14_A.jpg?v=2'
       : isLevelFifteen
-      ? '/levels/stage2_lvl15_A.jpg'
+      ? '/levels/stage2_lvl15_A.jpg?v=2'
       : isLevelSixteen
-      ? '/levels/stage2_lvl16_A.jpg'
+      ? '/levels/stage2_lvl16_A.jpg?v=2'
       : isLevelSeventeen
-      ? '/levels/stage2_lvl17_A.jpg'
+      ? '/levels/stage2_lvl17_A.jpg?v=2'
       : isLevelEighteen
-      ? '/levels/stage2_lvl18_A.jpg'
+      ? '/levels/stage2_lvl18_A.jpg?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_A.jpg'
+      ? '/levels/stage2_lvl19_A.jpg?v=2'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_A.jpg'
+      ? '/levels/stage2_lvl20_A.jpg?v=2'
       : isLevelTwentyOne
       ? '/levels/stage3_lvl21_A.jpg'
       : isLevelTwentyTwo
@@ -460,25 +460,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelTen
       ? '/levels/stage1_lvl10_B.jpg?v=2'
       : isLevelEleven
-      ? '/levels/stage2_lvl11_B.jpg'
+      ? '/levels/stage2_lvl11_B.jpg?v=2'
       : isLevelTwelve
-      ? '/levels/stage2_lvl12_B.jpg'
+      ? '/levels/stage2_lvl12_B.jpg?v=2'
       : isLevelThirteen
-      ? '/levels/stage2_lvl13_B.jpg'
+      ? '/levels/stage2_lvl13_B.jpg?v=2'
       : isLevelFourteen
-      ? '/levels/stage2_lvl14_B.jpg'
+      ? '/levels/stage2_lvl14_B.jpg?v=2'
       : isLevelFifteen
-      ? '/levels/stage2_lvl15_B.jpg'
+      ? '/levels/stage2_lvl15_B.jpg?v=2'
       : isLevelSixteen
-      ? '/levels/stage2_lvl16_B.jpg'
+      ? '/levels/stage2_lvl16_B.jpg?v=2'
       : isLevelSeventeen
-      ? '/levels/stage2_lvl17_B.jpg'
+      ? '/levels/stage2_lvl17_B.jpg?v=2'
       : isLevelEighteen
-      ? '/levels/stage2_lvl18_B.jpg'
+      ? '/levels/stage2_lvl18_B.jpg?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_B.jpg'
+      ? '/levels/stage2_lvl19_B.jpg?v=2'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_B.jpg'
+      ? '/levels/stage2_lvl20_B.jpg?v=2'
       : isLevelTwentyOne
       ? '/levels/stage3_lvl21_B.jpg'
       : isLevelTwentyTwo
@@ -1312,133 +1312,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelEleven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 62.08, y: 58.31, radius: 5.5, name: "Il Teschio dell'Iniziato Templare", loreClue: "Il teschio sacro recante l'incisione del crittogramma templare è stato asportato dalla nicchia d'altare." },
-        { id: `lvl${id}_d2`, x: 72.29, y: 81.19, radius: 6.0, name: "Il Piccone da Minatore contro la Parete", loreClue: "L'attrezzo da scavo usato dagli intrusi per violare il muro dell'ossario è stato portato via per non lasciare tracce." },
-        { id: `lvl${id}_d3`, x: 50.00, y: 83.98, radius: 5.5, name: "Il Calice Liturgico Templare", loreClue: "L'antico calice da comunione dell'ordine, contenente residui d'unguento sacro, è svanito dal tavolo d'altare." },
-        { id: `lvl${id}_d4`, x: 59.88, y: 86.50, radius: 4.5, name: "L'Ampolla Alchemica di Reagente", loreClue: "La boccetta di vetro con il reagente di cinabro alchemico è stata sottratta dal banco da lavoro." },
-        { id: `lvl${id}_d5`, x: 54.37, y: 87.89, radius: 4.5, name: "La Fiala Sferica dell'Acido di Dissoluzione", loreClue: "La fiala sferica per corrodere le serrature metalliche della cripta è scomparsa." },
-        { id: `lvl${id}_d6`, x: 19.38, y: 86.50, radius: 6.0, name: "I Rotoli con la Mappa delle Catacombe", loreClue: "Le pergamene con la topografia segreta delle gallerie sotterranee parigine sono state trafugate." },
-        { id: `lvl${id}_d7`, x: 17.29, y: 44.08, radius: 6.0, name: "La Torcia sul Pilastro Sinistro", loreClue: "La torcia accesa a staffa sul pilastro dell'ossario è stata spenta e divelta dal supporto." },
-        { id: `lvl${id}_d8`, x: 75.62, y: 44.64, radius: 6.5, name: "La Torcia Monumentale della Parete Destra", loreClue: "Il braciere a torcia che illuminava il lato destro dell'altare è stato asportato dal muro di pietra." },
-        { id: `lvl${id}_d9`, x: 62.29, y: 33.20, radius: 6.5, name: "L'Incisione Latina sull'Arco", loreClue: "La formula latina 'SECRETA MORTIS APERIUNTUR' incisa a scalpello sull'arco è stata abrasa per celare l'enigma." },
-        { id: `lvl${id}_d10`, x: 55.62, y: 94.64, radius: 5.5, name: "La Mappa Navale Arrotolata sulla Tavola", loreClue: "La carta nautica con le rotte atlantiche della flotta templare è scomparsa dal piano del tavolo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 65.42,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Arazzo della Rosa Templare",
+          loreClue: "Il prezioso drappo ricamato con la rosa a otto punte dei cavalieri è stato staccato dalla parete di boiserie."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 72.29,
+          y: 81.19,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Piccone da Minatore contro la Parete",
+          loreClue: "L'attrezzo da scavo pesante usato dagli infiltrati per forzare l'accesso al pozzo di ventilazione è stato asportato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 55.58,
+          y: 87.95,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Tomo Rilegato in Pelle Nera",
+          loreClue: "L'antico codice miniato dei Templari con le mappe idrauliche della Senna è stato sottratto dal tavolo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 19.33,
+          y: 86.44,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "I Rotoli della Topografia Sotterranea",
+          loreClue: "I rotoli di pergamena con i rilievi delle gallerie sotto Sainte-Geneviève sono scomparsi dal ripiano."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 17.33,
+          y: 44.08,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Torcia sul Pilastro Sinistro",
+          loreClue: "La torcia a staffa in ferro battuto è stata divelta dal pilastro per lasciare il corridoio d'accesso nel buio."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 62.08,
+          y: 58.31,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio con Crittogramma nella Nicchia",
+          loreClue: "Il teschio sacro recante l'incisione del primo glifo parigino è stato asportato dalla nicchia muraria."
+        },
       ];
     } else if (isLevelTwelve) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 14.00, y: 12.50, radius: 4.0, name: "Il Lampadario Sospeso della Navata Sinistra", loreClue: "Il candeliere pensile in bronzo dorato appeso alla volta laterale è scomparso nell'aria." },
-        { id: `lvl${id}_d2`, x: 84.50, y: 12.50, radius: 4.0, name: "Il Lampadario Sospeso della Navata Destra", loreClue: "La lampada monumentale a catene d'ottone calata dall'arco destro è stata smontata." },
-        { id: `lvl${id}_d3`, x: 26.50, y: 64.96, radius: 4.0, name: "La Lampada ad Applique del Pilastro Sinistro", loreClue: "Il braccio portacandele in ferro battuto fissato al pilastro corinzio è stato rimosso." },
-        { id: `lvl${id}_d4`, x: 73.00, y: 64.51, radius: 4.0, name: "La Lampada ad Applique del Pilastro Destro", loreClue: "L'applique liturgica sagomata in bronzo lungo la navata destra non è più ancorata al marmo." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 47.54, radius: 3.5, name: "L'Oculo Dorato della Gloria dell'Altare", loreClue: "Il raggio solare centrale a rilievo dorato nel frontone dell'abside appare colmato in stucco grigio." },
-        { id: `lvl${id}_d6`, x: 35.00, y: 38.50, radius: 4.0, name: "Il Capitello Corinzio dell'Arco Trionfale a Sinistra", loreClue: "Il cespo d'acanto scolpito a forte rilievo sul pilastro d'imposta sinistro è stato levigato." },
-        { id: `lvl${id}_d7`, x: 64.50, y: 38.50, radius: 4.0, name: "Il Capitello Corinzio dell'Arco Trionfale a Destra", loreClue: "Le volute dorate del capitello d'ordine corinzio sulla destra sono state scalpellate via." },
-        { id: `lvl${id}_d8`, x: 34.00, y: 63.50, radius: 3.5, name: "La Statua Apostolica nella Nicchia Sinistra", loreClue: "La figura scultorea in marmo bianco del santo apostolo nella nicchia è scomparsa." },
-        { id: `lvl${id}_d9`, x: 65.50, y: 63.50, radius: 3.5, name: "La Statua Apostolica nella Nicchia Destra", loreClue: "La statua neoclassica in marmo di Carrara sul lato destro del presbiterio è assente." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 65.51, radius: 3.5, name: "La Croce Monumentale dell'Altar Maggiore", loreClue: "Il crocifisso dorato cesellato collocato al centro del tabernacolo monumentale è stato prelevato." },
+        {
+          id: `lvl${id}_d1`,
+          x: 14.00,
+          y: 12.50,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Lampadario Sospeso della Navata Sinistra",
+          loreClue: "Il candeliere pensile in ottone che illuminava l'inizio della linea gnomonica è stato rimosso dalla volta."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 84.50,
+          y: 12.50,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Lampadario Sospeso della Navata Destra",
+          loreClue: "La lampada a sospensione destra è stata smontata per impedire la lettura dell'obelisco all'equinozio."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 26.50,
+          y: 64.96,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "L'Applique in Ferro del Pilastro Sinistro",
+          loreClue: "Il braccio portalampada sul pilastro sinistro è stato divelto dal marmo della cappella."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 73.00,
+          y: 64.51,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "L'Applique in Bronzo del Pilastro Destro",
+          loreClue: "L'applique liturgica in bronzo lungo la navata destra è stata strappata dalla muratura."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 35.00,
+          y: 38.50,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Rilievo del Capitello Corinzio Sinistro",
+          loreClue: "Il cespo d'acanto scolpito a rilievo sul pilastro d'imposta è stato scalpellato per estrarre la pergamena."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.00,
+          y: 65.51,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Croce Monumentale dell'Altar Maggiore",
+          loreClue: "Il crocifisso dorato cesellato collocato al centro del tabernacolo monumentale è stato prelevato."
+        },
       ];
     } else if (isLevelThirteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 8.50, y: 38.50, radius: 4.0, name: "Il Braccio Trasversale della Croce di Ossa", loreClue: "Il braccio orizzontale della croce composta di tibie umane sulla parete sinistra è rimosso." },
-        { id: `lvl${id}_d2`, x: 8.50, y: 72.00, radius: 4.0, name: "Il Piedistallo di Tibie della Croce Sinistra", loreClue: "La base sagomata di ossa sovrapposte sotto la croce murale è stata colmata da ciottoli." },
-        { id: `lvl${id}_d3`, x: 44.00, y: 12.05, radius: 4.0, name: "La Spaccatura nella Volta di Calcare a Sinistra", loreClue: "La profonda fessura tettonica nel banco roccioso della cava sotterranea appare sigillata." },
-        { id: `lvl${id}_d4`, x: 82.00, y: 12.05, radius: 4.0, name: "La Fenditura di Roccia nella Volta a Destra", loreClue: "Il giunto geologico naturale nella volta di calcare lutetiano è uniformato con pietra chiara." },
-        { id: `lvl${id}_d5`, x: 33.00, y: 26.45, radius: 4.0, name: "Il Cranio Superiore della Rotonda a Sinistra", loreClue: "Uno dei teschi posti nella fascia ornamentale superiore è stato sostituito da un blocco di malta." },
-        { id: `lvl${id}_d6`, x: 67.00, y: 26.45, radius: 4.0, name: "Il Cranio Superiore della Rotonda a Destra", loreClue: "Il teschio frontale allineato sul fregio osseo destro è scomparso dalla fila della rotonda." },
-        { id: `lvl${id}_d7`, x: 53.50, y: 60.49, radius: 4.0, name: "Il Teschio Mediano dell'Ossario Centrale", loreClue: "Il cranio incastonato al centro della monumentale catasta di femori è stato asportato." },
-        { id: `lvl${id}_d8`, x: 37.00, y: 89.51, radius: 4.0, name: "Il Cranio Basale della Facciata Sinistra", loreClue: "Il cranio d'angolo al basamento del muro d'ossa è sostituito da frammenti minuti." },
-        { id: `lvl${id}_d9`, x: 63.00, y: 89.51, radius: 4.0, name: "Il Cranio Basale della Facciata Destra", loreClue: "Uno dei grandi teschi alla base del contrafforte osseo a destra è stato rimosso dalla fila." },
-        { id: `lvl${id}_d10`, x: 92.00, y: 35.04, radius: 4.0, name: "Il Teschio Isolato della Parete Destra", loreClue: "Il cranio incassato nel muro di contenimento laterale scompare tra le ossa lunghe compatte." },
+        {
+          id: `lvl${id}_d1`,
+          x: 8.50,
+          y: 71.99,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Basamento di Tibie della Croce Sinistra",
+          loreClue: "La base sagomata di ossa sovrapposte sotto la croce murale è stata colmata di pietrisco per mascherare il passaggio."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 53.50,
+          y: 60.49,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Mediano dell'Ossario Centrale",
+          loreClue: "Il cranio incastonato al centro della monumentale catasta di femori è stato asportato per i simboli incisi."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 92.00,
+          y: 35.04,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio della Parete di Destra",
+          loreClue: "Il cranio incassato nel muro di contenimento laterale è scomparso tra le ossa compatte."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 37.00,
+          y: 89.51,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Cranio Basale della Facciata Sinistra",
+          loreClue: "Il cranio d'angolo al basamento del muro d'ossa è stato rimosso rivelando la botola segreta."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 44.00,
+          y: 12.05,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Fenditura nella Volta di Calcare Sinistra",
+          loreClue: "La fessura nella volta di calcare lutetiano è stata puntellata con cunei di legno per evitare crolli."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 63.00,
+          y: 89.51,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Basale della Facciata Destra",
+          loreClue: "Uno dei grandi teschi alla base del contrafforte osseo a destra è stato rimosso dalla fila."
+        },
       ];
     } else if (isLevelFourteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 87.14, y: 71.46, radius: 5.0, name: "Il Piccone da Scavo Rimosso", loreClue: "Il piccone d'acciaio è scomparso dalla parete: qualcuno è sceso nella cripta prima di noi per forzare il passaggio segreto." },
-        { id: `lvl${id}_d2`, x: 89.14, y: 31.00, radius: 5.0, name: "La Fiamma della Torcia Superiore Spenta", loreClue: "La torcia in alto a destra è spenta: la brezza dal cunicolo ha soffocato il fuoco lasciando il braciere vuoto." },
-        { id: `lvl${id}_d3`, x: 51.84, y: 53.39, radius: 5.0, name: "La Frattura Tettonica sul Pilastro", loreClue: "Una fessura geologica attraversa i conci di pietra del pilastro centrale, segno degli assestamenti dell'antico ossario." },
-        { id: `lvl${id}_d4`, x: 68.66, y: 55.12, radius: 5.0, name: "Il Medaglione Templare accanto al Teschio", loreClue: "Un pesante medaglione di bronzo cesellato con la croce dell'Ordine Templare è posato sulla mensola accanto al teschio." },
-        { id: `lvl${id}_d5`, x: 78.44, y: 57.62, radius: 4.5, name: "Il Sigillo di Pietra sulla Mensola", loreClue: "Un'antica tavoletta votiva in pietra calcarea è stata posata sull'angolo destro della mensola dell'altare." },
-        { id: `lvl${id}_d6`, x: 34.76, y: 70.79, radius: 5.0, name: "Lo Stoppino della Lanterna d'Ottone", loreClue: "La fiamma viva all'interno della lanterna è stata smorzata, diffondendo una fioca luminescenza sul tavolo di pietra." },
-        { id: `lvl${id}_d7`, x: 52.29, y: 85.34, radius: 5.0, name: "La Lente d'Ingrandimento sul Diario", loreClue: "Una lente d'ingrandimento in ottone con impugnatura cesellata è stata adagiata sulle annotazioni di scavo del diario." },
-        { id: `lvl${id}_d8`, x: 26.23, y: 78.82, radius: 5.0, name: "Il Nastro di Seta Cremisi sulle Pergamene", loreClue: "Il rotolo di pergamena è stretto da un elegante nastro di seta rosso cardinalizio anziché dal comune spago grezzo." },
-        { id: `lvl${id}_d9`, x: 70.61, y: 92.54, radius: 5.0, name: "La Bussola Marinaresca d'Ottone sul Tavolo", loreClue: "Una bussola tascabile in ottone con quadrante a rosa dei venti e coperchio aperto è posata davanti alla mappa." },
-        { id: `lvl${id}_d10`, x: 68.16, y: 83.46, radius: 5.0, name: "La Fiala Alchemica Sottratta", loreClue: "La piccola fiala di vetro con tappo di sughero in primo piano è stata prelevata dal gruppo di reagenti chimici." },
+        {
+          id: `lvl${id}_d1`,
+          x: 86.75,
+          y: 73.33,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Piccone da Scavo d'Acciaio",
+          loreClue: "Il pesante piccone d'acciaio appoggiato al muro è stato asportato per sfondare la camera sepolcrale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 89.29,
+          y: 30.64,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Fiamma della Torcia Murale Superiore",
+          loreClue: "La fiamma viva all'interno del braciere di pietra è stata soffocata con un panno umido."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 52.33,
+          y: 86.27,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Lente d'Ingrandimento sul Diario",
+          loreClue: "La lente d'ingrandimento in ottone posata sui fogli di rilievo archeologico è scomparsa dal blocco."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 52.12,
+          y: 53.63,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Medaglione Templare in Bronzo",
+          loreClue: "L'antico medaglione in bronzo con la croce patente templare è stato strappato dalla mensola."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 70.83,
+          y: 92.58,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Bussola Marinaresca d'Ottone",
+          loreClue: "La bussola tascabile in ottone con quadrante a 32 punti è stata sottratta davanti alla mappa."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 26.38,
+          y: 79.19,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Rotolo di Pergamena con Sigillo",
+          loreClue: "Il rotolo di pergamena sigillato da nastro rosso contenente i rilievi delle cripte è stato trafugato."
+        },
       ];
     } else if (isLevelFifteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 10.04, radius: 4.0, name: "Il Cranio Sommitale Sinistro della Muraglia", loreClue: "Il teschio in alto a sinistra lungo la cornice superiore di tibie è stato tolto." },
-        { id: `lvl${id}_d2`, x: 75.00, y: 12.05, radius: 4.0, name: "Il Cranio Sommitale Destro della Muraglia", loreClue: "Il teschio che corona l'estremità destra della balaustra funeraria è scomparso." },
-        { id: `lvl${id}_d3`, x: 49.00, y: 44.98, radius: 4.0, name: "Il Cranio al Centro della Grande Croce", loreClue: "Il teschio centrale all'incrocio dei bracci della croce parietale è svanito nella muratura." },
-        { id: `lvl${id}_d4`, x: 48.50, y: 63.50, radius: 4.0, name: "Il Cranio al Piede della Grande Croce", loreClue: "Il teschio che chiude la parte inferiore del fusto della croce è stato rimosso dalla catasta." },
-        { id: `lvl${id}_d5`, x: 6.50, y: 78.01, radius: 4.0, name: "Il Cranio Inferiore del Contrafforte Sinistro", loreClue: "Il teschio alla base della colonna di contenimento sinistra è sostituito da pietrisco." },
-        { id: `lvl${id}_d6`, x: 65.00, y: 82.03, radius: 4.0, name: "Il Cranio Inferiore della Campata Destra", loreClue: "Il teschio allineato sulla fascia di zoccolatura destra è scomparso rivelando le ossa sottostanti." },
-        { id: `lvl${id}_d7`, x: 85.00, y: 56.47, radius: 4.0, name: "Il Teschio Laterale sulla Fascia Destra", loreClue: "Il cranio che scandisce il ritmo decorativo sul pilastro laterale destro è stato tolto." },
-        { id: `lvl${id}_d8`, x: 7.00, y: 43.53, radius: 4.0, name: "Il Teschio della Fascia di Metà Parete Sinistra", loreClue: "Uno dei teschi sentinella sulla parete laterale sinistra è assente dal muro d'ossa." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 94.98, radius: 4.0, name: "Il Grande Teschio alla Base dell'Ossario", loreClue: "Il cranio posto a terra lungo il basamento monumentale è stato prelevato." },
-        { id: `lvl${id}_d10`, x: 67.50, y: 5.02, radius: 4.0, name: "Il Cranio Mediano del Fregio Superiore", loreClue: "Il teschio incastrato tra le pietre della volta di cava è svanito nel profilo d'ombra." },
+        {
+          id: `lvl${id}_d1`,
+          x: 48.50,
+          y: 63.50,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio al Piede della Grande Croce",
+          loreClue: "Il teschio alla base del fusto della croce monumentale è stato rimosso per celare la chiave di drenaggio."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 49.00,
+          y: 44.98,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio all'Incrocio della Grande Croce",
+          loreClue: "Il cranio centrale all'intersezione dei bracci d'ossa è stato prelevato per i suoi segni rituali."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 7.00,
+          y: 43.53,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio della Fascia Murale Sinistra",
+          loreClue: "Uno dei teschi sentinella sulla parete sinistra dell'ossario è stato asportato dal paramento."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.00,
+          y: 56.47,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio sul Pilastro Laterale Destro",
+          loreClue: "Il teschio della fascia marcapiano destra è scomparso rivelando la fessura della roccia."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 65.00,
+          y: 82.03,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Inferiore della Campata Destra",
+          loreClue: "Il teschio allineato sulla zoccolatura inferiore destra è stato prelevato dagli intrusi."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 75.00,
+          y: 12.05,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Sommitale Destro della Muraglia",
+          loreClue: "Il cranio posto alla sommità del muro d'ossa è stato rimosso svelando l'argano dell'acqua."
+        },
       ];
     } else if (isLevelSixteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 26.50, y: 26.45, radius: 4.0, name: "L'Incisione 'PRINCIPIUM' sulla Stele Sinistra", loreClue: "L'epigrafe scolpita sulla lapide monumentale a sinistra del sarcofago è stata raschiata." },
-        { id: `lvl${id}_d2`, x: 88.00, y: 26.45, radius: 4.0, name: "La Lettera Terminale della Stele Destra", loreClue: "I caratteri romani scolpiti nella pietra della stele funeraria destra sono stati piallati a piombo." },
-        { id: `lvl${id}_d3`, x: 43.00, y: 19.53, radius: 4.0, name: "La Parola 'HOMO' sulla Targa Lapidea", loreClue: "La prima riga del versetto biblico scolpito nella lastra marmorea centrale appare levigata." },
-        { id: `lvl${id}_d4`, x: 53.00, y: 28.46, radius: 4.0, name: "La Parola 'PERTRANSIBIT' sull'Epigrafe", loreClue: "La massima latina 'pertransibit' incisa al centro del monumento scompare dalla lastra." },
-        { id: `lvl${id}_d5`, x: 45.00, y: 35.50, radius: 4.0, name: "La Parola 'AMPLIUS' in Chiusura del Versetto", loreClue: "L'ultima parola dell'ammonimento sepolcrale è scomparsa lasciando il marmo liscio." },
-        { id: `lvl${id}_d6`, x: 10.00, y: 59.49, radius: 4.0, name: "Il Dente d'Incastro Sinistro del Coperchio", loreClue: "La risega lapidea ad angolo retto sul coperchio in pietra del sepolcro è stata smussata." },
-        { id: `lvl${id}_d7`, x: 95.00, y: 59.49, radius: 4.0, name: "Il Dente d'Incastro Destro del Coperchio", loreClue: "Il gradino di battuta del massiccio coperchio monolitico di destra appare complanare." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 76.45, radius: 4.0, name: "L'Iscrizione Funeraria sul Basamento", loreClue: "I caratteri scolpiti sul basamento orizzontale in arenaria del sarcofago sono stati rimossi." },
-        { id: `lvl${id}_d9`, x: 18.50, y: 92.97, radius: 4.0, name: "L'Angolo Sinistro del Basamento a Terra", loreClue: "Lo zoccolo scolpito a gradoni alla base del plinto sinistro risulta piallato a filo terra." },
-        { id: `lvl${id}_d10`, x: 81.50, y: 92.97, radius: 4.0, name: "L'Angolo Destro del Basamento a Terra", loreClue: "Il profilo a gola dello zoccolo d'appoggio destro è sostituito da un concio continuo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.50,
+          y: 92.97,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "L'Angolo Scolpito del Basamento Sinistro",
+          loreClue: "Lo zoccolo a gradoni della base lapidea del sarcofago è stato frantumato con una mazza."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 43.00,
+          y: 19.36,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Targa Marmorea con l'Iscrizione Latina",
+          loreClue: "La formella di marmo con il motto inciso è stata scalpellata per nascondere il messaggio."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 81.50,
+          y: 93.08,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "L'Angolo del Basamento a Terra Destro",
+          loreClue: "Il profilo a gola dello zoccolo d'appoggio destro del sepolcro è stato spianato a filo pavimento."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 95.00,
+          y: 59.43,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Dente d'Incastro del Coperchio Destro",
+          loreClue: "Il risvolto ad angolo retto del massiccio coperchio monolitico è stato tagliato per forzare la tomba."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 26.50,
+          y: 26.40,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Stele Funeraria con Simboli Solari",
+          loreClue: "La lastra incisa con il simbolo solare dell'Ordine è stata staccata dal montante sinistro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 77.29,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "L'Iscrizione Funeraria sul Basamento Centrale",
+          loreClue: "I caratteri romani scolpiti sul basamento orizzontale in arenaria sono stati scalpellati."
+        },
       ];
     } else if (isLevelSeventeen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 50.00, y: 17.52, radius: 4.5, name: "Il Tondo Dorato Centrale del Soffitto", loreClue: "La grande medaglia dorata all'apice del cassettonato a botte è svanita nel fondo azzurro." },
-        { id: `lvl${id}_d2`, x: 34.00, y: 3.46, radius: 4.0, name: "Il Putto Alato in Stucco Sinistro", loreClue: "La scultura in stucco dorato del cherubino alato sulla volta sinistra è stata asportata." },
-        { id: `lvl${id}_d3`, x: 66.00, y: 3.46, radius: 4.0, name: "Il Putto Alato in Stucco Destro", loreClue: "L'angelo in foglia d'oro posato sul cornicione barocco a destra è scomparso dalla composizione." },
-        { id: `lvl${id}_d4`, x: 15.00, y: 67.52, radius: 4.0, name: "Il Ritratto Reale in Arazzo a Sinistra", loreClue: "Il dipinto a olio del sovrano racchiuso nella boiserie sinistra scompare nel fondo cremisi." },
-        { id: `lvl${id}_d5`, x: 85.50, y: 66.52, radius: 4.0, name: "Il Ritratto Reale in Arazzo a Destra", loreClue: "Il ritratto nobiliare del ministro delle finanze nella campata destra è stato rimosso." },
-        { id: `lvl${id}_d6`, x: 3.50, y: 49.55, radius: 4.0, name: "Il Capitello Dorato della Parasta Sinistra", loreClue: "Il sontuoso capitello composito a rilievo d'oro sulla parete d'ingresso è stato tolto." },
-        { id: `lvl${id}_d7`, x: 50.00, y: 46.99, radius: 4.0, name: "Il Raggio Solare del Re Sole nella Volta", loreClue: "Il raggio fiammeggiante in oro massiccio che irradia dal carro di Apollo è stato limato." },
-        { id: `lvl${id}_d8`, x: 23.50, y: 38.50, radius: 4.0, name: "La Cariatide Dorata della Lunetta Sinistra", loreClue: "La figura statuaria di sostegno intagliata a sinistra dell'arcone è assente dalla trabeazione." },
-        { id: `lvl${id}_d9`, x: 77.00, y: 38.50, radius: 4.0, name: "La Cariatide Dorata della Lunetta Destra", loreClue: "La cariatide cesellata con cornucopia sul fregio destro è scomparsa lasciando la mensola vuota." },
-        { id: `lvl${id}_d10`, x: 96.50, y: 67.97, radius: 4.0, name: "Il Fregio ad Arabesco della Vetrata", loreClue: "Il motivo a racemi in ferro dorato alla base della vetrata monumentale è stato rimosso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.50,
+          y: 66.52,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Ritratto Monumentale nella Campata Destra",
+          loreClue: "Il dipinto a olio incorniciato nella boiserie della parete destra è stato asportato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.00,
+          y: 67.52,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Ritratto Storico nella Campata Sinistra",
+          loreClue: "La tela seicentesca con l'effigie del custode delle catacombe è scomparsa dal pannello."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.25,
+          y: 17.52,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tondo Dorato Centrale del Soffitto",
+          loreClue: "Il grande medaglione dorato scolpito sul vertice della volta a botte è stato rimosso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 96.50,
+          y: 67.97,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Fregio ad Arabesco della Vetrata Destra",
+          loreClue: "I racemi in ferro dorato alla base della vetrata monumentale sono stati divelti."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 3.50,
+          y: 49.55,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Capitello Dorato della Parasta Sinistra",
+          loreClue: "Il sontuoso capitello composito intarsiato a rilievo d'oro è stato staccato dal pilastro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 77.00,
+          y: 38.50,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Cariatide Dorata della Lunetta Destra",
+          loreClue: "La cariatide cesellata di sostegno sulla trabeazione superiore destra è stata asportata."
+        },
       ];
     } else if (isLevelEighteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 10.50, y: 26.45, radius: 4.0, name: "Il Cranio Estremo del Cantone Sinistro", loreClue: "Il teschio che segna l'angolo della galleria mineraria a sinistra è scomparso dal profilo." },
-        { id: `lvl${id}_d2`, x: 97.00, y: 31.03, radius: 4.0, name: "Il Cranio Estremo del Cantone Destro", loreClue: "Il teschio all'estremità della catasta d'ossa a destra svanisce nell'oscurità del cunicolo." },
-        { id: `lvl${id}_d3`, x: 30.50, y: 32.48, radius: 4.0, name: "Il Teschio della Seconda Fila a Sinistra", loreClue: "Uno dei teschi della fila orizzontale mediana appare sostituito da compatto strato di ossa." },
-        { id: `lvl${id}_d4`, x: 81.00, y: 35.50, radius: 4.0, name: "Il Teschio della Seconda Fila a Destra", loreClue: "Il cranio allineato lungo la modanatura d'ossa destra è stato rimosso dal paramento." },
-        { id: `lvl${id}_d5`, x: 44.00, y: 29.46, radius: 4.0, name: "Il Teschio Centrale Superiore dello Spigolo", loreClue: "Il cranio che serra l'ammorsatura d'angolo delle ossa è assente lasciando una lacuna." },
-        { id: `lvl${id}_d6`, x: 14.00, y: 75.45, radius: 4.0, name: "Il Cranio Inferiore del Pilastro Sinistro", loreClue: "Il teschio alla quota inferiore della parete sinistra scompare tra i femori sovrapposti." },
-        { id: `lvl${id}_d7`, x: 33.50, y: 71.99, radius: 4.0, name: "Il Teschio della Zoccolatura Centrale", loreClue: "Uno dei teschi che fungono da fascia marcapiano nell'angolo dell'ossario è stato tolto." },
-        { id: `lvl${id}_d8`, x: 75.50, y: 67.97, radius: 4.0, name: "Il Cranio Inferiore della Campata Destra", loreClue: "Il teschio incastonato alla base del muretto a secco destro è svanito nel pietrisco." },
-        { id: `lvl${id}_d9`, x: 46.00, y: 95.98, radius: 4.0, name: "Il Cranio a Terra al Centro dell'Angolo", loreClue: "Il teschio posato a terra sull'intersezione dei camminamenti è stato prelevato." },
-        { id: `lvl${id}_d10`, x: 76.00, y: 94.98, radius: 4.0, name: "Il Cranio a Terra sul Lato Destro", loreClue: "L'ultimo teschio all'angolo destro del calpestio è scomparso lasciando il suolo nudo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 14.00,
+          y: 75.45,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Inferiore del Pilastro Sinistro",
+          loreClue: "Il teschio alla quota inferiore della parete sinistra è scomparso lasciando visibile una cavità."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 75.50,
+          y: 67.97,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Inferiore della Campata Destra",
+          loreClue: "Il teschio incastonato alla base del muretto d'ossa destro è svanito rivelando un vano segreto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 33.50,
+          y: 71.99,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio della Zoccolatura Centrale",
+          loreClue: "Il cranio che scandiva la fascia marcapiano d'angolo è stato asportato dal muro."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 30.50,
+          y: 32.48,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio della Seconda Fila a Sinistra",
+          loreClue: "Il teschio sentinella della fila superiore sinistra è stato rimosso dalla catasta funeraria."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 81.00,
+          y: 35.49,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Teschio della Modanatura d'Ossa Destra",
+          loreClue: "Il cranio allineato lungo la cornice superiore destra è stato sottratto dagli inseguitori."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 10.50,
+          y: 26.45,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Estremo del Cantone Sinistro",
+          loreClue: "Il teschio che segna l'angolo della galleria mineraria sinistra è stato asportato."
+        },
       ];
     } else if (isLevelNineteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 54.00, y: 20.98, radius: 4.0, name: "Lo Scudo Araldico della Città di Lione", loreClue: "Il blasone policromo con i leoni dorati sullo stemma centrale della volta è stato rimosso." },
-        { id: `lvl${id}_d2`, x: 46.50, y: 16.52, radius: 4.0, name: "L'Angelo Tutelare in Stucco a Sinistra", loreClue: "La scultura in gesso dorato dell'angelo reggiscudo a sinistra è scomparsa dal timpano." },
-        { id: `lvl${id}_d3`, x: 61.50, y: 16.52, radius: 4.0, name: "L'Angelo Tutelare in Stucco a Destra", loreClue: "L'angelo dorato simmetrico che corona l'arcone di destra svanisce nei festoni barocchi." },
-        { id: `lvl${id}_d4`, x: 18.00, y: 45.98, radius: 4.0, name: "Il Dipinto Paesaggistico della Costa Azzurra", loreClue: "Il grande dipinto a olio che ritrae Nizza nella lunetta a sinistra appare velato in bruno." },
-        { id: `lvl${id}_d5`, x: 82.00, y: 45.98, radius: 4.0, name: "Il Dipinto Paesaggistico di Monaco a Destra", loreClue: "La veduta marinaresca incorniciata in foglia d'oro sulla parete destra è stata rimossa." },
-        { id: `lvl${id}_d6`, x: 33.00, y: 54.46, radius: 4.0, name: "La Lampada ad Applique in Bronzo a Sinistra", loreClue: "Il braccio a fiaccola in bronzo dorato sul pilastro di noce a sinistra è stato smontato." },
-        { id: `lvl${id}_d7`, x: 68.50, y: 57.48, radius: 4.0, name: "La Lampada ad Applique in Bronzo a Destra", loreClue: "L'applique Belle Époque con globi di cristallo sfaccettato a destra non è più ancorata." },
-        { id: `lvl${id}_d8`, x: 48.00, y: 46.54, radius: 4.0, name: "Il Grande Lampadario di Cristallo Centrale", loreClue: "Il maestoso lampadario a gocce di cristallo di Boemia al centro della sala è assente." },
-        { id: `lvl${id}_d9`, x: 94.00, y: 4.46, radius: 4.0, name: "Il Rosone di Cristallo Superiore a Destra", loreClue: "Il lampadario emisferico in cristallo dorato calato dalla volta destra è scomparso." },
-        { id: `lvl${id}_d10`, x: 62.50, y: 77.01, radius: 4.0, name: "La Ringhiera in Ottone del Banco Bar", loreClue: "Il corrimano tubolare d'ottone lucido che delimita la postazione del maître è stato tolto." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.00,
+          y: 45.98,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Dipinto delle Carte Nautiche a Sinistra",
+          loreClue: "La grande veduta cartografica incorniciata nella lunetta sinistra è stata staccata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 62.50,
+          y: 77.01,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Ringhiera in Ottone del Banco da Disegno",
+          loreClue: "Il corrimano tubolare in ottone massiccio che proteggeva il tavolo da disegno è stato tolto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 94.00,
+          y: 4.46,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Rosone di Cristallo Superiore a Destra",
+          loreClue: "Il lampadario emisferico in cristallo e bronzo dorato calato dalla volta è stato rimosso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 45.98,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Dipinto Paesaggistico della Parete Destra",
+          loreClue: "La veduta costiera incorniciata in foglia d'oro sulla parete destra è stata asportata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 48.00,
+          y: 46.54,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Grande Lampadario di Cristallo Centrale",
+          loreClue: "Il maestoso lampadario a gocce di cristallo al centro dello studio è scomparso per operare al buio."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 61.54,
+          y: 16.52,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "L'Angelo Tutelare in Stucco dell'Arcone",
+          loreClue: "La figura scultorea in stucco dorato che sormontava l'arcone monumentale è stata staccata."
+        },
       ];
     } else if (isLevelTwenty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 50.00, y: 3.46, radius: 4.0, name: "La Chiave di Volta Dorata a Fiore di Giglio", loreClue: "Il fiordaliso in foglia d'oro cesellato al centro dell'ogiva gotica è stato scalpellato." },
-        { id: `lvl${id}_d2`, x: 5.00, y: 18.53, radius: 4.0, name: "Il Candelabro Monumentale della Parete Sinistra", loreClue: "Il grande candelabro liturgico in ottone ancorato al fascio di colonnine è scomparso." },
-        { id: `lvl${id}_d3`, x: 94.50, y: 18.53, radius: 4.0, name: "Il Candelabro Monumentale della Parete Destra", loreClue: "Il portalampada in bronzo dorato fissato sul montante di destra è stato tolto dal muro." },
-        { id: `lvl${id}_d4`, x: 26.50, y: 70.98, radius: 4.0, name: "Il Lampadario Gotico Sospeso a Sinistra", loreClue: "La corona di luci a sesto acuto calata sulla navata sinistra svanisce nell'aria." },
-        { id: `lvl${id}_d5`, x: 71.50, y: 70.98, radius: 4.0, name: "Il Lampadario Gotico Sospeso a Destra", loreClue: "Il lampadario pensile dorato sopra gli stalli del coro di destra è stato rimosso." },
-        { id: `lvl${id}_d6`, x: 50.00, y: 62.50, radius: 4.0, name: "Il Pinnacolo del Reliquiario della Sacra Spina", loreClue: "La guglia traforata in oro massiccio che corona la grande teca reliquiaria è assente." },
-        { id: `lvl${id}_d7`, x: 50.00, y: 93.97, radius: 4.0, name: "L'Arcata a Traforo dell'Altar Maggiore", loreClue: "I trafori gotici dorati alla base dell'altare reale di Saint Louis sono stati levigati." },
-        { id: `lvl${id}_d8`, x: 49.00, y: 30.02, radius: 4.0, name: "Il Quadrilobo Vetro Blu della Vetrata Centrale", loreClue: "Il tassello circolare in vetro blu oltremare della monumentale vetrata duecentesca appare opaco." },
-        { id: `lvl${id}_d9`, x: 14.00, y: 93.97, radius: 4.0, name: "La Statua Apostolica del Baldacchino Sinistro", loreClue: "La scultura policroma di San Pietro sul pilastro del coro è scomparsa dal basamento." },
-        { id: `lvl${id}_d10`, x: 85.50, y: 93.97, radius: 4.0, name: "La Statua Apostolica del Baldacchino Destro", loreClue: "La figura scolpita di San Giovanni alla destra del santuario è stata tolta dal suo plinto." },
+        {
+          id: `lvl${id}_d1`,
+          x: 14.00,
+          y: 93.97,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Statua del Cavaliere Custode a Sinistra",
+          loreClue: "La scultura in marmo del cavaliere templare che vegliava sul lato sinistro dell'altare è stata rimossa."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 85.50,
+          y: 93.97,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Statua del Gran Priore a Destra",
+          loreClue: "La figura monumentale scolpita in pietra d'Angers alla destra del santuario è stata tolta dal plinto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 26.50,
+          y: 70.98,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Lampadario Gotico Sospeso a Sinistra",
+          loreClue: "La corona di fiamme a sesto acuto calata sulla navata sinistra è stata divelta per nascondere la fuga."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 71.50,
+          y: 70.98,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Lampadario Gotico Sospeso a Destra",
+          loreClue: "Il pesante lampadario pensile dorato sopra gli stalli di destra è stato smontato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 94.50,
+          y: 18.53,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Candelabro Monumentale della Parete Destra",
+          loreClue: "Il grande candelabro liturgico in ottone ancorato al fascio di colonnine è scomparso dal muro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 5.00,
+          y: 18.53,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Candelabro Monumentale della Parete Sinistra",
+          loreClue: "Il portalampada in bronzo dorato fissato sul montante gotico sinistro è stato strappato dalla pietra."
+        },
       ];
     } else if (isStageTwo) {
       diffsForLevel = [
