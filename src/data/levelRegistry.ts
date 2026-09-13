@@ -169,13 +169,13 @@ export function generateAll120Levels(): Level[] {
       : isLevelSix
       ? '/levels/stage1_lvl6_A.jpg?v=2'
       : isLevelSeven
-      ? '/levels/stage1_lvl7_A.jpg'
+      ? '/levels/stage1_lvl7_A.jpg?v=2'
       : isLevelEight
-      ? '/levels/stage1_lvl8_A.jpg'
+      ? '/levels/stage1_lvl8_A.jpg?v=2'
       : isLevelNine
-      ? '/levels/stage1_lvl9_A.jpg'
+      ? '/levels/stage1_lvl9_A.jpg?v=2'
       : isLevelTen
-      ? '/levels/stage1_lvl10_A.jpg'
+      ? '/levels/stage1_lvl10_A.jpg?v=2'
       : isLevelEleven
       ? '/levels/stage2_lvl11_A.jpg'
       : isLevelTwelve
@@ -452,13 +452,13 @@ export function generateAll120Levels(): Level[] {
       : isLevelSix
       ? '/levels/stage1_lvl6_B.jpg?v=2'
       : isLevelSeven
-      ? '/levels/stage1_lvl7_B.jpg'
+      ? '/levels/stage1_lvl7_B.jpg?v=2'
       : isLevelEight
-      ? '/levels/stage1_lvl8_B.jpg'
+      ? '/levels/stage1_lvl8_B.jpg?v=2'
       : isLevelNine
-      ? '/levels/stage1_lvl9_B.jpg'
+      ? '/levels/stage1_lvl9_B.jpg?v=2'
       : isLevelTen
-      ? '/levels/stage1_lvl10_B.jpg'
+      ? '/levels/stage1_lvl10_B.jpg?v=2'
       : isLevelEleven
       ? '/levels/stage2_lvl11_B.jpg'
       : isLevelTwelve
@@ -1071,55 +1071,231 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelSeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 5.42, y: 24.55, radius: 4.5, name: "Il Dipinto ad Olio sul Muro Sinistro", loreClue: "Il ritratto a olio del rettore accademico in cornice nera mostra il busto velato da pittura scura uniforme." },
-        { id: `lvl${id}_d2`, x: 95.50, y: 26.45, radius: 4.5, name: "Il Ritratto Storico del Cancelliere", loreClue: "Il ritratto ad olio del cancelliere sulla parete destra svanisce nel fondo bruno della tela seicentesca." },
-        { id: `lvl${id}_d3`, x: 27.50, y: 11.49, radius: 4.0, name: "Lo Stemma Araldico della Volta Sinistra", loreClue: "Il cartiglio dorato con il blasone di Oxford sul cassettonato ligneo è sostituito da trave continua di rovere." },
-        { id: `lvl${id}_d4`, x: 73.50, y: 11.49, radius: 4.0, name: "Lo Stemma Araldico della Volta Destra", loreClue: "Il riquadro araldico policromo della volta a botte lignea appare piallato in scuro massello." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 22.54, radius: 4.0, name: "La Rosetta Centrale della Trave Maestra", loreClue: "Il rosone intagliato all'apice dell'arco trionfale in massello di quercia è stato completamente spianato." },
-        { id: `lvl${id}_d6`, x: 74.00, y: 77.01, radius: 4.5, name: "Lo Sgabello in Legno sotto il Tavolo Destro", loreClue: "Le gambe tornite in legno chiaro dello sgabello da lettura sotto il banco sono scomparse nell'ombra del pavimento." },
-        { id: `lvl${id}_d7`, x: 32.50, y: 55.02, radius: 4.0, name: "Il Cartiglio di Rovere della Scaffalatura", loreClue: "La targa sagomata di classificazione archivistica sul fianco della libreria è stata rimossa mostrando venature uniformi." },
-        { id: `lvl${id}_d8`, x: 26.00, y: 78.01, radius: 4.5, name: "Lo Sgabello di Studio sotto il Tavolo Sinistro", loreClue: "Lo sgabello ligneo riposto sotto il grande tavolo da consultazione è stato asportato lasciando il parquet libero." },
-        { id: `lvl${id}_d9`, x: 85.50, y: 49.55, radius: 4.0, name: "Il Dorso in Cuoio sulla Scaffalatura Destra", loreClue: "Uno dei tomi in cuoio sul ripiano superiore della campata destra è stato sfilato e sostituito dalla legatura adiacente." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 56.47, radius: 4.0, name: "Il Vertice della Bifora Gotica in Fondo", loreClue: "Il concio di chiave dell'arco a sesto acuto della vetrata piombata appare colmato in pietra calcarea." },
+        {
+          id: `lvl${id}_d1`,
+          x: 26.00,
+          y: 78.01,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Lo Sgabello in Legno sotto il Tavolo Sinistro",
+          loreClue: "Lo sgabello ligneo riposto sotto il grande tavolo da consultazione sinistro è stato asportato lasciando il pavimento sgombro."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 74.04,
+          y: 78.18,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Lo Sgabello in Legno sotto il Tavolo Destro",
+          loreClue: "Lo sgabello da lettura sotto il tavolo destro è stato sottratto dagli intrusi durante la perquisizione dei carteggi."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 32.50,
+          y: 55.80,
+          radius: 6.5,
+          clueType: 'stolen_relic',
+          name: "La Targa d'Archivio sulla Scaffalatura",
+          loreClue: "La targa sagomata d'archivio in ottone e rovere che catalogava le carte di Francis Drake è stata rimossa."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 6.29,
+          y: 24.55,
+          radius: 7.0,
+          clueType: 'stolen_relic',
+          name: "Il Dipinto ad Olio del Rettore",
+          loreClue: "Il dipinto ad olio in cornice nera del rettore accademico è stato staccato dalla boiserie di sinistra."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 23.30,
+          radius: 6.5,
+          clueType: 'sabotage',
+          name: "La Rosetta Centrale della Trave Maestra",
+          loreClue: "Il rosone d'intaglio ligneo al centro dell'arco trionfale è stato asportato per celare un vano segreto nella trave."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 85.50,
+          y: 49.60,
+          radius: 7.0,
+          clueType: 'stolen_relic',
+          name: "I Volumi di Consultazione sulla Scaffalatura",
+          loreClue: "I tomi in cuoio legati a mano del settore nautico sono stati trafugati dal ripiano della libreria destra."
+        },
       ];
     } else if (isLevelEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 7.00, y: 60.50, radius: 4.5, name: "La Lampada Murale sul Pilastro Sinistro", loreClue: "Il braccio portalampada in bronzo brunito fissato al pilastro gotico di sinistra è scomparso lasciando la pietra nuda." },
-        { id: `lvl${id}_d2`, x: 93.00, y: 60.50, radius: 4.5, name: "La Lampada Murale sul Pilastro Destro", loreClue: "Il supporto in bronzo per illuminazione monumentale sul pilastro destro è stato smontato dalla muratura." },
-        { id: `lvl${id}_d3`, x: 20.50, y: 15.00, radius: 4.0, name: "La Nicchia a Baldacchino della Volta Sinistra", loreClue: "Il capitello pensile scolpito a traforo sul costolone della volta a ventaglio è stato scalpellato a filo arco." },
-        { id: `lvl${id}_d4`, x: 79.50, y: 15.00, radius: 4.0, name: "La Nicchia a Baldacchino della Volta Destra", loreClue: "Il peduccio trilobato intagliato nel calcare di Headington è sostituito da modanatura liscia continua." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 12.50, radius: 4.0, name: "La Chiave di Volta a Traforo Centrale", loreClue: "Il prezioso pendant lierne scolpito a merletto di pietra al centro della navata è stato rimosso dalla volta." },
-        { id: `lvl${id}_d6`, x: 13.50, y: 45.00, radius: 4.0, name: "Il Rullo di Vetro della Finestra Sinistra", loreClue: "Un modulo vetrato rettangolare piombato della grande bifora risulta cieco e opacizzato." },
-        { id: `lvl${id}_d7`, x: 86.50, y: 45.00, radius: 4.0, name: "Il Rullo di Vetro della Finestra Destra", loreClue: "Una sezione a rombi piombati della vetrata gotica destra appare priva del caratteristico telaio metallico." },
-        { id: `lvl${id}_d8`, x: 39.50, y: 78.50, radius: 4.0, name: "Il Leggio Cerimoniale Sinistro sul Fondo", loreClue: "Il leggio cerimoniale in massello di quercia del banco senatorio sinistro è scomparso dalla navata." },
-        { id: `lvl${id}_d9`, x: 61.00, y: 78.50, radius: 4.0, name: "Il Leggio Cerimoniale Destro sul Fondo", loreClue: "Lo scrittoio senatoriale in rovere intagliato sul fondo della navata è stato tolto rivelando il pavimento." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 88.00, radius: 4.5, name: "La Lastra Sepolcrale sul Pavimento", loreClue: "Il concio di pietra tombale scura incassato tra i lastroni del pavimento è sostituito da arenaria chiara uniforme." },
+        {
+          id: `lvl${id}_d1`,
+          x: 7.00,
+          y: 60.49,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Lampada Murale in Bronzo Sinistra",
+          loreClue: "Il braccio portalampada in bronzo brunito fissato al pilastro gotico sinistro è stato divelto per spegnere la luce."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 92.71,
+          y: 60.49,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Lampada Murale in Bronzo Destra",
+          loreClue: "La monumentale lampada murale sul pilastro destro è stata smontata per far piombare la navata nell'oscurità."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 39.50,
+          y: 78.46,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Leggio Cerimoniale in Quercia Sinistro",
+          loreClue: "Il pesante leggio cerimoniale in massello di quercia del banco senatorio sinistro è stato asportato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 61.00,
+          y: 78.46,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Leggio Cerimoniale in Quercia Destro",
+          loreClue: "Lo scrittoio cerimoniale in rovere intagliato sul fondo destro della navata è stato sottratto per i codici intarsiati nel legno."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.00,
+          y: 12.50,
+          radius: 7.0,
+          clueType: 'stolen_relic',
+          name: "Il Pendaglio della Chiave di Volta Centrale",
+          loreClue: "Il prezioso pendant lierne scolpito a merletto nella pietra calcarea della volta a ventaglio è stato scalpellato via."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.00,
+          y: 88.00,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Lastra Sepolcrale della Navata",
+          loreClue: "La lastra tombale in pietra scura incassata nel pavimento della navata è stata rimossa per accedere al cunicolo inferiore."
+        },
       ];
     } else if (isLevelNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 51.00, y: 8.50, radius: 4.0, name: "Il Fregio Dorato a Girali sulla Trave Maestra", loreClue: "I racemi vegetali in foglia d'oro intagliati sul coronamento della trave frontale sono scomparsi." },
-        { id: `lvl${id}_d2`, x: 23.00, y: 15.00, radius: 4.0, name: "Il Blasone Accademico del Cassettone Sinistro", loreClue: "Il cartiglio dipinto con motto latino sul pannello del soffitto è sostituito da fondo ligneo bruno." },
-        { id: `lvl${id}_d3`, x: 74.00, y: 22.00, radius: 4.0, name: "Lo Stemma dei Fondatori del Cassettone Destro", loreClue: "L'insegna araldica policroma del soffitto a cassettoni è stata coperta con pittura scura." },
-        { id: `lvl${id}_d4`, x: 18.00, y: 28.50, radius: 4.0, name: "I Pioli Superiori della Scala da Biblioteca Sinistra", loreClue: "I gradini sommitali della scala scorrevole in rovere sono assenti mostrando i dorsi dei tomi." },
-        { id: `lvl${id}_d5`, x: 62.00, y: 46.00, radius: 4.0, name: "Il Montante della Scala d'Accesso ai Palchetti", loreClue: "La scala a pioli lignea sullo sfondo a destra è stata rimossa lasciando la scaffalatura libera." },
-        { id: `lvl${id}_d6`, x: 29.00, y: 86.50, radius: 4.0, name: "Il Pomello Terminale della Balaustra Sinistra", loreClue: "Il puntale tornito a balaustro in quercia scura è stato svitato dal corrimano del ballatoio." },
-        { id: `lvl${id}_d7`, x: 65.50, y: 82.50, radius: 4.0, name: "Il Terminale Tornito della Balaustra Destra", loreClue: "La colonnina sagomata del ballatoio superiore è scomparsa lasciando la ringhiera continua." },
-        { id: `lvl${id}_d8`, x: 49.50, y: 48.00, radius: 4.0, name: "La Traversa di Sicurezza del Ballatoio sul Fondo", loreClue: "Il montante orizzontale in legno che delimita il camminamento sospeso in lontananza è assente." },
-        { id: `lvl${id}_d9`, x: 92.50, y: 94.50, radius: 4.0, name: "Il Tomo in Pergamena Chiara sullo Scaffale Basso", loreClue: "Il pesante volume con legatura in pergamena bianca e tassello in pelle è sostituito da tomo bruno." },
-        { id: `lvl${id}_d10`, x: 94.00, y: 21.00, radius: 4.0, name: "Il Volume In-Folio del Palchetto Superiore Destro", loreClue: "Uno spesso atlante cinquecentesco è stato sfilato dalla fila di volumi dell'ultimo ripiano." },
+        {
+          id: `lvl${id}_d1`,
+          x: 29.00,
+          y: 86.50,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Pomello Terminale della Balaustra Sinistra",
+          loreClue: "Il puntale terminale tornito in quercia scura della balaustra del ballatoio è stato svitato per accedere all'intercapedine."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 62.00,
+          y: 45.98,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Scala d'Accesso ai Palchetti Superiori",
+          loreClue: "La scala a pioli in legno massello utilizzata per raggiungere i tomi inaccessibili dei palchetti alti è stata rimossa."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 74.00,
+          y: 22.00,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Lo Stemma dei Fondatori del Cassettone Destro",
+          loreClue: "Il pannello ligneo policromo con l'insegna araldica dei fondatori della biblioteca è stato asportato dal soffitto."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 92.50,
+          y: 94.42,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tomo in Pergamena sullo Scaffale Basso",
+          loreClue: "Il raro in-folio con legatura in pelle chiara contenente la cronaca della spedizione andina è stato trafugato dal ripiano basso."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 49.50,
+          y: 47.99,
+          radius: 7.0,
+          clueType: 'sabotage',
+          name: "La Traversa del Ballatoio sul Fondo",
+          loreClue: "Il montante protettivo in legno del ballatoio sospeso in fondo alla galleria è stato segato per facilitare la fuga."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 23.00,
+          y: 15.00,
+          radius: 7.0,
+          clueType: 'stolen_relic',
+          name: "Il Blasone Accademico del Cassettone Sinistro",
+          loreClue: "Il cartiglio araldico dipinto con il motto latino 'Dominus Illuminatio Mea' è stato sottratto dal cassettonato sinistro."
+        },
       ];
     } else if (isLevelTen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 11.80, y: 51.00, radius: 4.0, name: "Il Tabellone Entomologico dei Lepidotteri a Sinistra", loreClue: "Il pannello scientifico con la farfalla smeraldo è stato rimosso dalla galleria laterale." },
-        { id: `lvl${id}_d2`, x: 88.50, y: 50.00, radius: 4.0, name: "Il Riquadro Zoologico dei Lepidotteri a Destra", loreClue: "Il quadro illustrato con l'esemplare di falena gigante è scomparso dal pilastro in mattoni." },
-        { id: `lvl${id}_d3`, x: 67.50, y: 7.00, radius: 4.0, name: "Il Ventaglio in Ferro Battuto del Lucernario", loreClue: "Il fregio a foglia di palma in ghisa forgiata sul colmo dell'arco gotico vetrato è assente." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 33.50, radius: 4.0, name: "Il Puntone Diagonale della Capriata Sinistra", loreClue: "La saetta strutturale in ghisa ad arco traforato è stata rimossa dalla campata dell'edificio." },
-        { id: `lvl${id}_d5`, x: 94.00, y: 14.00, radius: 4.0, name: "Il Traforo a Foglia d'Acanto del Giunto Superiore", loreClue: "Il raccordo vegetale in ferro battuto tra le travi di vetro del tetto è stato tolto." },
-        { id: `lvl${id}_d6`, x: 58.50, y: 56.50, radius: 4.0, name: "Il Cranio Fossile del Grande Scheletro", loreClue: "Il cranio con mascella dentata dello scheletro fossile centrale è svanito nello sfondo museale." },
-        { id: `lvl${id}_d7`, x: 66.50, y: 86.00, radius: 4.5, name: "La Statua in Marmo del Naturalista", loreClue: "La monumentale scultura in marmo bianco del fondatore della spedizione è stata rimossa." },
-        { id: `lvl${id}_d8`, x: 18.50, y: 73.00, radius: 4.0, name: "Il Timpano Ligneo della Vetrina Geologica", loreClue: "Il montante angolare del tetto a spiovente della teca espositiva in legno è assente." },
-        { id: `lvl${id}_d9`, x: 41.50, y: 81.00, radius: 4.0, name: "Il Tavolo di Studio dei Reperti al Centro", loreClue: "La postazione in massello d'acero per l'esame dei campioni fossili è stata sgomberata." },
-        { id: `lvl${id}_d10`, x: 56.50, y: 36.50, radius: 4.0, name: "Il Grande Cerchio della Lampada Sospesa", loreClue: "La corona circolare in ferro battuto del lampadario a gas sospeso alla volta è scomparsa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 66.50,
+          y: 86.05,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Statua in Marmo del Naturalista",
+          loreClue: "La scultura in marmo bianco del celebre naturalista che custodiva la chiave della teca peruviana è stata rimossa dal piedistallo."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 58.50,
+          y: 56.47,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cranio Fossile del Grande Scheletro",
+          loreClue: "Il teschio preistorico dello scheletro fossile monumentale è stato asportato: tra i denti fossilizzati era incastonato il Sigillo d'Oro!"
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 11.83,
+          y: 51.00,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tabellone Entomologico a Sinistra",
+          loreClue: "La teca con la collezione di lepidotteri amazzonici è stata svuotata: la disposizione degli insetti celava la prima mappa stellare."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.50,
+          y: 50.00,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Riquadro Zoologico a Destra",
+          loreClue: "Il tabellone scientifico sul pilastro destro con gli studi sulla fauna andina è stato trafugato dagli agenti della Mano Oscura."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 41.50,
+          y: 81.03,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Banco Espositivo in Legno Centrale",
+          loreClue: "Il massiccio tavolo di lavoro centrale con i registri di classificazione dei fossili è stato rovesciato e sgomberato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.50,
+          y: 72.88,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Vetrina dei Fossili Andini a Sinistra",
+          loreClue: "La teca espositiva in mogano contenente i minerali d'argento e i fossili raccolti nel vicereame del Perù è stata asportata."
+        },
       ];
     } else if (isStageOne) {
       diffsForLevel = [
