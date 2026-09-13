@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
+import { EvidenceInspectModal } from './EvidenceInspectModal';
 import type { Difference, RadarQuadrant } from '../types/game';
 import type { CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
@@ -47,6 +48,7 @@ interface ImageComparisonViewProps {
   layoutMode?: 'auto' | 'vertical' | 'horizontal';
   comboStreak?: number;
   shieldBlockedNotice?: boolean;
+  chapterNumber?: number;
 }
 
 interface ErrorRipple {
@@ -78,6 +80,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   onErrorClick,
   comboStreak = 0,
   shieldBlockedNotice = false,
+  chapterNumber = 1,
 }) => {
   // Mode: Full-screen Crime Scene Investigation (Default AAA) vs Classic Split Screen
   const [viewMode, setViewMode] = useState<'crime_scene' | 'split'>('crime_scene');
@@ -85,6 +88,23 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   // Lente d'Archivio (Past Vision) states
   const [isArchiveLensActive, setIsArchiveLensActive] = useState<boolean>(false);
   const [selectedClueId, setSelectedClueId] = useState<string | null>(null);
+  const [inspectingDiff, setInspectingDiff] = useState<Difference | null>(null);
+
+  // 3D Glass-plate Photo Perspective Tilt
+  const [photoTilt, setPhotoTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const handleMouseMoveTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (scale > 1) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setPhotoTilt({ x: -y * 3.5, y: x * 3.5 });
+  };
+
+  const handleMouseLeaveTilt = () => {
+    setPhotoTilt({ x: 0, y: 0 });
+  };
 
   // Pan & Zoom
   const [scale, setScale] = useState<number>(1);
@@ -487,9 +507,14 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
             }}
           >
-            {/* Aspect Ratio Bounded Stage */}
+            {/* Aspect Ratio Bounded Stage with 3D Tactile Photo Tilt */}
             <div
-              className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center shrink-0 cursor-crosshair group"
+              className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center shrink-0 cursor-crosshair group transition-transform duration-150 ease-out"
+              style={{
+                transform: scale === 1 ? `perspective(1000px) rotateX(${photoTilt.x}deg) rotateY(${photoTilt.y}deg)` : undefined,
+              }}
+              onMouseMove={handleMouseMoveTilt}
+              onMouseLeave={handleMouseLeaveTilt}
               onClick={e => handleStageClick(e, isArchiveLensActive ? 0 : 1)}
             >
               {/* PRIMARY CRIME SCENE IMAGE (Image B: Sabotaged Site) */}
@@ -527,7 +552,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               </div>
 
               {/* Living Atmospheric Particle Engine */}
-              <AmbientParticles imageIndex={1} hasSteam={false} />
+              <AmbientParticles imageIndex={1} hasSteam={false} chapterNumber={chapterNumber} />
 
               {/* Secret Ancient Collectible Relic */}
               {hiddenRelic && (
@@ -763,7 +788,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   }}
                   className="w-full h-full object-contain rounded-lg select-none pointer-events-auto block"
                 />
-                <AmbientParticles imageIndex={0} hasSteam={false} />
+                <AmbientParticles imageIndex={0} hasSteam={false} chapterNumber={chapterNumber} />
               </div>
             </div>
           </div>
@@ -811,7 +836,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   }}
                   className="w-full h-full object-contain rounded-lg select-none pointer-events-auto block"
                 />
-                <AmbientParticles imageIndex={1} hasSteam={false} />
+                <AmbientParticles imageIndex={1} hasSteam={false} chapterNumber={chapterNumber} />
               </div>
             </div>
           </div>
@@ -851,15 +876,19 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 key={diff.id}
                 type="button"
                 onClick={() => {
-                  sound.playTap();
                   setSelectedClueId(diff.id);
+                  if (isFound) {
+                    setInspectingDiff(diff);
+                  } else {
+                    sound.playTap();
+                  }
                 }}
                 className={`flex flex-col items-center justify-center p-1 rounded-lg border transition-all text-center select-none cursor-pointer ${
                   isFound
-                    ? 'bg-gradient-to-b from-amber-900/60 to-yellow-950/80 border-amber-400/80 shadow-[0_0_8px_rgba(245,158,11,0.4)] ring-1 ring-amber-300/50'
+                    ? 'bg-gradient-to-b from-amber-900/60 to-yellow-950/80 border-amber-400/80 shadow-[0_0_8px_rgba(245,158,11,0.4)] ring-1 ring-amber-300/50 hover:brightness-110 active:scale-95'
                     : 'bg-black/40 border-stone-800 text-stone-500 hover:border-amber-900/50'
                 } ${isSelected ? 'ring-2 ring-yellow-400' : ''}`}
-                title={isFound ? diff.name : `Prova #${index + 1} ancora nascosta`}
+                title={isFound ? `${diff.name} (Tocca per ispezionare la scheda)` : `Prova #${index + 1} ancora nascosta`}
               >
                 <div className="flex items-center gap-1 mb-0.5">
                   {isFound ? (
@@ -904,18 +933,32 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
             <div className="flex items-center gap-1.5 shrink-0">
               {foundDifferenceIds.includes(selectedClueId) && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const sel = differences.find(d => d.id === selectedClueId);
-                    if (sel) handleAimClue(sel);
-                  }}
-                  className="px-2 py-0.5 rounded bg-amber-500/30 hover:bg-amber-500/50 border border-amber-400/50 text-[9px] font-bold text-amber-300 flex items-center gap-1 transition cursor-pointer"
-                  title="Centra telecamera su questa prova"
-                >
-                  <Maximize2 className="w-2.5 h-2.5" />
-                  <span>Inquadra</span>
-                </button>
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const sel = differences.find(d => d.id === selectedClueId);
+                      if (sel) setInspectingDiff(sel);
+                    }}
+                    className="px-2 py-0.5 rounded bg-amber-600/40 hover:bg-amber-600/60 border border-amber-400/60 text-[9px] font-bold text-amber-200 flex items-center gap-1 transition cursor-pointer"
+                    title="Apri scheda vintage polaroid 1928"
+                  >
+                    <FileText className="w-2.5 h-2.5 text-amber-300" />
+                    <span>Scheda</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const sel = differences.find(d => d.id === selectedClueId);
+                      if (sel) handleAimClue(sel);
+                    }}
+                    className="px-2 py-0.5 rounded bg-amber-500/30 hover:bg-amber-500/50 border border-amber-400/50 text-[9px] font-bold text-amber-300 flex items-center gap-1 transition cursor-pointer"
+                    title="Centra telecamera su questa prova"
+                  >
+                    <Maximize2 className="w-2.5 h-2.5" />
+                    <span>Inquadra</span>
+                  </button>
+                </>
               )}
               <button
                 type="button"
@@ -928,6 +971,19 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* 1928 Vintage Specimen Evidence Inspection Dossier */}
+      <EvidenceInspectModal
+        difference={inspectingDiff}
+        isOpen={!!inspectingDiff}
+        onClose={() => setInspectingDiff(null)}
+        onFocusScene={(x, y) => {
+          handleAimClue({ x, y, id: inspectingDiff?.id || '', name: '', loreClue: '' } as Difference);
+        }}
+        index={inspectingDiff ? differences.findIndex(d => d.id === inspectingDiff.id) : 0}
+        total={differences.length}
+        chapterNumber={chapterNumber}
+      />
     </div>
   );
 };

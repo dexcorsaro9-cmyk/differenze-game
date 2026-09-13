@@ -24,6 +24,7 @@ const MappamondoModal = lazy(() => import('./components/MappamondoModal').then(m
 const RelicMuseumModal = lazy(() => import('./components/RelicMuseumModal').then(m => ({ default: m.RelicMuseumModal })));
 const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModal').then(m => ({ default: m.DailyExpeditionModal })));
 const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
+const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
 import {
   hasPendingDaily,
   completeDailyExpedition,
@@ -33,6 +34,7 @@ import {
 } from './utils/dailyChallenge';
 import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
+import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
 import {
   EXPLORERS,
   ALL_OUTFITS,
@@ -43,7 +45,7 @@ import {
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
-import { Shield } from 'lucide-react';
+import { Shield, Award } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Persistence keys
@@ -55,6 +57,8 @@ export const App: React.FC = () => {
   const STORAGE_KEY_AVATAR = 'differenze_avatar_v1';
   const STORAGE_KEY_TUTORIAL = 'differenze_tutorial_v1';
   const STORAGE_KEY_SEEN_BRIEFINGS = 'differenze_seen_briefings_v1';
+  const STORAGE_KEY_MEDALS = 'differenze_medals_v1';
+  const STORAGE_KEY_CLAIMED_MEDALS = 'differenze_claimed_medals_v1';
 
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 
@@ -220,6 +224,26 @@ export const App: React.FC = () => {
   const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => initialView === 'tutorial');
   const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
   const [isGrandFinaleOpen, setIsGrandFinaleOpen] = useState<boolean>(() => initialView === 'finale');
+  const [isMedalsCabinetOpen, setIsMedalsCabinetOpen] = useState<boolean>(() => initialView === 'medals');
+  const [unlockedMedalIds, setUnlockedMedalIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_MEDALS);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return [];
+  });
+  const [claimedMedalIds, setClaimedMedalIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_CLAIMED_MEDALS);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return [];
+  });
+  const [unlockedToastMedal, setUnlockedToastMedal] = useState<Achievement | null>(null);
   const [isExpeditionHubOpen, setIsExpeditionHubOpen] = useState<boolean>(false);
   const [activeStageBriefing, setActiveStageBriefing] = useState<number | null>(() => {
     if (initialView === 'briefing') return 1;
@@ -391,6 +415,61 @@ export const App: React.FC = () => {
     localStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(explorerProfile));
   }, [explorerProfile]);
 
+  // Save expedition medals & claimed bounties
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_MEDALS, JSON.stringify(unlockedMedalIds));
+  }, [unlockedMedalIds]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_CLAIMED_MEDALS, JSON.stringify(claimedMedalIds));
+  }, [claimedMedalIds]);
+
+  // Unlock Medal helper with celebratory sound, haptics & floating toast
+  const unlockMedal = useCallback((medalId: string) => {
+    setUnlockedMedalIds(prev => {
+      if (prev.includes(medalId)) return prev;
+      const medal = ALL_ACHIEVEMENTS.find((m: Achievement) => m.id === medalId);
+      if (medal) {
+        sound.playAchievementUnlock();
+        triggerHaptic('success');
+        setUnlockedToastMedal(medal);
+        setTimeout(() => {
+          setUnlockedToastMedal((curr: Achievement | null) => (curr?.id === medalId ? null : curr));
+        }, 4200);
+      }
+      return [...prev, medalId];
+    });
+  }, []);
+
+  const handleClaimMedalBounty = (medalId: string) => {
+    const medal = ALL_ACHIEVEMENTS.find((m: Achievement) => m.id === medalId);
+    if (!medal || claimedMedalIds.includes(medalId)) return;
+    setClaimedMedalIds(prev => [...prev, medalId]);
+    setCoins(c => c + medal.coinReward);
+    sound.playCoinBurst();
+    triggerHaptic('success');
+  };
+
+  // Check Wardrobe RPG Achievements (8 slots & Set bonus)
+  useEffect(() => {
+    const all8Equipped = Boolean(
+      explorerProfile.equippedOutfitId &&
+      explorerProfile.equippedHeadgearId &&
+      explorerProfile.equippedToolId &&
+      explorerProfile.equippedOffHandId &&
+      explorerProfile.equippedLegsId &&
+      explorerProfile.equippedBootsId &&
+      explorerProfile.equippedTalismanId &&
+      explorerProfile.equippedBackId
+    );
+    if (all8Equipped) {
+      unlockMedal('full_gear');
+    }
+    if (primaryActiveSet) {
+      unlockMedal('set_synergy');
+    }
+  }, [explorerProfile, primaryActiveSet, unlockMedal]);
+
   // Timer Tick (Frozen when freeze power-up is running or modal open)
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | undefined;
@@ -411,7 +490,8 @@ export const App: React.FC = () => {
       isShopOpen ||
       isRelicMuseumOpen ||
       isRelicFoundModalOpen ||
-      isDailyModalOpen;
+      isDailyModalOpen ||
+      isMedalsCabinetOpen;
 
     if (!isPaused) {
       interval = setInterval(() => {
@@ -590,6 +670,11 @@ export const App: React.FC = () => {
       // Show Lore Toast
       setActiveClueToast(diff);
 
+      // Check Real-time Expedition Medal Unlocks
+      unlockMedal('first_discovery');
+      if (nextStreak >= 4) unlockMedal('archaeo_combo');
+      if (discoveredClues.length + 1 >= 20) unlockMedal('clue_detective');
+
       // Clear active hint or radar if this was the targeted diff
       if (activeHint && activeHint.id === diff.id) {
         setActiveHint(null);
@@ -602,6 +687,12 @@ export const App: React.FC = () => {
       if (nextFound.length >= currentLevel.differences.length) {
         setIsTimerRunning(false);
         setIsTimeFrozen(false);
+
+        // Check Victory Medals
+        if (errorsCount === 0) unlockMedal('hawk_eye');
+        if (timeElapsed < 45) unlockMedal('speed_demon');
+        if (currentLevel.id >= 10 || currentLevel.chapterNumber >= 1) unlockMedal('oxford_scholar');
+        if (currentLevel.id >= 120) unlockMedal('paititi_legend');
 
         // Calculate time-based 3-star speed bonus coins:
         // <= 105s (1:45) = 3 stars -> +100 coins
@@ -621,6 +712,7 @@ export const App: React.FC = () => {
           setHasUnreadDaily(false);
           setIsDailyActive(false);
           sound.playDailyRewardClaim();
+          unlockMedal('daily_veteran');
         }
 
         setCoins(c => c + totalBonus);
@@ -662,6 +754,9 @@ export const App: React.FC = () => {
       coinBonusPercent,
       isDailyActive,
       bestTimes,
+      comboStreak,
+      errorsCount,
+      unlockMedal,
     ]
   );
 
@@ -670,7 +765,12 @@ export const App: React.FC = () => {
     (relic: CollectibleRelic) => {
       if (discoveredRelicIds.includes(relic.id)) return;
 
-      setDiscoveredRelicIds(prev => [...prev, relic.id]);
+      setDiscoveredRelicIds(prev => {
+        const next = [...prev, relic.id];
+        if (next.length >= 1) unlockMedal('relic_hunter');
+        if (next.length >= 3) unlockMedal('antiquarian');
+        return next;
+      });
       setCoins(c => c + relic.coinReward);
       setLevelCoinsEarned(c => c + relic.coinReward);
       sound.playRelicFound();
@@ -680,7 +780,7 @@ export const App: React.FC = () => {
       setIsRelicFoundModalOpen(true);
       setHasUnreadRelics(true);
     },
-    [discoveredRelicIds, settings.vibrationEnabled]
+    [discoveredRelicIds, settings.vibrationEnabled, unlockMedal]
   );
 
   const handleDismissClueToast = useCallback(() => {
@@ -1004,6 +1104,7 @@ export const App: React.FC = () => {
           layoutMode={settings.layoutMode}
           comboStreak={comboStreak}
           shieldBlockedNotice={shieldBlockedNotice}
+          chapterNumber={currentLevel.chapterNumber}
         />
 
         {/* Floating Shield Blocked Notice */}
@@ -1238,6 +1339,12 @@ export const App: React.FC = () => {
           setIsExpeditionHubOpen(false);
           setIsGrandFinaleOpen(true);
         }}
+        onOpenMedals={() => {
+          setIsExpeditionHubOpen(false);
+          setIsMedalsCabinetOpen(true);
+        }}
+        unlockedMedalsCount={unlockedMedalIds.length}
+        totalMedals={ALL_ACHIEVEMENTS.length}
       />
 
       {/* AAA Splash Screen with "Tocca per iniziare" */}
@@ -1332,6 +1439,50 @@ export const App: React.FC = () => {
             }}
           />
         </Suspense>
+      )}
+
+      {/* Victorian Walnut & Brass Medals Showcase (12 Royal Expedition Decorations) */}
+      {isMedalsCabinetOpen && (
+        <Suspense fallback={null}>
+          <MedalsCabinetModal
+            isOpen={isMedalsCabinetOpen}
+            onClose={() => setIsMedalsCabinetOpen(false)}
+            unlockedMedalIds={unlockedMedalIds}
+            claimedMedalIds={claimedMedalIds}
+            onClaimBounty={handleClaimMedalBounty}
+          />
+        </Suspense>
+      )}
+
+      {/* Floating Royal Medal Unlock Celebration Toast */}
+      {unlockedToastMedal && (
+        <div
+          onClick={() => {
+            setIsMedalsCabinetOpen(true);
+            setUnlockedToastMedal(null);
+          }}
+          className="fixed top-4 left-1/2 -translate-x-1/2 z-80 w-auto max-w-sm px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#2c1d0f] via-[#1a0e06] to-[#2c1d0f] border-2 border-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.5),0_0_20px_rgba(251,191,36,0.3)] flex items-center gap-3 cursor-pointer animate-slideDown select-none hover:scale-105 transition-transform"
+        >
+          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/80 flex items-center justify-center text-amber-300 text-xl shadow-inner shrink-0 animate-bounce">
+            <Award className="w-6 h-6 text-amber-400" />
+          </div>
+          <div className="flex-1 min-w-0 text-left">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest">
+                ONORIFICENZA SBLOCCATA!
+              </span>
+              <span className="text-[9px] px-1 rounded bg-amber-400/20 text-amber-300 font-mono">
+                +{unlockedToastMedal.coinReward} 🪙
+              </span>
+            </div>
+            <div className="text-xs font-bold font-serif text-amber-100 truncate">
+              {unlockedToastMedal.title}
+            </div>
+            <div className="text-[10px] text-stone-400 font-serif truncate">
+              {unlockedToastMedal.description}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

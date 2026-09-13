@@ -687,6 +687,106 @@ class SoundManager {
     });
   }
 
+  // Triumphant royal achievement unlock fanfare
+  public playAchievementUnlock() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Royal Brass flourish (C4 -> E4 -> G4 -> C5 -> E5 -> G5)
+    const fanfare = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+    fanfare.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const t = now + idx * 0.07;
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.24, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.65);
+    });
+
+    // 2. Shimmering medal glint chimes (C6 -> G6 -> C7)
+    const glints = [1046.50, 1567.98, 2093.00];
+    glints.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const t = now + 0.42 + idx * 0.09;
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.22, t + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.85);
+    });
+  }
+
+  // Tactile vintage paper rustle & photograph inspection slide
+  public playPaperInspect() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Textured paper rustle noise
+    const noiseLen = Math.floor(ctx.sampleRate * 0.12);
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const output = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (noiseLen * 0.4));
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuf;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1800, now);
+    filter.frequency.exponentialRampToValueAtTime(800, now + 0.12);
+    filter.Q.setValueAtTime(1.5, now);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    noiseSource.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    noiseSource.start(now);
+
+    // 2. Soft tactile parchment thump
+    const osc = ctx.createOscillator();
+    const thumpGain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(50, now + 0.08);
+
+    thumpGain.gain.setValueAtTime(0.18, now);
+    thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+    osc.connect(thumpGain);
+    thumpGain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.09);
+  }
+
   // =========================================================================
   // CONTINUOUS PROCEDURAL ORCHESTRAL BGM ENGINE (1928 ADVENTURE SOUNDSCAPE)
   // =========================================================================

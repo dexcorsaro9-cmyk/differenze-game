@@ -15,6 +15,7 @@ import {
   LayoutGrid,
   ScrollText,
   Compass,
+  Award,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
@@ -48,6 +49,9 @@ interface ExpeditionHubModalProps {
   onOpenLevelSelect: () => void;
   isLevel120Completed?: boolean;
   onOpenGrandFinale?: () => void;
+  onOpenMedals?: () => void;
+  unlockedMedalsCount?: number;
+  totalMedals?: number;
 }
 
 export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
@@ -76,6 +80,9 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   onOpenLevelSelect,
   isLevel120Completed = false,
   onOpenGrandFinale,
+  onOpenMedals,
+  unlockedMedalsCount = 0,
+  totalMedals = 12,
 }) => {
   if (!isOpen) return null;
 
@@ -237,6 +244,37 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               Visita Sala ➔
             </span>
           </button>
+
+          {/* Card 2B: Medagliere Reale della Spedizione */}
+          {onOpenMedals && (
+            <button
+              type="button"
+              onClick={() => handleAction(onOpenMedals)}
+              className="w-full p-3 rounded-2xl bg-gradient-to-r from-[#2c1d0f] via-[#211409] to-[#2c1d0f] border border-amber-500/60 hover:border-amber-400 shadow-md text-left flex items-center justify-between gap-3 group transition cursor-pointer active:scale-98"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500/30 to-amber-700/20 border border-amber-400/70 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform shadow-inner">
+                  <Award className="w-6 h-6 text-amber-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
+                      Medagliere Reale della Spedizione
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[9px] font-mono font-bold">
+                      {unlockedMedalsCount}/{totalMedals}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-stone-400 block font-serif">
+                    12 Onorificenze vittoriane con nastri in seta & taglie d'oro
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
+                Apri Teca ➔
+              </span>
+            </button>
+          )}
 
           {/* Grand Finale Epilogue & Certificate (Unlocked when Level 120 is beaten) */}
           {isLevel120Completed && onOpenGrandFinale && (
