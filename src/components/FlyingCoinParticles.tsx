@@ -35,9 +35,15 @@ export const FlyingCoinParticles: React.FC<FlyingCoinParticlesProps> = ({
   onCoinLanded,
 }) => {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const processedBurstIdsRef = React.useRef<Set<string>>(new Set());
 
   useEffect(() => {
     if (bursts.length === 0) return;
+
+    const unprocessed = bursts.filter(b => !processedBurstIdsRef.current.has(b.id));
+    if (unprocessed.length === 0) return;
+
+    unprocessed.forEach(b => processedBurstIdsRef.current.add(b.id));
 
     // Determine target location (Header coin counter element or fallback to top-right)
     const coinCounterEl = document.getElementById('header-coin-counter');
@@ -52,7 +58,7 @@ export const FlyingCoinParticles: React.FC<FlyingCoinParticlesProps> = ({
 
     const newParticles: Particle[] = [];
 
-    bursts.forEach(burst => {
+    unprocessed.forEach(burst => {
       const coinCount = burst.count || 8;
       for (let i = 0; i < coinCount; i++) {
         // Random burst offset for natural explosion
@@ -66,7 +72,7 @@ export const FlyingCoinParticles: React.FC<FlyingCoinParticlesProps> = ({
         const midY = Math.min(initialY, targetY) - (50 + Math.random() * 80);
 
         newParticles.push({
-          id: `${burst.id}_${i}`,
+          id: `${burst.id}_${i}_${Math.random().toString(36).slice(2, 6)}`,
           startX: initialX,
           startY: initialY,
           targetX,
@@ -83,6 +89,7 @@ export const FlyingCoinParticles: React.FC<FlyingCoinParticlesProps> = ({
 
       // Schedule burst completion
       setTimeout(() => {
+        processedBurstIdsRef.current.delete(burst.id);
         onBurstComplete(burst.id);
       }, 1100);
     });
