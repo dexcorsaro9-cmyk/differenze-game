@@ -1031,7 +1031,7 @@ class SoundManager {
   }
 
   // =========================================================================
-  // CONTINUOUS PROCEDURAL ORCHESTRAL BGM ENGINE (1928 ADVENTURE SOUNDSCAPE)
+  // CONTINUOUS PROCEDURAL ORCHESTRAL BGM & 1928 GRAMOPHONE ENGINE
   // =========================================================================
   private bgmGainNode: GainNode | null = null;
   private bgmFilterNode: BiquadFilterNode | null = null;
@@ -1046,7 +1046,19 @@ class SoundManager {
   private bgmVolume: number = 0.38;
   private bgmLoopTimer: number | null = null;
   private bgmStepIndex: number = 0;
-  private currentTheme: 'exploration' | 'excavation' | 'sacred_temple' = 'exploration';
+  private currentTheme: 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz' = 'exploration';
+  private bgmSpeedMultiplier: number = 1.0; // 1.0 for 78 RPM, 0.82 for 33 RPM, 1.15 for 80 RPM
+
+  // 1928 Shellac surface noise & acoustic horn simulation
+  private isVintageCrackleEnabled: boolean = (() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('differenze_vintage_crackle') === 'true';
+    }
+    return false;
+  })();
+  private crackleGainNode: GainNode | null = null;
+  private crackleFilterNode: BiquadFilterNode | null = null;
+  private crackleSourceNode: AudioBufferSourceNode | null = null;
 
   // Chord progressions in ancient Dorian / D minor mode (Indiana Jones / Howard Shore archaeological style)
   // Each chord has [RootBass, HarpArpNotes...]
@@ -1071,6 +1083,13 @@ class SoundManager {
     { bass: 130.81, harp: [261.63, 329.63, 392.00, 523.25, 659.25], bell: 659.25 }, // C Major
   ];
 
+  private readonly chordsRoyalWaltz = [
+    { bass: 130.81, harp: [261.63, 329.63, 392.00, 523.25, 659.25], bell: 659.25 }, // C Major
+    { bass: 110.00, harp: [220.00, 261.63, 329.63, 440.00, 523.25], bell: 523.25 }, // Am
+    { bass: 87.31,  harp: [174.61, 220.00, 261.63, 349.23, 440.00], bell: 440.00 }, // F Major
+    { bass: 98.00,  harp: [196.00, 246.94, 293.66, 392.00, 493.88], bell: 587.33 }, // G Major
+  ];
+
   public setBGMEnabled(enabled: boolean) {
     this.bgmEnabled = enabled;
     if (typeof window !== 'undefined') {
@@ -1091,39 +1110,105 @@ class SoundManager {
     return this.isBgmPlaying && this.bgmEnabled;
   }
 
-  public setBGMTheme(theme: 'exploration' | 'excavation' | 'sacred_temple') {
+  public getCurrentTheme(): 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz' {
+    return this.currentTheme;
+  }
+
+  public setBGMTheme(theme: 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz') {
     if (this.currentTheme === theme) return;
     this.currentTheme = theme;
     if (this.isBgmPlaying && this.bgmEnabled) {
-      this.startBGM(theme);
+      this.restartBGM(theme);
     }
   }
 
+  public setBGMVolume(volume: number) {
+    this.bgmVolume = Math.max(0, Math.min(1, volume));
+    if (this.bgmGainNode && this.ctx) {
+      const now = this.ctx.currentTime;
+      this.bgmGainNode.gain.cancelScheduledValues(now);
+      this.bgmGainNode.gain.linearRampToValueAtTime(this.bgmVolume, now + 0.1);
+    }
+  }
+
+  public getBGMVolume(): number {
+    return this.bgmVolume;
+  }
+
+  // Set RPM speed multiplier: 78 RPM (1.0x standard), 33 RPM (0.82x deep slow), 80 RPM (1.15x brisk march)
+  public setBGMSpeed(rpm: 33 | 78 | 80) {
+    const rate = rpm === 33 ? 0.82 : rpm === 80 ? 1.15 : 1.0;
+    this.bgmSpeedMultiplier = rate;
+    if (this.isBgmPlaying && this.bgmEnabled) {
+      if (this.bgmLoopTimer !== null) {
+        clearInterval(this.bgmLoopTimer);
+        const interval = Math.round(3600 / this.bgmSpeedMultiplier);
+        this.bgmLoopTimer = window.setInterval(() => {
+          if (this.isBgmPlaying && this.bgmEnabled) {
+            this.scheduleNextBGMBar();
+          }
+        }, interval);
+      }
+    }
+  }
+
+  // Toggle & control authentic 1928 Shellac 78 RPM surface crackle & acoustic horn EQ
+  public setVintageCrackleEnabled(enabled: boolean) {
+    this.isVintageCrackleEnabled = enabled;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('differenze_vintage_crackle', enabled ? 'true' : 'false');
+    }
+
+    if (this.ctx && this.bgmFilterNode) {
+      const now = this.ctx.currentTime;
+      if (enabled) {
+        // 1928 Acoustic Horn Resonance EQ
+        this.bgmFilterNode.frequency.setValueAtTime(2200, now);
+        this.bgmFilterNode.Q.setValueAtTime(2.2, now);
+      } else {
+        // Modern Studio Master EQ
+        this.bgmFilterNode.frequency.setValueAtTime(3400, now);
+        this.bgmFilterNode.Q.setValueAtTime(1.0, now);
+      }
+    }
+
+    if (enabled && this.isBgmPlaying && this.bgmEnabled) {
+      this.startCrackle();
+    } else {
+      this.stopCrackle();
+    }
+  }
+
+  public getVintageCrackleEnabled(): boolean {
+    return this.isVintageCrackleEnabled;
+  }
+
   // Start continuous orchestral atmospheric music loop
-  public startBGM(theme: 'exploration' | 'excavation' | 'sacred_temple' = 'exploration') {
+  public startBGM(theme: 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz' = 'exploration') {
     this.currentTheme = theme;
     if (!this.bgmEnabled) return;
 
     const ctx = this.getContext();
     if (!ctx) return;
 
-    // Ensure audio context is active
     if (ctx.state === 'suspended') {
       ctx.resume().catch(() => {});
     }
 
     if (this.isBgmPlaying && this.bgmLoopTimer !== null) {
-      // Smooth theme transition
       return;
     }
 
-    // Master BGM Gain Node
+    // Master BGM Gain Node & Acoustic Filter
     if (!this.bgmGainNode) {
       this.bgmGainNode = ctx.createGain();
       this.bgmFilterNode = ctx.createBiquadFilter();
       this.bgmFilterNode.type = 'lowpass';
-      this.bgmFilterNode.frequency.setValueAtTime(3200, ctx.currentTime);
-      this.bgmFilterNode.Q.setValueAtTime(1.0, ctx.currentTime);
+      
+      const cutoff = this.isVintageCrackleEnabled ? 2200 : 3400;
+      const qVal = this.isVintageCrackleEnabled ? 2.2 : 1.0;
+      this.bgmFilterNode.frequency.setValueAtTime(cutoff, ctx.currentTime);
+      this.bgmFilterNode.Q.setValueAtTime(qVal, ctx.currentTime);
 
       this.bgmGainNode.connect(this.bgmFilterNode);
       this.bgmFilterNode.connect(ctx.destination);
@@ -1137,21 +1222,34 @@ class SoundManager {
     this.isBgmPlaying = true;
     this.bgmStepIndex = 0;
 
+    // Start vinyl surface crackle if enabled
+    if (this.isVintageCrackleEnabled) {
+      this.startCrackle();
+    }
+
     // Schedule initial bar immediately
     this.scheduleNextBGMBar();
 
-    // Start precise bar scheduler loop (every 3.6 seconds per 4-beat bar)
+    // Start precise bar scheduler loop
     if (this.bgmLoopTimer !== null) clearInterval(this.bgmLoopTimer);
+    const interval = Math.round(3600 / this.bgmSpeedMultiplier);
     this.bgmLoopTimer = window.setInterval(() => {
       if (this.isBgmPlaying && this.bgmEnabled) {
         this.scheduleNextBGMBar();
       }
-    }, 3600);
+    }, interval);
+  }
+
+  private restartBGM(theme: 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz') {
+    this.currentTheme = theme;
+    this.bgmStepIndex = 0;
+    this.scheduleNextBGMBar();
   }
 
   public pauseBGM() {
     if (!this.bgmGainNode || !this.ctx) {
       this.isBgmPlaying = false;
+      this.stopCrackle();
       return;
     }
     const now = this.ctx.currentTime;
@@ -1163,6 +1261,7 @@ class SoundManager {
       this.bgmLoopTimer = null;
     }
     this.isBgmPlaying = false;
+    this.stopCrackle();
   }
 
   public stopBGM() {
@@ -1175,6 +1274,176 @@ class SoundManager {
     return next;
   }
 
+  // Generate procedural continuous 78 RPM shellac surface noise with sporadic micro-dust pops
+  private startCrackle() {
+    const ctx = this.getContext();
+    if (!ctx || this.crackleSourceNode) return;
+
+    try {
+      const sampleRate = ctx.sampleRate;
+      const bufferSize = sampleRate * 3; // 3-second loop
+      const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Generate soft surface rumble + hiss + sporadic clicks
+      for (let i = 0; i < bufferSize; i++) {
+        // Base vinyl floor noise
+        const white = (Math.random() * 2 - 1) * 0.032;
+        data[i] = white;
+
+        // Sporadic micro dust pop / stylus click
+        if (Math.random() < 0.00045) {
+          const popAmplitude = (Math.random() * 0.28 + 0.12) * (Math.random() > 0.5 ? 1 : -1);
+          data[i] += popAmplitude;
+          if (i + 1 < bufferSize) data[i + 1] += popAmplitude * 0.6;
+          if (i + 2 < bufferSize) data[i + 2] -= popAmplitude * 0.3;
+        }
+      }
+
+      this.crackleSourceNode = ctx.createBufferSource();
+      this.crackleSourceNode.buffer = buffer;
+      this.crackleSourceNode.loop = true;
+
+      // Bandpass filter for authentic horn/stylus response (300Hz - 3800Hz)
+      this.crackleFilterNode = ctx.createBiquadFilter();
+      this.crackleFilterNode.type = 'bandpass';
+      this.crackleFilterNode.frequency.setValueAtTime(2400, ctx.currentTime);
+      this.crackleFilterNode.Q.setValueAtTime(0.85, ctx.currentTime);
+
+      this.crackleGainNode = ctx.createGain();
+      this.crackleGainNode.gain.setValueAtTime(0, ctx.currentTime);
+      this.crackleGainNode.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 0.4);
+
+      this.crackleSourceNode.connect(this.crackleFilterNode);
+      this.crackleFilterNode.connect(this.crackleGainNode);
+      this.crackleGainNode.connect(ctx.destination);
+
+      this.crackleSourceNode.start();
+    } catch {
+      // Audio buffer creation fallback
+    }
+  }
+
+  private stopCrackle() {
+    if (this.crackleGainNode && this.ctx) {
+      const now = this.ctx.currentTime;
+      this.crackleGainNode.gain.cancelScheduledValues(now);
+      this.crackleGainNode.gain.linearRampToValueAtTime(0.001, now + 0.3);
+      setTimeout(() => {
+        if (this.crackleSourceNode) {
+          try {
+            this.crackleSourceNode.stop();
+            this.crackleSourceNode.disconnect();
+          } catch {}
+          this.crackleSourceNode = null;
+        }
+      }, 350);
+    }
+  }
+
+  // Sound of winding the spring motor of the 1928 Gramophone
+  public playGramophoneWind() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    // 6 crisp ratchet pawl clicks in rapid succession
+    for (let i = 0; i < 6; i++) {
+      const clickTime = now + i * 0.038;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(1800, clickTime);
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(760 + i * 35, clickTime);
+      osc.frequency.exponentialRampToValueAtTime(120, clickTime + 0.024);
+
+      gain.gain.setValueAtTime(0.13, clickTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.023);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(clickTime);
+      osc.stop(clickTime + 0.028);
+    }
+  }
+
+  // Sound of dropping the tonearm sapphire needle into the spinning vinyl groove
+  public playNeedleDrop() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    // 1. Soft mechanical arm contact
+    const thudOsc = ctx.createOscillator();
+    const thudGain = ctx.createGain();
+    thudOsc.type = 'triangle';
+    thudOsc.frequency.setValueAtTime(160, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+
+    thudGain.gain.setValueAtTime(0.16, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(ctx.destination);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.13);
+
+    // 2. Needle groove slide/scratch (110ms noise burst)
+    const noiseOsc = ctx.createOscillator();
+    const noiseGain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2800, now + 0.04);
+    filter.Q.setValueAtTime(3.0, now + 0.04);
+
+    noiseOsc.type = 'sawtooth';
+    noiseOsc.frequency.setValueAtTime(1800, now + 0.04);
+    noiseOsc.frequency.linearRampToValueAtTime(900, now + 0.18);
+
+    noiseGain.gain.setValueAtTime(0.08, now + 0.04);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    noiseOsc.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+
+    noiseOsc.start(now + 0.04);
+    noiseOsc.stop(now + 0.19);
+  }
+
+  // Sound of lifting the tonearm needle from the vinyl
+  public playNeedleLift() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(700, now);
+    osc.frequency.exponentialRampToValueAtTime(2400, now + 0.08);
+
+    gain.gain.setValueAtTime(0.09, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
   // Synthesizes one bar of rich cinematic adventure music
   private scheduleNextBGMBar() {
     const ctx = this.getContext();
@@ -1185,7 +1454,10 @@ class SoundManager {
         ? this.chordsExploration
         : this.currentTheme === 'excavation'
         ? this.chordsExcavation
-        : this.chordsSacredTemple;
+        : this.currentTheme === 'sacred_temple'
+        ? this.chordsSacredTemple
+        : this.chordsRoyalWaltz;
+
     const currentChord = chords[this.bgmStepIndex % chords.length] as {
       bass: number;
       harp: number[];
@@ -1194,23 +1466,23 @@ class SoundManager {
     this.bgmStepIndex++;
 
     const startTime = ctx.currentTime + 0.05;
-    const barDuration = 3.6; // seconds
+    const barDuration = 3.6 / this.bgmSpeedMultiplier;
 
-    // 0. Sacred Golden Bell / Bronze Gong Resonator (for sacred_temple theme)
-    if (this.currentTheme === 'sacred_temple' && currentChord.bell) {
+    // 0. Sacred Golden Bell / Bronze Gong Resonator (for sacred_temple / royal_waltz theme)
+    if (currentChord.bell) {
       const bellOsc = ctx.createOscillator();
       const bellGain = ctx.createGain();
       bellOsc.type = 'sine';
       bellOsc.frequency.setValueAtTime(currentChord.bell, startTime);
 
       bellGain.gain.setValueAtTime(0, startTime);
-      bellGain.gain.linearRampToValueAtTime(0.045, startTime + 0.04);
-      bellGain.gain.exponentialRampToValueAtTime(0.0001, startTime + 3.4);
+      bellGain.gain.linearRampToValueAtTime(0.042, startTime + 0.04);
+      bellGain.gain.exponentialRampToValueAtTime(0.0001, startTime + barDuration * 0.95);
 
       bellOsc.connect(bellGain);
       bellGain.connect(this.bgmGainNode);
       bellOsc.start(startTime);
-      bellOsc.stop(startTime + 3.5);
+      bellOsc.stop(startTime + barDuration);
     }
 
     // 1. Warm Cello / Double-Bass Pedal Drone
@@ -1225,8 +1497,8 @@ class SoundManager {
     bassOsc.frequency.setValueAtTime(currentChord.bass, startTime);
 
     bassGain.gain.setValueAtTime(0, startTime);
-    bassGain.gain.linearRampToValueAtTime(0.14, startTime + 0.8);
-    bassGain.gain.setValueAtTime(0.14, startTime + barDuration - 0.7);
+    bassGain.gain.linearRampToValueAtTime(0.14, startTime + 0.8 / this.bgmSpeedMultiplier);
+    bassGain.gain.setValueAtTime(0.14, startTime + barDuration - 0.7 / this.bgmSpeedMultiplier);
     bassGain.gain.linearRampToValueAtTime(0.001, startTime + barDuration);
 
     bassOsc.connect(bassFilter);
@@ -1252,13 +1524,13 @@ class SoundManager {
       // Acoustic pluck envelope: fast attack, natural exponential ring
       harpGain.gain.setValueAtTime(0, noteTime);
       harpGain.gain.linearRampToValueAtTime(0.09, noteTime + 0.02);
-      harpGain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.85);
+      harpGain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.85 / this.bgmSpeedMultiplier);
 
       harpOsc.connect(harpGain);
       harpGain.connect(this.bgmGainNode!);
 
       harpOsc.start(noteTime);
-      harpOsc.stop(noteTime + 0.9);
+      harpOsc.stop(noteTime + 0.9 / this.bgmSpeedMultiplier);
     });
 
     // 3. Ancient Flute / Whistle Lyrical Fragment (Every second bar)
@@ -1268,7 +1540,7 @@ class SoundManager {
       const fluteLfo = ctx.createOscillator();
       const fluteLfoGain = ctx.createGain();
 
-      const fluteStartTime = startTime + 0.6;
+      const fluteStartTime = startTime + 0.6 / this.bgmSpeedMultiplier;
       const fluteFreq = harpNotes[harpNotes.length - 1]; // High melodic note
 
       // Gentle breathy vibrato
@@ -1282,8 +1554,8 @@ class SoundManager {
       fluteOsc.frequency.setValueAtTime(fluteFreq, fluteStartTime);
 
       fluteGain.gain.setValueAtTime(0, fluteStartTime);
-      fluteGain.gain.linearRampToValueAtTime(0.08, fluteStartTime + 0.4);
-      fluteGain.gain.exponentialRampToValueAtTime(0.001, fluteStartTime + 2.0);
+      fluteGain.gain.linearRampToValueAtTime(0.08, fluteStartTime + 0.4 / this.bgmSpeedMultiplier);
+      fluteGain.gain.exponentialRampToValueAtTime(0.001, fluteStartTime + 2.0 / this.bgmSpeedMultiplier);
 
       fluteOsc.connect(fluteGain);
       fluteGain.connect(this.bgmGainNode);
@@ -1291,11 +1563,13 @@ class SoundManager {
       fluteLfo.start(fluteStartTime);
       fluteOsc.start(fluteStartTime);
 
-      fluteLfo.stop(fluteStartTime + 2.1);
-      fluteOsc.stop(fluteStartTime + 2.1);
+      fluteLfo.stop(fluteStartTime + 2.1 / this.bgmSpeedMultiplier);
+      fluteOsc.stop(fluteStartTime + 2.1 / this.bgmSpeedMultiplier);
     }
   }
 }
+
+export type BGMTheme = 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz';
 
 export const sound = new SoundManager();
 

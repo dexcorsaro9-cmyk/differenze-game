@@ -1,7 +1,6 @@
 import React from 'react';
-import { X, Volume2, VolumeX, Smartphone, Sparkles, Layout, RotateCcw } from 'lucide-react';
+import { X, Volume2, VolumeX, Smartphone, Sparkles, Layout, RotateCcw, Download } from 'lucide-react';
 import type { GameSettings } from '../types/game';
-
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -10,6 +9,9 @@ interface SettingsModalProps {
   onUpdateSettings: (newSettings: Partial<GameSettings>) => void;
   onResetProgress: () => void;
   onOpenTutorial?: () => void;
+  isInstalled?: boolean;
+  onOpenInstall?: () => void;
+  isOffline?: boolean;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -19,6 +21,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onUpdateSettings,
   onResetProgress,
   onOpenTutorial,
+  isInstalled = false,
+  onOpenInstall,
+  isOffline = false,
 }) => {
   if (!isOpen) return null;
 
@@ -139,6 +144,36 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* PWA & Offline Mode Section */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-stone-900/60 to-amber-950/40 border border-amber-600/40">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Download className="w-4 h-4 text-amber-400" />
+                <h5 className="text-xs font-bold text-amber-100 font-serif">Modalità Offline & Installazione</h5>
+              </div>
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono font-bold">
+                {isOffline ? 'Offline Attivo' : 'Cache Pronta'}
+              </span>
+            </div>
+            <p className="text-[11px] text-stone-300 mb-3 font-sans">
+              Archivio 1928 autonomo: tutti i 120 capitoli, la musica e i reperti funzionano senza connessione.
+            </p>
+            {onOpenInstall && (
+              <button
+                type="button"
+                onClick={onOpenInstall}
+                className={`w-full py-2.5 px-3 rounded-xl border font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
+                  isInstalled
+                    ? 'bg-emerald-950/50 border-emerald-500/50 text-emerald-300'
+                    : 'bg-amber-500/20 hover:bg-amber-500/30 border-amber-400 text-amber-200 shadow-md'
+                }`}
+              >
+                <Download className="w-3.5 h-3.5" />
+                {isInstalled ? '✓ Gioco Installato a Schermo Intero' : 'Installa Gioco su Schermo Home / Desktop'}
+              </button>
+            )}
           </div>
         </div>
 

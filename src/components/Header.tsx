@@ -13,6 +13,7 @@ import {
   Flame,
   Maximize,
   Minimize,
+  Download,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
@@ -32,6 +33,8 @@ interface HeaderProps {
   profile: ExplorerProfile;
   onOpenHub: () => void;
   onOpenPassport?: () => void;
+  onOpenInstall?: () => void;
+  isInstalled?: boolean;
   hasHubNotification?: boolean;
   isCoinBouncing?: boolean;
   onOpenShop?: () => void;
@@ -68,6 +71,8 @@ export const Header: React.FC<HeaderProps> = ({
   profile,
   onOpenHub,
   onOpenPassport,
+  onOpenInstall,
+  isInstalled = false,
   hasHubNotification = false,
   isCoinBouncing = false,
   onOpenShop,
@@ -157,6 +162,18 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right: Fullscreen, Sound toggle, Coins counter & Prominent CAMPO BASE button */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Direct PWA Install Button when installable or prompt available */}
+          {onOpenInstall && !isInstalled && (
+            <button
+              type="button"
+              onClick={onOpenInstall}
+              className="p-1.5 rounded-full border border-amber-400 bg-amber-500/25 hover:bg-amber-500/40 text-amber-200 hover:text-white shadow-[0_0_8px_rgba(245,158,11,0.4)] transition cursor-pointer active:scale-95"
+              title="Installa Gioco su Schermo Home / Desktop (PWA)"
+            >
+              <Download className="w-3.5 h-3.5" />
+            </button>
+          )}
+
           {/* Native Fullscreen Mode Toggle */}
           <button
             type="button"

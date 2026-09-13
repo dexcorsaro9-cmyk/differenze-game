@@ -26,6 +26,9 @@ const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModa
 const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
 const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
 const ExpeditionPassportModal = lazy(() => import('./components/ExpeditionPassportModal').then(m => ({ default: m.ExpeditionPassportModal })));
+const PWAInstallModal = lazy(() => import('./components/PWAInstallModal').then(m => ({ default: m.PWAInstallModal })));
+import { OfflineStatusToast } from './components/OfflineStatusToast';
+import { usePWA } from './hooks/usePWA';
 import {
   hasPendingDaily,
   completeDailyExpedition,
@@ -228,6 +231,10 @@ export const App: React.FC = () => {
   const [isGrandFinaleOpen, setIsGrandFinaleOpen] = useState<boolean>(() => initialView === 'finale');
   const [isMedalsCabinetOpen, setIsMedalsCabinetOpen] = useState<boolean>(() => initialView === 'medals');
   const [isPassportOpen, setIsPassportOpen] = useState<boolean>(() => initialView === 'passport');
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(() => initialView === 'install');
+
+  // Progressive Web App & Offline capability hook
+  const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
   const [unlockedMedalIds, setUnlockedMedalIds] = useState<string[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_MEDALS);
     if (saved) {
@@ -513,7 +520,8 @@ export const App: React.FC = () => {
     isRelicFoundModalOpen ||
     isDailyModalOpen ||
     isMedalsCabinetOpen ||
-    isPassportOpen;
+    isPassportOpen ||
+    isInstallModalOpen;
 
   // Timer Tick (Frozen when freeze power-up is running or modal open)
   useEffect(() => {
@@ -1050,6 +1058,9 @@ export const App: React.FC = () => {
 
       {/* The Responsive Game Viewport Container (Phone shell on mobile, wide cinema canvas on desktop/tablet) */}
       <div className="w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-all duration-300">
+        {/* Offline Network Status Toast */}
+        <OfflineStatusToast isOffline={isOffline} />
+
         {/* Indiana Jones Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Campo Base Hub Button */}
         <Header
           currentLevel={currentLevel}
@@ -1065,6 +1076,8 @@ export const App: React.FC = () => {
           profile={explorerProfile}
           onOpenHub={() => setIsExpeditionHubOpen(true)}
           onOpenPassport={() => setIsPassportOpen(true)}
+          onOpenInstall={() => setIsInstallModalOpen(true)}
+          isInstalled={isInstalled}
           hasHubNotification={
             hasUnreadDaily ||
             hasUnreadRelics ||
@@ -1255,6 +1268,9 @@ export const App: React.FC = () => {
         settings={settings}
         onUpdateSettings={newS => setSettings(s => ({ ...s, ...newS }))}
         onOpenTutorial={() => setIsTutorialOpen(true)}
+        onOpenInstall={() => setIsInstallModalOpen(true)}
+        isInstalled={isInstalled}
+        isOffline={isOffline}
         onResetProgress={() => {
           localStorage.removeItem(STORAGE_KEY_PROGRESS);
           localStorage.removeItem(STORAGE_KEY_ECONOMY);
@@ -1360,6 +1376,11 @@ export const App: React.FC = () => {
           setIsPassportOpen(true);
         }}
         unlockedVisasCount={CONSULAR_VISAS.filter(v => currentLevel.chapterNumber >= v.chapterNumber).length}
+        onOpenInstall={() => {
+          setIsExpeditionHubOpen(false);
+          setIsInstallModalOpen(true);
+        }}
+        isInstalled={isInstalled}
       />
 
       {/* AAA Splash Screen with "Tocca per iniziare" */}
@@ -1479,6 +1500,20 @@ export const App: React.FC = () => {
             currentChapter={currentLevel.chapterNumber}
             claimedVisaIds={claimedVisaIds}
             onClaimVisaBounty={handleClaimVisaBounty}
+          />
+        </Suspense>
+      )}
+
+      {/* PWA Full-Screen Standalone & Offline Installation Modal */}
+      {isInstallModalOpen && (
+        <Suspense fallback={null}>
+          <PWAInstallModal
+            isOpen={isInstallModalOpen}
+            onClose={() => setIsInstallModalOpen(false)}
+            canInstall={canInstall}
+            isInstalled={isInstalled}
+            isIOS={isIOS}
+            onPromptInstall={promptInstall}
           />
         </Suspense>
       )}

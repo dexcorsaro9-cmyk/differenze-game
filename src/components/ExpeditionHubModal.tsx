@@ -17,6 +17,7 @@ import {
   Compass,
   Award,
   Stamp,
+  Download,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
@@ -55,6 +56,8 @@ interface ExpeditionHubModalProps {
   totalMedals?: number;
   onOpenPassport?: () => void;
   unlockedVisasCount?: number;
+  onOpenInstall?: () => void;
+  isInstalled?: boolean;
 }
 
 export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
@@ -88,6 +91,8 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   totalMedals = 12,
   onOpenPassport,
   unlockedVisasCount = 0,
+  onOpenInstall,
+  isInstalled = false,
 }) => {
   if (!isOpen) return null;
 
@@ -445,6 +450,39 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               </div>
             </button>
           </div>
+
+          {/* PWA Standalone & Offline Banner */}
+          {onOpenInstall && (
+            <button
+              type="button"
+              onClick={() => handleAction(onOpenInstall)}
+              className="w-full p-3 rounded-2xl bg-gradient-to-r from-[#1d1209] via-[#2a170b] to-[#1d1209] border border-amber-500/50 hover:border-amber-400 shadow text-left flex items-center justify-between gap-3 group transition cursor-pointer active:scale-98"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform">
+                  <Download className="w-5 h-5 text-amber-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
+                      {isInstalled ? 'Archivio Spedizione Installato' : 'Installa App su Schermo'}
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-mono font-bold">
+                      Offline 100%
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-stone-400 block font-serif">
+                    {isInstalled
+                      ? 'Modalità a schermo intero nativa attiva senza barre del browser'
+                      : 'Schermo intero immersivo, zero barre del browser & gioco senza rete'}
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
+                {isInstalled ? 'Dettagli ➔' : 'Installa ➔'}
+              </span>
+            </button>
+          )}
 
           {/* Row for Stage Briefing & Level Selector */}
           <div className="grid grid-cols-2 gap-2.5 pt-1">
