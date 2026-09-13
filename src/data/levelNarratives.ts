@@ -27,9 +27,9 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   3: {
     title: "Il Laboratorio di Archeometria",
     subtitle: "Analisi Spettrografica • Ashmolean Museum",
-    prologue: "Sottoponi la pergamena alla lampada di Wood per rivelare i tracciati in inchiostro simpatico a base di cinabro e allume.",
-    resolution: "Sotto la scrittura latina compare una rotta nautica cifrata: le coordinate non partono dall'Atlantico, ma dai sotterranei di Parigi!",
-    unlockedSecret: "'L'inchiostro è una miscela di cinabro peruviano e resina d'acacia. Chi ha vergato questa mappa conosceva la chimica alchemica veneziana.' - Note di laboratorio",
+    prologue: "Nei laboratori dell'Ashmolean Museum, l'assistente di Bellini stava decifrando l'inchiostro simpatico della mappa andina. La Mano Oscura ha fatto irruzione per sabotare l'analisi chimica e trafugare i composti prima che la rotta verso Parigi venisse svelata. Trova le 6 tracce fisiche del sabotaggio.",
+    resolution: "Hai neutralizzato il sabotaggio del laboratorio: la reazione al cinabro ha rivelato il tracciato segreto! Le coordinate templari non partono dall'Atlantico, ma dai sotterranei di Parigi verso cui Bellini sta fuggendo.",
+    unlockedSecret: "'L'inchiostro simpatico è a base di cinabro peruviano e allume di rocca. Chi ha vergato questa mappa conosceva sia la metallurgia inca che l'alchimia veneziana.' - Note di laboratorio di Bellini",
   },
   4: {
     title: "La Cripta di St. Peter-in-the-East",

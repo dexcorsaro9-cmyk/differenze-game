@@ -161,7 +161,7 @@ export function generateAll120Levels(): Level[] {
     const imageA = isLevelTwo
       ? '/stage2_crypt_A.jpg?v=8'
       : isLevelThree
-      ? '/levels/stage1_lvl3_A.jpg'
+      ? '/levels/stage1_lvl3_A.jpg?v=2'
       : isLevelFour
       ? '/levels/stage1_lvl4_A.jpg'
       : isLevelFive
@@ -444,7 +444,7 @@ export function generateAll120Levels(): Level[] {
     const imageB = isLevelTwo
       ? '/stage2_crypt_B.jpg?v=8'
       : isLevelThree
-      ? '/levels/stage1_lvl3_B.jpg'
+      ? '/levels/stage1_lvl3_B.jpg?v=2'
       : isLevelFour
       ? '/levels/stage1_lvl4_B.jpg'
       : isLevelFive
@@ -843,16 +843,60 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 43.67, y: 19.64, radius: 4.0, name: "La Chiavetta d'Accensione della Lampada", loreClue: "La chiavetta a farfalla in ottone per regolare il gas e la corrente è stata rimossa dal portalampada sospeso." },
-        { id: `lvl${id}_d2`, x: 82.08, y: 27.46, radius: 4.0, name: "La Vite a Farfalla della Bilancia di Precisione", loreClue: "La vite micrometrica che equilibra il giogo d'argento della bilancia chimica è scomparsa dall'apice della teca." },
-        { id: `lvl${id}_d3`, x: 6.75, y: 28.12, radius: 4.0, name: "Il Terminale Sferico della Boccetta di Reattivo", loreClue: "Il pomo sferico di vetro del tappo smerigliato del flacone di cinabro alchemico è stato asportato." },
-        { id: `lvl${id}_d4`, x: 46.67, y: 44.42, radius: 4.0, name: "La Vite di Messa a Fuoco dello Spettroscopio", loreClue: "La rotella d'ottone zigrinata per la regolazione del prisma ottico dello spettroscopio da banco non è più al suo posto." },
-        { id: `lvl${id}_d5`, x: 22.33, y: 56.70, radius: 4.5, name: "La Fiamma del Becco Bunsen sotto l'Alambicco", loreClue: "Il rubinetto del gas è stato chiuso: la fiamma ossidrica sotto il matraccio di distillazione si è spenta improvvisamente." },
-        { id: `lvl${id}_d6`, x: 81.17, y: 52.57, radius: 3.5, name: "Il Pomello in Ottone del Cassetto della Teca", loreClue: "Uno dei due tiranti sferici in ottone del cassetto per i pesi milligrammetrici della bilancia è stato svitato." },
-        { id: `lvl${id}_d7`, x: 72.67, y: 66.29, radius: 3.5, name: "Il Bottone in Corno sul Polsino in Tweed", loreClue: "Il bottone sartoriale in corno bruno sulla manica della giacca del ricercatore si è staccato durante l'analisi." },
-        { id: `lvl${id}_d8`, x: 61.67, y: 64.29, radius: 4.0, name: "L'Impugnatura del Pestello nel Mortaio", loreClue: "Il collare sagomato in porcellana dell'impugnatura del pestello da polverizzazione minerale è stato limato via." },
-        { id: `lvl${id}_d9`, x: 34.17, y: 76.56, radius: 4.0, name: "L'Incastro a Mortasa del Portaprovette", loreClue: "La mortasa a intaglio nel montante di massello di quercia del rastrello portaprovette appare piallata e priva di foro." },
-        { id: `lvl${id}_d10`, x: 12.83, y: 74.67, radius: 3.5, name: "L'Attrezzo Metallico sul Ripiano Inferiore", loreClue: "La spatola di platino per il campionamento delle polveri di cinabro è stata rimossa dal ripiano dello scaffale dei reattivi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 41.89,
+          y: 25.47,
+          radius: 9.5,
+          clueType: 'sabotage',
+          name: "La Lampadina a Filamento dal Soffitto",
+          loreClue: "La lampada a sospensione sopra il banco di lavoro è stata spenta per impedire l'osservazione delle luminescenze chimiche sulla pergamena."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 60.77,
+          y: 64.90,
+          radius: 11.5,
+          clueType: 'stolen_relic',
+          name: "Il Mortaio e i Campioni dell'Archeometra",
+          loreClue: "Il mortaio in porcellana bianca e le provette dei campioni di cinabro peruviano sono stati asportati dal banco sotto gli occhi dello studioso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 38.42,
+          y: 73.66,
+          radius: 10.0,
+          clueType: 'stolen_relic',
+          name: "Il Grande Rastrello Portaprovette",
+          loreClue: "Il massiccio rastrello in quercia con le provette graduate dei reagenti alchemici è stato trafugato dal banco in primo piano per distruggere le prove."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.73,
+          y: 47.20,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "La Serie di Pesi Milligrammetrici d'Ottone",
+          loreClue: "La serie di cilindri micrometrici in ottone della bilancia analitica è stata sottratta: serviva a dosare le polveri alchemiche con precisione assoluta."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 22.19,
+          y: 56.46,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Fiamma del Becco Bunsen sotto il Matraccio",
+          loreClue: "Il rubinetto del gas del becco Bunsen è stato chiuso con violenza: la fiamma che riscaldava il solvente sotto il matraccio è stata spenta."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.56,
+          y: 36.30,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "Il Flacone di Reagente 'Alum' sullo Scaffale",
+          loreClue: "Il prezioso barattolo di allume di rocca è stato svuotato e trafugato: è il mordenzante chimico fondamentale per far reagire l'inchiostro simpatico della mappa."
+        },
       ];
     } else if (isLevelFour) {
       diffsForLevel = [
