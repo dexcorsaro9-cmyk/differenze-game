@@ -197,25 +197,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelTwenty
       ? '/levels/stage2_lvl20_A.jpg?v=2'
       : isLevelTwentyOne
-      ? '/levels/stage3_lvl21_A.jpg'
+      ? '/levels/stage3_lvl21_A.jpg?v=2'
       : isLevelTwentyTwo
-      ? '/levels/stage3_lvl22_A.jpg'
+      ? '/levels/stage3_lvl22_A.jpg?v=2'
       : isLevelTwentyThree
-      ? '/levels/stage3_lvl23_A.jpg'
+      ? '/levels/stage3_lvl23_A.jpg?v=2'
       : isLevelTwentyFour
-      ? '/levels/stage3_lvl24_A.jpg'
+      ? '/levels/stage3_lvl24_A.jpg?v=2'
       : isLevelTwentyFive
-      ? '/levels/stage3_lvl25_A.jpg'
+      ? '/levels/stage3_lvl25_A.jpg?v=2'
       : isLevelTwentySix
-      ? '/levels/stage3_lvl26_A.jpg'
+      ? '/levels/stage3_lvl26_A.jpg?v=2'
       : isLevelTwentySeven
-      ? '/levels/stage3_lvl27_A.jpg'
+      ? '/levels/stage3_lvl27_A.jpg?v=2'
       : isLevelTwentyEight
-      ? '/levels/stage3_lvl28_A.jpg'
+      ? '/levels/stage3_lvl28_A.jpg?v=2'
       : isLevelTwentyNine
-      ? '/levels/stage3_lvl29_A.jpg'
+      ? '/levels/stage3_lvl29_A.jpg?v=2'
       : isLevelThirty
-      ? '/levels/stage3_lvl30_A.jpg'
+      ? '/levels/stage3_lvl30_A.jpg?v=2'
       : isLevelThirtyOne
       ? '/levels/stage4_lvl31_A.jpg'
       : isLevelThirtyTwo
@@ -480,25 +480,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelTwenty
       ? '/levels/stage2_lvl20_B.jpg?v=2'
       : isLevelTwentyOne
-      ? '/levels/stage3_lvl21_B.jpg'
+      ? '/levels/stage3_lvl21_B.jpg?v=2'
       : isLevelTwentyTwo
-      ? '/levels/stage3_lvl22_B.jpg'
+      ? '/levels/stage3_lvl22_B.jpg?v=2'
       : isLevelTwentyThree
-      ? '/levels/stage3_lvl23_B.jpg'
+      ? '/levels/stage3_lvl23_B.jpg?v=2'
       : isLevelTwentyFour
-      ? '/levels/stage3_lvl24_B.jpg'
+      ? '/levels/stage3_lvl24_B.jpg?v=2'
       : isLevelTwentyFive
-      ? '/levels/stage3_lvl25_B.jpg'
+      ? '/levels/stage3_lvl25_B.jpg?v=2'
       : isLevelTwentySix
-      ? '/levels/stage3_lvl26_B.jpg'
+      ? '/levels/stage3_lvl26_B.jpg?v=2'
       : isLevelTwentySeven
-      ? '/levels/stage3_lvl27_B.jpg'
+      ? '/levels/stage3_lvl27_B.jpg?v=2'
       : isLevelTwentyEight
-      ? '/levels/stage3_lvl28_B.jpg'
+      ? '/levels/stage3_lvl28_B.jpg?v=2'
       : isLevelTwentyNine
-      ? '/levels/stage3_lvl29_B.jpg'
+      ? '/levels/stage3_lvl29_B.jpg?v=2'
       : isLevelThirty
-      ? '/levels/stage3_lvl30_B.jpg'
+      ? '/levels/stage3_lvl30_B.jpg?v=2'
       : isLevelThirtyOne
       ? '/levels/stage4_lvl31_B.jpg'
       : isLevelThirtyTwo
@@ -1895,133 +1895,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelTwentyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 76.43, y: 13.61, radius: 4.8, name: "La Clessidra a Doppia Ampolla", loreClue: "La clessidra d'ottone e cristallo sullo scaffale alto della libreria cinquecentesca è stata rimossa dalla Mano Occulta." },
-        { id: `lvl${id}_d2`, x: 86.77, y: 9.74, radius: 3.5, name: "L'Ampolla di Vetro sullo Scaffale", loreClue: "L'ampolla in vetro soffiato di Murano posata sulla cornice superiore dello scaffale è sparita nel nulla." },
-        { id: `lvl${id}_d3`, x: 63.47, y: 19.04, radius: 4.0, name: "La Bottiglia Verde dei Reagenti", loreClue: "La bottiglia di reagente verde alchemico sulla mensola delle essenze è stata sottratta dallo scaffale." },
-        { id: `lvl${id}_d4`, x: 52.19, y: 76.33, radius: 6.0, name: "Il Compasso Sinistro sulla Mappa", loreClue: "Il compasso nautico in ottone a punte aperte sulla pergamena di Marco Polo è svanito: la rotta non può più essere misurata." },
-        { id: `lvl${id}_d5`, x: 62.44, y: 77.90, radius: 5.2, name: "Il Compasso Destro sulla Mappa", loreClue: "Il secondo compasso da carteggio posato sul Mediterraneo è scomparso dalla mappa dello studioso." },
-        { id: `lvl${id}_d6`, x: 75.21, y: 69.42, radius: 6.2, name: "Il Calamaio con Penna d'Oca", loreClue: "Il calamaio in pietra nera e la penna d'oca da cartografo sono stati trafugati dal piano di lavoro." },
-        { id: `lvl${id}_d7`, x: 28.38, y: 72.12, radius: 6.8, name: "Il Taccuino di Cuoio", loreClue: "Il diario in cuoio brunito contenente gli appunti cifrati sulle terre oltreoceano è scomparso dal tavolo." },
-        { id: `lvl${id}_d8`, x: 38.76, y: 66.07, radius: 3.8, name: "La Boccetta di Spezie sul Tavolo", loreClue: "La boccetta farmaceutica in vetro ambrato posata accanto ai distillatori è stata asportata." },
-        { id: `lvl${id}_d9`, x: 94.09, y: 72.38, radius: 7.5, name: "Il Candeliere con Cero Acceso", loreClue: "Il candeliere di bronzo con il cero acceso sull'angolo destro del tavolo è svanito nell'ombra." },
-        { id: `lvl${id}_d10`, x: 31.17, y: 80.30, radius: 3.5, name: "Il Piccolo Rotolo di Pergamena", loreClue: "Il rotolino di pergamena legato che sporgeva dal bordo inferiore del tavolo da studio è stato asportato." },
+        {
+          id: `lvl${id}_d1`,
+          x: 56.12,
+          y: 77.51,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Compasso Nautico sulla Mappa del Catai",
+          loreClue: "Il compasso in ottone a punte aperte sulla rotta di Marco Polo è svanito: gli intrusi volevano celare la rotta verso Oriente."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 94.38,
+          y: 72.04,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Candeliere di Bronzo sul Tavolo",
+          loreClue: "Il pesante candeliere in bronzo con il cero acceso è stato ribaltato e sottratto per operare nell'ombra."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 75.25,
+          y: 68.36,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calamaio di Pietra con Penna d'Oca",
+          loreClue: "Il calamaio in pietra nera e la penna da calligrafo con cui il viaggiatore tracciava i diari sono scomparsi."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 28.21,
+          y: 72.54,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Taccuino di Viaggio in Cuoio",
+          loreClue: "Il diario rilegato in cuoio brunito contenente i crittogrammi della Via della Seta è stato trafugato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 76.21,
+          y: 13.00,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Clessidra Marinaresca sullo Scaffale",
+          loreClue: "La clessidra d'ottone e cristallo posata sullo scaffale alto della biblioteca è stata asportata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 38.79,
+          y: 66.57,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Boccetta di Spezie Orientali",
+          loreClue: "La boccetta farmaceutica in vetro ambrato con i pigmenti alchemici cinesi è stata sottratta dal banco."
+        },
       ];
     } else if (isLevelTwentyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.80, y: 8.35, radius: 4.0, name: "Il Cassettone Dorato della Volta Sinistra", loreClue: "Il fregio dorato a rilievo nel cassettonato a sinistra è stato piallato lasciando il fondo scuro." },
-        { id: `lvl${id}_d2`, x: 49.95, y: 7.27, radius: 4.0, name: "Il Grande Medaglione Centrale del Veronese", loreClue: "La figura allegorica centrale del soffitto monumentale svanisce nel fondo bruno della tela." },
-        { id: `lvl${id}_d3`, x: 79.13, y: 8.35, radius: 4.0, name: "Il Cassettone Dorato della Volta Destra", loreClue: "I racemi d'oro intagliati sul comparto ligneo destro sono stati rimossi." },
-        { id: `lvl${id}_d4`, x: 49.97, y: 25.05, radius: 4.0, name: "La Ghirlanda Superiore della Sala del Maggior Consiglio", loreClue: "I festoni in stucco dorato sopra l'arcone sono stati asportati dalla trabeazione." },
-        { id: `lvl${id}_d5`, x: 7.48, y: 37.34, radius: 4.0, name: "Il Capitello Corinzio della Parasta Sinistra", loreClue: "Le volute dorate del capitello sul pilastro d'ingresso sinistro risultano scalpellate." },
-        { id: `lvl${id}_d6`, x: 92.48, y: 37.40, radius: 4.0, name: "Il Capitello Corinzio della Parasta Destra", loreClue: "Il capitello in foglia d'oro sulla parete d'onore destra è sostituito da collarino liscio." },
-        { id: `lvl${id}_d7`, x: 14.96, y: 58.03, radius: 4.0, name: "Il Dipinto delle Vittorie Navali a Sinistra", loreClue: "Uno dei vascelli da guerra della flotta veneziana nel telerio sinistro appare velato." },
-        { id: `lvl${id}_d8`, x: 50.01, y: 62.44, radius: 4.0, name: "Il Trono Ducale al Centro della Sala", loreClue: "Il dossale cerimoniale in velluto cremisi dello scranno del Doge è stato tolto dal podio." },
-        { id: `lvl${id}_d9`, x: 84.97, y: 58.01, radius: 4.0, name: "Il Dipinto delle Vittorie Navali a Destra", loreClue: "La figura dell'ammiraglio veneto nella grande tela a destra è svanita nel colore." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 89.86, radius: 4.0, name: "I Banchi Lignei dei Patrizi al Centro", loreClue: "Lo scranno in noce dei patrizi della Serenissima al centro della sala è stato rimosso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.00,
+          y: 89.84,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "I Banchi Lignei dei Patrizi al Centro",
+          loreClue: "Gli scranni cerimoniali in noce intagliato dei patrizi al centro della sala sono stati rimossi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.00,
+          y: 25.11,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Ghirlanda Superiore della Sala Ducale",
+          loreClue: "I festoni dorati in stucco sopra l'arcone monumentale sono stati staccati dalla trabeazione."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 79.17,
+          y: 8.37,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cassettone Dorato della Volta Destra",
+          loreClue: "I racemi d'oro intagliati sul comparto ligneo destro del soffitto sono stati asportati."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.83,
+          y: 8.37,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Cassettone Dorato della Volta Sinistra",
+          loreClue: "Il fregio dorato a rilievo nel cassettonato a sinistra è stato piallato lasciando il fondo scuro."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.00,
+          y: 7.25,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Grande Medaglione Centrale del Veronese",
+          loreClue: "La figura allegorica centrale del soffitto monumentale svanisce nel fondo bruno della tela."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.00,
+          y: 58.04,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Dipinto delle Vittorie Navali a Sinistra",
+          loreClue: "Il grande telerio storico raffigurante la battaglia navale di Lepanto appare oscurato."
+        },
       ];
     } else if (isLevelTwentyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 17.51, y: 13.90, radius: 4.0, name: "Il Mosaico Dorato dell'Arco Sinistro", loreClue: "Le tessere d'oro e pasta vitrea della volta sinistra sono sostituite da intonaco grigio." },
-        { id: `lvl${id}_d2`, x: 49.85, y: 6.12, radius: 4.0, name: "L'Apostolo nel Mosaico della Cupola Centrale", loreClue: "La figura aurea del discepolo alla sommità della cupola orientale appare velata." },
-        { id: `lvl${id}_d3`, x: 82.48, y: 14.04, radius: 4.0, name: "Il Mosaico Dorato dell'Arco Destro", loreClue: "Il motivo bizantino a tessere auree sull'arcata destra è stato scalpellato via." },
-        { id: `lvl${id}_d4`, x: 49.79, y: 27.43, radius: 4.0, name: "La Croce Bizantina al Vertice dell'Arcone", loreClue: "La croce d'oro incastonata nel concio di chiave dell'arcone centrale è scomparsa." },
-        { id: `lvl${id}_d5`, x: 50.01, y: 49.63, radius: 4.0, name: "Il Cristo Pantocratore dell'Abside", loreClue: "Il nimbo crucigero dorato del Cristo benedicente nell'abside scompare dal catino." },
-        { id: `lvl${id}_d6`, x: 12.49, y: 55.22, radius: 4.0, name: "Il Capitello Bizantino del Pilastro Sinistro", loreClue: "Il capitello a nido d'ape scolpito nel marmo proconnesio sinistro è stato piallato." },
-        { id: `lvl${id}_d7`, x: 87.52, y: 55.26, radius: 4.0, name: "Il Capitello Bizantino del Pilastro Destro", loreClue: "Le foglie d'acanto traforate a trapano sul pilastro destro appaiono levigate." },
-        { id: `lvl${id}_d8`, x: 19.98, y: 71.93, radius: 4.0, name: "La Colonna di Porfido Rosso Sinistra", loreClue: "Il fusto in prezioso porfido egizio della navata sinistra è sostituito da calcare chiaro." },
-        { id: `lvl${id}_d9`, x: 79.93, y: 71.99, radius: 4.0, name: "La Colonna di Verde Antico Destra", loreClue: "La marmorea colonna venata di verde tessalico a destra appare piallata e opaca." },
-        { id: `lvl${id}_d10`, x: 50.19, y: 91.99, radius: 4.0, name: "La Lastra Pavimentale ad Opus Sectile", loreClue: "I tasselli geometrici in diaspro e porfido del pavimento marciano sono scomparsi dal suolo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 17.50,
+          y: 13.95,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Mosaico Dorato dell'Arco Sinistro",
+          loreClue: "Le tessere d'oro e pasta vitrea della volta sinistra sono state scalpellate via dagli intrusi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 87.50,
+          y: 55.25,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Capitello Bizantino del Pilastro Destro",
+          loreClue: "Le foglie d'acanto traforate a trapano sul pilastro destro appaiono levigate a filo muro."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 12.50,
+          y: 55.25,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Capitello Bizantino del Pilastro Sinistro",
+          loreClue: "Il capitello a nido d'ape scolpito nel marmo proconnesio sinistro è stato scalpellato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.00,
+          y: 71.99,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Colonna di Verde Antico Destra",
+          loreClue: "La colonna in marmo verde tessalico a destra è stata rimossa durante i lavori clandestini."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.00,
+          y: 71.99,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Colonna di Porfido Rosso Sinistra",
+          loreClue: "Il fusto monolitico in prezioso porfido egizio della navata sinistra è scomparso dal plinto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 82.50,
+          y: 13.95,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Mosaico Dorato dell'Arco Destro",
+          loreClue: "Il motivo bizantino a tessere auree sull'arcata destra è stato asportato per celare i simboli."
+        },
       ];
     } else if (isLevelTwentyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 61.86, y: 71.65, radius: 8.0, name: "La Gondola in Primo Piano", loreClue: "La gondola con il gondoliere in piedi e i passeggeri in primo piano nel canale è svanita dall'acqua." },
-        { id: `lvl${id}_d2`, x: 51.03, y: 68.62, radius: 5.5, name: "La Gondola con Remo Rosso", loreClue: "La seconda gondola a sinistra con il lungo remo rosso e la dama a prua è scomparsa dalla vista." },
-        { id: `lvl${id}_d3`, x: 54.14, y: 59.07, radius: 3.5, name: "La Gondola sotto il Ponte", loreClue: "La terza gondola che scivolava sotto l'arcata del Ponte della Paglia in lontananza è svanita." },
-        { id: `lvl${id}_d4`, x: 32.93, y: 82.96, radius: 8.5, name: "I Grandi Pali d'Ormeggio Blu", loreClue: "La coppia di alti pali lignei da gondola dipinti di blu acceso conficcati nella laguna è scomparsa." },
-        { id: `lvl${id}_d5`, x: 28.40, y: 79.38, radius: 3.5, name: "La Passerella d'Ormeggio in Legno", loreClue: "La pedana di sbarco in assi di legno tra la riva e i pali d'ormeggio è stata smontata." },
-        { id: `lvl${id}_d6`, x: 46.50, y: 28.52, radius: 4.5, name: "La Grata Traforata della Finestra Sinistra", loreClue: "Il prezioso reticolo in pietra a traforo floreale della finestra sinistra del Ponte dei Sospiri è scomparso." },
-        { id: `lvl${id}_d7`, x: 61.48, y: 28.53, radius: 4.5, name: "La Grata Traforata della Finestra Destra", loreClue: "La seconda grata marmorea traforata della finestra destra affacciata sul Rio di Palazzo è stata rimossa." },
-        { id: `lvl${id}_d8`, x: 54.20, y: 16.93, radius: 4.0, name: "La Statua della Giustizia sul Timpano", loreClue: "L'altorilievo della Giustizia assisa in trono alla sommità del frontone monumentale è svanito." },
-        { id: `lvl${id}_d9`, x: 55.09, y: 28.72, radius: 4.2, name: "Lo Stemma dei Dogi tra le Finestre", loreClue: "Il cartiglio araldico con lo stemma dogale incastonato tra le due finestre del ponte è stato rimosso." },
-        { id: `lvl${id}_d10`, x: 46.68, y: 9.59, radius: 3.5, name: "La Grande Voluta del Fastigio", loreClue: "La monumentale voluta lapidea a spirale sulla cresta sinistra del frontone del ponte è scomparsa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 56.92,
+          y: 69.25,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Gondola con Passaggeri in Transito",
+          loreClue: "La gondola veneziana con il ferro di prua in primo piano è svanita dalla superficie del canale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 31.04,
+          y: 82.65,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Grandi Pali d'Ormeggio a Bande Blu",
+          loreClue: "I massicci pali lignei d'approdo dipinti di blu conficcati sul fondale della laguna sono stati rimossi."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 59.04,
+          y: 29.07,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Grata Traforata della Finestra Destra",
+          loreClue: "Il prezioso reticolo marmoreo traforato della finestra destra del ponte è stato scardinato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 45.92,
+          y: 29.07,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Grata Traforata della Finestra Sinistra",
+          loreClue: "La grata in pietra a traforo floreale della finestra sinistra sul Rio di Palazzo è scomparsa."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 46.71,
+          y: 9.82,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Grande Voluta del Fastigio Superiore",
+          loreClue: "La monumentale voluta a spirale in pietra d'Istria sul cornicione del ponte è stata asportata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 54.25,
+          y: 17.35,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Statua della Giustizia sul Timpano",
+          loreClue: "Il bassorilievo della Giustizia assisa in trono sul frontone monumentale è stato rimosso."
+        },
       ];
     } else if (isLevelTwentyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 49.99, y: 7.20, radius: 4.0, name: "Il Rosone Centrale in Foglia d'Oro della Volta", loreClue: "La corona di stucchi dorati al centro del soffitto del teatro La Fenice è assente." },
-        { id: `lvl${id}_d2`, x: 14.94, y: 17.24, radius: 4.0, name: "Il Palchetto Superiore d'Angolo Sinistro", loreClue: "Il parapetto in cartapesta dorata e damasco blu dell'ultimo ordine è rimosso." },
-        { id: `lvl${id}_d3`, x: 84.95, y: 17.22, radius: 4.0, name: "Il Palchetto Superiore d'Angolo Destro", loreClue: "I rilievi dorati a lira del loggione superiore destro svaniscono nella parete." },
-        { id: `lvl${id}_d4`, x: 12.46, y: 46.23, radius: 4.0, name: "L'Applique a Cristalli del Secondo Ordine a Sinistra", loreClue: "La lampada a bracci dorati del palchetto centrale sinistro è stata tolta." },
-        { id: `lvl${id}_d5`, x: 49.85, y: 43.21, radius: 4.0, name: "Il Palco Reale Monumentale al Centro", loreClue: "Lo stemma nobiliare con drappeggio dorato sul Palco Imperiale è scomparso." },
-        { id: `lvl${id}_d6`, x: 87.43, y: 46.21, radius: 4.0, name: "L'Applique a Cristalli del Secondo Ordine a Destra", loreClue: "Il candeliere in cristallo di Boemia del palco destro è stato smontato." },
-        { id: `lvl${id}_d7`, x: 17.50, y: 67.51, radius: 4.0, name: "Il Parapetto in Velluto Rosso del Terzo Palco Sinistro", loreClue: "Il cuscino e passamaneria in velluto rubino del palco basso sono assenti." },
-        { id: `lvl${id}_d8`, x: 49.95, y: 73.06, radius: 4.0, name: "Il Pavimento in Legno della Platea", loreClue: "La fila di poltrone in velluto al centro della platea svanisce nel parquet di rovere." },
-        { id: `lvl${id}_d9`, x: 82.49, y: 67.46, radius: 4.0, name: "Il Parapetto in Velluto Rosso del Terzo Palco Destro", loreClue: "I festoni dorati del parapetto di proscenio destro sono stati rimossi." },
-        { id: `lvl${id}_d10`, x: 49.97, y: 93.05, radius: 4.0, name: "La Buca dell'Orchestra sotto il Palcoscenico", loreClue: "Il leggio del maestro concertatore nella fossa d'orchestra è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.00,
+          y: 7.25,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Rosone Centrale in Foglia d'Oro",
+          loreClue: "La sontuosa corona di stucchi dorati al centro del soffitto del teatro è scomparsa."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.00,
+          y: 17.30,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Palchetto Superiore d'Angolo Sinistro",
+          loreClue: "Il parapetto in legno dorato e damasco serico dell'ultimo ordine è stato rimosso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.00,
+          y: 17.30,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Palchetto Superiore d'Angolo Destro",
+          loreClue: "I rilievi dorati a lira del loggione superiore destro svaniscono nella parete."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.00,
+          y: 73.10,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Settore Centrale delle Poltrone di Platea",
+          loreClue: "Le poltrone in velluto rosso cremisi al centro della platea sono state sgomberate."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.50,
+          y: 67.52,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Parapetto in Velluto del Palco Destro",
+          loreClue: "I festoni in foglia d'oro del parapetto di proscenio destro sono stati asportati."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.00,
+          y: 93.08,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Buca dell'Orchestra sotto il Palcoscenico",
+          loreClue: "Il leggio monumentale del maestro concertatore nella fossa d'orchestra è scomparso."
+        },
       ];
     } else if (isLevelTwentySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 21.61, y: 10.57, radius: 4.0, name: "Il Tondo Dipinto del Soffitto a Sinistra", loreClue: "La tela a olio di Paolo Veronese nel riquadro dorato sinistro appare velata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 8.36, radius: 4.0, name: "Il Tondo Centrale dei Filosofi", loreClue: "La composizione pittorica rinascimentale al centro della volta è scomparsa." },
-        { id: `lvl${id}_d3`, x: 78.34, y: 10.61, radius: 4.0, name: "Il Tondo Dipinto del Soffitto a Destra", loreClue: "Il dipinto allegorico cinquecentesco del comparto destro svanisce nel buio." },
-        { id: `lvl${id}_d4`, x: 49.95, y: 26.18, radius: 4.0, name: "La Cornice a Festoni Dorati del Soffitto", loreClue: "I rilievi in stucco dorato del Sansovino attorno all'arcone centrale sono rimossi." },
-        { id: `lvl${id}_d5`, x: 10.02, y: 41.91, radius: 4.0, name: "La Statua Antica nella Nicchia Parete Sinistra", loreClue: "Il busto marmoreo del filosofo greco nella nicchia sinistra è stato tolto." },
-        { id: `lvl${id}_d6`, x: 90.04, y: 41.85, radius: 4.0, name: "La Statua Antica nella Nicchia Parete Destra", loreClue: "La scultura in marmo pario sul pilastro destro della sala è scomparsa." },
-        { id: `lvl${id}_d7`, x: 18.36, y: 61.90, radius: 4.0, name: "Il Ritratto Accademico tra le Paraste a Sinistra", loreClue: "Il dipinto a olio tra le colonne ioniche a sinistra scompare dalla parete." },
-        { id: `lvl${id}_d8`, x: 49.96, y: 66.36, radius: 4.0, name: "Il Tavolo di Studio dei Manoscritti sul Fondo", loreClue: "La postazione monumentale in noce per l'esame dei codici greci è assente." },
-        { id: `lvl${id}_d9`, x: 81.60, y: 61.89, radius: 4.0, name: "Il Ritratto Accademico tra le Paraste a Destra", loreClue: "Il ritratto del procuratore di San Marco sulla parete destra è rimosso." },
-        { id: `lvl${id}_d10`, x: 49.97, y: 90.85, radius: 4.0, name: "I Banchi di Lettura in Noce della Navata", loreClue: "Il banco da consultazione con leggio intarsiato in primo piano è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.00,
+          y: 90.96,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "I Banchi di Lettura in Noce della Navata",
+          loreClue: "Il monumentale banco da consultazione con leggio intarsiato in primo piano è scomparso."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.00,
+          y: 66.41,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tavolo di Studio dei Manoscritti Greci",
+          loreClue: "La grande postazione in noce dove erano esposti i codici marciani è stata rimossa."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.00,
+          y: 26.23,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Cornice a Festoni Dorati del Sansovino",
+          loreClue: "I rilievi in stucco dorato attorno all'arcone centrale della sala sono stati staccati."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 90.00,
+          y: 41.85,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Statua Antica nella Nicchia Destra",
+          loreClue: "La scultura in marmo pario sul pilastro destro della sala dei filosofi è scomparsa."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.00,
+          y: 8.37,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tondo Centrale dei Filosofi sul Soffitto",
+          loreClue: "La composizione pittorica rinascimentale a olio al centro della volta appare velata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 21.67,
+          y: 10.60,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Tondo Dipinto del Soffitto a Sinistra",
+          loreClue: "La tela a olio di Paolo Veronese nel riquadro dorato sinistro è stata asportata."
+        },
       ];
     } else if (isLevelTwentySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 13.30, y: 11.70, radius: 4.0, name: "La Trave Maestra Dipinta a Sinistra", loreClue: "I racemi policromi della trave 'alla sansovina' a sinistra sono piallati a legno nudo." },
-        { id: `lvl${id}_d2`, x: 49.98, y: 6.14, radius: 4.0, name: "L'Affresco Barocco del Tiepolo al Centro", loreClue: "La figura dell'allegoria della Nobiltà al vertice del soffitto svanisce nell'intonaco." },
-        { id: `lvl${id}_d3`, x: 86.59, y: 11.62, radius: 4.0, name: "La Trave Maestra Dipinta a Destra", loreClue: "Le decorazioni a fioroni e oro sulla trave destra appaiono uniformate." },
-        { id: `lvl${id}_d4`, x: 49.96, y: 28.34, radius: 4.0, name: "Il Grande Lampadario di Murano a Bracci Floreali", loreClue: "Il sontuoso lampadario a ciocca in vetro soffiato policromo di Murano è scomparso." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 49.56, radius: 4.0, name: "La Quadrifora sul Canal Grande in Fondo", loreClue: "I trafori marmorei ad archi trilobati della loggia verso il canale sono assenti." },
-        { id: `lvl${id}_d6`, x: 11.64, y: 51.88, radius: 4.0, name: "Il Busto in Marmo del Patrizio a Sinistra", loreClue: "La scultura in marmo di Carrara sul piedistallo di diaspro a sinistra è stata tolta." },
-        { id: `lvl${id}_d7`, x: 88.35, y: 51.90, radius: 4.0, name: "Il Busto in Marmo della Dogaressa a Destra", loreClue: "Il busto barocco con parrucca incipriata sulla consolle destra è scomparso." },
-        { id: `lvl${id}_d8`, x: 18.30, y: 77.49, radius: 4.0, name: "La Sedia a Braccioli Rococò Rivestita in Seta a Sinistra", loreClue: "La poltrona dorata intagliata a foglia d'acanto a sinistra è assente dal portego." },
-        { id: `lvl${id}_d9`, x: 81.63, y: 77.60, radius: 4.0, name: "La Sedia a Braccioli Rococò Rivestita in Seta a Destra", loreClue: "La poltrona da parata con schienale a cartoccio a destra è stata rimossa." },
-        { id: `lvl${id}_d10`, x: 49.89, y: 92.03, radius: 4.0, name: "Il Pavimento alla Veneziana in Seminato Policromo", loreClue: "I marmi rossi e bianchi intarsiati nel terrazzo veneziano appaiono grigi e opachi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.00,
+          y: 92.08,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Pavimento in Seminato Veneziano Policromo",
+          loreClue: "I marmi rossi e bianchi intarsiati nel terrazzo veneziano appaiono uniformati e grigi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 11.67,
+          y: 51.90,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Busto in Marmo del Patrizio a Sinistra",
+          loreClue: "La scultura in marmo di Carrara sul piedistallo di diaspro a sinistra è stata tolta."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.00,
+          y: 28.46,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Grande Lampadario di Murano a Ciocca",
+          loreClue: "Il sontuoso lampadario a bracci floreali in vetro soffiato policromo di Murano è scomparso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 18.33,
+          y: 77.57,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Poltrona Rococò Rivestita in Seta Sinistra",
+          loreClue: "La poltrona dorata intagliata a foglia d'acanto a sinistra è assente dal portego."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 13.33,
+          y: 11.72,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Trave Maestra Dipinta alla Sansovina",
+          loreClue: "I racemi policromi della trave dipinta a sinistra appaiono piallati a legno nudo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.00,
+          y: 6.14,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "L'Affresco Barocco del Tiepolo al Centro",
+          loreClue: "La figura allegorica della Nobiltà al vertice del soffitto è svanita nell'intonaco."
+        },
       ];
     } else if (isLevelTwentyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 9.41, y: 28.70, radius: 4.0, name: "Il Comignolo a Campana del Palazzetto Sinistro", loreClue: "Il tipico camino veneziano a cono rovesciato sul tetto a sinistra è scomparso." },
-        { id: `lvl${id}_d2`, x: 63.44, y: 25.12, radius: 4.0, name: "La Cupola Minore della Basilica della Salute", loreClue: "La calotta emisferica secondaria della chiesa del Longhena svanisce nel cielo." },
-        { id: `lvl${id}_d3`, x: 76.32, y: 31.85, radius: 4.0, name: "La Statua della Fortuna sulla Punta della Dogana", loreClue: "La sfera d'oro e la statua girevole della Fortuna in cima alla Dogana da Mar sono assenti." },
-        { id: `lvl${id}_d4`, x: 10.51, y: 41.77, radius: 4.0, name: "L'Altana in Legno sopra il Tetto a Sinistra", loreClue: "La terrazza pensile in assi di larice tipica dei tetti veneziani è stata rimossa." },
-        { id: `lvl${id}_d5`, x: 87.86, y: 47.36, radius: 4.0, name: "La Lanterna Navale della Prua del Vaporetto", loreClue: "Il faro di navigazione in ottone a babordo sul battello di linea è scomparso." },
-        { id: `lvl${id}_d6`, x: 14.93, y: 62.73, radius: 4.0, name: "Il Pennone della Bandiera con il Leone di San Marco", loreClue: "L'asta con il gonfalone cremisi ormeggiata sul molo di sinistra è stata tolta." },
-        { id: `lvl${id}_d7`, x: 39.99, y: 65.26, radius: 4.0, name: "La Briccola d'Ormeggio della Gondola sul Canale", loreClue: "La briccola tripla in pali di rovere piantata nel bacino è scomparsa." },
-        { id: `lvl${id}_d8`, x: 54.94, y: 52.39, radius: 4.0, name: "La Cupola Maggiore Ottagonale della Salute", loreClue: "La grande lanterna sommitale con la statua della Vergine svanisce dal profilo." },
-        { id: `lvl${id}_d9`, x: 76.68, y: 75.36, radius: 4.0, name: "Il Ferro di Poppa della Gondola in Transito", loreClue: "Il ricciolo metallico del coronamento posteriore dell'imbarcazione è assente." },
-        { id: `lvl${id}_d10`, x: 43.30, y: 90.91, radius: 4.0, name: "Il Palo d'Ormeggio a Bande Bianche e Azzurre", loreClue: "Il palo da gondola dipinto a spirale in primo piano è scomparso dalla laguna." },
+        {
+          id: `lvl${id}_d1`,
+          x: 43.33,
+          y: 90.96,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Palo d'Ormeggio a Spirale Azzurra",
+          loreClue: "Il palo da gondola dipinto a spirale bianca e azzurra in primo piano è scomparso dalla laguna."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 87.92,
+          y: 47.43,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Lanterna Navale del Battello di Linea",
+          loreClue: "Il faro di navigazione in ottone a babordo sul battello di linea è scomparso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 76.67,
+          y: 75.33,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Ferro di Poppa della Gondola nel Bacino",
+          loreClue: "Il ricciolo metallico posteriore dell'imbarcazione in transito è assente sull'acqua."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 40.00,
+          y: 65.29,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Briccola Tripla d'Ormeggio sul Canale",
+          loreClue: "La briccola in massicci tronchi di rovere piantata nel fondale del canale è scomparsa."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 55.00,
+          y: 52.46,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Cupola Maggiore Ottagonale della Salute",
+          loreClue: "La grande lanterna sommitale con la statua della Vergine svanisce dal profilo celeste."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 63.42,
+          y: 25.11,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Cupola Minore della Basilica della Salute",
+          loreClue: "La cupola secondaria del capolavoro del Longhena è scomparsa dal profilo monumentale."
+        },
       ];
     } else if (isLevelTwentyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 74.95, y: 28.97, radius: 4.0, name: "Il Leone Alato di San Marco sul Timpano", loreClue: "Il bassorilievo del Leone marciano con il libro aperto sull'architrave è rimosso." },
-        { id: `lvl${id}_d2`, x: 74.98, y: 46.82, radius: 4.0, name: "La Statua di Santa Giustina sul Fastigio", loreClue: "La scultura marmorea della patrona della battaglia di Lepanto è assente dalla porta." },
-        { id: `lvl${id}_d3`, x: 16.64, y: 55.73, radius: 4.0, name: "Il Merlo Ghibellino della Torre Sinistra", loreClue: "Il merlo a coda di rondine sulla cinta muraria merlata è scomparso dal profilo." },
-        { id: `lvl${id}_d4`, x: 41.65, y: 55.76, radius: 4.0, name: "La Colonna Dorica di Sinistra della Porta Magna", loreClue: "Il fusto scanalato in pietra d'Istria dell'ordine dorico a sinistra appare raschiato." },
-        { id: `lvl${id}_d5`, x: 58.31, y: 55.72, radius: 4.0, name: "La Colonna Dorica di Destra della Porta Magna", loreClue: "La colonna marmorea rinascimentale del portale trionfale è sostituita da muro liscio." },
-        { id: `lvl${id}_d6`, x: 83.39, y: 65.04, radius: 4.0, name: "Il Grande Leone Marmoreo del Pireo", loreClue: "La colossale statua greca del leone seduto trasportata da Atene è scomparsa dal plinto." },
-        { id: `lvl${id}_d7`, x: 33.33, y: 82.58, radius: 4.0, name: "Il Pilastro della Cancellata in Ferro Battuto a Sinistra", loreClue: "La colonnina in pietra con sfera sommitale che regge l'inferriata è stata tolta." },
-        { id: `lvl${id}_d8`, x: 49.97, y: 73.61, radius: 4.0, name: "La Canna del Cannone Storico da Fortezza", loreClue: "La bocca da fuoco in bronzo fuso della Serenissima puntata sul piazzale è assente." },
-        { id: `lvl${id}_d9`, x: 66.62, y: 73.60, radius: 4.0, name: "La Carronata d'Artiglieria Navale", loreClue: "L'affusto in legno di rovere del cannone navale ormeggiato a terra è scomparso." },
-        { id: `lvl${id}_d10`, x: 91.65, y: 82.54, radius: 4.0, name: "Il Leone Attico Minore sul Piedistallo Destro", loreClue: "La statua del leone antico disteso sul basamento di destra è stata rimossa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 58.33,
+          y: 55.80,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Colonna Dorica Destra di Porta Magna",
+          loreClue: "La colonna marmorea rinascimentale del portale trionfale è sostituita da muratura liscia."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 16.67,
+          y: 55.80,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Merlo Ghibellino della Torre Sinistra",
+          loreClue: "Il merlo a coda di rondine sulla cinta muraria merlata è scomparso dal profilo della fortezza."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 33.33,
+          y: 82.59,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Pilastro della Cancellata in Ferro Battuto",
+          loreClue: "La colonnina in pietra con sfera sommitale che regge la cancellata storica è stata tolta."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 75.00,
+          y: 46.88,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Statua di Santa Giustina sul Fastigio",
+          loreClue: "La scultura marmorea della patrona della battaglia di Lepanto è assente dal frontone."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 66.67,
+          y: 73.66,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Carronata d'Artiglieria Navale a Terra",
+          loreClue: "L'affusto in legno di rovere del cannone navale ormeggiato sul piazzale è scomparso."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 75.00,
+          y: 29.02,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Bassorilievo del Leone Alato Marciano",
+          loreClue: "Il rilievo del Leone alato con il libro aperto sull'architrave trionfale è stato rimosso."
+        },
       ];
     } else if (isLevelThirty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 8.31, y: 20.07, radius: 4.0, name: "L'Altana in Legno del Palazzo a Sinistra", loreClue: "La loggetta panoramica in travi di larice sul tetto del Fondaco è scomparsa." },
-        { id: `lvl${id}_d2`, x: 24.97, y: 28.97, radius: 4.0, name: "Il Bassorilievo dell'Arcangelo Gabriele sull'Arco", loreClue: "La scultura in pietra d'Istria dell'Annunciazione sul fianco dell'arco è stata tolta." },
-        { id: `lvl${id}_d3`, x: 66.61, y: 28.95, radius: 4.0, name: "Il Bassorilievo della Vergine Maria a Destra", loreClue: "Il rilievo marmoreo sul timpano di destra del ponte di Rialto svanisce nella pietra." },
-        { id: `lvl${id}_d4`, x: 8.31, y: 37.90, radius: 4.0, name: "La Finestra a Bifora Gotica sulla Riva Sinistra", loreClue: "L'archetto acuto veneziano del palazzo mercantile a sinistra appare rettilineo." },
-        { id: `lvl${id}_d5`, x: 49.99, y: 37.90, radius: 4.0, name: "L'Arco Centrale a Tutto Sesto di Rialto", loreClue: "Il rilievo della chiave di volta del grande arco monolitico è stato levigato." },
-        { id: `lvl${id}_d6`, x: 66.63, y: 46.81, radius: 4.0, name: "La Bottega d'Oreficeria sulla Rampa del Ponte", loreClue: "La tettoia in piombo e l'insegna dell'antica bottega di Rialto sono assenti." },
-        { id: `lvl${id}_d7`, x: 91.69, y: 37.90, radius: 4.0, name: "La Tenda Parasole Cremisi del Fondaco dei Tedeschi", loreClue: "Il tendaggio ceruleo e rosso del caffè affacciato sul canale è stato rimosso." },
-        { id: `lvl${id}_d8`, x: 16.66, y: 55.70, radius: 4.0, name: "La Briccola da Gondola a Righe Gialle e Blu", loreClue: "Il palo d'approdo decorato all'imbocco della fondamenta sinistra è scomparso." },
-        { id: `lvl${id}_d9`, x: 33.30, y: 55.76, radius: 4.0, name: "Il Ferro di Prua della Gondola in Primo Piano", loreClue: "Il rostro d'argento pettinato a sei barre della gondola in transito è assente." },
-        { id: `lvl${id}_d10`, x: 58.31, y: 73.62, radius: 4.0, name: "Il Tendalino Bianco della Gondola dei Nobili", loreClue: "Il caratteristico felze o copertura in tela dell'imbarcazione scompare sull'acqua." },
+        {
+          id: `lvl${id}_d1`,
+          x: 66.67,
+          y: 46.88,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Bottega d'Oreficeria sulla Rampa del Ponte",
+          loreClue: "La bottega d'oreficeria in cui era custodito il cofanetto segreto di Marco Polo è stata svuotata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 58.33,
+          y: 73.66,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "Il Tendalino Bianco della Gondola dei Nobili",
+          loreClue: "Il caratteristico felze o copertura in tela dell'imbarcazione nobiliare scompare sull'acqua."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 33.33,
+          y: 55.80,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Ferro di Prua Pettinato della Gondola",
+          loreClue: "Il rostro d'argento pettinato a sei denti della gondola in transito è stato strappato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 25.00,
+          y: 29.02,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "Il Rilievo dell'Arcangelo Gabriele sull'Arco",
+          loreClue: "La scultura in pietra d'Istria dell'Annunciazione sul fianco dell'arco di Rialto è stata tolta."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.00,
+          y: 37.95,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "L'Arco Centrale a Tutto Sesto di Rialto",
+          loreClue: "Il grande rilievo della chiave di volta del ponte monumentale è stato scalpellato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 8.33,
+          y: 37.95,
+          radius: 7.5,
+          clueType: 'sabotage',
+          name: "La Finestra a Bifora Gotica sul Canal Grande",
+          loreClue: "L'archetto acuto veneziano del palazzo mercantile a sinistra appare rettilineo e cieco."
+        },
       ];
     } else if (isStageThree) {
       diffsForLevel = [
