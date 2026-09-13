@@ -33,10 +33,10 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   },
   4: {
     title: "La Cripta di St. Peter-in-the-East",
-    subtitle: "Navata Normanna del XII Secolo",
-    prologue: "Esplora la cripta medievale dove fu inumato Sir Arthur Harrington, il mecenate che finanziò la spedizione navale del 1595.",
-    resolution: "Sulla lastra tombale è incisa una meridiana portatile in rilievo: indica un allineamento col meridiano di Parigi.",
-    unlockedSecret: "'Chi cerca la luce del sole eterno deve prima scendere nelle tenebre della Senna.' - Epitaffio latino decifrato",
+    subtitle: "Navata Normanna del XII Secolo • Oxford",
+    prologue: "La Mano Oscura è scesa nella cripta normanna di Sir Arthur Harrington, il mecenate che finanziò la rotta segreta del 1595. Gli intrusi hanno violato la tomba e forzato la cancellata delle cripte inferiori per occultare l'allineamento con Parigi. Individua le 6 prove fisiche della profanazione.",
+    resolution: "Hai recuperato i rilievi della tomba profanata: sulla lastra tombale è incisa una meridiana ipogea che punta dritta al meridiano di Parigi, confermando dove Bellini si sta dirigendo!",
+    unlockedSecret: "'Chi cerca la luce del sole eterno deve prima scendere nelle tenebre della Senna.' - Epitaffio latino decifrato dal pomo della spada di Harrington",
   },
   5: {
     title: "Il Gabinetto Numismatico",

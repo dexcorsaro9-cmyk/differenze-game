@@ -163,7 +163,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelThree
       ? '/levels/stage1_lvl3_A.jpg?v=2'
       : isLevelFour
-      ? '/levels/stage1_lvl4_A.jpg'
+      ? '/levels/stage1_lvl4_A.jpg?v=2'
       : isLevelFive
       ? '/levels/stage1_lvl5_A.jpg'
       : isLevelSix
@@ -446,7 +446,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg?v=2'
       : isLevelFour
-      ? '/levels/stage1_lvl4_B.jpg'
+      ? '/levels/stage1_lvl4_B.jpg?v=2'
       : isLevelFive
       ? '/levels/stage1_lvl5_B.jpg'
       : isLevelSix
@@ -900,16 +900,60 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 13.33, y: 44.64, radius: 4.0, name: "Lo Chevron Scolpito del Capitello Sinistro", loreClue: "La scanalatura a zig-zag normanna del capitello cubico sinistro è stata scalpellata via, lasciando la pietra piallata." },
-        { id: `lvl${id}_d2`, x: 21.17, y: 20.98, radius: 4.0, name: "Il Giunto di Malta del Costolone della Volta", loreClue: "La fuga di malta scura tra i due conci di pietra del costolone ogivale appare colmata da calcare uniforme." },
-        { id: `lvl${id}_d3`, x: 32.50, y: 42.41, radius: 4.0, name: "Il Fregio a Foglie d'Acanto sul Pilastro", loreClue: "Uno dei racemi scolpiti a bassorilievo sulla fascia decorativa del pilastro sullo sfondo risulta scalpellato." },
-        { id: `lvl${id}_d4`, x: 46.00, y: 41.07, radius: 4.0, name: "La Traversa in Ferro della Cancellata Gotica", loreClue: "Il segmento orizzontale in ferro battuto che unisce le sbarre della grata della cripta è stato tranciato via." },
-        { id: `lvl${id}_d5`, x: 43.75, y: 66.96, radius: 4.0, name: "Lo Scaglione dello Scudo Araldico di Harrington", loreClue: "Il braccio diagonale inferiore dello stemma nobiliare scolpito sullo scudo normanno è stato raschiato dal bassorilievo." },
-        { id: `lvl${id}_d6`, x: 37.33, y: 72.21, radius: 3.5, name: "La Scheggiatura sul Bordo del Sarcofago", loreClue: "L'intaglio angolare scheggiato sul listello perimetrale del coperchio sepolcrale appare levigato e intatto." },
-        { id: `lvl${id}_d7`, x: 66.75, y: 77.23, radius: 3.5, name: "La Vite di Blocco Zigrinata del Calibro", loreClue: "Il pomello a vite micrometrico in ottone che serra il corsoio del calibro ventesimale sul plinto è scomparso." },
-        { id: `lvl${id}_d8`, x: 73.75, y: 85.38, radius: 4.0, name: "Il Puntale a Scalino del Metro Pieghevole", loreClue: "La terminazione a scalino in ottone all'estremità sinistra del metro da muratore in bosso è stata piallata a filo." },
-        { id: `lvl${id}_d9`, x: 87.25, y: 45.76, radius: 4.0, name: "Il Vertice dello Chevron del Capitello Destro", loreClue: "L'apice a spina di pesce intagliato nel calcare del capitello normanno di destra è stato colmato e raccordato al collare." },
-        { id: `lvl${id}_d10`, x: 91.25, y: 85.38, radius: 3.5, name: "La Cerniera in Ottone del Metro Pieghevole", loreClue: "La lamella d'ottone che unisce gli snodi del metro ripiegato sul plinto in pietra è stata sostituita da legno continuo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.51,
+          y: 48.61,
+          radius: 13.0,
+          clueType: 'sabotage',
+          name: "La Cancellata della Cripta Forzata e Aperta",
+          loreClue: "La pesante cancellata gotica in ferro battuto che sigillava i meandri inferiori dell'ossario è stata forzata e spalancata verso i tunnel segreti."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.35,
+          y: 60.86,
+          radius: 10.0,
+          clueType: 'stolen_relic',
+          name: "La Spada Medievale sulla Tomba",
+          loreClue: "L'antica spada da cavaliere che giaceva scolpita al fianco di Sir Arthur Harrington è stata trafugata dai profanatori per il suo pomo cifrato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 67.54,
+          y: 67.09,
+          radius: 9.5,
+          clueType: 'sabotage',
+          name: "La Fiamma della Lanterna sul Plinto",
+          loreClue: "La fiamma viva all'interno della lanterna a petrolio sul basamento di pietra è stata soffocata per far piombare la cripta nel buio."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.19,
+          y: 76.07,
+          radius: 10.5,
+          clueType: 'stolen_relic',
+          name: "Il Grande Tomo d'Archivio sulla Pietra",
+          loreClue: "Il registro di spedizione aperto con i rilievi della meridiana tombale è stato asportato dal blocco di pietra."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 71.05,
+          y: 80.17,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calibro in Ottone da Rilievo",
+          loreClue: "Il calibro di precisione in ottone utilizzato per misurare i rilievi astronomici della lastra tombale è scomparso."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 84.43,
+          y: 86.24,
+          radius: 9.0,
+          clueType: 'stolen_relic',
+          name: "Il Metro Pieghevole in Legno",
+          loreClue: "L'antico metro a snodi da muratore in bosso poggiato sul blocco è stato sottratto per impedire la ricostruzione delle proporzioni."
+        },
       ];
     } else if (isLevelFive) {
       diffsForLevel = [
