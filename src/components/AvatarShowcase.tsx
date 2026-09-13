@@ -40,6 +40,8 @@ export interface AvatarShowcaseProps {
   onSelectSlot: (slot: EquipmentSlotType) => void;
   onClearPreview: () => void;
   onSelectInspectItem: (itemId: string, isOutfit: boolean) => void;
+  showSlotNodes?: boolean;
+  showControls?: boolean;
 }
 
 export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
@@ -55,6 +57,8 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   selectedSlot,
   onSelectSlot,
   onClearPreview,
+  showSlotNodes = true,
+  showControls = true,
 }) => {
   const [cameraZoom, setCameraZoom] = useState<'full' | 'chest' | 'face'>('full');
 
@@ -120,24 +124,61 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full min-h-[460px] sm:min-h-[520px] flex items-center justify-center bg-gradient-to-b from-[#140c06] via-[#090502] to-[#160d07] rounded-3xl border-2 border-amber-500/50 overflow-hidden select-none shadow-[inset_0_0_80px_rgba(0,0,0,0.95)]">
+    <div className="relative w-full h-full min-h-[220px] sm:min-h-[320px] md:min-h-[460px] flex items-center justify-center bg-gradient-to-b from-[#25150a] via-[#120803] to-[#1c0e06] rounded-3xl border-2 border-amber-500/60 overflow-hidden select-none shadow-[inset_0_0_80px_rgba(0,0,0,0.95)]">
       
       {/* Spotlight Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-72 h-20 bg-yellow-500/25 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-72 h-20 bg-yellow-500/30 rounded-full blur-2xl pointer-events-none" />
 
       {/* Fitting Room Preview Border Glow */}
       {isAnyPreviewActive && (
         <div className="absolute inset-0 border-2 border-amber-400 pointer-events-none z-30 shadow-[inset_0_0_35px_rgba(245,158,11,0.45)] animate-pulse rounded-3xl" />
       )}
 
+      {/* Camera View Controls */}
+      {showControls && (
+        <div
+          className={`absolute ${
+            isAnyPreviewActive ? 'top-11 right-2 sm:right-3' : 'top-3 right-2 sm:right-3'
+          } z-20 flex items-center gap-1 bg-black/80 backdrop-blur-md border border-amber-500/50 rounded-xl p-1 shadow-xl transition-all`}
+        >
+          <button
+            type="button"
+            onClick={() => { setCameraZoom('full'); sound.playTap(); }}
+            className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
+              cameraZoom === 'full' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            Intera
+          </button>
+          <button
+            type="button"
+            onClick={() => { setCameraZoom('chest'); sound.playTap(); }}
+            className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
+              cameraZoom === 'chest' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            Busto
+          </button>
+          <button
+            type="button"
+            onClick={() => { setCameraZoom('face'); sound.playTap(); }}
+            className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
+              cameraZoom === 'face' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            Viso
+          </button>
+        </div>
+      )}
+
       {/* Top Banner if Preview Active */}
       {isAnyPreviewActive && (
-        <div className="absolute top-3 left-4 right-4 z-30 flex items-center justify-between bg-stone-900/95 border border-amber-400/80 rounded-xl px-3 py-1.5 shadow-2xl backdrop-blur-md">
+        <div className="absolute top-2 left-2 right-2 sm:left-4 sm:right-4 z-30 flex items-center justify-between bg-stone-900/95 border border-amber-400/80 rounded-xl px-2.5 py-1 shadow-2xl backdrop-blur-md">
           <div className="flex items-center gap-1.5 text-xs text-amber-200 font-bold truncate">
             <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-spin-slow" />
             <span className="text-[10px] uppercase text-amber-400 tracking-wider">Camerino RPG:</span>
-            <span className="truncate">Modifica Assetto in corso</span>
+            <span className="truncate text-[11px]">In Prova</span>
           </div>
           <button
             type="button"
@@ -153,37 +194,6 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
           </button>
         </div>
       )}
-
-      {/* Camera View Controls */}
-      <div className="absolute top-3 right-4 z-20 flex items-center gap-1 bg-black/80 backdrop-blur-md border border-amber-500/50 rounded-xl p-1 shadow-xl">
-        <button
-          type="button"
-          onClick={() => { setCameraZoom('full'); sound.playTap(); }}
-          className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
-            cameraZoom === 'full' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
-          }`}
-        >
-          Intera
-        </button>
-        <button
-          type="button"
-          onClick={() => { setCameraZoom('chest'); sound.playTap(); }}
-          className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
-            cameraZoom === 'chest' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
-          }`}
-        >
-          Busto
-        </button>
-        <button
-          type="button"
-          onClick={() => { setCameraZoom('face'); sound.playTap(); }}
-          className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
-            cameraZoom === 'face' ? 'bg-amber-500 text-stone-950 font-black' : 'text-stone-400 hover:text-stone-200'
-          }`}
-        >
-          Viso
-        </button>
-      </div>
 
       {/* Main Pedestal & Character Render */}
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden p-2">
@@ -240,118 +250,121 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
           {/* ============================================================== */}
           {/* INTERACTIVE BODY TARGET NODES (CLICK BODY PART TO EQUIP SLOT)  */}
           {/* ============================================================== */}
+          {showSlotNodes && (
+            <div className="hidden md:contents">
+              {/* Node 1: TESTA */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'headgear')}
+                className={`absolute top-[9%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'headgear'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Testa / Copricapo"
+              >
+                <Crown className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 1: TESTA */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'headgear')}
-            className={`absolute top-[9%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'headgear'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Testa / Copricapo"
-          >
-            <Crown className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 2: COLLO */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'talisman')}
+                className={`absolute top-[18.5%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'talisman'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Collo / Amuleto Sacro"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 2: COLLO */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'talisman')}
-            className={`absolute top-[18.5%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'talisman'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Collo / Amuleto Sacro"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 3: BUSTO */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'torso')}
+                className={`absolute top-[30%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'torso'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Busto / Tenuta & Giacca"
+              >
+                <Layers className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 3: BUSTO */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'torso')}
-            className={`absolute top-[30%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'torso'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Busto / Tenuta & Giacca"
-          >
-            <Layers className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 4: SCHIENA / ZAINO */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'back')}
+                className={`absolute top-[26%] left-[69%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'back'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Schiena / Zaino & Mantello"
+              >
+                <Compass className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 4: SCHIENA / ZAINO */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'back')}
-            className={`absolute top-[26%] left-[69%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'back'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Schiena / Zaino & Mantello"
-          >
-            <Compass className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 5: MANO DESTRA */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'main_hand')}
+                className={`absolute top-[44%] left-[30%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'main_hand'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Mano Destra / Strumento Primario"
+              >
+                <Music className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 5: MANO DESTRA */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'main_hand')}
-            className={`absolute top-[44%] left-[30%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'main_hand'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Mano Destra / Strumento Primario"
-          >
-            <Music className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 6: MANO SINISTRA */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'off_hand')}
+                className={`absolute top-[44%] left-[70%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'off_hand'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Mano Sinistra / Scudo & Carte"
+              >
+                <Shield className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 6: MANO SINISTRA */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'off_hand')}
-            className={`absolute top-[44%] left-[70%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'off_hand'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Mano Sinistra / Scudo & Carte"
-          >
-            <Shield className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 7: GAMBE */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'legs')}
+                className={`absolute top-[58%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'legs'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Gambe / Pantaloni Tattici"
+              >
+                <Shield className="w-3.5 h-3.5" />
+              </button>
 
-          {/* Node 7: GAMBE */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'legs')}
-            className={`absolute top-[58%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'legs'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Gambe / Pantaloni Tattici"
-          >
-            <Shield className="w-3.5 h-3.5" />
-          </button>
-
-          {/* Node 8: PIEDI */}
-          <button
-            type="button"
-            onClick={(e) => handleNodeClick(e, 'boots')}
-            className={`absolute top-[80%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
-              selectedSlot === 'boots'
-                ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
-                : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
-            }`}
-            title="Piedi / Stivali da Marcia"
-          >
-            <Compass className="w-3.5 h-3.5" />
-          </button>
+              {/* Node 8: PIEDI */}
+              <button
+                type="button"
+                onClick={(e) => handleNodeClick(e, 'boots')}
+                className={`absolute top-[80%] left-[50%] -translate-x-1/2 z-25 p-1.5 rounded-full transition-all cursor-pointer ${
+                  selectedSlot === 'boots'
+                    ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_18px_#f59e0b] ring-2 ring-yellow-300'
+                    : 'bg-black/75 hover:bg-amber-600/80 text-amber-300 border border-amber-500/70 shadow-md'
+                }`}
+                title="Piedi / Stivali da Marcia"
+              >
+                <Compass className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
 
         </div>
       </div>

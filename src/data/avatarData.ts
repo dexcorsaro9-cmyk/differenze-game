@@ -81,7 +81,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     title: 'Epigrafista & Archeo-Acustica',
     specialization: 'Decifrazione Lingue Perdute & Risonanza Architettonica',
     bio: 'Formatasi all\'Università di Coimbra e pioniera delle spedizioni andine. Decifra iscrizioni pre-incaiche registrando frequenze di risonanza tra le rovine di Paititi.',
-    image: assetUrl('/avatars/female_explorer.jpg'),
+    image: assetUrl('/avatars/female_samira.jpg'),
     portrait: assetUrl('/avatars/female_samira.jpg'),
     accentColor: 'from-emerald-600 to-teal-800',
     badgeBg: 'bg-emerald-950/80 border-emerald-500/50',
@@ -96,7 +96,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     title: 'Topografo & Geo-Archeologo',
     specialization: 'Cartografia Geodetica & Speleologia delle Terre Alte',
     bio: 'Maestro cartografo specializzato nelle forre delle valli andine. Triangola le antiche mappe indigene con la geomorfologia reale scoprendo percorsi creduti scomparsi.',
-    image: assetUrl('/avatars/male_explorer.jpg'),
+    image: assetUrl('/avatars/male_mateo.jpg'),
     portrait: assetUrl('/avatars/male_mateo.jpg'),
     accentColor: 'from-amber-600 to-amber-900',
     badgeBg: 'bg-amber-950/80 border-amber-500/50',
@@ -698,3 +698,31 @@ export function getActiveSetBonuses(
   return getEquipmentSetsStatus(tags);
 }
 
+export function normalizeExplorerProfile(raw: Partial<ExplorerProfile> | null | undefined): ExplorerProfile {
+  const avatarId = raw?.avatarId === 'mateo' ? 'mateo' : 'samira';
+  const defaultExplorer = EXPLORERS[avatarId] || EXPLORERS.samira;
+  const defaultOutfit = defaultExplorer.defaultOutfitId;
+
+  const unlockedOutfits = Array.isArray(raw?.unlockedOutfitIds) && raw.unlockedOutfitIds.length > 0
+    ? Array.from(new Set([...raw.unlockedOutfitIds, defaultOutfit]))
+    : [defaultOutfit];
+
+  const unlockedAccessories = Array.isArray(raw?.unlockedAccessoryIds)
+    ? raw.unlockedAccessoryIds
+    : ['off_compass_brass', 'legs_cargo_khaki', 'boots_leather_hiker'];
+
+  return {
+    avatarId,
+    playerName: raw?.playerName || defaultExplorer.name,
+    equippedOutfitId: raw?.equippedOutfitId || defaultOutfit,
+    equippedHeadgearId: raw?.equippedHeadgearId ?? null,
+    equippedToolId: raw?.equippedToolId ?? null,
+    equippedOffHandId: raw?.equippedOffHandId || 'off_compass_brass',
+    equippedLegsId: raw?.equippedLegsId || 'legs_cargo_khaki',
+    equippedBootsId: raw?.equippedBootsId || 'boots_leather_hiker',
+    equippedTalismanId: raw?.equippedTalismanId ?? null,
+    equippedBackId: raw?.equippedBackId ?? null,
+    unlockedOutfitIds: unlockedOutfits,
+    unlockedAccessoryIds: unlockedAccessories,
+  };
+}

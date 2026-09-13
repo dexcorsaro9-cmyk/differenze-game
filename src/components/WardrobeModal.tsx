@@ -67,8 +67,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   // Active Slot Selected (for Paperdoll highlight and item drawer)
   const [selectedSlot, setSelectedSlot] = useState<EquipmentSlotType>('torso');
 
-  // Mobile view toggle (doll preview vs equipment drawer)
-  const [mobileTab, setMobileTab] = useState<'paperdoll' | 'drawer'>('paperdoll');
+  // Mobile view toggle ('outfits' | 'paperdoll' | 'drawer')
+  const [mobileTab, setMobileTab] = useState<'outfits' | 'paperdoll' | 'drawer'>('outfits');
 
   // Live Fitting Room Previews across all 8 slots
   const [previewOutfitId, setPreviewOutfitId] = useState<string | null>(null);
@@ -86,6 +86,16 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   if (!isOpen) return null;
 
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+
+  const safeUnlockedOutfitIds = useMemo(() => {
+    return Array.isArray(profile.unlockedOutfitIds) && profile.unlockedOutfitIds.length > 0
+      ? profile.unlockedOutfitIds
+      : [currentExplorer.defaultOutfitId];
+  }, [profile.unlockedOutfitIds, currentExplorer.defaultOutfitId]);
+
+  const safeUnlockedAccessoryIds = useMemo(() => {
+    return Array.isArray(profile.unlockedAccessoryIds) ? profile.unlockedAccessoryIds : [];
+  }, [profile.unlockedAccessoryIds]);
 
   // Available outfits for current explorer
   const availableOutfits = ALL_OUTFITS.filter(o => o.avatarId === profile.avatarId);
@@ -195,7 +205,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
 
   const handleSelectSlot = (slot: EquipmentSlotType) => {
     setSelectedSlot(slot);
-    setMobileTab('drawer');
+    if (slot === 'torso') {
+      setMobileTab('outfits');
+    } else {
+      setMobileTab('drawer');
+    }
     sound.playTap();
     triggerHaptic('light');
   };
@@ -230,13 +244,13 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           break;
       }
     }
-    sound.playTap();
+    sound.playSelect();
     triggerHaptic('light');
   };
 
   // Equip or Buy Outfit
   const handleEquipOutfit = (outfit: WardrobeOutfit) => {
-    const isUnlocked = profile.unlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
+    const isUnlocked = safeUnlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
 
     if (!isUnlocked) {
       if (currentLevelId < outfit.requiredLevel) {
@@ -261,7 +275,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
       const newProfile: ExplorerProfile = {
         ...profile,
         equippedOutfitId: outfit.id,
-        unlockedOutfitIds: [...profile.unlockedOutfitIds, outfit.id],
+        unlockedOutfitIds: Array.from(new Set([...safeUnlockedOutfitIds, outfit.id])),
       };
       onUpdateProfile(newProfile);
       setPreviewOutfitId(null);
@@ -282,7 +296,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   // Equip or Buy Accessory across all 7 accessory slots
   const handleEquipAccessory = (acc: WardrobeAccessory) => {
     const isUnlocked =
-      profile.unlockedAccessoryIds.includes(acc.id) ||
+      safeUnlockedAccessoryIds.includes(acc.id) ||
       acc.cost === 0 ||
       acc.id === 'legs_cargo_khaki' ||
       acc.id === 'boots_leather_hiker' ||
@@ -306,7 +320,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
 
       const newProfile: ExplorerProfile = {
         ...profile,
-        unlockedAccessoryIds: [...profile.unlockedAccessoryIds, acc.id],
+        unlockedAccessoryIds: Array.from(new Set([...safeUnlockedAccessoryIds, acc.id])),
         ...(acc.slot === 'headgear' && { equippedHeadgearId: acc.id }),
         ...((acc.slot === 'tool' || acc.slot === 'main_hand') && { equippedToolId: acc.id }),
         ...(acc.slot === 'off_hand' && { equippedOffHandId: acc.id }),
@@ -539,40 +553,236 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
         </div>
 
         {/* Mobile View Toggle Bar (Only visible on small screens) */}
-        <div className="lg:hidden flex items-center justify-around bg-stone-900 border-b border-stone-800 p-1 shrink-0 text-xs font-bold">
+        <div className="lg:hidden flex items-center justify-around bg-stone-900 border-b border-stone-800 p-1.5 shrink-0 text-xs font-bold gap-1">
+          <button
+            type="button"
+            onClick={() => {
+              setMobileTab('outfits');
+              setSelectedSlot('torso');
+            }}
+            className={`flex-1 py-1.5 px-2 rounded-xl transition text-center cursor-pointer flex items-center justify-center gap-1 ${
+              mobileTab === 'outfits'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md'
+                : 'text-stone-400 hover:text-stone-200 bg-stone-950/60'
+            }`}
+          >
+            <Shirt className="w-3.5 h-3.5" />
+            <span>👗 Tenute</span>
+          </button>
           <button
             type="button"
             onClick={() => setMobileTab('paperdoll')}
-            className={`flex-1 py-1.5 rounded-xl transition text-center cursor-pointer ${
+            className={`flex-1 py-1.5 px-2 rounded-xl transition text-center cursor-pointer flex items-center justify-center gap-1 ${
               mobileTab === 'paperdoll'
-                ? 'bg-amber-600 text-stone-950 font-black shadow'
-                : 'text-stone-400 hover:text-stone-200'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md'
+                : 'text-stone-400 hover:text-stone-200 bg-stone-950/60'
             }`}
           >
-            Modello Eroe & Statistiche
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Eroe & Stats</span>
           </button>
           <button
             type="button"
             onClick={() => setMobileTab('drawer')}
-            className={`flex-1 py-1.5 rounded-xl transition text-center cursor-pointer ${
+            className={`flex-1 py-1.5 px-2 rounded-xl transition text-center cursor-pointer flex items-center justify-center gap-1 ${
               mobileTab === 'drawer'
-                ? 'bg-amber-600 text-stone-950 font-black shadow'
-                : 'text-stone-400 hover:text-stone-200'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md'
+                : 'text-stone-400 hover:text-stone-200 bg-stone-950/60'
             }`}
           >
-            Armeria ({activeSlotMeta.name})
+            <Hammer className="w-3.5 h-3.5" />
+            <span>Armeria</span>
           </button>
         </div>
 
         {/* Main Content Area: 2-Column Responsive Layout */}
         <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-3 p-2 sm:p-3">
           
+          {/* MOBILE VIEW 1: DEDICATED OUTFITS VIEW (Immediate visual access to all Outfits) */}
+          <div
+            className={`lg:hidden flex flex-col h-full overflow-hidden ${
+              mobileTab === 'outfits' ? 'flex' : 'hidden'
+            }`}
+          >
+            {/* Top: Character Live Showcase on Pedestal */}
+            <div className="h-[250px] sm:h-[300px] shrink-0 p-1">
+              <AvatarShowcase
+                profile={profile}
+                previewOutfitId={previewOutfitId}
+                previewHeadgearId={previewHeadgearId}
+                previewToolId={previewToolId}
+                previewOffHandId={previewOffHandId}
+                previewLegsId={previewLegsId}
+                previewBootsId={previewBootsId}
+                previewTalismanId={previewTalismanId}
+                previewBackId={previewBackId}
+                selectedSlot="torso"
+                onSelectSlot={handleSelectSlot}
+                onClearPreview={handleClearPreviews}
+                onSelectInspectItem={(id, isOutfit) => {
+                  if (isOutfit) {
+                    const found = availableOutfits.find(o => o.id === id);
+                    if (found) setInspectItem(found);
+                  } else {
+                    const found = ALL_ACCESSORIES.find(a => a.id === id);
+                    if (found) setInspectItem(found);
+                  }
+                }}
+                showSlotNodes={false}
+              />
+            </div>
+
+            {/* Bottom: Scrollable Outfits Catalog */}
+            <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2 custom-scrollbar bg-stone-950/40 rounded-2xl border border-amber-900/30 mt-1">
+              <div className="flex items-center justify-between px-1 pb-1 text-xs text-amber-300 font-bold border-b border-amber-900/40">
+                <span className="flex items-center gap-1.5">
+                  <Shirt className="w-3.5 h-3.5 text-amber-400" />
+                  Tenute di {currentExplorer.name} ({availableOutfits.length})
+                </span>
+                {previewOutfitId && (
+                  <button
+                    type="button"
+                    onClick={() => setPreviewOutfitId(null)}
+                    className="text-[10px] text-amber-400 hover:text-amber-200 flex items-center gap-1 underline cursor-pointer"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    Ripristina
+                  </button>
+                )}
+              </div>
+
+              {availableOutfits.map(outfit => {
+                const isEquipped = profile.equippedOutfitId === outfit.id;
+                const isPreviewing = previewOutfitId === outfit.id;
+                const isUnlocked = safeUnlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
+                const canUnlockLevel = currentLevelId >= outfit.requiredLevel;
+                const canUnlockRelics =
+                  !('requiredRelics' in outfit) ||
+                  !outfit.requiredRelics ||
+                  discoveredRelicCount >= outfit.requiredRelics;
+                const canAfford = coins >= outfit.cost;
+
+                return (
+                  <div
+                    key={outfit.id}
+                    className={`p-2.5 rounded-2xl border transition-all ${
+                      isPreviewing
+                        ? 'bg-amber-950/70 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.4)] ring-1 ring-amber-400'
+                        : isEquipped
+                        ? 'bg-amber-950/30 border-amber-500/70 shadow-md'
+                        : isUnlocked
+                        ? 'bg-stone-900/80 border-stone-800 hover:border-stone-700'
+                        : 'bg-stone-950/60 border-stone-800/60 opacity-85'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-2 min-w-0 flex-1">
+                        <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
+                          <Shirt className="w-4 h-4 text-amber-400" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs font-bold text-stone-100 font-serif">
+                              {outfit.name}
+                            </span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
+                              {outfit.tag}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-stone-400 mt-0.5 leading-tight line-clamp-2">
+                            {outfit.description}
+                          </p>
+                        </div>
+                      </div>
+                      {outfit.perk && outfit.perk.label !== 'Assetto Standard' && (
+                        <div className="shrink-0 px-1.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[9px] font-bold flex items-center gap-1">
+                          <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
+                          <span>{outfit.perk.label}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-2 pt-1.5 flex items-center justify-between border-t border-stone-800/80 gap-2">
+                      <div className="text-[11px]">
+                        {!isUnlocked ? (
+                          <div className="flex items-center gap-1 font-bold text-amber-300">
+                            <Coins className="w-3 h-3 text-amber-400" />
+                            <span>{outfit.cost} Monete</span>
+                            {!canUnlockLevel && (
+                              <span className="text-[9px] text-red-400">
+                                (Liv. {outfit.requiredLevel})
+                              </span>
+                            )}
+                            {!canUnlockRelics && (
+                              <span className="text-[9px] text-red-400">
+                                ({outfit.requiredRelics} Reliquie)
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                            <Check className="w-3 h-3" />
+                            Posseduto
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleTogglePreview(outfit)}
+                          className={`px-2 py-1 rounded-xl text-[10px] font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
+                            isPreviewing
+                              ? 'bg-amber-500 text-stone-950 shadow-[0_0_12px_#f59e0b]'
+                              : 'bg-stone-800 hover:bg-stone-700 text-amber-300 border border-amber-600/40'
+                          }`}
+                        >
+                          <Eye className="w-3 h-3" />
+                          <span>{isPreviewing ? 'In Prova' : 'Anteprima'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleEquipOutfit(outfit)}
+                          disabled={!isUnlocked && (!canUnlockLevel || !canUnlockRelics || !canAfford)}
+                          className={`px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
+                            isEquipped
+                              ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/60'
+                              : isUnlocked
+                              ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md hover:brightness-110'
+                              : canUnlockLevel && canUnlockRelics && canAfford
+                              ? 'bg-amber-600 hover:bg-amber-500 text-stone-950 font-black shadow'
+                              : 'bg-stone-800 text-stone-500 border border-stone-700 cursor-not-allowed opacity-60'
+                          }`}
+                        >
+                          {isEquipped ? (
+                            <>
+                              <Check className="w-3 h-3 stroke-[3]" />
+                              <span>Indossato</span>
+                            </>
+                          ) : isUnlocked ? (
+                            <span>Indossa</span>
+                          ) : (
+                            <>
+                              <Lock className="w-3 h-3" />
+                              <span>Sblocca</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* ============================================================== */}
           {/* COLUMN 1: RPG PAPERDOLL FRAME (FULL BODY HERO + 8 SLOTS + STATS) */}
           {/* ============================================================== */}
           <div
             className={`lg:col-span-7 flex flex-col h-full overflow-hidden ${
-              mobileTab === 'drawer' ? 'hidden lg:flex' : 'flex'
+              mobileTab === 'paperdoll' ? 'flex' : 'hidden lg:flex'
             }`}
           >
             {/* Paperdoll Stage Container */}
@@ -650,6 +860,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         if (found) setInspectItem(found);
                       }
                     }}
+                    showControls={false}
                   />
                 </div>
 
@@ -851,7 +1062,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           {/* ============================================================== */}
           <div
             className={`lg:col-span-5 flex flex-col h-full bg-stone-900/90 rounded-2xl border border-amber-900/50 overflow-hidden shadow-2xl ${
-              mobileTab === 'paperdoll' ? 'hidden lg:flex' : 'flex'
+              mobileTab === 'drawer' ? 'flex' : 'hidden lg:flex'
             }`}
           >
             {/* Slot Switcher Pills (Horizontal Scrolling on mobile) */}
@@ -935,8 +1146,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     (selectedSlot === 'back' && previewBackId === item.id);
 
                 const isUnlocked = isOutfit
-                  ? profile.unlockedOutfitIds.includes(item.id) || item.cost === 0
-                  : profile.unlockedAccessoryIds.includes(item.id) ||
+                  ? safeUnlockedOutfitIds.includes(item.id) || item.cost === 0
+                  : safeUnlockedAccessoryIds.includes(item.id) ||
                     item.cost === 0 ||
                     item.id === 'legs_cargo_khaki' ||
                     item.id === 'boots_leather_hiker' ||
@@ -1138,8 +1349,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           onClose={() => setInspectItem(null)}
           isUnlocked={
             'avatarId' in inspectItem
-              ? profile.unlockedOutfitIds.includes(inspectItem.id) || inspectItem.cost === 0
-              : profile.unlockedAccessoryIds.includes(inspectItem.id) ||
+              ? safeUnlockedOutfitIds.includes(inspectItem.id) || inspectItem.cost === 0
+              : safeUnlockedAccessoryIds.includes(inspectItem.id) ||
                 inspectItem.cost === 0 ||
                 inspectItem.id === 'legs_cargo_khaki' ||
                 inspectItem.id === 'boots_leather_hiker' ||

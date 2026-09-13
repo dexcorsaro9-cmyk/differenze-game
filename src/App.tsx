@@ -42,10 +42,10 @@ import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectibl
 import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
 import { CONSULAR_VISAS, type ConsularVisa } from './data/passportData';
 import {
-  EXPLORERS,
   ALL_OUTFITS,
   ALL_ACCESSORIES,
   getActiveSetBonuses,
+  normalizeExplorerProfile,
   type ExplorerProfile,
 } from './data/avatarData';
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
@@ -186,19 +186,10 @@ export const App: React.FC = () => {
     const saved = localStorage.getItem(STORAGE_KEY_AVATAR);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return normalizeExplorerProfile(JSON.parse(saved));
       } catch {}
     }
-    return {
-      avatarId: 'samira',
-      playerName: EXPLORERS.samira.name,
-      equippedOutfitId: 'samira_base',
-      equippedHeadgearId: null,
-      equippedToolId: null,
-      equippedTalismanId: null,
-      unlockedOutfitIds: ['samira_base'],
-      unlockedAccessoryIds: [],
-    };
+    return normalizeExplorerProfile(null);
   });
 
   const [hasCompletedAvatarSetup, setHasCompletedAvatarSetup] = useState<boolean>(() => {
@@ -1308,16 +1299,7 @@ export const App: React.FC = () => {
             hint: 3,
             error_shield: 1,
           });
-          setExplorerProfile({
-            avatarId: 'samira',
-            playerName: EXPLORERS.samira.name,
-            equippedOutfitId: 'samira_base',
-            equippedHeadgearId: null,
-            equippedToolId: null,
-            equippedTalismanId: null,
-            unlockedOutfitIds: ['samira_base'],
-            unlockedAccessoryIds: [],
-          });
+          setExplorerProfile(normalizeExplorerProfile(null));
           setHasCompletedAvatarSetup(false);
           setHasCompletedTutorial(false);
           loadLevel(1);
