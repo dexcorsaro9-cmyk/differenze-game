@@ -495,29 +495,30 @@ export const App: React.FC = () => {
     }
   }, [explorerProfile, primaryActiveSet, unlockMedal]);
 
+  // Computed flag: Check if any modal or blocking overlay is open
+  const isAnyModalOpen =
+    isSplashVisible ||
+    isAvatarCreatorOpen ||
+    isWardrobeOpen ||
+    isPrologueOpen ||
+    isTutorialOpen ||
+    isLevelCompleteOpen ||
+    isGameOverOpen ||
+    isJournalOpen ||
+    isLevelSelectOpen ||
+    isSettingsOpen ||
+    isTreasureMapOpen ||
+    isShopOpen ||
+    isRelicMuseumOpen ||
+    isRelicFoundModalOpen ||
+    isDailyModalOpen ||
+    isMedalsCabinetOpen ||
+    isPassportOpen;
+
   // Timer Tick (Frozen when freeze power-up is running or modal open)
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | undefined;
-    const isPaused =
-      !isTimerRunning ||
-      isTimeFrozen ||
-      isSplashVisible ||
-      isAvatarCreatorOpen ||
-      isWardrobeOpen ||
-      isPrologueOpen ||
-      isTutorialOpen ||
-      isLevelCompleteOpen ||
-      isGameOverOpen ||
-      isJournalOpen ||
-      isLevelSelectOpen ||
-      isSettingsOpen ||
-      isTreasureMapOpen ||
-      isShopOpen ||
-      isRelicMuseumOpen ||
-      isRelicFoundModalOpen ||
-      isDailyModalOpen ||
-      isMedalsCabinetOpen ||
-      isPassportOpen;
+    const isPaused = !isTimerRunning || isTimeFrozen || isAnyModalOpen;
 
     if (!isPaused) {
       interval = setInterval(() => {
@@ -527,27 +528,7 @@ export const App: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [
-    isTimerRunning,
-    isTimeFrozen,
-    isSplashVisible,
-    isAvatarCreatorOpen,
-    isWardrobeOpen,
-    isPrologueOpen,
-    isTutorialOpen,
-    isLevelCompleteOpen,
-    isGameOverOpen,
-    isJournalOpen,
-    isLevelSelectOpen,
-    isSettingsOpen,
-    isTreasureMapOpen,
-    isShopOpen,
-    isRelicMuseumOpen,
-    isRelicFoundModalOpen,
-    isDailyModalOpen,
-    isMedalsCabinetOpen,
-    isPassportOpen,
-  ]);
+  }, [isTimerRunning, isTimeFrozen, isAnyModalOpen]);
 
   // Dynamic 3-Theme Orchestral BGM Selector:
   // Stages 1-4: 'exploration' (Jungle & Expedition Camp)
