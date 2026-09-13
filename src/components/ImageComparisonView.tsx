@@ -101,6 +101,39 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
 
+  // Dynamic Inactivity Environmental Assist (Difficoltà Adattiva Dinamica)
+  const lastInteractionTimeRef = useRef<number>(Date.now());
+  const [idleAssistDiff, setIdleAssistDiff] = useState<Difference | null>(null);
+
+  const registerInteraction = () => {
+    lastInteractionTimeRef.current = Date.now();
+    setIdleAssistDiff(null);
+  };
+
+  // Reset timer on found difference change or active hint
+  useEffect(() => {
+    registerInteraction();
+  }, [foundDifferenceIds, activeHint]);
+
+  // Periodic check: after 45s of inactivity without hints, highlight one unfound clue softly without penalty
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const elapsedSinceActivity = Date.now() - lastInteractionTimeRef.current;
+      const unfound = differences.filter(d => !foundDifferenceIds.includes(d.id));
+
+      if (elapsedSinceActivity > 45000 && unfound.length > 0 && !activeHint) {
+        setIdleAssistDiff(prev => {
+          if (prev && !foundDifferenceIds.includes(prev.id)) return prev;
+          return unfound[0];
+        });
+      } else {
+        setIdleAssistDiff(null);
+      }
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, [differences, foundDifferenceIds, activeHint]);
+
   // References
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRefMain = useRef<HTMLImageElement>(null);
@@ -114,6 +147,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space' && !e.repeat && document.activeElement?.tagName !== 'INPUT') {
         e.preventDefault();
+        registerInteraction();
         setIsArchiveLensActive(true);
         sound.playArchiveLens();
         triggerHaptic('light');
@@ -122,6 +156,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'Space' && document.activeElement?.tagName !== 'INPUT') {
         e.preventDefault();
+        registerInteraction();
         setIsArchiveLensActive(false);
       }
     };
@@ -136,6 +171,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   // Auto-focus hint when active
   useEffect(() => {
     if (activeHint) {
+      registerInteraction();
       setScale(2.2);
       const targetX = (50 - activeHint.x) * 3.8;
       const targetY = (50 - activeHint.y) * 3.8;
@@ -254,6 +290,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   // Hit test click on image with Double-Tap to Zoom support
   const handleStageClick = (e: React.MouseEvent<HTMLDivElement>, imageTarget: 0 | 1 = 1) => {
     if (isDraggingRef.current) return;
+    registerInteraction();
 
     const imgElement =
       viewMode === 'crime_scene'
@@ -553,6 +590,20 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 >
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-3 border-amber-400 bg-amber-400/25 flex items-center justify-center shadow-[0_0_30px_rgba(251,191,36,0.9)]">
                     <Sparkles className="w-6 h-6 text-amber-300 animate-spin" />
+                  </div>
+                </div>
+              )}
+
+              {/* Dynamic Inactivity Environmental Assist (Difficoltà Adattiva Dinamica - Shimmer Ambientale) */}
+              {idleAssistDiff && !activeHint && !foundDifferenceIds.includes(idleAssistDiff.id) && (
+                <div
+                  className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
+                  style={{ left: `${idleAssistDiff.x}%`, top: `${idleAssistDiff.y}%` }}
+                >
+                  <div className="relative flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-amber-300/40 bg-amber-400/10 animate-ping opacity-60" />
+                    <div className="absolute w-8 h-8 rounded-full border border-amber-400/70 bg-amber-300/20 shadow-[0_0_20px_rgba(251,191,36,0.5)] animate-pulse" />
+                    <Sparkles className="absolute w-3.5 h-3.5 text-amber-300/80 animate-spin" />
                   </div>
                 </div>
               )}

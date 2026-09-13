@@ -703,7 +703,7 @@ class SoundManager {
   private bgmVolume: number = 0.38;
   private bgmLoopTimer: number | null = null;
   private bgmStepIndex: number = 0;
-  private currentTheme: 'exploration' | 'excavation' = 'exploration';
+  private currentTheme: 'exploration' | 'excavation' | 'sacred_temple' = 'exploration';
 
   // Chord progressions in ancient Dorian / D minor mode (Indiana Jones / Howard Shore archaeological style)
   // Each chord has [RootBass, HarpArpNotes...]
@@ -719,6 +719,13 @@ class SoundManager {
     { bass: 123.47, harp: [246.94, 293.66, 369.99, 440.00, 493.88] }, // Bm
     { bass: 98.00,  harp: [196.00, 246.94, 293.66, 392.00, 493.88] }, // G
     { bass: 146.83, harp: [293.66, 349.23, 440.00, 523.25, 587.33] }, // Dm
+  ];
+
+  private readonly chordsSacredTemple = [
+    { bass: 110.00, harp: [220.00, 329.63, 440.00, 554.37, 659.25], bell: 880.00 }, // A Major / Inti Pentatonic
+    { bass: 146.83, harp: [293.66, 369.99, 440.00, 587.33, 739.99], bell: 587.33 }, // D Major
+    { bass: 98.00,  harp: [196.00, 246.94, 293.66, 392.00, 493.88], bell: 783.99 }, // G Major
+    { bass: 130.81, harp: [261.63, 329.63, 392.00, 523.25, 659.25], bell: 659.25 }, // C Major
   ];
 
   public setBGMEnabled(enabled: boolean) {
@@ -741,7 +748,7 @@ class SoundManager {
     return this.isBgmPlaying && this.bgmEnabled;
   }
 
-  public setBGMTheme(theme: 'exploration' | 'excavation') {
+  public setBGMTheme(theme: 'exploration' | 'excavation' | 'sacred_temple') {
     if (this.currentTheme === theme) return;
     this.currentTheme = theme;
     if (this.isBgmPlaying && this.bgmEnabled) {
@@ -750,7 +757,7 @@ class SoundManager {
   }
 
   // Start continuous orchestral atmospheric music loop
-  public startBGM(theme: 'exploration' | 'excavation' = 'exploration') {
+  public startBGM(theme: 'exploration' | 'excavation' | 'sacred_temple' = 'exploration') {
     this.currentTheme = theme;
     if (!this.bgmEnabled) return;
 
@@ -830,12 +837,38 @@ class SoundManager {
     const ctx = this.getContext();
     if (!ctx || !this.bgmGainNode || !this.isBgmPlaying || !this.bgmEnabled) return;
 
-    const chords = this.currentTheme === 'exploration' ? this.chordsExploration : this.chordsExcavation;
-    const currentChord = chords[this.bgmStepIndex % chords.length];
+    const chords =
+      this.currentTheme === 'exploration'
+        ? this.chordsExploration
+        : this.currentTheme === 'excavation'
+        ? this.chordsExcavation
+        : this.chordsSacredTemple;
+    const currentChord = chords[this.bgmStepIndex % chords.length] as {
+      bass: number;
+      harp: number[];
+      bell?: number;
+    };
     this.bgmStepIndex++;
 
     const startTime = ctx.currentTime + 0.05;
     const barDuration = 3.6; // seconds
+
+    // 0. Sacred Golden Bell / Bronze Gong Resonator (for sacred_temple theme)
+    if (this.currentTheme === 'sacred_temple' && currentChord.bell) {
+      const bellOsc = ctx.createOscillator();
+      const bellGain = ctx.createGain();
+      bellOsc.type = 'sine';
+      bellOsc.frequency.setValueAtTime(currentChord.bell, startTime);
+
+      bellGain.gain.setValueAtTime(0, startTime);
+      bellGain.gain.linearRampToValueAtTime(0.045, startTime + 0.04);
+      bellGain.gain.exponentialRampToValueAtTime(0.0001, startTime + 3.4);
+
+      bellOsc.connect(bellGain);
+      bellGain.connect(this.bgmGainNode);
+      bellOsc.start(startTime);
+      bellOsc.stop(startTime + 3.5);
+    }
 
     // 1. Warm Cello / Double-Bass Pedal Drone
     const bassOsc = ctx.createOscillator();

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
 import { Header } from './components/Header';
 import { ImageComparisonView } from './components/ImageComparisonView';
 import { PowerUpBar } from './components/PowerUpBar';
 import { ShopModal } from './components/ShopModal';
-import { RelicMuseumModal } from './components/RelicMuseumModal';
 import { RelicFoundModal } from './components/RelicFoundModal';
 import { LoreClueToast } from './components/LoreClueToast';
 import { LevelCompleteModal } from './components/LevelCompleteModal';
@@ -11,7 +10,6 @@ import { GameOverModal } from './components/GameOverModal';
 import { JournalModal } from './components/JournalModal';
 import { LevelSelectModal } from './components/LevelSelectModal';
 import { SettingsModal } from './components/SettingsModal';
-import { MappamondoModal } from './components/MappamondoModal';
 import { SplashScreen } from './components/SplashScreen';
 import { AvatarCreatorModal } from './components/AvatarCreatorModal';
 import { WardrobeModal } from './components/WardrobeModal';
@@ -20,8 +18,12 @@ import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
 import { ExpeditionHubModal } from './components/ExpeditionHubModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
 import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
-import { DailyExpeditionModal } from './components/DailyExpeditionModal';
-import { GrandFinaleModal } from './components/GrandFinaleModal';
+
+// Code-Split Heavy Modals with React.lazy to reduce initial JS chunk size and optimize TTI
+const MappamondoModal = lazy(() => import('./components/MappamondoModal').then(m => ({ default: m.MappamondoModal })));
+const RelicMuseumModal = lazy(() => import('./components/RelicMuseumModal').then(m => ({ default: m.RelicMuseumModal })));
+const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModal').then(m => ({ default: m.DailyExpeditionModal })));
+const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
 import {
   hasPendingDaily,
   completeDailyExpedition,
@@ -35,6 +37,7 @@ import {
   EXPLORERS,
   ALL_OUTFITS,
   ALL_ACCESSORIES,
+  getActiveSetBonuses,
   type ExplorerProfile,
 } from './data/avatarData';
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
@@ -242,6 +245,20 @@ export const App: React.FC = () => {
   const activeTalisman = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedTalismanId);
   const activeBack = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedBackId);
 
+  // Active RPG Equipment Set Bonuses (Sinergie di Set)
+  const activeSetList = getActiveSetBonuses(
+    explorerProfile.equippedOutfitId,
+    explorerProfile.equippedHeadgearId,
+    explorerProfile.equippedToolId,
+    explorerProfile.equippedOffHandId,
+    explorerProfile.equippedLegsId,
+    explorerProfile.equippedBootsId,
+    explorerProfile.equippedTalismanId,
+    explorerProfile.equippedBackId
+  );
+  const activeSets = activeSetList.filter(s => s.isActive);
+  const primaryActiveSet = activeSets[0] || null;
+
   const equippedPerks = [
     activeOutfit?.perk,
     activeHeadgear?.perk,
@@ -251,6 +268,7 @@ export const App: React.FC = () => {
     activeBoots?.perk,
     activeTalisman?.perk,
     activeBack?.perk,
+    ...activeSets.map(s => s.set.perk),
   ].filter(Boolean) as { type: string; value: number }[];
 
   const coinBonusPercent = equippedPerks
@@ -294,6 +312,25 @@ export const App: React.FC = () => {
     return [];
   });
 
+  // Speedrun Records: Best completion times per level
+  const [bestTimes, setBestTimes] = useState<Record<number, number>>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.bestTimes || {};
+      } catch {
+        return {};
+      }
+    }
+    return {};
+  });
+
+  const [lastWinRecordInfo, setLastWinRecordInfo] = useState<{ isRecord: boolean; bestTime: number }>({
+    isRecord: false,
+    bestTime: 0,
+  });
+
   // Settings
   const [settings, setSettings] = useState<GameSettings>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_SETTINGS);
@@ -325,9 +362,10 @@ export const App: React.FC = () => {
         currentLevelId,
         completedLevelIds,
         discoveredClues,
+        bestTimes,
       })
     );
-  }, [currentLevelId, completedLevelIds, discoveredClues]);
+  }, [currentLevelId, completedLevelIds, discoveredClues, bestTimes]);
 
   // Save economy & inventory
   useEffect(() => {
@@ -403,11 +441,21 @@ export const App: React.FC = () => {
     isDailyModalOpen,
   ]);
 
+  // Dynamic 3-Theme Orchestral BGM Selector:
+  // Stages 1-4: 'exploration' (Jungle & Expedition Camp)
+  // Stages 5-8: 'excavation' (High Andes & Crypts)
+  // Stages 9-12: 'sacred_temple' (Tempio del Sole & Sancta Sanctorum di Paititi)
+  const getStageBgmTheme = (chapNum: number): 'exploration' | 'excavation' | 'sacred_temple' => {
+    if (chapNum >= 9) return 'sacred_temple';
+    if (chapNum >= 5) return 'excavation';
+    return 'exploration';
+  };
+
   // Auto-ignite procedural orchestral BGM on first user interaction (compliant with mobile autoplay policies)
   useEffect(() => {
     const handleFirstGesture = () => {
       if (sound.getBGMEnabled()) {
-        sound.startBGM(currentLevel.chapterNumber <= 3 ? 'exploration' : 'excavation');
+        sound.startBGM(getStageBgmTheme(currentLevel.chapterNumber));
         setIsBgmPlaying(true);
       }
       window.removeEventListener('pointerdown', handleFirstGesture);
@@ -424,7 +472,7 @@ export const App: React.FC = () => {
 
   // Adjust theme dynamically when switching chapters
   useEffect(() => {
-    sound.setBGMTheme(currentLevel.chapterNumber <= 3 ? 'exploration' : 'excavation');
+    sound.setBGMTheme(getStageBgmTheme(currentLevel.chapterNumber));
   }, [currentLevel.chapterNumber]);
 
   const handleToggleBgm = useCallback(() => {
@@ -578,6 +626,19 @@ export const App: React.FC = () => {
         setCoins(c => c + totalBonus);
         setLevelCoinsEarned(c => c + totalBonus);
 
+        // Evaluate Speedrun Record (Best Time)
+        const prevBest = bestTimes[currentLevel.id];
+        const isNewRecord = prevBest === undefined || timeElapsed < prevBest;
+        const recordedBest = isNewRecord ? timeElapsed : prevBest;
+
+        if (isNewRecord) {
+          setBestTimes(prev => ({ ...prev, [currentLevel.id]: timeElapsed }));
+        }
+        setLastWinRecordInfo({
+          isRecord: isNewRecord,
+          bestTime: recordedBest,
+        });
+
         if (!completedLevelIds.includes(currentLevel.id)) {
           setCompletedLevelIds(prev => [...prev, currentLevel.id]);
           if (isMilestone) {
@@ -600,6 +661,7 @@ export const App: React.FC = () => {
       settings.vibrationEnabled,
       coinBonusPercent,
       isDailyActive,
+      bestTimes,
     ]
   );
 
@@ -911,6 +973,18 @@ export const App: React.FC = () => {
             radarBonus: radarBonusPercent,
             hasShield: hasPassiveFreeShield,
           }}
+          activeSetBonus={
+            primaryActiveSet
+              ? {
+                  name: primaryActiveSet.set.name,
+                  badge: primaryActiveSet.set.badge,
+                  shortName: primaryActiveSet.set.shortName,
+                  perkLabel: primaryActiveSet.set.perk.label,
+                  themeGradient: primaryActiveSet.set.themeGradient,
+                  borderAccent: primaryActiveSet.set.borderAccent,
+                }
+              : null
+          }
         />
 
         {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Preloads immediately) */}
@@ -980,6 +1054,8 @@ export const App: React.FC = () => {
             setIsGrandFinaleOpen(true);
           }}
           isRelicFound={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : false}
+          bestTime={lastWinRecordInfo.bestTime}
+          isNewRecord={lastWinRecordInfo.isRecord}
         />
       )}
 
@@ -1004,14 +1080,18 @@ export const App: React.FC = () => {
         onClaimEmergencyFunds={handleClaimEmergencyFunds}
       />
 
-      <RelicMuseumModal
-        isOpen={isRelicMuseumOpen}
-        onClose={() => {
-          setIsRelicMuseumOpen(false);
-          setHasUnreadRelics(false);
-        }}
-        discoveredRelicIds={discoveredRelicIds}
-      />
+      {isRelicMuseumOpen && (
+        <Suspense fallback={null}>
+          <RelicMuseumModal
+            isOpen={isRelicMuseumOpen}
+            onClose={() => {
+              setIsRelicMuseumOpen(false);
+              setHasUnreadRelics(false);
+            }}
+            discoveredRelicIds={discoveredRelicIds}
+          />
+        </Suspense>
+      )}
 
       <RelicFoundModal
         isOpen={isRelicFoundModalOpen}
@@ -1041,18 +1121,22 @@ export const App: React.FC = () => {
         onSelectLevel={id => loadLevel(id)}
       />
 
-      <MappamondoModal
-        isOpen={isTreasureMapOpen}
-        onClose={() => {
-          setIsTreasureMapOpen(false);
-          setHasNewStageUnlocked(false);
-        }}
-        currentLevelId={currentLevel.id}
-        completedLevelIds={completedLevelIds}
-        onSelectLevel={id => loadLevel(id)}
-        onOpenStageBriefing={handleOpenStageBriefing}
-        profile={explorerProfile}
-      />
+      {isTreasureMapOpen && (
+        <Suspense fallback={null}>
+          <MappamondoModal
+            isOpen={isTreasureMapOpen}
+            onClose={() => {
+              setIsTreasureMapOpen(false);
+              setHasNewStageUnlocked(false);
+            }}
+            currentLevelId={currentLevel.id}
+            completedLevelIds={completedLevelIds}
+            onSelectLevel={id => loadLevel(id)}
+            onOpenStageBriefing={handleOpenStageBriefing}
+            profile={explorerProfile}
+          />
+        </Suspense>
+      )}
 
       <SettingsModal
         isOpen={isSettingsOpen}
@@ -1220,27 +1304,35 @@ export const App: React.FC = () => {
       />
 
       {/* 30-Day Expedition Daily Challenge & Streak Modal */}
-      <DailyExpeditionModal
-        isOpen={isDailyModalOpen}
-        onClose={() => setIsDailyModalOpen(false)}
-        onStartDailyLevel={handleStartDailyLevel}
-        coins={coins}
-      />
+      {isDailyModalOpen && (
+        <Suspense fallback={null}>
+          <DailyExpeditionModal
+            isOpen={isDailyModalOpen}
+            onClose={() => setIsDailyModalOpen(false)}
+            onStartDailyLevel={handleStartDailyLevel}
+            coins={coins}
+          />
+        </Suspense>
+      )}
 
       {/* Grand Finale Expedition Endings Modal (Level 120 / Campaign Complete) */}
-      <GrandFinaleModal
-        isOpen={isGrandFinaleOpen}
-        profile={explorerProfile}
-        onClose={() => setIsGrandFinaleOpen(false)}
-        onOpenJournal={() => {
-          setIsGrandFinaleOpen(false);
-          setIsJournalOpen(true);
-        }}
-        onOpenMappamondo={() => {
-          setIsGrandFinaleOpen(false);
-          setIsTreasureMapOpen(true);
-        }}
-      />
+      {isGrandFinaleOpen && (
+        <Suspense fallback={null}>
+          <GrandFinaleModal
+            isOpen={isGrandFinaleOpen}
+            profile={explorerProfile}
+            onClose={() => setIsGrandFinaleOpen(false)}
+            onOpenJournal={() => {
+              setIsGrandFinaleOpen(false);
+              setIsJournalOpen(true);
+            }}
+            onOpenMappamondo={() => {
+              setIsGrandFinaleOpen(false);
+              setIsTreasureMapOpen(true);
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };

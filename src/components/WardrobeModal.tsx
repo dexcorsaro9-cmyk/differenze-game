@@ -3,6 +3,7 @@ import {
   EXPLORERS,
   ALL_OUTFITS,
   ALL_ACCESSORIES,
+  getEquipmentSetsStatus,
   type ExplorerProfile,
   type WardrobeOutfit,
   type WardrobeAccessory,
@@ -125,7 +126,26 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
     a => a.id === (previewBackId !== null ? previewBackId : profile.equippedBackId || null)
   );
 
-  // Dynamic RPG Stats Summation across active/previewed equipment
+  // Dynamic Tags of currently worn / previewed items across all 8 slots
+  const displayedTags: string[] = [
+    displayOutfit?.tag,
+    displayHeadgear?.tag,
+    displayTool?.tag,
+    displayOffHand?.tag,
+    displayLegs?.tag,
+    displayBoots?.tag,
+    displayTalisman?.tag,
+    displayBack?.tag,
+  ].filter((t): t is string => Boolean(t));
+
+  const equipmentSetsStatus = useMemo(
+    () => getEquipmentSetsStatus(displayedTags),
+    [displayedTags]
+  );
+
+  const activeSetBonuses = equipmentSetsStatus.filter(s => s.isActive);
+
+  // Dynamic RPG Stats Summation across active/previewed equipment + active Set Bonuses
   const activePerks = [
     displayOutfit?.perk,
     displayHeadgear?.perk,
@@ -135,6 +155,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
     displayBoots?.perk,
     displayTalisman?.perk,
     displayBack?.perk,
+    ...activeSetBonuses.map(s => s.set.perk),
   ].filter(Boolean) as WardrobePerk[];
 
   const totalCoinBonus = activePerks
@@ -760,6 +781,64 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     <div className="text-xs font-black mt-0.5">
                       {totalRadarBonus > 0 ? `+${totalRadarBonus}% Radar` : '0%'}
                     </div>
+                  </div>
+                </div>
+
+                {/* Sinergie di Set Archeologico (3+ pezzi) */}
+                <div className="mt-2 pt-1.5 border-t border-amber-900/40">
+                  <div className="flex items-center justify-between mb-1 text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+                    <div className="flex items-center gap-1">
+                      <Crown className="w-3 h-3 text-amber-400" />
+                      <span>Sinergie di Set Archeologico</span>
+                    </div>
+                    <span className="text-[9px] text-amber-400/90 font-medium">
+                      {activeSetBonuses.length > 0 ? (
+                        <span className="text-yellow-300 font-bold">✨ {activeSetBonuses.length} Set Attivo!</span>
+                      ) : (
+                        <span className="text-stone-400">Combina 3 pezzi affini</span>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {equipmentSetsStatus.map(s => (
+                      <div
+                        key={s.set.id}
+                        className={`px-2 py-1 rounded-lg border flex items-center justify-between transition-all ${
+                          s.isActive
+                            ? `bg-gradient-to-r ${s.set.themeGradient} ${s.set.borderAccent} shadow-[0_0_10px_rgba(245,158,11,0.25)] ring-1 ring-amber-400/60`
+                            : 'bg-black/40 border-stone-800/90 opacity-60'
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="text-xs shrink-0">{s.set.badge}</span>
+                          <div className="flex flex-col min-w-0">
+                            <span
+                              className={`text-[9px] sm:text-[10px] font-black truncate leading-tight ${
+                                s.isActive ? 'text-amber-200 font-black' : 'text-stone-300'
+                              }`}
+                            >
+                              {s.set.shortName}
+                            </span>
+                            <span className="text-[8px] text-amber-300/80 truncate leading-none mt-0.5">
+                              {s.set.perk.label}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="shrink-0 pl-1">
+                          <span
+                            className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
+                              s.isActive
+                                ? 'bg-amber-400 text-stone-950 shadow-sm font-black'
+                                : 'bg-stone-850 text-stone-400 border border-stone-700'
+                            }`}
+                          >
+                            {s.equippedCount}/{s.set.minPieces}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

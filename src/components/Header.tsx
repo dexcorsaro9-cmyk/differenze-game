@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heart,
   Clock,
@@ -11,6 +11,8 @@ import {
   Volume2,
   VolumeX,
   Flame,
+  Maximize,
+  Minimize,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
@@ -41,6 +43,14 @@ interface HeaderProps {
     radarBonus: number;
     hasShield: boolean;
   };
+  activeSetBonus?: {
+    name: string;
+    badge: string;
+    shortName: string;
+    perkLabel: string;
+    themeGradient: string;
+    borderAccent: string;
+  } | null;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -63,8 +73,27 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleSound,
   comboStreak = 0,
   rpgPerksSummary,
+  activeSetBonus,
 }) => {
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  };
 
   // Star rating calculation based on time elapsed
   // Under 105s (1m 45s) = 3 stars, Under 210s (3m 30s) = 2 stars, otherwise 1 star
@@ -113,8 +142,26 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
-        {/* Right: Sound toggle, Coins counter & Prominent CAMPO BASE button */}
+        {/* Right: Fullscreen, Sound toggle, Coins counter & Prominent CAMPO BASE button */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Native Fullscreen Mode Toggle */}
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            className={`p-1.5 rounded-full border transition cursor-pointer active:scale-95 ${
+              isFullscreen
+                ? 'bg-amber-500/40 border-amber-300 text-amber-100 shadow-[0_0_8px_rgba(245,158,11,0.5)]'
+                : 'bg-amber-950/60 border-amber-500/40 text-amber-300 hover:text-white'
+            }`}
+            title={isFullscreen ? 'Disattiva Schermo Intero (Esc)' : 'Schermo Intero Nativo'}
+          >
+            {isFullscreen ? (
+              <Minimize className="w-3.5 h-3.5" />
+            ) : (
+              <Maximize className="w-3.5 h-3.5" />
+            )}
+          </button>
+
           {/* Quick Sound Mute/Unmute Toggle */}
           {onToggleSound && (
             <button
@@ -227,6 +274,17 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right: Active RPG Perks Chip + Timer & Star Rating */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Active Equipment Set Bonus Synergy Pill */}
+          {activeSetBonus && (
+            <div
+              className={`hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r ${activeSetBonus.themeGradient} border ${activeSetBonus.borderAccent} text-[9px] font-black text-amber-200 shadow-[0_0_8px_rgba(245,158,11,0.3)] animate-pulse`}
+              title={`Sinergia di Set: ${activeSetBonus.name} (${activeSetBonus.perkLabel})`}
+            >
+              <span>{activeSetBonus.badge}</span>
+              <span className="truncate max-w-[110px]">{activeSetBonus.shortName}</span>
+            </div>
+          )}
+
           {/* Active RPG Equipment Perks Pill */}
           {rpgPerksSummary && (rpgPerksSummary.coinBonus > 0 || rpgPerksSummary.radarBonus > 0) && (
             <div

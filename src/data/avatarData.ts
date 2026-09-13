@@ -575,3 +575,126 @@ export const ALL_ACCESSORIES: WardrobeAccessory[] = [
     tag: 'Topografia',
   },
 ];
+
+// =========================================================================
+// RPG EQUIPMENT SET BONUSES (SINERGIE DI SET COMPLETO)
+// =========================================================================
+export interface EquipmentSetBonus {
+  id: string;
+  name: string;
+  badge: string;
+  shortName: string;
+  description: string;
+  matchingTags: string[];
+  minPieces: number;
+  perk: WardrobePerk;
+  lore: string;
+  themeGradient: string;
+  borderAccent: string;
+}
+
+export const EQUIPMENT_SETS: EquipmentSetBonus[] = [
+  {
+    id: 'inti_sun',
+    name: 'Set Regale del Sole di Inti',
+    badge: '👑',
+    shortName: 'Sole di Inti',
+    description: 'Aura radiosa dei sacerdoti solari di Paititi.',
+    matchingTags: ['Regale', 'Sacro', 'Reliquia Sacra', 'Tradizione'],
+    minPieces: 3,
+    perk: { type: 'coin_boost', value: 25, label: '+25% Monete d\'Oro & Aura Solare' },
+    lore: 'Quando 3 o più paramenti consacrati al Sole risuonano insieme, ogni differenza svela tesori aurei moltiplicati.',
+    themeGradient: 'from-amber-500/20 via-yellow-500/10 to-orange-500/20',
+    borderAccent: 'border-yellow-400/80',
+  },
+  {
+    id: 'andes_climber',
+    name: 'Set Esploratore delle Ande',
+    badge: '🏔️',
+    shortName: 'Esploratore Andino',
+    description: 'Resistenza termica estrema e dilatazione cronometrica.',
+    matchingTags: ['Alpinismo', 'Termico', 'Scalata', 'Resistente', 'Speleologia'],
+    minPieces: 3,
+    perk: { type: 'freeze_boost', value: 5, label: '+5s Dilatazione Tempo Extra' },
+    lore: 'Forgiato per sfidare le nebbie gelate del Cóndor e le vette inviolate della cordigliera di Vilcabamba.',
+    themeGradient: 'from-cyan-500/20 via-blue-500/10 to-indigo-500/20',
+    borderAccent: 'border-cyan-400/80',
+  },
+  {
+    id: 'rgs_topographer',
+    name: 'Set Topografo della Royal Geographic Society',
+    badge: '🧭',
+    shortName: 'Topografo RGS',
+    description: 'Triangolazione ottico-acustica e amplificazione del radar.',
+    matchingTags: ['Topografia', 'Navigazione', 'Acustico', 'Precisione', 'Ottico', 'Geodetico', 'Accademica', 'Mappe & Note', 'Manoscritto'],
+    minPieces: 3,
+    perk: { type: 'radar_boost', value: 25, label: '+25% Ampiezza Radar Archeologico' },
+    lore: 'La massima eccellenza cartografica vittoriana del 1928: calibra onde radio e lenti per individuare anomalie nascoste.',
+    themeGradient: 'from-emerald-500/20 via-teal-500/10 to-stone-500/20',
+    borderAccent: 'border-emerald-400/80',
+  },
+  {
+    id: 'paititi_guardian',
+    name: 'Set Guardiano di Vilcabamba',
+    badge: '🛡️',
+    shortName: 'Guardiano di Vilcabamba',
+    description: 'Armatura protettiva cerimoniale contro i falsi indizi.',
+    matchingTags: ['Difesa', 'Protezione', 'Rinforzato', 'Predatore', 'Palude'],
+    minPieces: 3,
+    perk: { type: 'free_shield', value: 1, label: '+1 Scudo d\'Errore Gratuito' },
+    lore: 'Gli antichi guardiani dell\'Inti assorbono i fallimenti deviando le insidie ambientali della giungla.',
+    themeGradient: 'from-purple-500/20 via-rose-500/10 to-stone-500/20',
+    borderAccent: 'border-purple-400/80',
+  },
+];
+
+export interface ActiveSetInfo {
+  set: EquipmentSetBonus;
+  equippedCount: number;
+  isActive: boolean;
+}
+
+export function getEquipmentSetsStatus(equippedItemTags: string[]): ActiveSetInfo[] {
+  return EQUIPMENT_SETS.map(set => {
+    const matchingCount = equippedItemTags.filter(tag => set.matchingTags.includes(tag)).length;
+    return {
+      set,
+      equippedCount: matchingCount,
+      isActive: matchingCount >= set.minPieces,
+    };
+  });
+}
+
+export function getActiveSetBonuses(
+  equippedOutfitId: string,
+  equippedHeadgearId: string | null,
+  equippedToolId: string | null,
+  equippedOffHandId: string | null | undefined,
+  equippedLegsId: string | null | undefined,
+  equippedBootsId: string | null | undefined,
+  equippedTalismanId: string | null,
+  equippedBackId: string | null | undefined
+): ActiveSetInfo[] {
+  const outfit = ALL_OUTFITS.find(o => o.id === equippedOutfitId);
+  const head = ALL_ACCESSORIES.find(a => a.id === equippedHeadgearId);
+  const tool = ALL_ACCESSORIES.find(a => a.id === equippedToolId);
+  const offHand = ALL_ACCESSORIES.find(a => a.id === equippedOffHandId);
+  const legs = ALL_ACCESSORIES.find(a => a.id === equippedLegsId);
+  const boots = ALL_ACCESSORIES.find(a => a.id === equippedBootsId);
+  const talisman = ALL_ACCESSORIES.find(a => a.id === equippedTalismanId);
+  const back = ALL_ACCESSORIES.find(a => a.id === equippedBackId);
+
+  const tags: string[] = [
+    outfit?.tag,
+    head?.tag,
+    tool?.tag,
+    offHand?.tag,
+    legs?.tag,
+    boots?.tag,
+    talisman?.tag,
+    back?.tag,
+  ].filter((t): t is string => Boolean(t));
+
+  return getEquipmentSetsStatus(tags);
+}
+
