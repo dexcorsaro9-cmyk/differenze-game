@@ -237,25 +237,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelForty
       ? '/levels/stage4_lvl40_A.jpg?v=2'
       : isLevelFortyOne
-      ? '/levels/stage5_lvl41_A.jpg'
+      ? '/levels/stage5_lvl41_A.jpg?v=2'
       : isLevelFortyTwo
-      ? '/levels/stage5_lvl42_A.jpg'
+      ? '/levels/stage5_lvl42_A.jpg?v=2'
       : isLevelFortyThree
-      ? '/levels/stage5_lvl43_A.jpg'
+      ? '/levels/stage5_lvl43_A.jpg?v=2'
       : isLevelFortyFour
-      ? '/levels/stage5_lvl44_A.jpg'
+      ? '/levels/stage5_lvl44_A.jpg?v=2'
       : isLevelFortyFive
-      ? '/levels/stage5_lvl45_A.jpg'
+      ? '/levels/stage5_lvl45_A.jpg?v=2'
       : isLevelFortySix
-      ? '/levels/stage5_lvl46_A.jpg'
+      ? '/levels/stage5_lvl46_A.jpg?v=2'
       : isLevelFortySeven
-      ? '/levels/stage5_lvl47_A.jpg'
+      ? '/levels/stage5_lvl47_A.jpg?v=2'
       : isLevelFortyEight
-      ? '/levels/stage5_lvl48_A.jpg'
+      ? '/levels/stage5_lvl48_A.jpg?v=2'
       : isLevelFortyNine
-      ? '/levels/stage5_lvl49_A.jpg'
+      ? '/levels/stage5_lvl49_A.jpg?v=2'
       : isLevelFifty
-      ? '/levels/stage5_lvl50_A.jpg'
+      ? '/levels/stage5_lvl50_A.jpg?v=2'
       : isLevelFiftyOne
       ? '/levels/stage6_lvl51_A.jpg'
       : isLevelFiftyTwo
@@ -520,25 +520,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelForty
       ? '/levels/stage4_lvl40_B.jpg?v=2'
       : isLevelFortyOne
-      ? '/levels/stage5_lvl41_B.jpg'
+      ? '/levels/stage5_lvl41_B.jpg?v=2'
       : isLevelFortyTwo
-      ? '/levels/stage5_lvl42_B.jpg'
+      ? '/levels/stage5_lvl42_B.jpg?v=2'
       : isLevelFortyThree
-      ? '/levels/stage5_lvl43_B.jpg'
+      ? '/levels/stage5_lvl43_B.jpg?v=2'
       : isLevelFortyFour
-      ? '/levels/stage5_lvl44_B.jpg'
+      ? '/levels/stage5_lvl44_B.jpg?v=2'
       : isLevelFortyFive
-      ? '/levels/stage5_lvl45_B.jpg'
+      ? '/levels/stage5_lvl45_B.jpg?v=2'
       : isLevelFortySix
-      ? '/levels/stage5_lvl46_B.jpg'
+      ? '/levels/stage5_lvl46_B.jpg?v=2'
       : isLevelFortySeven
-      ? '/levels/stage5_lvl47_B.jpg'
+      ? '/levels/stage5_lvl47_B.jpg?v=2'
       : isLevelFortyEight
-      ? '/levels/stage5_lvl48_B.jpg'
+      ? '/levels/stage5_lvl48_B.jpg?v=2'
       : isLevelFortyNine
-      ? '/levels/stage5_lvl49_B.jpg'
+      ? '/levels/stage5_lvl49_B.jpg?v=2'
       : isLevelFifty
-      ? '/levels/stage5_lvl50_B.jpg'
+      ? '/levels/stage5_lvl50_B.jpg?v=2'
       : isLevelFiftyOne
       ? '/levels/stage6_lvl51_B.jpg'
       : isLevelFiftyTwo
@@ -3061,146 +3061,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelFortyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 50.75, y: 26.34, radius: 5.5, name: "Il Paranco sulla Volta Sommersa", loreClue: "Un paranco da spedizione con carrucola d'acciaio e fune di canapa è calato dal lucernario della volta crollata." },
-        { id: `lvl${id}_d2`, x: 90.42, y: 61.38, radius: 6.0, name: "La Lanterna a Petrolio Spenta", loreClue: "La fiamma viva all'interno della lanterna marinaresca è spenta, lasciando lo stoppino carbonizzato." },
-        { id: `lvl${id}_d3`, x: 57.50, y: 75.33, radius: 5.5, name: "Lo Scarabeo di Lapislazzuli di Tolomeo", loreClue: "Un prezioso amuleto tolemaico intagliato in puro lapislazzuli e filigrana d'oro è adagiato sul plinto di pietra." },
-        { id: `lvl${id}_d4`, x: 82.33, y: 83.48, radius: 5.5, name: "La Bussola Geodetica sul Diario", loreClue: "Una bussola tascabile in ottone con coperchio aperto è posata sulle pagine scritte del giornale di scavo." },
-        { id: `lvl${id}_d5`, x: 62.67, y: 79.80, radius: 6.0, name: "Il Sigillo Reale e Nastro di Seta Blu", loreClue: "Il cilindro porta-papiri in bronzo è avvolto da un nastro di seta blu cobalto con sigillo reale in ceralacca." },
-        { id: `lvl${id}_d6`, x: 13.33, y: 51.34, radius: 5.5, name: "La Lucerna Romana Accesa sull'Altare", loreClue: "Una piccola lucerna romana in terracotta con stoppino fiammeggiante rischiara l'altare del settore ovest." },
-        { id: `lvl${id}_d7`, x: 33.75, y: 45.98, radius: 5.5, name: "La Corona d'Alloro sulla Statua Ellenistica", loreClue: "Sulla testa della statua di marmo tolemaica compare una finissima corona d'alloro scolpita." },
-        { id: `lvl${id}_d8`, x: 60.83, y: 89.84, radius: 5.5, name: "Il Metro da Agrimensore Inclinato", loreClue: "Il righello pieghevole da rilievo archeologico sul tavolo è aperto e angolato a 45 gradi." },
-        { id: `lvl${id}_d9`, x: 78.50, y: 55.80, radius: 5.5, name: "La Grata a Croce del Casco da Palombaro", loreClue: "Il visore circolare del pesante elmo di rame Siebe Gorman presenta una grata protettiva a croce regolare." },
-        { id: `lvl${id}_d10`, x: 77.50, y: 67.19, radius: 5.0, name: "La Targhetta Ovale del Costruttore Rimossa", loreClue: "La piastrina ovale in ottone con la matricola del costruttore è assente dal collare pettorale dell'elmo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 90.38,
+          y: 61.44,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rotolo di Papiro di Tolomeo Filadelfo",
+          loreClue: "Il rotolo di papiro con il catalogo dei tomi tolemaici è stato sottratto per celare la rotta lungo il Nilo."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 60.21,
+          y: 76.95,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Sfera Armillare Alessandrina di Bronzo",
+          loreClue: "La monumentale sfera armillare usata per calcolare le declinazioni celesti è stata danneggiata sul cerchio meridiano."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 60.5,
+          y: 89.79,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Anfora Rodia con Sigillo Tolemaico",
+          loreClue: "L'anfora cerimoniale ad anse nodose reca il marchio in ceralacca della flotta tolemaica."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.96,
+          y: 26.23,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Busto in Marmo di Tolomeo Sotere",
+          loreClue: "Il busto marmoreo del fondatore della biblioteca presenta un'incisione abrasa sul basamento."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.46,
+          y: 83.76,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calamaio di Bronzo con Inchiostro di Seppia",
+          loreClue: "Il calamaio in bronzo ellenistico usato dagli amanuensi reali è stato rovesciato sul tavolo di lettura."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.79,
+          y: 49.83,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta d'Argilla con Formula Cifrata",
+          loreClue: "Una tavoletta d'argilla incisa con le quote batimetriche del porto antico è stata asportata."
+        }
       ];
     } else if (isLevelFortyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.06, radius: 4.0, name: "La Torre Angolare Occidentale della Fortezza", loreClue: "Il torrione merlato a base circolare a guardia del molo di ponente appare smussato." },
-        { id: `lvl${id}_d2`, x: 50.01, y: 10.05, radius: 4.0, name: "La Cupola Centrale del Maschio Mamelucco", loreClue: "La calotta ogivale in pietra della torre maestra svanisce dal profilo fortificato." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Baluardo Nord-Orientale sul Mare Aperto", loreClue: "La postazione difensiva protesa sui flutti del Mediterraneo scompare dalla cinta." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Portale d'Ingresso ad Arco Ribassato", loreClue: "L'arco modanato del portale cerimoniale d'accesso al forte è stato livellato." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.96, radius: 4.0, name: "Le Feritoie Balestriere del Muro di Riva", loreClue: "Le aperture verticali per il tiro dei dardi nella muratura sono state colmate." },
-        { id: `lvl${id}_d6`, x: 85.01, y: 37.94, radius: 4.0, name: "La Batteria Costiera d'Artiglieria Navale", loreClue: "La piazzola per i cannoni in bronzo sul fronte mare orientale è stata rimossa." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.95, radius: 4.0, name: "La Banchina del Molo Foraneo Antico", loreClue: "Il camminamento in blocchi di calcare che avanza verso il porto appare raschiato." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.07, radius: 4.0, name: "I Conci Monumentali del Faro di Alessandria", loreClue: "I massi ciclopici di granito riutilizzati dalle rovine del Faro sono scomparsi dal piazzale." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "I Frangiflutti della Scogliera Esterna", loreClue: "I grandi prismi in cemento e roccia a difesa dalle mareggiate sono assenti." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.94, radius: 4.0, name: "Il Selciato della Piazza d'Armi in Primo Piano", loreClue: "I lastroni calcarei intagliati del piazzale d'accesso sono svaniti nel terreno." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Meridiana Gnomonica di Siene",
+          loreClue: "Lo gnomone in bronzo con cui Eratostene calcolò la circonferenza della Terra è stato smussato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Compasso Proporzionale di Rodi",
+          loreClue: "Il compasso di precisione in lega d'oricalco usato per tracciare i meridiani è scomparso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Carta Geografica del Delta del Nilo",
+          loreClue: "La pergamena con i sette rami storici del Nilo mostra tagli netti in corrispondenza di Canopo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Teodolite ad Acqua Alessandrino",
+          loreClue: "Il livello idraulico a vasi comunicanti per il rilievo geodetico è stato sabotato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Peso Numismatico in Bronzo",
+          loreClue: "Il saggio di peso monetario con l'effigie di Alessandro Magno è stato rubato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Lampada Copta a Olio d'Oliva",
+          loreClue: "La lucerna a forma di leone che illuminava il banco di cartografia è stata rovesciata."
+        }
       ];
     } else if (isLevelFortyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "Il Crinale Panoramico della Collina di Rhakotis", loreClue: "Il profilo collinare che domina la necropoli e il porto antico svanisce nel cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Capitello Corinzio in Granito di Assuan", loreClue: "Le monumentali foglie d'acanto scolpite nel granito rosso sulla cima della colonna sono levigate." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.95, radius: 4.0, name: "La Vetta del Fusto Monolitico di Diocleziano", loreClue: "Il raccordo terminale del fusto alto ventisette metri appare troncato a filo." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "I Blocchi Frammentari del Porticato del Serapeo", loreClue: "I capitelli e fusti spezzati adagiati lungo il declivio occidentale sono rimossi." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "La Sfinge Egizia in Granito Grigio a Guardia", loreClue: "La colossale statua della sfinge tolemaica accovacciata a sinistra è scomparsa dal plinto." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.97, radius: 4.0, name: "L'Iscrizione Greca dell'Imperatore Diocleziano", loreClue: "L'epigrafe incisa in lettere dorate sul piedistallo di granito è stata raschiata." },
-        { id: `lvl${id}_d7`, x: 88.01, y: 44.98, radius: 4.0, name: "La Muratura Romana in Mattoni del Santuario", loreClue: "Le arcate in laterizio cotto dei sotterranei del tempio appaiono uniformate." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "La Rampa Gradonata dei Pellegrini Pagani", loreClue: "I gradini d'accesso alla terrazza sacra dell'acropoli sono stati rimossi." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.03, radius: 4.0, name: "Il Cippo di Fondazione con Geroglifici Celati", loreClue: "Il blocco sotterraneo che racchiude le tavolette dedicatorie è colmato di terra." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "I Reperti Lapidei del Lapidario Archeologico", loreClue: "I frammenti di cornici ellenistiche esposti a terra a destra sono scomparsi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Catena Portuale di Eunostos",
+          loreClue: "La pesante maglia della catena difensiva che sbarrava il porto occidentale è stata tranciata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Ancora di Piombo di una Galea Tolemaica",
+          loreClue: "Il ceppo d'ancora in piombo con incise le ali di Iside è stato dissotterrato dalla sabbia."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Reliquiario Sommerso in Porfido",
+          loreClue: "Un piccolo scrigno in porfido rosso adagiato tra le alghe marine racchiude gemme alessandrine."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Rostro di Bronzo della Triremi",
+          loreClue: "Il rostro forgiato a testa di cinghiale della nave da guerra tolemaica appare manomesso."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Bitta d'Ormeggio in Granito Rosa",
+          loreClue: "La colonna d'ormeggio in granito di Assuan presenta un simbolo occulto scalpellato alla base."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Forziere di Legno di Cedro Imbevuto",
+          loreClue: "La cassa di cariche commerciali affondata nel bacino interno è stata forzata e svuotata."
+        }
       ];
     } else if (isLevelFortyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 14.99, y: 14.96, radius: 4.0, name: "Il Rilievo dello Scudo con la Testa di Medusa", loreClue: "Il tondo lapideo della Gorgone guardiana sulla parete funeraria è stato scalpellato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Volta a Botte della Rotonda Sotterranea", loreClue: "L'intonaco scavato nella roccia arenaria del soffitto ipogeo appare continuo e liscio." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Serpente Agathodaimon con Corona d'Egitto", loreClue: "Il sacro serpente benevolo con il disco solare alato è svanito dal bassorilievo." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "La Colonna Flautata ad Angolo della Camera", loreClue: "Il fusto scanalato in stile papiriforme della nicchia sepolcrale è scomparso." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Statua Funeraria del Sacerdote con Toga", loreClue: "La figura scolpita che unisce l'abito romano ai simboli osiridei è stata rimossa." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Nume Anubi in Veste di Legionario Romano", loreClue: "Il dio sciacallo raffigurato con corazza e gladio scompare dal paramento." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "I Loculi Funerari della Galleria Inferiore", loreClue: "Le cavità rettangolari per la deposizione dei sarcofagi appaiono murate a filo." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Triclinio di Pietra del Banchetto Rituale", loreClue: "I banchi a ferro di cavallo su cui banchettavano i congiunti sono spianati." },
-        { id: `lvl${id}_d9`, x: 67.99, y: 69.98, radius: 4.0, name: "Il Coperchio a Timpano del Sarcofago Greco", loreClue: "La copertura modanata in pietra del sepolcro monumentale è stata asportata." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Pozzo Elicoidale di Luce e Drenaggio", loreClue: "La canna circolare scavata nella roccia per l'aerazione ipogea è occlusa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Grande Specchio Ustorio del Faro",
+          loreClue: "Il colossale specchio parabolico in bronzo lucidato sulla sommità del Pharos è stato scheggiato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua Colossale di Poseidone",
+          loreClue: "La statua monumentale che coronava la cuspide del faro ha perso il tridente cerimoniale."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Basamento Ottagonale con Iscrizione Greca",
+          loreClue: "L'epigrafe dedicatoria di Sostrato di Cnido è stata parzialmente cancellata con un punzone."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Rampa a Spirale per i Carri di Combustibile",
+          loreClue: "La pavimentazione a blocchi di calcare della salita elicoidale appare franata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lanterna a Fuoco Continuo",
+          loreClue: "Il braciere alimentato a nafta e resina fossile è stato spento prima del previsto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Disco Solare di Puntamento Navale",
+          loreClue: "Il cerchio goniometrico in bronzo che proiettava i segnali luminosi a 30 miglia è sparito."
+        }
       ];
     } else if (isLevelFortyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "I Merli a Freccia della Cortina Superiore", loreClue: "I merli triangolari di coronamento del camminamento di ronda sono scomparsi." },
-        { id: `lvl${id}_d2`, x: 49.99, y: 10.04, radius: 4.0, name: "Il Fregio Epigrafico con Titolatura Mamelucca", loreClue: "L'iscrizione celebrativa in caratteri arabi sul portale centrale è stata levigata." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "La Garitta Angolare di Vedetta sul Canale", loreClue: "La torretta pensile per la sentinella sul cantonale di destra è assente." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "L'Arco a Ferro di Cavallo della Sala d'Armi", loreClue: "L'arcata islamica policroma che introduce all'armeria è stata uniformata." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Grata in Ferro della Prigione Militare", loreClue: "L'inferriata forgiata a maglie quadrate della finestra cieca è stata tolta." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Mensoletta Lignea del Baldacchino di Guardia", loreClue: "Il supporto intagliato in cedro per la campana d'allarme è stato rimosso." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "I Gradini della Scala ai Bastioni Marini", loreClue: "La rampa in pietra che sale alla batteria alta dei cannoni appare spianata." },
-        { id: `lvl${id}_d8`, x: 49.99, y: 62.05, radius: 4.0, name: "La Vera del Pozzo d'Acqua Dolce nella Corte", loreClue: "L'orlo circolare in calcare della cisterna sotterranea della fortezza è scomparso." },
-        { id: `lvl${id}_d9`, x: 82.01, y: 64.96, radius: 4.0, name: "Il Piatto d'Arenaria per il Munizionamento", loreClue: "Il blocco sagomato per l'impilamento delle palle di cannone è stato tolto." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Pavimento a Spina di Pesce della Piazza", loreClue: "I conci di calcare disposti a motivo geometrico in primo piano risultano livellati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Gli Elementi di Geometria su Pergamena",
+          loreClue: "Il manoscritto originale con la dimostrazione del postulato delle parallele è stato strappato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Compasso a Settore Circolare",
+          loreClue: "Lo strumento ad arco graduato usato per inscrivere i poligoni sacri è stato asportato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta Cerata con i Solidi Platonici",
+          loreClue: "Il diagramma dei cinque poliedri regolari tracciato a stilo nella cera nera è stato levigato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Stele con la Sezione Aurea Incisa",
+          loreClue: "La proporzione divina incisa su marmo pentelico mostra il rapporto armonico con la piramide."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Candelabro a Cinque Fiamme di Bronzo",
+          loreClue: "Il candelabro geometrico poggiato sulla cattedra d'insegnamento è stato rovesciato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Lo Scrigno dei Sigilli di Rame",
+          loreClue: "La cassetta con i timbri corporativi dei matematici alessandrini è stata scassinata."
+        }
       ];
     } else if (isLevelFortySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "La Parasta Trabeata del Temenos Tolemaico", loreClue: "Il pilastro in pietra da taglio che delimitava il recinto sacro scompare all'orizzonte." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Nocciolo Murario del Tempio di Serapide", loreClue: "I resti massicci della cella principale del dio guaritore appaiono colmati." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "Il Muraglione di Terrazzamento Meridionale", loreClue: "Il basamento megalitico che reggeva l'acropoli alessandrina è stato spianato." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "La Zampa Leonina Anteriore della Sfinge", loreClue: "L'artiglio scolpito nel granito grigio della statua di guardia appare levigato." },
-        { id: `lvl${id}_d5`, x: 37.99, y: 41.96, radius: 4.0, name: "Il Copricapo Nemes Reale del Faraone Tolomeo", loreClue: "Le bande laterali di lino dorato scolpite sulla fronte della sfinge sono raschiate." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Sfinge Gemella sul Lato Opposto dell'Asse", loreClue: "La seconda scultura guardiana che fiancheggiava il viale processionale è scomparsa." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "Il Rocchio di Granito Rosso della Colonnata", loreClue: "Il frammento cilindrico di colonna tolemaica adagiato sul prato è stato rimosso." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 74.99, radius: 4.0, name: "Il Plinto Lapideo di Supporto della Scultura", loreClue: "Il basamento squadrato in calcare nummulitico sotto la sfinge è scomparso." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.00, radius: 4.0, name: "La Griglia Metallica del Cunicolo Sotterraneo", loreClue: "La grata a protezione dei passaggi segreti scavati nel tufo è stata tolta." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 74.99, radius: 4.0, name: "Il Cordolo del Viale dei Cipressi Archeologici", loreClue: "La bordura in pietre chiare che delinea il percorso dei visitatori appare rimossa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Paratoia Idraulica della Cisterna",
+          loreClue: "La saracinesca in bronzo fuso che regolava l'afflusso del Nilo nella cisterna sotterranea è bloccata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Colonna Sommersa con Capitello Corinzio",
+          loreClue: "Il capitello in marmo proconnesio che emerge dall'acqua della cisterna è stato scheggiato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo di Piombo dell'Acquedotto",
+          loreClue: "La borchia sigillare dell'imperatore Adriano sul tubo idrico principale è stata asportata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "L'Idrometro del Nilo (Nilometro)",
+          loreClue: "La colonna graduata in cubiti nilotici per la misurazione delle piene è stata manomessa."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Coppa Votiva in Vetro Soffiato di Canopo",
+          loreClue: "La raffinata coppa in pasta vitrea policroma con decorazioni a piuma è stata rubata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Cunicolo Cieco nel Muro di Mattoni",
+          loreClue: "La breccia aperta nella volta a botte delle condotte romane mostra tracce di esplosione."
+        }
       ];
     } else if (isLevelFortySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "L'Arco d'Ingresso alle Sale delle Accademie", loreClue: "Il portale romano dell'auditorium per le lezioni di retorica è stato uniformato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.04, radius: 4.0, name: "Il Coronamento Superiore dell'Emiciclo", loreClue: "La balaustra in pietra alla sommità delle gradinate dell'odeion è scomparsa." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.95, radius: 4.0, name: "La Volta in Mattoni delle Terme di Villa degli Uccelli", loreClue: "L'arcata in laterizio del complesso termale romano a destra appare velata." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Le Gradinate di Marmo Bianco della Cavea Sinistra", loreClue: "I sedili monolitici del settore sinistro dei senatori appaiono livellati." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Lo Scranno d'Onore del Governatore Romano", loreClue: "Il seggio cerimoniale al centro dell'orchestra semicircolare è stato rimosso." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Le Gradinate di Marmo Bianco della Cavea Destra", loreClue: "I gradini del settore destro riservato ai magistrati municipali sono svaniti." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Il Mosaico Policromo a Motivi Geometrici", loreClue: "Il tassellato in marmi colorati e paste vitree sul pavimento è privo di disegno." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.97, radius: 4.0, name: "L'Orchestra Circolare dell'Odeion Alessandrino", loreClue: "Il pavimento marmoreo al centro della scena teatrale risulta raschiato." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Base della Colonna di Breccia Verde", loreClue: "Il plinto scanalato che sosteneva il baldacchino del proscenio è scomparso." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Canale Idraulico Perimetrale dell'Arena", loreClue: "Il condotto lapideo per il deflusso delle acque nell'emiciclo è colmato." },
+        {
+          id: `lvl${id}_d1`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Astrolabio Piano di Ipazia",
+          loreClue: "Il sofisticato astrolabio piano in ottone dorato inciso con le costellazioni tolemaiche è scomparso."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Canone Astronomico su Papiro",
+          loreClue: "Il commentario di Ipazia all'Almagesto di Tolomeo è stato dato parzialmente alle fiamme."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Idroscopio da Laboratorio",
+          loreClue: "Il tubo graduato per misurare la densità dei liquidi alchemici è stato frantumato sul pavimento."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Rilievo Astrale della Volta Celeste",
+          loreClue: "La volta affrescata con la sfera dei pianeti mostra le orbite ellittiche raschiate."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cattedra Filosofica in Noce",
+          loreClue: "La sedia accademica da cui la filosofa teneva le lezioni ai discepoli presenta un vano forzato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta con le Coordinate di Luxor",
+          loreClue: "La lastrina di rame con l'azimut di allineamento verso Tebe è stata strappata dal leggio."
+        }
       ];
     } else if (isLevelFortyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.06, radius: 4.0, name: "La Torre Campanaria Ispirata a Palazzo Vecchio", loreClue: "La maestosa torre merlata del palazzo reale di Farouk scompare dal cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.05, radius: 4.0, name: "Il Padiglione Panoramico della Terrazza Reale", loreClue: "Il chiosco liberty sulla copertura orientale della residenza khediviale è assente." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "La Vetta del Faro Privato sulla Scogliera", loreClue: "La lanterna ottagonale del faro personale della corte reale è scomparsa." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Ponte ad Archi in Pietra sull'Isolotto", loreClue: "Il viadotto monumentale che collega il parco alla caletta marina è stato rimosso." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Loggia a Trifore Veneziane della Facciata", loreClue: "I trafori marmorei dei balconi del palazzo reale risultano piallati." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "Le Palme da Dattero della Spiaggia Reale", loreClue: "Il filare di palme mediterranee che orla la scogliera orientale è scomparso." },
-        { id: `lvl${id}_d7`, x: 17.99, y: 64.96, radius: 4.0, name: "I Faraglioni Naturali della Baia di Montaza", loreClue: "Gli scogli frastagliati bagnati dal mare turchese a sinistra appaiono sommersi." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Ringhiera in Ferro Battuto del Pontile", loreClue: "I montanti forgiati della passeggiata lungomare sono stati smontati." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.97, radius: 4.0, name: "L'Approdo dei Battelli Reali sul Molo", loreClue: "La banchina d'attracco per il panfilo reale Mahroussa svanisce nell'acqua." },
-        { id: `lvl${id}_d10`, x: 50.01, y: 87.96, radius: 4.0, name: "Il Muro Frangiflutti in Blocchi Rocciosi", loreClue: "I massi ciclopici posti a salvaguardia della passeggiata sono assenti dal molo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Rilievo del Serpente Agatodemone",
+          loreClue: "Il serpente sacro guardiano delle catacombe con la doppia corona dell'Alto e Basso Egitto è scalpellato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Triclinio Funebre in Calcare",
+          loreClue: "Il banco a ferro di cavallo per i banchetti commemorativi dei defunti reca macchie di sostanze chimiche."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Lo Scudo con la Testa di Medusa",
+          loreClue: "Il tondo a rilievo a protezione della camera sepolcrale presenta fori di percussione recenti."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua di Anubi con Armatura Romana",
+          loreClue: "La singolare statua sincretica del dio sciacallo in tenuta da legionario ha perso il giavellotto."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Sarcofago Monolitico della Cripta",
+          loreClue: "Il pesante coperchio in calcare locale è stato scalzato con un palanchino di ferro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Fregiatura a Ghirlande Greco-Egizie",
+          loreClue: "Il festone scolpito a motivi di papiri e foglie d'alloro appare uniformato da malta fresca."
+        }
       ];
     } else if (isLevelFortyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.01, y: 14.96, radius: 4.0, name: "Il Bordo Inclinato del Disco Solare di Granito", loreClue: "Il caratteristico profilo ellittico del tetto inclinato verso il mare è raddrizzato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.06, radius: 4.0, name: "I Pannelli Frangisole in Alluminio e Vetro", loreClue: "I lucernari piramidali orientati a nord che illuminano la sala lettura sono rimossi." },
-        { id: `lvl${id}_d3`, x: 81.99, y: 14.96, radius: 4.0, name: "La Sfera del Planetario Sospeso sulla Piazza", loreClue: "La monumentale sfera scura che galleggia sulla vasca d'acqua è scomparsa." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.96, radius: 4.0, name: "I Caratteri Alfabetici Scolpiti sul Granito Grigio", loreClue: "I glifi delle scritture antiche e moderne incisi sulla facciata risultano piallati." },
-        { id: `lvl${id}_d5`, x: 37.99, y: 41.96, radius: 4.0, name: "Il Bassorilievo dei Geroglifici Tolemaici", loreClue: "La serie di simboli faraonici scolpiti sul basamento della biblioteca è svanita." },
-        { id: `lvl${id}_d6`, x: 62.01, y: 41.96, radius: 4.0, name: "Il Ponte Pedonale d'Accesso alla Biblioteca", loreClue: "La passerella aerea sospesa tra la piazza e l'atrio principale è stata tolta." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "La Scalinata Monumentale del Piazzale", loreClue: "I gradoni in granito d'Assuan che scendono alla sala conferenze sono spianati." },
-        { id: `lvl${id}_d8`, x: 20.01, y: 75.00, radius: 4.0, name: "Lo Specchio d'Acqua della Piscina Riflettente", loreClue: "La vasca azzurra che riflette la curva dell'edificio scompare dal selciato." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Parapetto in Cristallo del Camminamento", loreClue: "La balaustra in vetro trasparente che delimita la piazza pedonale è assente." },
-        { id: `lvl${id}_d10`, x: 79.99, y: 74.99, radius: 4.0, name: "Il Lastricato a Piastre Quadrangolari sul Suolo", loreClue: "Le giunture geometriche della pavimentazione monumentale appaiono sigillate." },
+        {
+          id: `lvl${id}_d1`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Colonna di Pompeo in Granito Rosso",
+          loreClue: "Il colossale fusto monolitico di granito rosso di Assuan mostra segni di scalpellamento alla base."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Sfinge di Basalto del Serapeo",
+          loreClue: "La maestosa sfinge accovacciata a guardia dell'acropoli reca un cartiglio reale abraso."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Nicchia Murata della Statua di Serapide",
+          loreClue: "L'abside che ospitava la colossale scultura in legno dorato e pietre preziose è sventrata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Targa di Dedica in Bronzo Dorato",
+          loreClue: "L'iscrizione commemorativa per l'imperatore Diocleziano è stata staccata dal plinto."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Gradini della Scalinata Monumentale",
+          loreClue: "I cento gradini d'accesso alla collina sacra di Rhakotis presentano blocchi rovesciati."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Manoscritto Nascosto sotto il Plinto",
+          loreClue: "Un rotolo di pergamena sigillato con piombo era occultato nella fessura tra i blocchi."
+        }
       ];
     } else if (isLevelFifty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.95, radius: 4.0, name: "La Superficie Increspata del Mare Turchese", loreClue: "I riverberi di luce solare che filtrano attraverso l'acqua limpida sono oscurati." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Colonna di Bolle d'Aria degli Archeologi Sub", loreClue: "Il fascio ascendente di bollicine dal respiratore del subacqueo è scomparso." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.95, radius: 4.0, name: "Il Fascio di Luce dell'Illuminatore da Fondale", loreClue: "Il raggio luminoso artificiale che rischiara i reperti marmorei è spento." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.97, radius: 4.0, name: "La Corona di Pigne e Pampini d'Edera", loreClue: "Le foglie d'edera scolpite sulla chioma del giovane Dioniso sommerso sono piallate." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.97, radius: 4.0, name: "Il Torace Muscolare in Marmo Pario della Statua", loreClue: "La modellatura classica del busto della scultura ellenistica appare levigata." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.98, radius: 4.0, name: "Il Braccio Disteso con la Coppa del Vino (Kantharos)", loreClue: "Il braccio destro della divinità che regge il vaso sacro è svanito nel mare." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "L'Anfora Vinaria Rodia Incrostata di Conchiglie", loreClue: "Il coccio del grande recipiente commerciale sommerso è assente dalla sabbia." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Plinto Lapideo della Villa Imperiale Sprofondata", loreClue: "Il basamento in calcare su cui poggia la statua nel ninfeo sommerso è scomparso." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Prateria di Posidonia Oceanica sulle Rovine", loreClue: "Le foglie nastriformi della pianta marina che avvolgono le macerie sono rimosse." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Le Tessere di Mosaico Sommerso tra i Sedimenti", loreClue: "I tasselli policromi del pavimento della villa romana inabissata sono coperti." },
-      ];
-    } else if (isStageFive) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 50.75, y: 26.34, radius: 5.5, name: "Il Paranco sulla Volta Sommersa", loreClue: "Un paranco da spedizione con carrucola d'acciaio e fune di canapa è calato dal lucernario della volta crollata." },
-        { id: `lvl${id}_d2`, x: 90.42, y: 61.38, radius: 6.0, name: "La Lanterna a Petrolio Spenta", loreClue: "La fiamma viva all'interno della lanterna marinaresca è spenta, lasciando lo stoppino carbonizzato." },
-        { id: `lvl${id}_d3`, x: 57.50, y: 75.33, radius: 5.5, name: "Lo Scarabeo di Lapislazzuli di Tolomeo", loreClue: "Un prezioso amuleto tolemaico intagliato in puro lapislazzuli e filigrana d'oro è adagiato sul plinto di pietra." },
-        { id: `lvl${id}_d4`, x: 82.33, y: 83.48, radius: 5.5, name: "La Bussola Geodetica sul Diario", loreClue: "Una bussola tascabile in ottone con coperchio aperto è posata sulle pagine scritte del giornale di scavo." },
-        { id: `lvl${id}_d5`, x: 62.67, y: 79.80, radius: 6.0, name: "Il Sigillo Reale e Nastro di Seta Blu", loreClue: "Il cilindro porta-papiri in bronzo è avvolto da un nastro di seta blu cobalto con sigillo reale in ceralacca." },
-        { id: `lvl${id}_d6`, x: 13.33, y: 51.34, radius: 5.5, name: "La Lucerna Romana Accesa sull'Altare", loreClue: "Una piccola lucerna romana in terracotta con stoppino fiammeggiante rischiara l'altare del settore ovest." },
-        { id: `lvl${id}_d7`, x: 33.75, y: 45.98, radius: 5.5, name: "La Corona d'Alloro sulla Statua Ellenistica", loreClue: "Sulla testa della statua di marmo tolemaica compare una finissima corona d'alloro scolpita." },
-        { id: `lvl${id}_d8`, x: 60.83, y: 89.84, radius: 5.5, name: "Il Metro da Agrimensore Inclinato", loreClue: "Il righello pieghevole da rilievo archeologico sul tavolo è aperto e angolato a 45 gradi." },
-        { id: `lvl${id}_d9`, x: 78.50, y: 55.80, radius: 5.5, name: "La Grata a Croce del Casco da Palombaro", loreClue: "Il visore circolare del pesante elmo di rame Siebe Gorman presenta una grata protettiva a croce regolare." },
-        { id: `lvl${id}_d10`, x: 77.50, y: 67.19, radius: 5.0, name: "La Targhetta Ovale del Costruttore Rimossa", loreClue: "La piastrina ovale in ottone con la matricola del costruttore è assente dal collare pettorale dell'elmo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL QUINTO SIGILLO: Lo Scarabeo Alato d'Oro e Lapis",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 5: Il monumentale scarabeo pettorale in oro puro e lapislazzuli di Tolomeo! Il cuore della reliquia proietta la triangolazione per la Valle dei Re a Luxor."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Reliquiario Tolemaico in Avorio ed Ebano",
+          loreClue: "Lo scrigno intagliato che custodiva il Quinto Sigillo per oltre duemila anni è stato aperto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Tavola Astronomica d'Edfu",
+          loreClue: "La lastra di diorite nera con la rotta lungo il Nilo fino a Tebe mostra il sigillo della Mano Oscura."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calice da Libagione in Ossidiana",
+          loreClue: "Il calice rituale per le unzioni solari del faraone è stato rovesciato sull'altare di granito."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Affresco del Falco Horus dell'Architrave",
+          loreClue: "Le ali spiegate del falco divino sull'architrave indicano il solstizio d'inverno sul Nilo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Cifra Geometrica dei Sacerdoti di Tebe",
+          loreClue: "L'algoritmo matematico che sincronizza i dodici frammenti con la Città d'Oro di Paititi."
+        }
       ];
     } else if (isLevelFiftyOne) {
       diffsForLevel = [
