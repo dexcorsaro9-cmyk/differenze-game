@@ -13,10 +13,9 @@ import {
   Shield,
   FileText,
   Lock,
-  Camera,
-  AlertTriangle,
   CheckCircle2,
   Info,
+  Sun,
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
@@ -76,8 +75,11 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   // Pan & Zoom
   const [scale, setScale] = useState<number>(1);
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Reliable tap vs drag detection
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isDraggingRef = useRef<boolean>(false);
 
   // Error feedback & shake
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
@@ -157,14 +159,25 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+    isDraggingRef.current = false;
     if (scale > 1) {
-      setIsDragging(true);
       setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
     }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (isDragging && scale > 1) {
+    if (pointerStartRef.current) {
+      const dist = Math.hypot(
+        e.clientX - pointerStartRef.current.x,
+        e.clientY - pointerStartRef.current.y
+      );
+      if (dist > 8) {
+        isDraggingRef.current = true;
+      }
+    }
+
+    if (isDraggingRef.current && scale > 1) {
       const newX = e.clientX - dragStart.x;
       const newY = e.clientY - dragStart.y;
       const maxOffset = (scale - 1) * 200;
@@ -176,7 +189,11 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   };
 
   const handlePointerUp = () => {
-    setIsDragging(false);
+    pointerStartRef.current = null;
+    // reset drag state after small delay so click can check it
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 50);
   };
 
   // Add error feedback
@@ -197,7 +214,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
   // Hit test click on image
   const handleStageClick = (e: React.MouseEvent<HTMLDivElement>, imageTarget: 0 | 1 = 1) => {
-    if (isDragging) return;
+    // If it was a real drag gesture, don't trigger click
+    if (isDraggingRef.current) return;
 
     const imgElement =
       viewMode === 'crime_scene'
@@ -215,7 +233,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     let matchedDiff: Difference | null = null;
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
-      const tolerance = diff.radius || 8.0;
+      // Generous, forgiving tolerance radius (default 10.0%) so taps always register
+      const tolerance = diff.radius || 10.0;
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -264,15 +283,15 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   const getClueIcon = (clueType?: string) => {
     switch (clueType) {
       case 'stolen_relic':
-        return <Shield className="w-3.5 h-3.5 text-amber-400" />;
+        return <Sun className="w-3.5 h-3.5 text-amber-400" />;
       case 'sabotage':
-        return <AlertTriangle className="w-3.5 h-3.5 text-red-400" />;
+        return <Compass className="w-3.5 h-3.5 text-blue-400" />;
       case 'dark_seal':
         return <Lock className="w-3.5 h-3.5 text-purple-400" />;
       case 'torn_evidence':
         return <FileText className="w-3.5 h-3.5 text-amber-300" />;
       default:
-        return <Camera className="w-3.5 h-3.5 text-amber-400" />;
+        return <Shield className="w-3.5 h-3.5 text-amber-400" />;
     }
   };
 
@@ -290,7 +309,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
       className={`relative w-full flex-1 min-h-0 bg-[#070402] overflow-hidden flex flex-col items-center justify-between p-1 select-none transition-all duration-75 ${
         isShaking ? 'animate-screen-shake ring-2 ring-red-500/50' : ''
       }`}
-      style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'crosshair' }}
+      style={{ cursor: scale > 1 ? (isDraggingRef.current ? 'grabbing' : 'grab') : 'crosshair' }}
     >
       {/* MODE A: AAA IMMERSIVE CRIME SCENE (FULL SCREEN 100% VIEWPORT) */}
       {viewMode === 'crime_scene' ? (
@@ -302,22 +321,22 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           }`}
         >
           {/* 4 Antique Brass Corner Brackets */}
-          <div className="brass-corner-bracket brass-corner-tl" />
-          <div className="brass-corner-bracket brass-corner-tr" />
-          <div className="brass-corner-bracket brass-corner-bl" />
-          <div className="brass-corner-bracket brass-corner-br" />
+          <div className="brass-corner-bracket brass-corner-tl pointer-events-none" />
+          <div className="brass-corner-bracket brass-corner-tr pointer-events-none" />
+          <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
+          <div className="brass-corner-bracket brass-corner-br pointer-events-none" />
 
           {/* Top Status Plate / Dossier Header */}
           <div className="absolute top-2.5 left-2.5 z-25 flex items-center gap-2 pointer-events-none">
             {isArchiveLensActive ? (
               <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-amber-300 flex items-center gap-1.5 shadow-xl border border-amber-400/80 font-serif animate-pulse bg-amber-950/90 backdrop-blur-md">
                 <Eye className="w-3.5 h-3.5 text-amber-400" />
-                <span className="tracking-wide">LENTE D'ARCHIVIO: STATO ORIGINALE (1924)</span>
+                <span className="tracking-wide">LENTE D'ARCHIVIO: STATO ORIGINALE (1928)</span>
               </div>
             ) : (
               <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-emerald-300 flex items-center gap-1.5 shadow-xl border border-emerald-500/70 font-serif bg-stone-950/90 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                <span className="tracking-wide">SCENA DEL CRIMINE: RILEVA LE MANOMISSIONI</span>
+                <span className="tracking-wide">SCENA DEL CRIMINE: INDAGA SULLE MANOMISSIONI</span>
               </div>
             )}
 
@@ -369,14 +388,14 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               >
                 <img
                   src={imageA}
-                  alt="Archivio Originale 1924"
+                  alt="Archivio Originale 1928"
                   draggable={false}
-                  className="w-full h-full object-contain rounded-xl select-none block filter sepia-[0.18] contrast-[1.05]"
+                  className="w-full h-full object-contain rounded-xl select-none block filter sepia-[0.15] contrast-[1.05]"
                 />
                 {/* Archival Film Vignette & Watermark */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 shadow-[inset_0_0_90px_rgba(0,0,0,0.85)] pointer-events-none" />
                 <div className="absolute bottom-4 right-4 pointer-events-none px-2 py-0.5 rounded bg-black/70 border border-amber-400/40 text-[9px] font-mono tracking-widest text-amber-300/80 uppercase">
-                  REGISTRO ACCADEMICO OXFORD #1924-A
+                  REGISTRO ACCADEMICO OXFORD #1928-A
                 </div>
               </div>
 
@@ -546,10 +565,10 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
         <div className="relative flex-1 min-h-0 w-full flex flex-col items-center justify-between gap-1 overflow-hidden">
           {/* Viewport 1 (Originale / Image A - Sopra) */}
           <div className="relative flex-1 min-h-0 w-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
-            <div className="brass-corner-bracket brass-corner-tl" />
-            <div className="brass-corner-bracket brass-corner-tr" />
-            <div className="brass-corner-bracket brass-corner-bl" />
-            <div className="brass-corner-bracket brass-corner-br" />
+            <div className="brass-corner-bracket brass-corner-tl pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-tr pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-br pointer-events-none" />
 
             <div className="absolute top-2 left-2 z-20 cartouche-plate px-2 py-0.5 rounded-lg text-[9px] font-bold text-amber-300 pointer-events-none flex items-center gap-1 shadow-md border border-amber-500/60 font-serif">
               <Compass className="w-3 h-3 text-amber-400" />
@@ -590,10 +609,10 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
           {/* Viewport 2 (Sito Scavo / Image B - Sotto) */}
           <div className="relative flex-1 min-h-0 w-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
-            <div className="brass-corner-bracket brass-corner-tl" />
-            <div className="brass-corner-bracket brass-corner-tr" />
-            <div className="brass-corner-bracket brass-corner-bl" />
-            <div className="brass-corner-bracket brass-corner-br" />
+            <div className="brass-corner-bracket brass-corner-tl pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-tr pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
+            <div className="brass-corner-bracket brass-corner-br pointer-events-none" />
 
             <div className="absolute top-2 left-2 z-20 cartouche-plate px-2 py-0.5 rounded-lg text-[9px] font-bold text-emerald-300 pointer-events-none flex items-center gap-1 shadow-md border border-emerald-500/60 font-serif">
               <MapPin className="w-3 h-3 text-emerald-400" />
@@ -622,7 +641,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
         </div>
       )}
 
-      {/* BOTTOM PARCHMENT DOSSIER TRAY */}
+      {/* BOTTOM PARCHMENT DOSSIER TRAY (NOW DYNAMIC FOR 6 CLUES) */}
       <div className="w-full shrink-0 bg-gradient-to-r from-[#170e07] via-[#24160a] to-[#170e07] rounded-xl border border-amber-600/50 p-1.5 shadow-xl mt-1 flex flex-col gap-1">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-1.5">
@@ -639,8 +658,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </span>
         </div>
 
-        {/* Clue Badges Row */}
-        <div className="grid grid-cols-5 gap-1 w-full">
+        {/* Clue Badges Row - 6 Columns for 6 Clues */}
+        <div className="grid grid-cols-6 gap-1 w-full">
           {differences.map((diff, index) => {
             const isFound = foundDifferenceIds.includes(diff.id);
             const isSelected = selectedClueId === diff.id;
@@ -653,7 +672,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   sound.playTap();
                   setSelectedClueId(diff.id);
                 }}
-                className={`flex flex-col items-center justify-center p-1 sm:p-1.5 rounded-lg border transition-all text-center select-none cursor-pointer ${
+                className={`flex flex-col items-center justify-center p-1 rounded-lg border transition-all text-center select-none cursor-pointer ${
                   isFound
                     ? 'bg-gradient-to-b from-amber-900/60 to-yellow-950/80 border-amber-400/80 shadow-[0_0_8px_rgba(245,158,11,0.4)] ring-1 ring-amber-300/50'
                     : 'bg-black/40 border-stone-800 text-stone-500 hover:border-amber-900/50'
@@ -670,7 +689,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 </div>
 
                 <span
-                  className={`text-[8px] sm:text-[9px] font-serif leading-tight truncate max-w-full ${
+                  className={`text-[8px] font-serif leading-tight truncate max-w-full ${
                     isFound ? 'text-amber-200 font-bold' : 'text-stone-500'
                   }`}
                 >

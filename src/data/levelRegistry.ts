@@ -731,48 +731,57 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 73.75,
-          y: 41.29,
-          radius: 6.0,
+          x: 86.12,
+          y: 56.15,
+          radius: 9.5,
           clueType: 'stolen_relic',
-          name: "Maschera Rituale Fang",
-          loreClue: "L'antica scultura tribale in legno trafugata dalla boiserie: sul retro celava l'incisione del primo passaggio andino."
+          name: "Idolo Solare Inca",
+          loreClue: "La statuetta solare in oro massiccio venerata a Vilcabamba è stata trafugata dal cuscino di velluto: celava le coordinate del primo passo andino."
         },
         {
           id: `lvl${id}_d2`,
-          x: 74.58,
-          y: 14.51,
-          radius: 6.5,
-          clueType: 'sabotage',
-          name: "Casco da Spedizione del 1912",
-          loreClue: "Il copricapo di Sir Fawcett è stato asportato con violenza, lasciando un solco sul rivestimento in mogano."
+          x: 15.30,
+          y: 64.61,
+          radius: 10.0,
+          clueType: 'stolen_relic',
+          name: "Astrolabio Sferico d'Ottone",
+          loreClue: "La monumentale sfera armillare usata per calcolare i solstizi è sparita dal ripiano della libreria."
         },
         {
           id: `lvl${id}_d3`,
-          x: 85.00,
-          y: 53.57,
-          radius: 5.5,
-          clueType: 'stolen_relic',
-          name: "Fotocamera a Soffietto",
-          loreClue: "L'apparecchio a lastre d'argento rubato per far sparire le foto aeree del Rio Madre de Dios."
+          x: 31.57,
+          y: 80.78,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Bussola Marinaresca d'Argento",
+          loreClue: "Lo scrigno in noce con la bussola cardanica di Sir Fawcett è stato asportato per impedirci di orientare la rotta."
         },
         {
           id: `lvl${id}_d4`,
-          x: 69.58,
-          y: 25.67,
-          radius: 6.0,
+          x: 52.94,
+          y: 81.82,
+          radius: 9.5,
           clueType: 'torn_evidence',
-          name: "Tavola Botanica Amazzonica",
-          loreClue: "La pergamena con la mappa delle erbe del Rio delle Amazzoni è stata strappata via dalla parete."
+          name: "Taccuino di Spedizione di Bellini",
+          loreClue: "Il taccuino aperto con gli appunti sul Rio Madre de Dios e il segnalibro di seta scarlatta è stato rubato dalla scrivania."
         },
         {
           id: `lvl${id}_d5`,
-          x: 80.42,
-          y: 46.32,
-          radius: 6.0,
+          x: 61.99,
+          y: 60.52,
+          radius: 8.5,
           clueType: 'dark_seal',
-          name: "Sigillo Araldico Divelto",
-          loreClue: "Il medaglione cerimoniale in bronzo fuso è stato divelto, lasciando residui di ceralacca nera della Mano Oscura."
+          name: "Lampada da Banchiere in Vetro Verde",
+          loreClue: "La lampada in ottone e vetro smeraldo che illuminava le carte è stata rimossa, lasciando lo studio nella penombra."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.00,
+          y: 46.09,
+          radius: 10.0,
+          clueType: 'torn_evidence',
+          name: "Mappa del Mondo del 1512",
+          loreClue: "La grande carta geografica del navigatore portoghese scomparso nel 1512 è stata sradicata dal telaio in legno scuro."
         },
       ];
     } else if (isLevelTwo) {
