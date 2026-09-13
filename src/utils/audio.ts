@@ -1030,6 +1030,80 @@ class SoundManager {
     rattleOsc.stop(now + 0.13);
   }
 
+  // Cinematic studio reveal sting: deep resonant bass swell + shimmering crystal harmonic chord
+  public playStudioLogoSting() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    
+    // 1. Deep Sub-Bass Cello Swell (65Hz -> C2)
+    const bassOsc = ctx.createOscillator();
+    const bassGain = ctx.createGain();
+    const bassFilter = ctx.createBiquadFilter();
+
+    bassFilter.type = 'lowpass';
+    bassFilter.frequency.setValueAtTime(220, now);
+
+    bassOsc.type = 'triangle';
+    bassOsc.frequency.setValueAtTime(65.41, now);
+
+    bassGain.gain.setValueAtTime(0, now);
+    bassGain.gain.linearRampToValueAtTime(0.2, now + 0.6);
+    bassGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+    bassOsc.connect(bassFilter);
+    bassFilter.connect(bassGain);
+    bassGain.connect(ctx.destination);
+
+    bassOsc.start(now);
+    bassOsc.stop(now + 2.6);
+
+    // 2. Cinematic Brass / French Horn Warm Swell (130.81Hz -> C3)
+    const hornOsc = ctx.createOscillator();
+    const hornGain = ctx.createGain();
+    hornOsc.type = 'sawtooth';
+    hornOsc.frequency.setValueAtTime(130.81, now + 0.2);
+
+    const hornFilter = ctx.createBiquadFilter();
+    hornFilter.type = 'lowpass';
+    hornFilter.frequency.setValueAtTime(180, now + 0.2);
+    hornFilter.frequency.linearRampToValueAtTime(600, now + 1.0);
+    hornFilter.frequency.exponentialRampToValueAtTime(200, now + 2.4);
+
+    hornGain.gain.setValueAtTime(0, now + 0.2);
+    hornGain.gain.linearRampToValueAtTime(0.12, now + 0.8);
+    hornGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
+
+    hornOsc.connect(hornFilter);
+    hornFilter.connect(hornGain);
+    hornGain.connect(ctx.destination);
+
+    hornOsc.start(now + 0.2);
+    hornOsc.stop(now + 2.5);
+
+    // 3. Shimmering Crystal Sparkle Chord (E5, G5, C6)
+    const crystalNotes = [659.25, 783.99, 1046.50];
+    crystalNotes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + 0.5 + idx * 0.08);
+
+      gain.gain.setValueAtTime(0, now + 0.5 + idx * 0.08);
+      gain.gain.linearRampToValueAtTime(0.06, now + 0.5 + idx * 0.08 + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.6);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + 0.5 + idx * 0.08);
+      osc.stop(now + 2.7);
+    });
+  }
+
   // =========================================================================
   // CONTINUOUS PROCEDURAL ORCHESTRAL BGM & 1928 GRAMOPHONE ENGINE
   // =========================================================================

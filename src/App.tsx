@@ -11,6 +11,7 @@ import { JournalModal } from './components/JournalModal';
 import { LevelSelectModal } from './components/LevelSelectModal';
 import { SettingsModal } from './components/SettingsModal';
 import { SplashScreen } from './components/SplashScreen';
+import { CompanyLogoIntro } from './components/CompanyLogoIntro';
 import { AvatarCreatorModal } from './components/AvatarCreatorModal';
 import { WardrobeModal } from './components/WardrobeModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
@@ -208,6 +209,23 @@ export const App: React.FC = () => {
 
   const [hasCompletedTutorial, setHasCompletedTutorial] = useState<boolean>(() => {
     return localStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
+  });
+
+  const [isCompanyIntroVisible, setIsCompanyIntroVisible] = useState<boolean>(() => {
+    if (
+      initialView === 'avatar' ||
+      initialView === 'wardrobe' ||
+      initialView === 'game' ||
+      initialView === 'prologue' ||
+      initialView === 'tutorial' ||
+      initialView === 'map' ||
+      initialView === 'finale' ||
+      initialView === 'install' ||
+      initialView === 'passport' ||
+      initialView === 'medals'
+    )
+      return false;
+    return true;
   });
 
   const [isSplashVisible, setIsSplashVisible] = useState<boolean>(() => {
@@ -504,6 +522,7 @@ export const App: React.FC = () => {
 
   // Computed flag: Check if any modal or blocking overlay is open
   const isAnyModalOpen =
+    isCompanyIntroVisible ||
     isSplashVisible ||
     isAvatarCreatorOpen ||
     isWardrobeOpen ||
@@ -1383,8 +1402,17 @@ export const App: React.FC = () => {
         isInstalled={isInstalled}
       />
 
+      {/* 1928 Studio Logo Reveal on Pitch Black Screen */}
+      {isCompanyIntroVisible && (
+        <CompanyLogoIntro
+          onComplete={() => setIsCompanyIntroVisible(false)}
+          companyName="DEX CORSARO STUDIOS"
+          subtitle="PRESENTA"
+        />
+      )}
+
       {/* AAA Splash Screen with "Tocca per iniziare" */}
-      {isSplashVisible && (
+      {!isCompanyIntroVisible && isSplashVisible && (
         <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
       )}
 
