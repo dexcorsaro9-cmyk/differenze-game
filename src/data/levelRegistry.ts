@@ -257,25 +257,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelFifty
       ? '/levels/stage5_lvl50_A.jpg?v=2'
       : isLevelFiftyOne
-      ? '/levels/stage6_lvl51_A.jpg'
+      ? '/levels/stage6_lvl51_A.jpg?v=2'
       : isLevelFiftyTwo
-      ? '/levels/stage6_lvl52_A.jpg'
+      ? '/levels/stage6_lvl52_A.jpg?v=2'
       : isLevelFiftyThree
-      ? '/levels/stage6_lvl53_A.jpg'
+      ? '/levels/stage6_lvl53_A.jpg?v=2'
       : isLevelFiftyFour
-      ? '/levels/stage6_lvl54_A.jpg'
+      ? '/levels/stage6_lvl54_A.jpg?v=2'
       : isLevelFiftyFive
-      ? '/levels/stage6_lvl55_A.jpg'
+      ? '/levels/stage6_lvl55_A.jpg?v=2'
       : isLevelFiftySix
-      ? '/levels/stage6_lvl56_A.jpg'
+      ? '/levels/stage6_lvl56_A.jpg?v=2'
       : isLevelFiftySeven
-      ? '/levels/stage6_lvl57_A.jpg'
+      ? '/levels/stage6_lvl57_A.jpg?v=2'
       : isLevelFiftyEight
-      ? '/levels/stage6_lvl58_A.jpg'
+      ? '/levels/stage6_lvl58_A.jpg?v=2'
       : isLevelFiftyNine
-      ? '/levels/stage6_lvl59_A.jpg'
+      ? '/levels/stage6_lvl59_A.jpg?v=2'
       : isLevelSixty
-      ? '/levels/stage6_lvl60_A.jpg'
+      ? '/levels/stage6_lvl60_A.jpg?v=2'
       : isLevelSixtyOne
       ? '/levels/stage7_lvl61_A.jpg'
       : isLevelSixtyTwo
@@ -540,25 +540,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelFifty
       ? '/levels/stage5_lvl50_B.jpg?v=2'
       : isLevelFiftyOne
-      ? '/levels/stage6_lvl51_B.jpg'
+      ? '/levels/stage6_lvl51_B.jpg?v=2'
       : isLevelFiftyTwo
-      ? '/levels/stage6_lvl52_B.jpg'
+      ? '/levels/stage6_lvl52_B.jpg?v=2'
       : isLevelFiftyThree
-      ? '/levels/stage6_lvl53_B.jpg'
+      ? '/levels/stage6_lvl53_B.jpg?v=2'
       : isLevelFiftyFour
-      ? '/levels/stage6_lvl54_B.jpg'
+      ? '/levels/stage6_lvl54_B.jpg?v=2'
       : isLevelFiftyFive
-      ? '/levels/stage6_lvl55_B.jpg'
+      ? '/levels/stage6_lvl55_B.jpg?v=2'
       : isLevelFiftySix
-      ? '/levels/stage6_lvl56_B.jpg'
+      ? '/levels/stage6_lvl56_B.jpg?v=2'
       : isLevelFiftySeven
-      ? '/levels/stage6_lvl57_B.jpg'
+      ? '/levels/stage6_lvl57_B.jpg?v=2'
       : isLevelFiftyEight
-      ? '/levels/stage6_lvl58_B.jpg'
+      ? '/levels/stage6_lvl58_B.jpg?v=2'
       : isLevelFiftyNine
-      ? '/levels/stage6_lvl59_B.jpg'
+      ? '/levels/stage6_lvl59_B.jpg?v=2'
       : isLevelSixty
-      ? '/levels/stage6_lvl60_B.jpg'
+      ? '/levels/stage6_lvl60_B.jpg?v=2'
       : isLevelSixtyOne
       ? '/levels/stage7_lvl61_B.jpg'
       : isLevelSixtyTwo
@@ -3631,146 +3631,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelFiftyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 63.21, y: 26.12, radius: 5.5, name: "Il Disco Solare di Hathor sulla Parete", loreClue: "Il disco solare d'oro sopra la corona della dea Hathor nell'affresco parietale è svanito nel rilievo." },
-        { id: `lvl${id}_d2`, x: 94.33, y: 12.28, radius: 5.5, name: "Il Disco Solare di Ra a Destra", loreClue: "Sulla parete destra, il disco solare cremisi del dio Ra è stato rimosso dalla decorazione policroma." },
-        { id: `lvl${id}_d3`, x: 44.00, y: 56.25, radius: 6.0, name: "L'Ankh di Diaspro nel Sarcofago", loreClue: "Una preziosa chiave Ankh intagliata in diaspro rosso riposa all'interno della cassa in pietra del faraone." },
-        { id: `lvl${id}_d4`, x: 64.67, y: 53.35, radius: 6.0, name: "Lo Scarabeo di Faience Azzurra sul Baule", loreClue: "Uno scarabeo alato in ceramica azzurra di faience è adagiato sul coperchio del baule dorato." },
-        { id: `lvl${id}_d5`, x: 35.00, y: 83.71, radius: 6.0, name: "Il Cordone di Lino del Vaso Canopo", loreClue: "Un cordone rituale di lino con sigillo d'argilla cinge il collo del vaso canopo con testa di babbuino (Hapi)." },
-        { id: `lvl${id}_d6`, x: 13.96, y: 90.51, radius: 6.0, name: "La Cazzuola Archeologica nella Cesta", loreClue: "Una cazzuola d'acciaio con manico di legno spunta dalla cesta di vimini colma di cocci decorati." },
-        { id: `lvl${id}_d7`, x: 61.04, y: 79.58, radius: 5.0, name: "La Lucerna Egizia di Bronzo", loreClue: "Una lucerna votiva in bronzo a forma di barca del sole è posata sull'angolo del banco da campo." },
-        { id: `lvl${id}_d8`, x: 81.33, y: 62.50, radius: 6.0, name: "La Fiamma della Lanterna Spenta", loreClue: "La fiamma viva all'interno della lanterna a cherosene è spenta, lasciando intravedere il solo stoppino." },
-        { id: `lvl${id}_d9`, x: 82.12, y: 80.30, radius: 5.5, name: "Il Disegno dell'Ankh sul Taccuino", loreClue: "Sulla pagina aperta del taccuino da rilievo compare il disegno a inchiostro di china di un simbolo Ankh." },
-        { id: `lvl${id}_d10`, x: 92.38, y: 72.94, radius: 6.0, name: "La Fascia di Seta Rossa sul Casco Coloniale", loreClue: "Il casco coloniale da esploratore in sughero è arricchito da una fascia di seta rossa da spedizione britannica." },
+        {
+          id: `lvl${id}_d1`,
+          x: 38.67,
+          y: 81.58,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Necropolare di Anubi",
+          loreClue: "Il sigillo d'argilla cruda intatto dei nove prigionieri e lo sciacallo è stato spezzato dai ladri di tombe."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 64.42,
+          y: 53.18,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Vaso Canopo di Hapi con Testa di Babbuino",
+          loreClue: "Il vaso rituale in alabastro egizio contenente gli oli sacri è stato rimosso dalla nicchia."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 13.96,
+          y: 90.23,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cazzuola di Scavo di Howard Carter",
+          loreClue: "La cazzuola d'acciaio del celebre archeologo è stata abbandonata sul banco di rilevamento."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 44.17,
+          y: 56.7,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Ankh d'Oro nel Sarcofago",
+          loreClue: "La sacra chiave della vita intarsiata d'oro massiccio e diaspro è stata asportata dal petto della mummia."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 81.17,
+          y: 62.56,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lucerna a Olio in Bronzo Dorato",
+          loreClue: "La lucerna cerimoniale usata per esplorare l'anticamera è stata rovesciata tra i frammenti di lino."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 92.29,
+          y: 72.99,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rotolo di Lino Funerario Inciso",
+          loreClue: "La bende di lino faraonico ricamate con formule protettive del Libro dei Morti sono state lacerate."
+        }
       ];
     } else if (isLevelFiftyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Capitello a Fiore di Papiro Aperto a Sinistra", loreClue: "La monumentale corolla papiriforme aperta sulla prima colonna della navata appare levigata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.05, radius: 4.0, name: "L'Architrave Monolitico Centrale della Volta", loreClue: "Il blocco in arenaria con cartigli di Ramesse II che collega le colonne centrali è assente." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Capitello a Bocciolo Chiuso a Destra", loreClue: "Il capitello papiriforme chiuso della navata laterale destra è stato scalpellato." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.06, radius: 4.0, name: "Il Graticcio di Pietra del Lucernario", loreClue: "Le fessure verticali della finestra a transenna che illumina la sala ipostila sono colmate." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "L'Incisione di Amon-Ra sulla Colonna Sinistra", loreClue: "Il bassorilievo del dio Amon con il doppio pennacchio sul fusto sinistro è raschiato." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "I Cartigli di Seti I sulla Colonna Destra", loreClue: "L'anello ovale con i geroglifici del faraone sulla colonna destra svanisce nella pietra." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.95, radius: 4.0, name: "La Base Circolare della Colonna Esterna", loreClue: "Lo zoccolo di fondazione in arenaria dura alla base del fusto sinistro appare spianato." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.06, radius: 4.0, name: "La Colonna Centrale della Navata Maggiore", loreClue: "Il fusto colossale alto ventiquattro metri al centro del passaggio processionale è rimosso." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.95, radius: 4.0, name: "Il Rocchio di Tamburo Caduto a Terra", loreClue: "Il blocco cilindrico crollato dalla sommità e posato lungo il viale è scomparso." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Lastricato della Via Trionfale di Tebe", loreClue: "I lastroni sagomati del percorso rituale dei sacerdoti in primo piano sono livellati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Capitello Papiriforme Aperto",
+          loreClue: "Il colossale capitello della sala ipostila di Karnak mostra cartigli reali scalpellati via."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Bassorilievo di Amon-Ra con Corona a Doppia Piuma",
+          loreClue: "La sagoma sacra del re degli dèi presenta il disco solare manomesso da emissari dell'Ombra."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Lo Scarabeo Monolitico di Granito Rosa",
+          loreClue: "Il gigantesco scarabeo di Khepri sulle rive del lago sacro reca un'incisione abrasa sul basamento."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Cartiglio di Ramses II sull'Architrave",
+          loreClue: "I geroglifici regali del grande faraone sull'architrave di arenaria appaiono scheggiati."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porta Monumentale del Terzo Pilone",
+          loreClue: "Lo stipite in calcare con le formule di consacrazione è stato forzato con leve di ferro."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua del Falco Horus a Guardia dell'Ipostilo",
+          loreClue: "La scultura in diorite del dio falco ha perso il disco solare cerimoniale sul capo."
+        }
       ];
     } else if (isLevelFiftyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 17.99, y: 14.96, radius: 4.0, name: "Il Pennone di Cedro del Pilone d'Ingresso", loreClue: "L'incavo per l'imponente asta da bandiera cerimoniale sulla facciata del pilone è colmato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.02, radius: 4.0, name: "Il Timpano a Gola Egizia del Portale", loreClue: "La modanatura a gola svasata con toro che corona il portale d'ingresso è scalpellata." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "L'Obelisco Monolitico di Granito Rosa", loreClue: "La cuspide piramidale dell'obelisco gemello superstite scompare dal cielo di Luxor." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "La Doppia Corona Pschent del Colosso Sinistro", loreClue: "La corona unificata dell'Alto e Basso Egitto sul capo della statua gigante è assente." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.97, radius: 4.0, name: "La Barba Posticcia Rituale del Faraone", loreClue: "La barba divina intrecciata ancorata al mento del colosso seduto è stata spezzata." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.97, radius: 4.0, name: "Il Nemes a Righe del Secondo Colosso", loreClue: "Il panneggio regale a pieghe dorate sulla testa del colosso destro appare raschiato." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "La Statuetta della Regina Nefertari al Ginocchio", loreClue: "La scultura in miniatura della regina consorte scolpita accanto alla gamba è scomparsa." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Trono di Granito con il Simbolo Sema-Tawy", loreClue: "Il rilievo dell'unione di papiro e loto sui fianchi del trono è stato levigato." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.02, radius: 4.0, name: "La Scalinata d'Accesso al Vestibolo", loreClue: "I gradoni monumentali attraverso cui si accede al cortile colonnato sono spianati." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Basamento con i Prigionieri Stranieri Incisi", loreClue: "La teoria dei popoli vinti legati per le braccia sul basamento del colosso è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Colosso Settentrionale di Memnone",
+          loreClue: "La statua monolitica di quarzite che emetteva suoni all'alba presenta una profonda fessura artificiale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Rilievo del Nilo che Unisce l'Egitto (Sema-Tawy)",
+          loreClue: "Il simbolo dell'unione dell'Alto e Basso Egitto scolpito sul trono è stato martellato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Targa Dedicatoria Greca dell'Epoca Romana",
+          loreClue: "L'epigrafe metrica lasciata dai viaggiatori imperiali alla base del colosso è stata abrasa."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa d'Attrezzi da Restauro Lapideo",
+          loreClue: "La cassetta con martelli di rame e cunei da scalpellino è stata trafugata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Monolito Minore della Regina Tiy",
+          loreClue: "La figura regale scolpita a lato delle gambe del colosso reca il cobra reale decapitato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Canale Idraulico dell'Inondazione Nilotica",
+          loreClue: "La canaletta di contenimento per le piene del fiume alla base delle statue è ostruita da massi."
+        }
       ];
     } else if (isLevelFiftyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Pylon del Tempio di Mut all'Orizzonte", loreClue: "La massiccia mole del portale d'accesso al tempio della sposa di Amon svanisce a sinistra." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Vetta dell'Obelisco di Hatshepsut", loreClue: "L'apice dorato dell'obelisco più alto di Karnak scompare sopra la linea dei muri." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Palmereto Lungo la Riva del Nilo", loreClue: "I ciuffi delle palme da dattero che costeggiano il viale sacro a destra sono rimossi." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "La Sfinge Criocefala con Testa di Ariete", loreClue: "La statua con corpo di leone e testa d'ariete sacro ad Amon a sinistra è stata tolta." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.95, radius: 4.0, name: "La Prospettiva Centrale del Dromos Pavimentato", loreClue: "Il punto di fuga della via processionale rettilinea lunga tre chilometri appare alterato." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.97, radius: 4.0, name: "La Statuetta del Faraone sotto le Zampe dell'Ariete", loreClue: "La piccola figura di Ramesse protetta sotto il mento della sfinge destra è assente." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Il Piedistallo Modanato della Sfinge Anteriore", loreClue: "Il basamento in pietra calcarea decorato con tori e scanalature risulta piallato." },
-        { id: `lvl${id}_d8`, x: 39.99, y: 69.98, radius: 4.0, name: "Il Bacino per le Abluzioni Fluviali", loreClue: "La vasca circolare in arenaria per le cerimonie della barca d'oro è svanita dal ciglio." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Base della Sfinge con Dedica di Nectanebo", loreClue: "L'epigrafe dell'ultimo faraone indigeno scolpita sulla fronte del plinto è cancellata." },
-        { id: `lvl${id}_d10`, x: 88.01, y: 74.98, radius: 4.0, name: "Il Cordolo del Canale Idraulico del Viale", loreClue: "La canaletta in muratura per l'irrigazione del verde del dromos è colmata di terra." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Terrazza Superiore del Tempio di Hatshepsut",
+          loreClue: "I pilastri osiriaci della terrazza sommitale mostrano i volti divini scalpellati dal successore."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rilievo della Spedizione nella Terra di Punt",
+          loreClue: "La scena navale con i grandi alberi d'incenso trasportati via mare è stata manomessa."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua della Sfinge Femminile in Calcare",
+          loreClue: "La sfinge reale con barba cerimoniale posta a guardia della rampa d'accesso è scomparsa."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Cartiglio Reale di Maatkare Hatshepsut",
+          loreClue: "Il nome d'incoronazione della regina cancellato nell'antichità rivela una nuova traccia."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Cappella di Anubi con Soffitto Stellato",
+          loreClue: "Le stelle dorate a cinque punte su fondo blu cobalto sono state raschiate dalla volta."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Braciere Cerimoniale d'Incenso Mirra",
+          loreClue: "Il tripode in bronzo per i fumi votivi è stato rovesciato lungo la gradinata centrale."
+        }
       ];
     } else if (isLevelFiftyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.06, radius: 4.0, name: "La Parete Verticale della Falesia Tebana a Sinistra", loreClue: "Il costone roccioso a strapiombo della montagna di Tebe a sinistra appare levigato." },
-        { id: `lvl${id}_d2`, x: 50.01, y: 10.05, radius: 4.0, name: "La Vetta Rocciosa El-Qurn (Il Corno Sacro)", loreClue: "La piramide naturale che sovrasta la tomba dei faraoni svanisce dal profilo celeste." },
-        { id: `lvl${id}_d3`, x: 79.99, y: 12.05, radius: 4.0, name: "Il Contrafforte Montano della Falesia a Destra", loreClue: "La cresta dolomitica che racchiude l'anfiteatro naturale di Deir el-Bahari è assente." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.04, radius: 4.0, name: "Il Santuario di Amon sulla Terrazza Superiore", loreClue: "La facciata del santuario scavato nella viva roccia all'ultimo piano è uniformata." },
-        { id: `lvl${id}_d5`, x: 14.99, y: 37.95, radius: 4.0, name: "La Cappella di Hathor con Colonne Hathoriche", loreClue: "I capitelli con il volto bifronte della dea dalle orecchie bovine a sinistra sono rimossi." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.94, radius: 4.0, name: "Il Portico della Spedizione nella Terra di Punt", loreClue: "Il colonnato che narra i commerci marittimi di mirra e incenso è stato levigato." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "I Pilastri Proto-Dorici della Terrazza Mediana", loreClue: "La teoria di pilastri poligonali a sedici facce del piano intermedio è scomparsa." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.07, radius: 4.0, name: "La Grande Rampa Inclinata Centrale", loreClue: "La monumentale rampa processionale che collega i gradoni della valle appare spianata." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Bastione Angolare della Terrazza Inferiore", loreClue: "Il parapetto lapideo che sostiene il primo livello del tempio è stato rimosso." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.96, radius: 4.0, name: "Il Viale d'Ingresso con le Basi degli Alberi di Mirra", loreClue: "Le conche circolari che ospitavano gli alberi portati dalla regina sono svanite." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "L'Affresco di Nefertari che Gioca a Senet",
+          loreClue: "La celebre pittura murale della regina che sfida il destino al gioco del Senet è scheggiata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Scacchiera del Senet in Avorio e Legno Pregiato",
+          loreClue: "La scacchiera rituale a trenta caselle con pedine a testa di leone è stata sottratta."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Corona con le Corna di Hathor e Disco Solare",
+          loreClue: "Il copricapo divino della regina dipinto sull'intonaco mostra tracce di solventi chimici."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Bastone Cerimoniale Pastorale",
+          loreClue: "Lo scettro heka intarsiato in oro e pasta vitrea azzurra è svanito dal sarcofago."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Nicchia dei Vasi Canopi della Regina",
+          loreClue: "Il vano parietale sigillato che ospitava lo scrigno d'alabastro è stato forzato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Formula Geroglifica della Rinascita",
+          loreClue: "La colonna di testo dal capitolo 17 del Libro dei Morti presenta geroglifici abrasati."
+        }
       ];
     } else if (isLevelFiftySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "Il Crinale dei Monti della Valle dei Re", loreClue: "Il profilo delle vette tebane occidentali dietro i colossi svanisce all'orizzonte." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.04, radius: 4.0, name: "La Distesa Agricola della Golena del Nilo", loreClue: "La fertile striscia coltivata tra le statue e le montagne appare oscurata." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.95, radius: 4.0, name: "Il Cielo Terso della Nubia Meridionale", loreClue: "La linea crepuscolare sopra la spalla del colosso settentrionale scompare." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "Il Torso Monolitico di Amenofi III a Sinistra", loreClue: "Il petto colossale scolpito nel blocco unico di quarzite di Gebel el-Ahmar è svanito." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "La Corona del Colosso Settentrionale (Memnone Cantante)", loreClue: "I blocchi romani di restauro sovrapposti da Settimio Severo sono stati rimossi." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.97, radius: 4.0, name: "Le Iscrizioni Greche dei Viaggiatori Antichi", loreClue: "I graffiti dei poeti romani che testimoniano il canto mattutino della statua sono raschiati." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.97, radius: 4.0, name: "La Statua della Madre Mutemwia al Fianco", loreClue: "La scultura della regina madre scolpita in altorilievo sulla coscia destra è scomparsa." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.01, radius: 4.0, name: "Il Massiccio Basamento di Quarzite del Colosso Sud", loreClue: "Il piedistallo pesante centinaia di tonnellate immerso nel terreno appare livellato." },
-        { id: `lvl${id}_d9`, x: 49.99, y: 78.00, radius: 4.0, name: "Il Canale d'Irrigazione tra i Due Colossi", loreClue: "La fossa d'acqua scavata dai contadini della piana tra le due statue è colmata." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Simbolo Hapi dell'Inondazione sul Fianco del Trono", loreClue: "Le figure gemelle del dio del Nilo che annodano i papiri sono state scalpellate." },
+        {
+          id: `lvl${id}_d1`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Grande Obelisco Orientale di Ramses II",
+          loreClue: "Il monolito di granito rosso reca un allineamento gnomonico verso Siwa abraso alla base."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Criosfinge del Viale di Karnak-Luxor",
+          loreClue: "La statua di sfinge con testa di ariete a guardia del viale processionale è mutilata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Colosso Seduto di Ramses con Doppia Corona",
+          loreClue: "La possente statua all'ingresso del tempio reca il cartiglio pettorale manomesso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Base Lapidea del Pilone di Destra",
+          loreClue: "Le scene belliche della battaglia di Qadesh sul pilone mostrano fori di scavo recenti."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Lo Stendardo Processionale di Amon",
+          loreClue: "L'asta di bronzo con l'emblema della barca sacra usata nella festa di Opet è sparita."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cella Murata della Barca Sacra",
+          loreClue: "La pesante porta di cedro del Libano con lamine d'elettro è stata forzata dai sabotatori."
+        }
       ];
     } else if (isLevelFiftySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Pilone Orientale con i Bassorilievi della Battaglia di Kadesh", loreClue: "La gigantesca scena di carri da guerra scolpita sul pilone superstite è svanita." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Trabeazione Superiore della Corte di Ramesse", loreClue: "La fila di mensole e architravi retti dai pilastri osiriaci scompare dalla vista." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "I Magazzini a Volta in Mattoni di Fango sullo Sfondo", loreClue: "Le arcate in mattoni crudi delle riserve granarie del tempio sono state rimosse." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Pilastro Osiriaco del Faraone Eterno a Sinistra", loreClue: "La statua del re con braccia incrociate e flagelli addossata al pilastro è assente." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.95, radius: 4.0, name: "La Testa del Colosso Crollato di Ozymandias", loreClue: "Il volto maestoso della statua di mille tonnellate cantata da Shelley è scomparso dal suolo." },
-        { id: `lvl${id}_d6`, x: 80.01, y: 41.97, radius: 4.0, name: "Il Piede e la Caviglia Gigante sul Basamento", loreClue: "Il frammento ciclopico del piede del faraone rimasto sul plinto è stato asportato." },
-        { id: `lvl${id}_d7`, x: 12.01, y: 69.98, radius: 4.0, name: "La Base della Colonna della Sala Ipostila", loreClue: "Lo zoccolo modanato della colonna a calice aperta sul corridoio è livellato." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "I Blocchi di Granito Rosa della Spalla Spezzata", loreClue: "I massi levigati del torso del colosso sparsi sul piazzale sono scomparsi." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Il Cartiglio sul Braccio del Colosso d'Ozymandias", loreClue: "L'incisione reale sul bicipite monumentale della statua riversa è stata raschiata." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 74.99, radius: 4.0, name: "Il Selciato della Seconda Corte Cerimoniale", loreClue: "I lastroni calcarei intagliati del pavimento del cortile appaiono rimossi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Colosso Caduto di Ramses (Ozymandias)",
+          loreClue: "La testa colossale in granito abbattuta al suolo mostra fenditure recenti nel diadema reale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "I Magazzini a Volta in Mattoni Crudi",
+          loreClue: "Le storiche gallerie granaio del tempio presentano giare cerimoniali frantumate."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele della Vittoria di Tebe",
+          loreClue: "La lastra di diorite che elenca i tributi delle nazioni mediterranee è stata spaccata in due."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua della Madre Tuya",
+          loreClue: "La scultura in pietra calcarea della madre del faraone è stata rimossa dal portico."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Rilievo Astronomico del Soffitto",
+          loreClue: "Il diagramma delle trentasei decani celesti sulla volta è stato oscurato con pece."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Tazza Votiva in Ossidiana Nera",
+          loreClue: "Il calice per le libagioni del santuario solare è stato asportato dalla mensa dell'altare."
+        }
       ];
     } else if (isLevelFiftyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Portale d'Ingresso della Fortezza Siriana (Migdol)", loreClue: "La merlatura orientale della porta fortificata unica in Egitto è scomparsa." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Timpano Monumentale del Tempio di Ramesse III", loreClue: "Il coronamento a gola del secondo pilone del tempio funerario appare smussato." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "La Torre di Guardia del Recinto Merlato", loreClue: "Il bastione difensivo in mattoni d'argilla che domina la porta è stato rimosso." },
-        { id: `lvl${id}_d4`, x: 50.01, y: 36.05, radius: 4.0, name: "I Pilastri Osiriaci del Cortile delle Udienze", loreClue: "Le statue di Ramesse III mummificato a guardia del cortile centrale sono assenti." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "Il Bassorilievo Navale della Battaglia contro i Popoli del Mare", loreClue: "I guerrieri Filistei con copricapi piumati sulle navi da guerra sono svaniti dalla parete." },
-        { id: `lvl${id}_d6`, x: 84.99, y: 37.95, radius: 4.0, name: "La Teoria dei Prigionieri Libici Legati con Corde", loreClue: "I rilievi policromi dei capi dei popoli della Libia sono stati raschiati dal pilastro." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "I Colori Policromi Originali sotto l'Architrave", loreClue: "I pigmenti blu egizio, ocra e malachite intatti sotto le travi appaiono grigi e opachi." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Porta dei Giudizi del Palazzo Reale Adiacente", loreClue: "L'apertura d'accesso che conduceva agli appartamenti privati del faraone è murata." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "La Colonna a Fusto Papiriforme del Portico", loreClue: "La colonna con scanalature fiammeggianti sul lato nord del peristilio è scomparsa." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Selciato in Arenaria Rossa della Terrazza", loreClue: "I lastroni del pavimento su cui sfilavano le barche sacre risultano uniformati." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Volta Astronomica con i Moti Planetari",
+          loreClue: "Il soffitto a botte della camera funeraria dipinto a volta celeste dorata presenta le costellazioni graffiate."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Sarcofago Monolitico in Puro Alabastro",
+          loreClue: "Il monumentale sarcofago traslucido istoriato con il Libro delle Porte è stato forzato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statua del Guardiano Anubi su Baule Dorato",
+          loreClue: "La figura lignea ricoperta di resina nera con collare d'oro è stata sottratta."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Rilievo di Seti I Davanti a Osiride",
+          loreClue: "La delicatissima pittura murale dell'abbraccio divino è stata sfregiata con uno scalpello."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta d'Oro con le Ore della Notte",
+          loreClue: "La lamina metallica che descrive il viaggio del sole negli inferi è stata strappata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lampada da Miniera dei Primi Esploratori",
+          loreClue: "La lucerna a petrolio ottocentesca lasciata da Belzoni è stata rovesciata nel corridoio."
+        }
       ];
     } else if (isLevelFiftyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "Il Crinale Arido del Monte Biban el-Harim", loreClue: "Il profilo roccioso brullo della gola che accoglie le regine scompare nel cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Cascata Secca del Torrente Stagionale", loreClue: "Il solco scavato dalle piene torrenziali millenarie nella falesia è stato colmato." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "La Cengia Rocciosa Sovrastante la Tomba di Khaemwaset", loreClue: "La terrazza naturale di calcare friabile sopra l'ipogeo principesco è assente." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "L'Ingresso a Pozzo della Tomba della Regina Titi", loreClue: "La rampa gradonata protetta da muretto a secco che scende alla camera è colmata." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.97, radius: 4.0, name: "La Tettonica a Spacco della Fessura Geologica", loreClue: "La profonda faglia tellurica nella roccia viva sopra i cunicoli appare sigillata." },
-        { id: `lvl${id}_d6`, x: 62.01, y: 41.96, radius: 4.0, name: "La Garitta in Pietra dei Custodi di Scavo", loreClue: "La postazione di vedetta dell'ispettorato archeologico lungo il sentiero è rimossa." },
-        { id: `lvl${id}_d7`, x: 87.99, y: 44.99, radius: 4.0, name: "Il Portale Murato dell'Ipogeo di Amun-her-khepeshef", loreClue: "I conci moderni di protezione all'ingresso della tomba del principe sono tolti." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 74.99, radius: 4.0, name: "Il Sentiero Lastricato dei Visitatori nella Gola", loreClue: "Il camminamento in ghiaia battuta e pietre bianche sul fondo valle è spianato." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Muretto di Contenimento Contro le Colate di Fango", loreClue: "La barriera para-alluvione costruita per proteggere gli ingressi è scomparsa." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Cartello Indicatore della Direzione Archeologica", loreClue: "La targa metallica con la mappa stratigrafica delle tombe è stata asportata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "L'Ostrakon con la Pianta Segreta della Valle",
+          loreClue: "Il frammento di calcare con il rilievo planimetrico delle tombe reali è stato rubato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Lo Scalpello in Rame Tempra dei Costruttori",
+          loreClue: "L'antico strumento da lavoro sacro con il marchio della confraternita è sparito."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Papiro Amministrativo dello Sciopero dei Lavoratori",
+          loreClue: "Il resoconto storico delle proteste sotto Ramses III è stato asportato dalla cassa."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Stele Privata dell'Artigiano Sennedjem",
+          loreClue: "La stele funeraria policroma con la devozione a Ptah presenta la figura scalpellata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 18.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Modello Architettonico in Pietra",
+          loreClue: "La maquette in scala di una tomba ipogea è stata mandata in frantumi sulla pavimentazione."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Serratura Lignea Egizia a Chiavistello",
+          loreClue: "Il sofisticato catenaccio in legno di sicomoro con perni a caduta è stato scardinato."
+        }
       ];
     } else if (isLevelSixty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Disco Solare Dorato del Tramonto Egizio", loreClue: "Il sole calante che infiamma il cielo crepuscolare sul Nilo è oscurato da foschia." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Le Nuvole Crepuscolari Striate di Porpora", loreClue: "I vapori infuocati che riflettono la luce calante sopra la riva ovest sono svaniti." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Sagoma dei Monti Tebani sullo Sfondo", loreClue: "Il profilo scuro della catena montuosa che protegge la necropoli scompare nel cielo." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "L'Antenna Triangolare della Vela Latina a Sinistra", loreClue: "Il lungo pennone in legno ricurvo che sostiene la vela della prima feluca è assente." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Grande Vela Bianca della Feluca Principale", loreClue: "La candida tela triangolare spiegata al vento del Nilo al centro del fiume è scomparsa." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Piccola Barca da Pesca a Remi sulla Riva", loreClue: "La gondola fluviale a remi ormeggiata verso il canneto a destra svanisce nell'acqua." },
-        { id: `lvl${id}_d7`, x: 11.99, y: 69.97, radius: 4.0, name: "Il Canneto di Papiro sulla Sponda Orientale", loreClue: "Il fitto ciuffo di piante fluviali di papiro e loto sulla riva sinistra è stato rimosso." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Lo Scafo in Legno di Teak della Feluca", loreClue: "Il profilo sagomato della chiglia dell'imbarcazione tradizionale scompare dai flutti." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.99, radius: 4.0, name: "Il Riflesso Dorato del Sole sulle Acque del Nilo", loreClue: "La scia luccicante di luce solare che solca la superficie del grande fiume è svanita." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Fune d'Ormeggio alla Bitta della Corniche", loreClue: "La cima di canapa annodata al palo della banchina di Luxor è stata sciolta." },
-      ];
-    } else if (isStageSix) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 63.21, y: 26.12, radius: 5.5, name: "Il Disco Solare di Hathor sulla Parete", loreClue: "Il disco solare d'oro sopra la corona della dea Hathor nell'affresco parietale è svanito nel rilievo." },
-        { id: `lvl${id}_d2`, x: 94.33, y: 12.28, radius: 5.5, name: "Il Disco Solare di Ra a Destra", loreClue: "Sulla parete destra, il disco solare cremisi del dio Ra è stato rimosso dalla decorazione policroma." },
-        { id: `lvl${id}_d3`, x: 44.00, y: 56.25, radius: 6.0, name: "L'Ankh di Diaspro nel Sarcofago", loreClue: "Una preziosa chiave Ankh intagliata in diaspro rosso riposa all'interno della cassa in pietra del faraone." },
-        { id: `lvl${id}_d4`, x: 64.67, y: 53.35, radius: 6.0, name: "Lo Scarabeo di Faience Azzurra sul Baule", loreClue: "Uno scarabeo alato in ceramica azzurra di faience è adagiato sul coperchio del baule dorato." },
-        { id: `lvl${id}_d5`, x: 35.00, y: 83.71, radius: 6.0, name: "Il Cordone di Lino del Vaso Canopo", loreClue: "Un cordone rituale di lino con sigillo d'argilla cinge il collo del vaso canopo con testa di babbuino (Hapi)." },
-        { id: `lvl${id}_d6`, x: 13.96, y: 90.51, radius: 6.0, name: "La Cazzuola Archeologica nella Cesta", loreClue: "Una cazzuola d'acciaio con manico di legno spunta dalla cesta di vimini colma di cocci decorati." },
-        { id: `lvl${id}_d7`, x: 61.04, y: 79.58, radius: 5.0, name: "La Lucerna Egizia di Bronzo", loreClue: "Una lucerna votiva in bronzo a forma di barca del sole è posata sull'angolo del banco da campo." },
-        { id: `lvl${id}_d8`, x: 81.33, y: 62.50, radius: 6.0, name: "La Fiamma della Lanterna Spenta", loreClue: "La fiamma viva all'interno della lanterna a cherosene è spenta, lasciando intravedere il solo stoppino." },
-        { id: `lvl${id}_d9`, x: 82.12, y: 80.30, radius: 5.5, name: "Il Disegno dell'Ankh sul Taccuino", loreClue: "Sulla pagina aperta del taccuino da rilievo compare il disegno a inchiostro di china di un simbolo Ankh." },
-        { id: `lvl${id}_d10`, x: 92.38, y: 72.94, radius: 6.0, name: "La Fascia di Seta Rossa sul Casco Coloniale", loreClue: "Il casco coloniale da esploratore in sughero è arricchito da una fascia di seta rossa da spedizione britannica." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL SESTO SIGILLO: L'Occhio Uraeo di Horus e Smeraldo",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 6: Il leggendario amuleto Uadjet in oro massiccio e smeraldo grezzo di Siwa! La pupilla proietta la rotta attraverso il Sahara libico verso l'Oracolo di Amon."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Naos Monolitica in Granito Nero",
+          loreClue: "Il tabernacolo sacro al centro del santuario è stato forzato per estrarre la reliquia millenaria."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Triade Divina di Tebe su Bassorilievo",
+          loreClue: "Le figure di Amon, Mut e Khonsu scolpite nel granito mostrano gli attributi reali alterati."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Altare d'Oro del Sole Rinato",
+          loreClue: "La mensa sacrificale dorata ove venivano posti i sigilli d'oriente reca tracce d'acido."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Disco Solare con i Due Serpenti Uraei",
+          loreClue: "Il simbolo del sole alato che corona l'ingresso del Sancta Sanctorum indica l'azimut di Siwa."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Registro Cifrato dei Sacerdoti di Karnak",
+          loreClue: "Il papiro sacro con le coordinate celesti che collegano Karnak a Paititi è stato ricomposto."
+        }
       ];
     } else if (isLevelSixtyOne) {
       diffsForLevel = [
