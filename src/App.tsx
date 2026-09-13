@@ -21,6 +21,7 @@ import { ExpeditionHubModal } from './components/ExpeditionHubModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
 import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
 import { DailyExpeditionModal } from './components/DailyExpeditionModal';
+import { GrandFinaleModal } from './components/GrandFinaleModal';
 import {
   hasPendingDaily,
   completeDailyExpedition,
@@ -202,7 +203,8 @@ export const App: React.FC = () => {
       initialView === 'game' ||
       initialView === 'prologue' ||
       initialView === 'tutorial' ||
-      initialView === 'map'
+      initialView === 'map' ||
+      initialView === 'finale'
     )
       return false;
     return true;
@@ -212,6 +214,7 @@ export const App: React.FC = () => {
   const [isPrologueOpen, setIsPrologueOpen] = useState<boolean>(() => initialView === 'prologue');
   const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => initialView === 'tutorial');
   const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
+  const [isGrandFinaleOpen, setIsGrandFinaleOpen] = useState<boolean>(() => initialView === 'finale');
   const [isExpeditionHubOpen, setIsExpeditionHubOpen] = useState<boolean>(false);
   const [activeStageBriefing, setActiveStageBriefing] = useState<number | null>(() => {
     if (initialView === 'briefing') return 1;
@@ -777,7 +780,10 @@ export const App: React.FC = () => {
       }
       loadLevel(nextLevel.id);
     } else {
-      loadLevel(levels[0].id);
+      // Level 120 completed! Reveal Grand Finale epilogue!
+      setIsLevelCompleteOpen(false);
+      setIsTimerRunning(false);
+      setIsGrandFinaleOpen(true);
     }
   };
 
@@ -923,6 +929,11 @@ export const App: React.FC = () => {
           onOpenJournal={() => {
             setIsLevelCompleteOpen(false);
             setIsJournalOpen(true);
+          }}
+          onOpenGrandFinale={() => {
+            setIsLevelCompleteOpen(false);
+            setIsTimerRunning(false);
+            setIsGrandFinaleOpen(true);
           }}
         />
       )}
@@ -1093,6 +1104,11 @@ export const App: React.FC = () => {
           setIsExpeditionHubOpen(false);
           setIsLevelSelectOpen(true);
         }}
+        isLevel120Completed={completedLevelIds.includes(120)}
+        onOpenGrandFinale={() => {
+          setIsExpeditionHubOpen(false);
+          setIsGrandFinaleOpen(true);
+        }}
       />
 
       {/* AAA Splash Screen with "Tocca per iniziare" */}
@@ -1164,6 +1180,21 @@ export const App: React.FC = () => {
         onClose={() => setIsDailyModalOpen(false)}
         onStartDailyLevel={handleStartDailyLevel}
         coins={coins}
+      />
+
+      {/* Grand Finale Expedition Endings Modal (Level 120 / Campaign Complete) */}
+      <GrandFinaleModal
+        isOpen={isGrandFinaleOpen}
+        profile={explorerProfile}
+        onClose={() => setIsGrandFinaleOpen(false)}
+        onOpenJournal={() => {
+          setIsGrandFinaleOpen(false);
+          setIsJournalOpen(true);
+        }}
+        onOpenMappamondo={() => {
+          setIsGrandFinaleOpen(false);
+          setIsTreasureMapOpen(true);
+        }}
       />
     </div>
   );

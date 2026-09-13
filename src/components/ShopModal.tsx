@@ -287,7 +287,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({
         {/* Emergency Relief / Bottom Note */}
         <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
           <span className="italic">
-            💡 Vinci monete trovando le 10 differenze (+20 a scoperta, +100 bonus a 3 stelle)!
+            💡 Vinci monete trovando le differenze archeologiche (+20 a scoperta, +100 bonus a 3 stelle)!
           </span>
 
           {coins < 40 && (

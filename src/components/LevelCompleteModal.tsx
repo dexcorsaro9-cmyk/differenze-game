@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Star, Clock, ArrowRight, BookOpen, RotateCcw, Coins, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Star, Clock, ArrowRight, BookOpen, RotateCcw, Coins, Sparkles, CheckCircle2, Trophy } from 'lucide-react';
 import type { Level } from '../types/game';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
@@ -13,6 +13,7 @@ interface LevelCompleteModalProps {
   onNextLevel: () => void;
   onReplay: () => void;
   onOpenJournal: () => void;
+  onOpenGrandFinale?: () => void;
 }
 
 export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
@@ -23,6 +24,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
   onNextLevel,
   onReplay,
   onOpenJournal,
+  onOpenGrandFinale,
 }) => {
   const [isStamped, setIsStamped] = useState(false);
 
@@ -96,7 +98,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
         {/* Header Ribbon */}
         <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-bold tracking-wide uppercase mb-3">
-          Sito Archeologico Decifrato!
+          {level.id === 120 ? '🏆 Mistero Supremo di Paititi Risolto!' : 'Sito Archeologico Decifrato!'}
         </span>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -199,13 +201,23 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
             Leggi Diario
           </button>
 
-          <button
-            onClick={onNextLevel}
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 active:scale-95 transition-all"
-          >
-            <span>Prossimo Capitolo</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          {level.id === 120 && onOpenGrandFinale ? (
+            <button
+              onClick={onOpenGrandFinale}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-sm shadow-[0_0_25px_rgba(251,191,36,0.65)] flex items-center justify-center gap-2 active:scale-95 transition-all animate-pulse"
+            >
+              <Trophy className="w-5 h-5 text-slate-950 fill-slate-950" />
+              <span>SVELA IL FINALE DELLA SAGA!</span>
+            </button>
+          ) : (
+            <button
+              onClick={onNextLevel}
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 active:scale-95 transition-all"
+            >
+              <span>Prossimo Capitolo</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

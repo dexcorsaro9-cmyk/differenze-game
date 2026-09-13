@@ -46,6 +46,8 @@ interface ExpeditionHubModalProps {
   onOpenShop: () => void;
   onOpenSettings: () => void;
   onOpenLevelSelect: () => void;
+  isLevel120Completed?: boolean;
+  onOpenGrandFinale?: () => void;
 }
 
 export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
@@ -72,6 +74,8 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   onOpenShop,
   onOpenSettings,
   onOpenLevelSelect,
+  isLevel120Completed = false,
+  onOpenGrandFinale,
 }) => {
   if (!isOpen) return null;
 
@@ -234,6 +238,37 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
             </span>
           </button>
 
+          {/* Grand Finale Epilogue & Certificate (Unlocked when Level 120 is beaten) */}
+          {isLevel120Completed && onOpenGrandFinale && (
+            <button
+              type="button"
+              onClick={() => handleAction(onOpenGrandFinale)}
+              className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-amber-600/40 via-yellow-500/30 to-amber-600/40 border-2 border-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.35)] text-left flex items-center justify-between gap-3 group transition cursor-pointer active:scale-98 animate-pulse"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-yellow-500/30 border border-yellow-400 flex items-center justify-center text-yellow-200 group-hover:scale-105 transition-transform shadow-inner text-xl">
+                  🏆
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-black text-yellow-200 font-serif">
+                      Gran Finale di Paititi
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-yellow-400 text-stone-950 text-[9px] font-black">
+                      COMPLETATO
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-amber-200/90 block font-serif">
+                    Rivedi il finale della saga & i 3 destini dell'umanità
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-stone-950 font-black px-2.5 py-1 rounded-xl bg-yellow-400 border border-yellow-300 shrink-0">
+                Epilogo ➔
+              </span>
+            </button>
+          )}
+
           {/* 2-Column Grid for Secondary Cards */}
           <div className="grid grid-cols-2 gap-2.5">
             {/* Card 3: Guardaroba */}
@@ -307,7 +342,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                   Taccuino & Note di Campo
                 </span>
                 <span className="text-[10px] text-stone-400 mt-0.5 block">
-                  Archivio Bellini & 10 enigmi
+                  Archivio Bellini & 120 capitoli
                 </span>
               </div>
             </button>

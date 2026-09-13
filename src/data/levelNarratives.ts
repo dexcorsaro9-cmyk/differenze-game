@@ -13,7 +13,7 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   1: {
     title: "Lo Studio Notturno di Oxford",
     subtitle: "Dipartimento di Archeologia • Scena del Furto",
-    prologue: "Qualcuno si è introdotto nello studio notturno del Professor Bellini frugando tra i reperti andini. Trova le 10 anomalie fisiche per ricostruire la dinamica dell'irruzione.",
+    prologue: "Qualcuno si è introdotto nello studio notturno del Professor Bellini frugando tra i reperti andini. Trova le 6 anomalie fisiche per ricostruire la dinamica dell'irruzione.",
     resolution: "Hai individuato il cassetto segreto forzato: la lettera originale del gesuita Padre Lopez del 1600 è intatta! Conferma che il tesoro di Paititi non è un mito, ma la riserva reale dell'oro sacro degli Inca.",
     unlockedSecret: "'Il tempo stringe. L'ombra della Confraternita dell'Ossidiana è già sulle mie tracce. Devo raggiungere gli archivi parigini prima che brucino i registri.' - Diario di Bellini, pag. 1",
   },
@@ -186,7 +186,7 @@ export function getCredibleLevelStory(levelId: number, stageNumber: number, leve
     return {
       title: "LA CAMERA D'ORO DI PAITITI: IL TESORO SUPREMO!",
       subtitle: "Il Sancta Sanctorum dell'Inti • Epilogo della Spedizione",
-      prologue: "Hai superato 119 livelli di enigmi e scavi. Davanti a te si erge il portale ciclopico della Camera d'Oro di Paititi. Risolvi le ultime 10 differenze per spalancare il Tesoro Supremo dell'Umanità!",
+      prologue: "Hai superato 119 livelli di enigmi e scavi. Davanti a te si erge il portale ciclopico della Camera d'Oro di Paititi. Risolvi le ultime 6 differenze per spalancare il Tesoro Supremo dell'Umanità!",
       resolution: "LIVELLO 120 COMPLETATO! LA MAPPA È DECIFRATA AL 100%! Il colossale Disco Solare d'Oro Puro di Coricancha risplende davanti ai tuoi occhi tra piramidi di manufatti sacri e smeraldi. La spedizione archeologica più epica della storia è compiuta!",
       unlockedSecret: "'Ce l'abbiamo fatta! Il tesoro di Paititi non è una favola per sognatori: è la testimonianza vivente della grandezza dello spirito umano. Hai scritto la storia dell'archeologia!' - Professor Evelyn Bellini",
     };
@@ -219,7 +219,7 @@ export function getCredibleLevelStory(levelId: number, stageNumber: number, leve
   return {
     title: `${subAreaTitle}`,
     subtitle: `${theme.name} • Settore ${levelInStage}/10 (${theme.era})`,
-    prologue: `Esplora il settore ${levelInStage} di ${theme.name}. Esamina attentamente ogni elemento per scovare le 10 differenze fisiche celate tra i reperti.`,
+    prologue: `Esplora il settore ${levelInStage} di ${theme.name}. Esamina attentamente ogni elemento per scovare le 6 differenze fisiche celate tra i reperti.`,
     resolution: `Settore ${levelInStage} decifrato! Hai individuato tutti gli indizi archeologici necessari. Il passaggio al settore successivo è sgombro.`,
     unlockedSecret: `'Le tracce confermano l'accuratezza dei manoscritti di Padre Lopez. Proseguiamo l'esplorazione senza indugio.' - Diario di Bellini`,
   };

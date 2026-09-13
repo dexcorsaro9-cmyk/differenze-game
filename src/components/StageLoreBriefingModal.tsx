@@ -234,7 +234,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
         {/* Footer Actions */}
         <div className="px-5 py-3.5 bg-gradient-to-r from-stone-950 via-[#1a0f07] to-stone-950 border-t border-amber-600/40 flex items-center justify-between gap-3 shrink-0">
           <div className="text-[11px] text-stone-400 font-serif hidden sm:block">
-            Livelli {((briefing.stageNumber - 1) * 10) + 1} — {briefing.stageNumber * 10} • 10 Differenze per tavola
+            Livelli {((briefing.stageNumber - 1) * 10) + 1} — {briefing.stageNumber * 10} • 6 Anomalie per tavola
           </div>
 
           <button
