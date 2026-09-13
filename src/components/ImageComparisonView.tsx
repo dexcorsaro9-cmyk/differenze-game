@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Info,
   Sun,
+  Maximize2,
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
@@ -44,12 +45,22 @@ interface ImageComparisonViewProps {
   ) => void;
   onErrorClick: (clickPercentage: { x: number; y: number }, imageIndex: 0 | 1) => void;
   layoutMode?: 'auto' | 'vertical' | 'horizontal';
+  comboStreak?: number;
+  shieldBlockedNotice?: boolean;
 }
 
 interface ErrorRipple {
   id: string;
   x: number;
   y: number;
+}
+
+interface DiscoveryPop {
+  id: string;
+  x: number;
+  y: number;
+  text: string;
+  name: string;
 }
 
 export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
@@ -65,6 +76,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   onDiscoverRelic,
   onDifferenceClick,
   onErrorClick,
+  comboStreak = 0,
+  shieldBlockedNotice = false,
 }) => {
   // Mode: Full-screen Crime Scene Investigation (Default AAA) vs Classic Split Screen
   const [viewMode, setViewMode] = useState<'crime_scene' | 'split'>('crime_scene');
@@ -78,12 +91,14 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Reliable tap vs drag detection
+  // Reliable tap vs drag & Double-Tap detection
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const isDraggingRef = useRef<boolean>(false);
+  const lastTapRef = useRef<{ time: number; x: number; y: number } | null>(null);
 
-  // Error feedback & shake
+  // Visual Celebrations & Error feedback
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
+  const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
 
   // References
@@ -94,12 +109,36 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   const touchDistRef = useRef<number | null>(null);
   const lensPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Spacebar keyboard shortcut to toggle/hold Lente d'Archivio
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && !e.repeat && document.activeElement?.tagName !== 'INPUT') {
+        e.preventDefault();
+        setIsArchiveLensActive(true);
+        sound.playArchiveLens();
+        triggerHaptic('light');
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && document.activeElement?.tagName !== 'INPUT') {
+        e.preventDefault();
+        setIsArchiveLensActive(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   // Auto-focus hint when active
   useEffect(() => {
     if (activeHint) {
       setScale(2.2);
-      const targetX = (50 - activeHint.x) * 4;
-      const targetY = (50 - activeHint.y) * 4;
+      const targetX = (50 - activeHint.x) * 3.8;
+      const targetY = (50 - activeHint.y) * 3.8;
       setPan({ x: targetX, y: targetY });
     }
   }, [activeHint]);
@@ -181,7 +220,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     if (isDraggingRef.current && scale > 1) {
       const newX = e.clientX - dragStart.x;
       const newY = e.clientY - dragStart.y;
-      const maxOffset = (scale - 1) * 200;
+      const maxOffset = (scale - 1) * 220;
       setPan({
         x: Math.max(-maxOffset, Math.min(maxOffset, newX)),
         y: Math.max(-maxOffset, Math.min(maxOffset, newY)),
@@ -191,7 +230,6 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
   const handlePointerUp = () => {
     pointerStartRef.current = null;
-    // reset drag state after small delay so click can check it
     setTimeout(() => {
       isDraggingRef.current = false;
     }, 50);
@@ -213,9 +251,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     }, 600);
   };
 
-  // Hit test click on image
+  // Hit test click on image with Double-Tap to Zoom support
   const handleStageClick = (e: React.MouseEvent<HTMLDivElement>, imageTarget: 0 | 1 = 1) => {
-    // If it was a real drag gesture, don't trigger click
     if (isDraggingRef.current) return;
 
     const imgElement =
@@ -231,10 +268,32 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
     const clickYPercent = ((e.clientY - rect.top) / rect.height) * 100;
 
+    // Check for a double-tap gesture
+    const now = Date.now();
+    if (
+      lastTapRef.current &&
+      now - lastTapRef.current.time < 350 &&
+      Math.hypot(e.clientX - lastTapRef.current.x, e.clientY - lastTapRef.current.y) < 30
+    ) {
+      lastTapRef.current = null;
+      if (scale > 1) {
+        handleResetZoom();
+      } else {
+        const targetX = (50 - clickXPercent) * 2.8;
+        const targetY = (50 - clickYPercent) * 2.8;
+        setScale(2.2);
+        setPan({ x: targetX, y: targetY });
+      }
+      sound.playTap();
+      triggerHaptic('light');
+      return;
+    }
+    lastTapRef.current = { time: now, x: e.clientX, y: e.clientY };
+
+    // Check hit against differences
     let matchedDiff: Difference | null = null;
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
-      // Generous, forgiving tolerance radius (default 10.0%) so taps always register
       const tolerance = diff.radius || 10.0;
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
@@ -247,6 +306,19 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     }
 
     if (matchedDiff) {
+      // Spawn floating discovery score notification
+      const pop: DiscoveryPop = {
+        id: `${Date.now()}_${Math.random()}`,
+        x: clickXPercent,
+        y: clickYPercent,
+        text: comboStreak >= 1 ? `+Monete! (x${comboStreak + 1} Combo)` : '+Monete!',
+        name: matchedDiff.name,
+      };
+      setDiscoveryPops(prev => [...prev, pop]);
+      setTimeout(() => {
+        setDiscoveryPops(prev => prev.filter(p => p.id !== pop.id));
+      }, 1400);
+
       onDifferenceClick(
         matchedDiff,
         { x: clickXPercent, y: clickYPercent },
@@ -257,6 +329,16 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
       addErrorFeedback(clickXPercent, clickYPercent);
       onErrorClick({ x: clickXPercent, y: clickYPercent }, imageTarget);
     }
+  };
+
+  // Center camera on a specific clue
+  const handleAimClue = (diff: Difference) => {
+    setScale(2.2);
+    const targetX = (50 - diff.x) * 3.2;
+    const targetY = (50 - diff.y) * 3.2;
+    setPan({ x: targetX, y: targetY });
+    sound.playTap();
+    triggerHaptic('light');
   };
 
   // Lente d'Archivio Press/Toggle Handlers
@@ -307,8 +389,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className={`relative w-full flex-1 min-h-0 bg-[#070402] overflow-hidden flex flex-col items-center justify-between p-1 select-none transition-all duration-75 ${
-        isShaking ? 'animate-screen-shake ring-2 ring-red-500/50' : ''
+      className={`relative w-full flex-1 min-h-0 bg-[#070402] overflow-hidden flex flex-col items-center justify-between p-1 sm:p-2 select-none transition-all duration-75 ${
+        isShaking ? 'animate-screen-shake ring-2 ring-red-500/60' : ''
       }`}
       style={{ cursor: scale > 1 ? (isDraggingRef.current ? 'grabbing' : 'grab') : 'crosshair' }}
     >
@@ -330,7 +412,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           {/* Top Status Plate / Dossier Header */}
           <div className="absolute top-2.5 left-2.5 z-25 flex items-center gap-2 pointer-events-none">
             {isArchiveLensActive ? (
-              <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-amber-300 flex items-center gap-1.5 shadow-xl border border-amber-400/80 font-serif animate-pulse bg-amber-950/90 backdrop-blur-md">
+              <div className="cartouche-plate px-3 py-1 rounded-xl text-[10px] sm:text-xs font-black text-amber-300 flex items-center gap-1.5 shadow-xl border border-amber-400/80 font-serif animate-pulse bg-amber-950/95 backdrop-blur-md">
                 <Eye className="w-3.5 h-3.5 text-amber-400" />
                 <span className="tracking-wide">LENTE D'ARCHIVIO: STATO ORIGINALE (1928)</span>
               </div>
@@ -349,14 +431,15 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </div>
 
           {/* Top-Right: Quick Switcher to Split View */}
-          <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1">
+          <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1.5">
             <button
               onClick={() => setViewMode(v => (v === 'crime_scene' ? 'split' : 'crime_scene'))}
               className="px-2.5 py-1 rounded-full bg-amber-950/90 hover:bg-amber-900 text-amber-200 border border-amber-500/70 shadow-lg text-[10px] sm:text-xs font-serif font-bold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
               title="Passa a Vista Doppia Confronto (A / B)"
             >
               <Layers className="w-3.5 h-3.5 text-amber-400" />
-              <span>Vista Doppia (A/B)</span>
+              <span className="hidden sm:inline">Vista Doppia (A/B)</span>
+              <span className="sm:hidden">A/B</span>
             </button>
           </div>
 
@@ -436,7 +519,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 </div>
               )}
 
-              {/* Render Found Evidence Markers: Discreet, compact, non-invasive markers */}
+              {/* Render Found Evidence Markers: Discreet, compact checkmark ring */}
               {differences
                 .filter(d => foundDifferenceIds.includes(d.id))
                 .map((diff, idx) => (
@@ -449,14 +532,13 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                       setSelectedClueId(diff.id);
                     }}
                   >
-                    {/* Compact, elegant translucent checkmark ring (~20px) */}
                     <div className="relative flex items-center justify-center">
-                      <div className="w-5 h-5 rounded-full bg-black/65 border border-emerald-400/90 shadow-[0_0_8px_rgba(52,211,153,0.5)] flex items-center justify-center backdrop-blur-[1px] active:scale-90 hover:scale-110 transition-transform cursor-pointer">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-300 stroke-[2.5]" />
+                      <div className="w-5 h-5 rounded-full bg-black/70 border-2 border-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)] flex items-center justify-center backdrop-blur-[1px] active:scale-90 hover:scale-125 transition-transform cursor-pointer">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-300 stroke-[3]" />
                       </div>
 
-                      {/* Tooltip shown ONLY on hover/tap, never cluttering the scene */}
-                      <div className="absolute bottom-full mb-1.5 px-2 py-0.5 rounded-md bg-stone-950/90 border border-emerald-500/60 shadow-lg text-[9px] text-emerald-200 font-serif font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover/marker:opacity-100 transition-opacity duration-150 z-30">
+                      {/* Tooltip on hover */}
+                      <div className="absolute bottom-full mb-1.5 px-2 py-0.5 rounded-md bg-stone-950/95 border border-emerald-500/70 shadow-lg text-[9px] text-emerald-200 font-serif font-bold whitespace-nowrap pointer-events-none opacity-0 group-hover/marker:opacity-100 transition-opacity duration-150 z-30">
                         #{idx + 1} {diff.name}
                       </div>
                     </div>
@@ -475,6 +557,23 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 </div>
               )}
 
+              {/* Floating Discovery Celebration Pops */}
+              {discoveryPops.map(pop => (
+                <div
+                  key={pop.id}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-35 flex flex-col items-center animate-coin-float"
+                  style={{ left: `${pop.x}%`, top: `${pop.y}%` }}
+                >
+                  <div className="px-3 py-1 rounded-full bg-amber-500 text-stone-950 font-black text-xs shadow-[0_0_20px_#f59e0b] border border-yellow-200 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-stone-950" />
+                    <span>{pop.text}</span>
+                  </div>
+                  <span className="text-[10px] text-amber-200 font-bold drop-shadow mt-0.5">
+                    {pop.name}
+                  </span>
+                </div>
+              ))}
+
               {/* Error Ripples on Crime Scene */}
               {errorRipples.map(r => (
                 <div
@@ -487,6 +586,18 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   </div>
                 </div>
               ))}
+
+              {/* Crystalline Shield Parried Effect */}
+              {shieldBlockedNotice && (
+                <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center animate-pulse">
+                  <div className="w-40 h-40 rounded-full border-4 border-indigo-400 bg-indigo-500/20 shadow-[0_0_50px_rgba(99,102,241,0.8)] flex flex-col items-center justify-center text-indigo-200">
+                    <Shield className="w-16 h-16 text-indigo-300 fill-indigo-400/40 animate-bounce" />
+                    <span className="text-xs font-black uppercase tracking-wider text-indigo-100 mt-1">
+                      PARATO!
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -496,31 +607,34 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               onClick={toggleArchiveLens}
               onPointerDown={handleLensPointerDown}
               onPointerUp={handleLensPointerUp}
-              className={`group relative flex items-center gap-2 px-4 py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
+              className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
                 isArchiveLensActive
                   ? 'bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
                   : 'bg-gradient-to-r from-[#2c1a0e]/95 via-[#3d2513]/95 to-[#2c1a0e]/95 hover:from-[#3a2212] border-amber-500/60 text-amber-200 hover:border-amber-400'
               }`}
-              title="Tieni premuto o clicca per visualizzare la fotografia originale prima del furto"
+              title="Tieni premuto, clicca o premi [Spazio] per visualizzare la fotografia originale del 1928"
             >
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center ${
+                className={`w-6 sm:w-7 h-6 sm:h-7 rounded-full flex items-center justify-center ${
                   isArchiveLensActive ? 'bg-amber-950 text-amber-300' : 'bg-amber-500/20 text-amber-400'
                 }`}
               >
                 {isArchiveLensActive ? (
-                  <EyeOff className="w-4 h-4 animate-pulse" />
+                  <EyeOff className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-pulse" />
                 ) : (
-                  <Eye className="w-4 h-4 animate-bounce" />
+                  <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-bounce" />
                 )}
               </div>
 
               <div className="flex flex-col text-left leading-none">
-                <span className="text-xs font-black font-serif uppercase tracking-wider">
-                  {isArchiveLensActive ? "Torna alla Scena" : "Lente d'Archivio"}
+                <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
+                  <span>{isArchiveLensActive ? 'Torna alla Scena' : "Lente d'Archivio"}</span>
+                  <span className="hidden sm:inline-block px-1 py-0.2 rounded bg-black/40 text-[8px] font-mono border border-amber-400/40">
+                    Spazio
+                  </span>
                 </span>
                 <span
-                  className={`text-[9px] font-sans ${
+                  className={`text-[8px] sm:text-[9px] font-sans mt-0.5 ${
                     isArchiveLensActive ? 'text-amber-950 font-bold' : 'text-amber-300/70'
                   }`}
                 >
@@ -566,10 +680,10 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </div>
         </div>
       ) : (
-        /* MODE B: CLASSIC SPLIT SCREEN (FALLBACK) */
-        <div className="relative flex-1 min-h-0 w-full flex flex-col items-center justify-between gap-1 overflow-hidden">
-          {/* Viewport 1 (Originale / Image A - Sopra) */}
-          <div className="relative flex-1 min-h-0 w-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
+        /* MODE B: CLASSIC SPLIT SCREEN (FALLBACK DUAL VIEW) */
+        <div className="relative flex-1 min-h-0 w-full flex flex-col md:flex-row items-center justify-between gap-1 overflow-hidden">
+          {/* Viewport 1 (Originale / Image A) */}
+          <div className="relative flex-1 min-h-0 w-full md:h-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
             <div className="brass-corner-bracket brass-corner-tl pointer-events-none" />
             <div className="brass-corner-bracket brass-corner-tr pointer-events-none" />
             <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
@@ -603,21 +717,21 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
             </div>
           </div>
 
-          {/* Separator */}
-          <div className="w-full flex items-center justify-between px-3 py-0.5 shrink-0">
-            <div className="h-[1px] flex-1 bg-amber-500/30" />
+          {/* Separator / Switcher */}
+          <div className="w-full md:w-auto flex md:flex-col items-center justify-between px-2 py-0.5 shrink-0">
+            <div className="h-[1px] md:h-8 flex-1 md:w-[1px] bg-amber-500/30" />
             <button
               onClick={() => setViewMode('crime_scene')}
-              className="mx-2 px-3 py-1 rounded-full bg-amber-950/90 border border-amber-500/70 text-amber-200 text-[10px] font-serif font-bold hover:bg-amber-900 transition flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
+              className="mx-1 px-2.5 py-1 rounded-full bg-amber-950/90 border border-amber-500/70 text-amber-200 text-[10px] font-serif font-bold hover:bg-amber-900 transition flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 shrink-0"
             >
               <Eye className="w-3.5 h-3.5 text-amber-400" />
-              <span>Passa a Scena Singola AAA</span>
+              <span>Scena Singola</span>
             </button>
-            <div className="h-[1px] flex-1 bg-amber-500/30" />
+            <div className="h-[1px] md:h-8 flex-1 md:w-[1px] bg-amber-500/30" />
           </div>
 
-          {/* Viewport 2 (Sito Scavo / Image B - Sotto) */}
-          <div className="relative flex-1 min-h-0 w-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
+          {/* Viewport 2 (Sito Sabotato / Image B) */}
+          <div className="relative flex-1 min-h-0 w-full md:h-full flex items-center justify-center overflow-hidden rounded-xl archeo-cage">
             <div className="brass-corner-bracket brass-corner-tl pointer-events-none" />
             <div className="brass-corner-bracket brass-corner-tr pointer-events-none" />
             <div className="brass-corner-bracket brass-corner-bl pointer-events-none" />
@@ -653,7 +767,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
         </div>
       )}
 
-      {/* BOTTOM PARCHMENT DOSSIER TRAY (NOW DYNAMIC FOR 6 CLUES) */}
+      {/* BOTTOM PARCHMENT DOSSIER TRAY (RESPONSIVE ADAPTING TO ANY NUMBER OF DIFFERENCES) */}
       <div className="w-full shrink-0 bg-gradient-to-r from-[#170e07] via-[#24160a] to-[#170e07] rounded-xl border border-amber-600/50 p-1.5 shadow-xl mt-1 flex flex-col gap-1">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-1.5">
@@ -666,12 +780,17 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </div>
 
           <span className="text-[9px] text-amber-400/70 font-sans hidden sm:inline">
-            Tocca la Lente d'Archivio per scoprire cosa è stato sottratto
+            Doppio tocco sulla scena per zoomare • Tieni premuto [Spazio] per la Lente d'Archivio
           </span>
         </div>
 
-        {/* Clue Badges Row - 6 Columns for 6 Clues */}
-        <div className="grid grid-cols-6 gap-1 w-full">
+        {/* Dynamic Clue Badges Row adapting cleanly */}
+        <div
+          className="grid gap-1 w-full"
+          style={{
+            gridTemplateColumns: `repeat(${Math.max(4, differences.length)}, minmax(0, 1fr))`,
+          }}
+        >
           {differences.map((diff, index) => {
             const isFound = foundDifferenceIds.includes(diff.id);
             const isSelected = selectedClueId === diff.id;
@@ -714,8 +833,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
 
         {/* Selected Clue Inspector Banner */}
         {selectedClueId && (
-          <div className="flex items-center justify-between bg-black/60 border border-amber-500/40 rounded-lg px-2.5 py-1 text-[10px] text-amber-200 animate-fade-in">
-            <div className="flex items-center gap-1.5 truncate">
+          <div className="flex items-center justify-between bg-black/75 border border-amber-500/50 rounded-lg px-2.5 py-1 text-[10px] text-amber-200 animate-fade-in shadow-lg">
+            <div className="flex items-center gap-1.5 truncate flex-1 min-w-0 mr-2">
               <Info className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               {(() => {
                 const sel = differences.find(d => d.id === selectedClueId);
@@ -731,12 +850,30 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 );
               })()}
             </div>
-            <button
-              onClick={() => setSelectedClueId(null)}
-              className="text-stone-400 hover:text-white ml-2 text-xs cursor-pointer"
-            >
-              ✕
-            </button>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              {foundDifferenceIds.includes(selectedClueId) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const sel = differences.find(d => d.id === selectedClueId);
+                    if (sel) handleAimClue(sel);
+                  }}
+                  className="px-2 py-0.5 rounded bg-amber-500/30 hover:bg-amber-500/50 border border-amber-400/50 text-[9px] font-bold text-amber-300 flex items-center gap-1 transition cursor-pointer"
+                  title="Centra telecamera su questa prova"
+                >
+                  <Maximize2 className="w-2.5 h-2.5" />
+                  <span>Inquadra</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setSelectedClueId(null)}
+                className="text-stone-400 hover:text-white text-xs cursor-pointer p-0.5"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         )}
       </div>

@@ -199,6 +199,121 @@ class SoundManager {
     });
   }
 
+  // Melodic bell/chime for finding a difference with combo streak pitch scaling
+  public playComboSuccess(streakLevel: number = 1) {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    // Pitch multiplier based on streak (up to streak 5)
+    const pitchMult = Math.min(2.0, 1 + (streakLevel - 1) * 0.18);
+    const baseNotes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+    const notes = baseNotes.slice(0, Math.min(4, 2 + streakLevel)).map(n => n * pitchMult);
+    const now = ctx.currentTime;
+
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = streakLevel >= 3 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+
+      gain.gain.setValueAtTime(0, now + idx * 0.045);
+      gain.gain.linearRampToValueAtTime(0.28, now + idx * 0.045 + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.045 + 0.38);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + idx * 0.045);
+      osc.stop(now + idx * 0.045 + 0.4);
+    });
+  }
+
+  // Crisp micro-metallic coin tick for tally counting
+  public playCoinTick() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1480 + Math.random() * 200, now);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.04);
+
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.045);
+  }
+
+  // Dramatic individual star reveal fanfare
+  public playStarSound(starIndex: number) {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const chords = [
+      [523.25, 659.25], // Star 1: C5 + E5
+      [659.25, 783.99, 987.77], // Star 2: E5 + G5 + B5
+      [783.99, 1046.5, 1318.51, 1567.98], // Star 3: G5 + C6 + E6 + G6 Grand Triad
+    ];
+
+    const currentNotes = chords[Math.min(starIndex - 1, 2)] || chords[0];
+    currentNotes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.03);
+
+      gain.gain.setValueAtTime(0, now + idx * 0.03);
+      gain.gain.linearRampToValueAtTime(0.3, now + idx * 0.03 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.03 + 0.6);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + idx * 0.03);
+      osc.stop(now + idx * 0.03 + 0.65);
+    });
+  }
+
+  // Majestic crystalline shield block sound
+  public playShieldBlock() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const notes = [440, 659.25, 880, 1318.51];
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.025);
+
+      gain.gain.setValueAtTime(0, now + idx * 0.025);
+      gain.gain.linearRampToValueAtTime(0.28, now + idx * 0.025 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.025 + 0.5);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + idx * 0.025);
+      osc.stop(now + idx * 0.025 + 0.52);
+    });
+  }
+
   // Chilly frost whoosh for time freeze
   public playFreeze() {
     if (!this.isEnabled) return;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Header } from './components/Header';
 import { ImageComparisonView } from './components/ImageComparisonView';
 import { PowerUpBar } from './components/PowerUpBar';
@@ -122,6 +122,8 @@ export const App: React.FC = () => {
   const [activeRadar, setActiveRadar] = useState<RadarQuadrant | null>(null);
   const [shieldBlockedNotice, setShieldBlockedNotice] = useState<boolean>(false);
   const [levelCoinsEarned, setLevelCoinsEarned] = useState<number>(0);
+  const [comboStreak, setComboStreak] = useState<number>(0);
+  const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Collectible Relics State
   const [discoveredRelicIds, setDiscoveredRelicIds] = useState<string[]>(() => {
@@ -478,6 +480,8 @@ export const App: React.FC = () => {
     setActiveRadar(null);
     setActiveClueToast(null);
     setLevelCoinsEarned(0);
+    setComboStreak(0);
+    if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
     setIsLevelCompleteOpen(false);
     setIsGameOverOpen(false);
     setIsTimerRunning(true);
@@ -493,8 +497,16 @@ export const App: React.FC = () => {
     ) => {
       if (foundDifferenceIds.includes(diff.id)) return;
 
-      // Sound & Haptics
-      sound.playSuccess();
+      // Update combo streak and timer (6s window)
+      const nextStreak = comboStreak + 1;
+      setComboStreak(nextStreak);
+      if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
+      comboTimerRef.current = setTimeout(() => {
+        setComboStreak(0);
+      }, 6000);
+
+      // Ascending Sound & Haptics
+      sound.playComboSuccess(nextStreak);
       triggerHaptic('success', settings.vibrationEnabled);
 
       // Trigger flying coin particles directly from the screen click coordinate!
@@ -505,14 +517,15 @@ export const App: React.FC = () => {
             id: `${Date.now()}_${Math.random()}`,
             startX: screenPos.x,
             startY: screenPos.y,
-            count: 8,
+            count: nextStreak >= 3 ? 12 : 8,
           },
         ]);
       }
 
-      // Award coins with explorer perk bonus!
+      // Award coins with explorer perk bonus and dynamic combo multiplier!
+      const comboMult = nextStreak >= 4 ? 1.5 : nextStreak >= 3 ? 1.3 : nextStreak >= 2 ? 1.15 : 1.0;
       const baseCoins = 20;
-      const earnedCoins = Math.round(baseCoins * (1 + coinBonusPercent / 100));
+      const earnedCoins = Math.round(baseCoins * (1 + coinBonusPercent / 100) * comboMult);
       setCoins(c => c + earnedCoins);
       setLevelCoinsEarned(c => c + earnedCoins);
 
@@ -623,6 +636,10 @@ export const App: React.FC = () => {
       setTimeout(() => setShieldBlockedNotice(false), 2500);
       return;
     }
+
+    // Reset combo streak on wrong tap
+    setComboStreak(0);
+    if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
 
     sound.playError();
     triggerHaptic('error', settings.vibrationEnabled);
@@ -860,8 +877,8 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* The Mobile Game Viewport Container (100% on phones, max-w-[440px] smartphone shell on desktop) */}
-      <div className="w-full max-w-[440px] h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_60px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden">
+      {/* The Responsive Game Viewport Container (Phone shell on mobile, wide cinema canvas on desktop/tablet) */}
+      <div className="w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-all duration-300">
         {/* Indiana Jones Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Campo Base Hub Button */}
         <Header
           currentLevel={currentLevel}
@@ -885,6 +902,15 @@ export const App: React.FC = () => {
           }
           isCoinBouncing={isCoinBouncing}
           onOpenShop={() => setIsShopOpen(true)}
+          soundEnabled={settings.soundEnabled}
+          onToggleSound={() => setSettings(s => ({ ...s, soundEnabled: !s.soundEnabled }))}
+          comboStreak={comboStreak}
+          rpgPerksSummary={{
+            coinBonus: coinBonusPercent,
+            freezeBonus: freezeBonusSeconds,
+            radarBonus: radarBonusPercent,
+            hasShield: hasPassiveFreeShield,
+          }}
         />
 
         {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Preloads immediately) */}
@@ -902,6 +928,8 @@ export const App: React.FC = () => {
           onDifferenceClick={handleDifferenceClick}
           onErrorClick={handleErrorClick}
           layoutMode={settings.layoutMode}
+          comboStreak={comboStreak}
+          shieldBlockedNotice={shieldBlockedNotice}
         />
 
         {/* Floating Shield Blocked Notice */}
@@ -951,6 +979,7 @@ export const App: React.FC = () => {
             setIsTimerRunning(false);
             setIsGrandFinaleOpen(true);
           }}
+          isRelicFound={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : false}
         />
       )}
 

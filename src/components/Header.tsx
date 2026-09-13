@@ -1,5 +1,17 @@
 import React from 'react';
-import { Heart, Clock, Star, Snowflake, Shield, Coins, Compass, Sparkles } from 'lucide-react';
+import {
+  Heart,
+  Clock,
+  Star,
+  Snowflake,
+  Shield,
+  Coins,
+  Compass,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  Flame,
+} from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS } from '../data/avatarData';
@@ -20,6 +32,15 @@ interface HeaderProps {
   hasHubNotification?: boolean;
   isCoinBouncing?: boolean;
   onOpenShop?: () => void;
+  soundEnabled?: boolean;
+  onToggleSound?: () => void;
+  comboStreak?: number;
+  rpgPerksSummary?: {
+    coinBonus: number;
+    freezeBonus: number;
+    radarBonus: number;
+    hasShield: boolean;
+  };
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -38,6 +59,10 @@ export const Header: React.FC<HeaderProps> = ({
   hasHubNotification = false,
   isCoinBouncing = false,
   onOpenShop,
+  soundEnabled = true,
+  onToggleSound,
+  comboStreak = 0,
+  rpgPerksSummary,
 }) => {
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
 
@@ -52,8 +77,8 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="w-full leather-belt safe-pt px-3 py-2 select-none z-30 flex flex-col gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
-      {/* ROW 1: Level Badge & Campo Base QG Button */}
+    <header className="w-full leather-belt safe-pt px-2.5 sm:px-4 py-2 select-none z-30 flex flex-col gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
+      {/* ROW 1: Level Badge, Sound Toggle, Combo Streak & Campo Base QG Button */}
       <div className="flex items-center justify-between w-full gap-2">
         {/* Left: Level Pill with Explorer Avatar */}
         <div className="flex items-center gap-2 min-w-0">
@@ -74,23 +99,51 @@ export const Header: React.FC<HeaderProps> = ({
                 Tappa {currentLevel.chapterNumber}
               </span>
             </div>
-            <span className="text-[10px] text-amber-200/80 font-medium truncate mt-0.5 max-w-[150px] sm:max-w-[200px]">
+            <span className="text-[10px] text-amber-200/80 font-medium truncate mt-0.5 max-w-[130px] sm:max-w-[220px]">
               {currentLevel.title}
             </span>
           </div>
         </div>
 
-        {/* Right: Coins counter & Prominent CAMPO BASE button */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Center: Dynamic Combo / Streak Pill (Active when combo >= 2) */}
+        {comboStreak >= 2 && (
+          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-600 via-yellow-500 to-orange-600 text-stone-950 font-black text-[11px] shadow-[0_0_15px_rgba(245,158,11,0.8)] border border-yellow-200 animate-pulse shrink-0">
+            <Flame className="w-3.5 h-3.5 fill-stone-950 text-stone-950 animate-bounce" />
+            <span className="tracking-tight">COMBO x{comboStreak}!</span>
+          </div>
+        )}
+
+        {/* Right: Sound toggle, Coins counter & Prominent CAMPO BASE button */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Quick Sound Mute/Unmute Toggle */}
+          {onToggleSound && (
+            <button
+              type="button"
+              onClick={onToggleSound}
+              className={`p-1.5 rounded-full border transition cursor-pointer active:scale-95 ${
+                soundEnabled
+                  ? 'bg-amber-950/60 border-amber-500/40 text-amber-300 hover:text-white'
+                  : 'bg-stone-900 border-stone-700 text-stone-500 hover:text-stone-300'
+              }`}
+              title={soundEnabled ? 'Disattiva Audio' : 'Attiva Audio'}
+            >
+              {soundEnabled ? (
+                <Volume2 className="w-3.5 h-3.5" />
+              ) : (
+                <VolumeX className="w-3.5 h-3.5" />
+              )}
+            </button>
+          )}
+
           {/* Coins Counter */}
           <button
             type="button"
             id="header-coin-counter"
             onClick={onOpenShop || onOpenHub}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/40 border border-amber-500/40 text-amber-200 shadow-sm active:scale-95 transition ${
-              isCoinBouncing ? 'animate-coin-bounce' : ''
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/50 border border-amber-500/50 text-amber-200 shadow-sm active:scale-95 transition cursor-pointer ${
+              isCoinBouncing ? 'animate-coin-bounce ring-2 ring-yellow-400' : ''
             }`}
-            title="Monete d'Oro"
+            title="Monete d'Oro Guadagnate"
           >
             <Coins className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
             <span className="text-xs font-black font-mono text-amber-200">{coins}</span>
@@ -101,10 +154,11 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onOpenHub}
             className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-500 text-stone-950 font-black text-xs font-serif uppercase tracking-wider shadow-[0_2px_12px_rgba(245,158,11,0.4)] border border-yellow-300 active:scale-95 transition cursor-pointer"
-            title="Apri Quartier Generale di Spedizione (Mappamondo, Museo, Guardaroba, Sfide)"
+            title="Apri Quartier Generale di Spedizione (Mappamondo, Armeria RPG, Museo, Sfide)"
           >
             <Compass className="w-3.5 h-3.5 text-stone-950 animate-spin-slow" />
-            <span>Campo Base</span>
+            <span className="hidden sm:inline">Campo Base</span>
+            <span className="sm:hidden">QG</span>
             {hasHubNotification && (
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-stone-950 animate-pulse flex items-center justify-center">
                 <Sparkles className="w-2 h-2 text-white" />
@@ -114,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* ROW 2: Tactical HUD Bar (Lives, 10 Difference Progress Orbs, Stopwatch & Stars) */}
+      {/* ROW 2: Tactical HUD Bar (Lives, 10 Difference Progress Orbs, Active RPG Buffs, Stopwatch & Stars) */}
       <div className="flex items-center justify-between w-full bg-gradient-to-r from-[#180f07]/90 via-[#231509]/90 to-[#180f07]/90 rounded-full px-3 py-1 border border-amber-500/30 shadow-inner gap-1.5">
         {/* Lives (Cuori di Rubino) */}
         <div className="flex items-center gap-1 shrink-0">
@@ -139,8 +193,8 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Center: Wax Seal Evidence Indicators of the Mano Oscura */}
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/40 border border-amber-900/60 shadow-inner">
+        {/* Center: Wax Seal Evidence Indicators */}
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/50 border border-amber-900/60 shadow-inner">
           <div className="flex items-center gap-1">
             {Array.from({ length: totalDifferences }).map((_, idx) => {
               const isFound = idx < foundCount;
@@ -171,13 +225,24 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Right: Timer & Star Rating / Active Buffs */}
-        <div className="flex items-center gap-1 shrink-0">
+        {/* Right: Active RPG Perks Chip + Timer & Star Rating */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {/* Active RPG Equipment Perks Pill */}
+          {rpgPerksSummary && (rpgPerksSummary.coinBonus > 0 || rpgPerksSummary.radarBonus > 0) && (
+            <div
+              className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-500/40 text-[9px] font-bold text-amber-300"
+              title={`Bonus Equipaggiamento Attivo: +${rpgPerksSummary.coinBonus}% Oro, +${rpgPerksSummary.radarBonus}% Radar`}
+            >
+              <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+              <span>+{rpgPerksSummary.coinBonus}% Oro</span>
+            </div>
+          )}
+
           {/* Active Shield Badge */}
           {isShieldActive && (
             <div
               className="flex items-center px-1.5 py-0.5 rounded-md bg-indigo-950 border border-indigo-400 text-indigo-300 text-[10px] font-bold animate-pulse shadow-sm"
-              title="Scudo del Guardiano Attivo"
+              title="Scudo Protettivo Attivo (Para 1 Errore)"
             >
               <Shield className="w-3 h-3 text-indigo-300 fill-indigo-400/50" />
             </div>
@@ -214,4 +279,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-
