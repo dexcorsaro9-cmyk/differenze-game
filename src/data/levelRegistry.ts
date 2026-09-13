@@ -377,25 +377,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundredTen
       ? '/levels/stage11_lvl110_A.jpg?v=2'
       : isLevelOneHundredEleven
-      ? '/levels/stage12_lvl111_A.jpg'
+      ? '/levels/stage12_lvl111_A.jpg?v=2'
       : isLevelOneHundredTwelve
-      ? '/levels/stage12_lvl112_A.jpg'
+      ? '/levels/stage12_lvl112_A.jpg?v=2'
       : isLevelOneHundredThirteen
-      ? '/levels/stage12_lvl113_A.jpg'
+      ? '/levels/stage12_lvl113_A.jpg?v=2'
       : isLevelOneHundredFourteen
-      ? '/levels/stage12_lvl114_A.jpg'
+      ? '/levels/stage12_lvl114_A.jpg?v=2'
       : isLevelOneHundredFifteen
-      ? '/levels/stage12_lvl115_A.jpg'
+      ? '/levels/stage12_lvl115_A.jpg?v=2'
       : isLevelOneHundredSixteen
-      ? '/levels/stage12_lvl116_A.jpg'
+      ? '/levels/stage12_lvl116_A.jpg?v=2'
       : isLevelOneHundredSeventeen
-      ? '/levels/stage12_lvl117_A.jpg'
+      ? '/levels/stage12_lvl117_A.jpg?v=2'
       : isLevelOneHundredEighteen
-      ? '/levels/stage12_lvl118_A.jpg'
+      ? '/levels/stage12_lvl118_A.jpg?v=2'
       : isLevelOneHundredNineteen
-      ? '/levels/stage12_lvl119_A.jpg'
+      ? '/levels/stage12_lvl119_A.jpg?v=2'
       : isLevelOneHundredTwenty
-      ? '/levels/stage12_lvl120_A.jpg'
+      ? '/levels/stage12_lvl120_A.jpg?v=2'
       : isLevelSeventyOne
       ? '/levels/stage8_lvl71_A.jpg?v=2'
       : isLevelSeventyTwo
@@ -660,25 +660,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundredTen
       ? '/levels/stage11_lvl110_B.jpg?v=2'
       : isLevelOneHundredEleven
-      ? '/levels/stage12_lvl111_B.jpg'
+      ? '/levels/stage12_lvl111_B.jpg?v=2'
       : isLevelOneHundredTwelve
-      ? '/levels/stage12_lvl112_B.jpg'
+      ? '/levels/stage12_lvl112_B.jpg?v=2'
       : isLevelOneHundredThirteen
-      ? '/levels/stage12_lvl113_B.jpg'
+      ? '/levels/stage12_lvl113_B.jpg?v=2'
       : isLevelOneHundredFourteen
-      ? '/levels/stage12_lvl114_B.jpg'
+      ? '/levels/stage12_lvl114_B.jpg?v=2'
       : isLevelOneHundredFifteen
-      ? '/levels/stage12_lvl115_B.jpg'
+      ? '/levels/stage12_lvl115_B.jpg?v=2'
       : isLevelOneHundredSixteen
-      ? '/levels/stage12_lvl116_B.jpg'
+      ? '/levels/stage12_lvl116_B.jpg?v=2'
       : isLevelOneHundredSeventeen
-      ? '/levels/stage12_lvl117_B.jpg'
+      ? '/levels/stage12_lvl117_B.jpg?v=2'
       : isLevelOneHundredEighteen
-      ? '/levels/stage12_lvl118_B.jpg'
+      ? '/levels/stage12_lvl118_B.jpg?v=2'
       : isLevelOneHundredNineteen
-      ? '/levels/stage12_lvl119_B.jpg'
+      ? '/levels/stage12_lvl119_B.jpg?v=2'
       : isLevelOneHundredTwenty
-      ? '/levels/stage12_lvl120_B.jpg'
+      ? '/levels/stage12_lvl120_B.jpg?v=2'
       : isLevelSeventyOne
       ? '/levels/stage8_lvl71_B.jpg?v=2'
       : isLevelSeventyTwo
@@ -7051,146 +7051,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelOneHundredEleven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 62.33, y: 20.31, radius: 5.0, name: "Il Medaglione d'Oro Solare sull'Architrave", loreClue: "Un medaglione votivo in oro massiccio cesellato con il volto del dio Sole splende sul fregio sommitale del portale." },
-        { id: `lvl${id}_d2`, x: 75.83, y: 36.83, radius: 4.5, name: "L'Occhio di Giada del Serpente di Pietra", loreClue: "Un cabochon di giada verde imperiale è incastonato nell'orbita del serpente piumato scolpito sullo stipite." },
-        { id: `lvl${id}_d3`, x: 53.33, y: 25.67, radius: 4.5, name: "Il Pettorale Lunare sul Condor Reale", loreClue: "Una lamina d'oro a forma di mezzaluna rituale orna il petto del condor scolpito a sinistra dell'apertura." },
-        { id: `lvl${id}_d4`, x: 24.92, y: 76.00, radius: 5.0, name: "Il Lume a Petrolio Spento sul Fusto", loreClue: "La fiammella della lanterna Hurricane è estinta e il lucignolo è annerito dalla brezza della cascata." },
-        { id: `lvl${id}_d5`, x: 31.67, y: 64.17, radius: 4.5, name: "Il Tamburo Graduato del Teodolite Ruotato", loreClue: "La ghiera micrometrica in ottone dell'asse orizzontale è stata ruotata di novanta gradi per le misurazioni astronomiche." },
-        { id: `lvl${id}_d6`, x: 36.67, y: 81.47, radius: 4.5, name: "Il Cartellino di Catalogazione sulla Gomena", loreClue: "Un cartellino d'inventario della spedizione con nastro in seta rossa pende dalla fune di canapa." },
-        { id: `lvl${id}_d7`, x: 45.00, y: 94.31, radius: 4.5, name: "Il Filo a Piombo accanto alla Vanga", loreClue: "Un filo a piombo con piombino conico in ottone lucido è posato sulla terra vulcanica a ridosso del ferro della vanga." },
-        { id: `lvl${id}_d8`, x: 18.33, y: 53.01, radius: 4.5, name: "La Sciarpa di Seta Rossa sul Casco Coloniale", loreClue: "Una sciarpa cerimoniale in seta rossa è annodata attorno alla cupola del casco coloniale del capo spedizione." },
-        { id: `lvl${id}_d9`, x: 84.17, y: 87.05, radius: 4.5, name: "Il Calice Kero di Bronzo sulla Roccia", loreClue: "Un bicchiere cerimoniale Kero di bronzo patinato riposa tra il muschio umido ai piedi della scalinata." },
-        { id: `lvl${id}_d10`, x: 55.00, y: 69.20, radius: 5.0, name: "Il Riflesso della Chakana nella Laguna", loreClue: "Il riflesso speculare del sacro simbolo a gradoni della croce andina increspa la superficie dell'acqua scura." },
+        {
+          id: `lvl${id}_d1`,
+          x: 62.38,
+          y: 20.37,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Portale Megalitico del Madre de Dios",
+          loreClue: "I giganteschi blocchi ciclopici ricoperti da muschi millenari presentano i segni di detonazioni di dinamite."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 84.21,
+          y: 87.39,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Machete d'Argento della Spedizione Bellini",
+          loreClue: "La lama cerimoniale incisa con le coordinate del meridiano di Paititi è sparita dal ceppo d'albero."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 24.96,
+          y: 76.12,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Grata di Rovi e Liane Tagliata con Acido",
+          loreClue: "La barriera vegetale intatta da secoli che celava la fenditura nella roccia è stata corrosa."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 37.04,
+          y: 82.25,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Diario Finale del Professor Bellini (Volume XII)",
+          loreClue: "Il taccuino con le annotazioni dell'ingresso nella valle perduta ha la mappa d'accesso strappata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 55.04,
+          y: 69.53,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lanterna a Pressione da Giungla Distrutta",
+          loreClue: "La lampada a petrolio dei ricognitori è stata calpestata e abbandonata nel fango della riva."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 45.04,
+          y: 94.14,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Simbolo Supremo della Mano Oscura sulla Falesia",
+          loreClue: "L'emblema del serpente che divora la piramide è stato tracciato a fuoco vivo sulla roccia."
+        }
       ];
     } else if (isLevelOneHundredTwelve) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "I Volti Solari Incisi sulla Roccia di Pusharo", loreClue: "I volti enigmatici scolpiti nella pietra arenaria della falesia sono scalpellati." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Serpente Bicéfalo a Guardia del Portale", loreClue: "Il profilo sinuoso del serpente sacro a due teste è svanito dal rilievo." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Spirale Cosmica che Segna la Rotta Fluviale", loreClue: "La voluta intagliata che indica la via per la città d'oro appare colmata." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Fenditura Carsica Dietro la Parete Incisa", loreClue: "La profonda fenditura naturale tra le rocce sacre appare sigillata." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "I Simboli Geometrici Tocapu sulla Pietra", loreClue: "I quadrati sacri con i codici dell'Inca sono stati raschiati dal masso." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Macchia di Quarzo Bianco Incastonata", loreClue: "Il cristallo lucente inserito nell'orbita del volto solare è stato asportato." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Nastro d'Acqua Limpida che Lambisce la Parete", loreClue: "Il rivolo di fonte che scorre ai piedi dei petroglifi è prosciugato." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Le Tracce d'Ocra Rossa sui Contorni", loreClue: "I pigmenti minerali rossi usati per colorare i rilievi sono scoloriti." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "I Ciottoli Fluviali Levigati sulla Sponda", loreClue: "I sassi arrotondati della riva del fiume Sinkibenia sono stati tolti." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "L'Arco di Muschio Verde sulla Sommità", loreClue: "La vegetazione epifita che incornicia la parete rupestre è scomparsa." },
+        {
+          id: `lvl${id}_d1`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Strada Lastricata in Lamina d'Oro e Pietra",
+          loreClue: "I basoli d'arenaria rivestiti di foglie d'oro puro mostrano lamine strappate con scalpelli."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Pilastro Milestone con Numerazione Inca",
+          loreClue: "Il cippo confinario che indicava le leghe rimanenti alla città sacra è stato abbattuto nella boscaglia."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Maschera del Giaguaro d'Oro delle Guardie",
+          loreClue: "L'elmo cerimoniale da parata raffigurante il felino sacro della selva è scomparso dal piedistallo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Forziere di Bronzo dei Pionieri Spagnoli del 1572",
+          loreClue: "La cassa metallica sepolta dai conquistadores in fuga presenta la serratura sventrata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Pergamena del Frate Vicereale sulla Città d'Oro",
+          loreClue: "La relazione manoscritta per il re di Spagna sui tesori di Paititi è lacerata a metà."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio della Setta Fuso con Zolfo",
+          loreClue: "Una colata di zolfo e pece forma il sigillo degli usurpatori lungo il camminamento lastricato."
+        }
       ];
     } else if (isLevelOneHundredThirteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Chioma Maestosa dell'Albero di Lupuna", loreClue: "La gigantesca cupola dell'albero sacro della selva amazzonica è svanita." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Coppia di Ara Scarlatti in Volo", loreClue: "I due pappagalli dalle ali rosse e azzurre che solcano il cielo sono assenti." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Fascio di Luce Solare tra le Fronde", loreClue: "I raggi di sole che penetrano nella penombra della giungla sono spenti." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "La Grande Liana a U Sospesa sull'Acqua", loreClue: "Il fusto flessibile che dondola sopra la laguna appare reciso." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Le Felci Arboree del Sottobosco Primordiale", loreClue: "I grandi cespugli frondosi alla base dei tronchi sono stati diradati." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "L'Orchidea Viola Fiorita sulla Corteccia", loreClue: "La rara orchidea selvatica che spunta tra il muschio è scomparsa." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Farfalla Morpho Blu sulla Foglia", loreClue: "Il bagliore blu cobalto delle ali della farfalla tropicale è svanito." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Riflesso Smeraldo della Laguna nel Fogliame", loreClue: "La limpida superficie dell'acqua scura della selva appare opaca." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Le Radici a Contrafforte del Tronco", loreClue: "I possenti contrafforti lignei che ancorano l'albero al suolo sono livellati." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Ramo Fiorito di Bromeliacee Rosse", loreClue: "Le infiorescenze fiammeggianti che coronano il ramo alto sono assenti." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Bacino Idraulico delle Cascate Gemelle",
+          loreClue: "La chiusa in blocchi di granito rosa che deviava l'acqua per rivelare il passaggio segreto è stata manomessa."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Barca Cerimoniale in Legno di Cedro Dorato",
+          loreClue: "La piroga sacra per attraversare il lago sotterraneo è stata affondata con fori nella carena."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 40.07,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calice di Platino dei Sacerdoti dell'Acqua",
+          loreClue: "Il vaso liturgico con cui si compivano le offerte alla divinità fluviale è stato rubato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Botola di Bronzo Sommersa Scardinata",
+          loreClue: "L'accesso subacqueo al condotto della cascata mostra i chiavistelli tranciati con cesoie idrauliche."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Disegno Idraulico di Padre Lopez del 1932",
+          loreClue: "La tavola tecnica che rivelava i meccanismi di apertura dietro la cascata è stata stracciata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo delle Tenebre Inciso sull'Arcata Rocciosa",
+          loreClue: "Il segno cabalistico dei cospiratori è stato scalpellato all'ingresso della caverna umida."
+        }
       ];
     } else if (isLevelOneHundredFourteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "La Cortina d'Acqua Turchese del Salto", loreClue: "Il maestoso getto della cascata segreta nel cuore della foresta è interrotto." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "La Pozza di Giada alla Base del Salto", loreClue: "Il laghetto limpido verde smeraldo formato dalle acque appare torbido." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Velo di Vapore Acqueo Dorato dal Sole", loreClue: "La nuvola di goccioline sospesa che risplende nella luce è dissolta." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "La Grotta Nascosta Dietro la Cascata", loreClue: "L'antro ipogeo che si apre dietro il muro d'acqua è stato murato." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "I Massi Vulcanici Ricoperti di Muschio", loreClue: "I massi lisci su cui si frangono i flutti sono privi di muschio." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "Le Piante Carnivore sulla Parete Bagnata", loreClue: "Le particolari piante palustri che crescono sulla rupe sono rimosse." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Il Ciuffo di Canne di Bambù Selvatico", loreClue: "I fusti dorati del bambù amazzonico sulla sponda sono stati tagliati." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Tronco Fossile Incagliato tra i Sassi", loreClue: "L'antico albero pietrificato che emerge dal bacino è scomparso." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "La Schiuma Bianchissima attorno alla Roccia", loreClue: "I cerchi di spuma generati dalla caduta dell'acqua sono appiattiti." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "La Farfalla Gialla Posata sulla Pietra", loreClue: "Il piccolo lepidottero dorato che beve sul sasso umido è assente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Sommità della Piramide a Gradoni di Paititi",
+          loreClue: "Il tempietto superiore rivestito d'oro massiccio presenta una colonna di sostegno crollata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "I Bassorilievi con le Dodici Tappe dell'Umanità",
+          loreClue: "I pannelli scolpiti che raccontano la rotta da Oxford a Paititi presentano figure scalpellate."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 15.0,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Lo Scettro Imperiale dell'Inca di Paititi",
+          loreClue: "L'insegna del comando con la stella d'oro a otto punte e smeraldi è sparita dal trono piramidale."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porta Monolitica del Sancta Sanctorum",
+          loreClue: "Il massiccio portale in pietra nera che sigillava il cuore della piramide è stato fatto saltare."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rotolo dei Quipu Reali della Fondazione",
+          loreClue: "Il sistema di cordicelle annodate che custodiva la storia segreta di Paititi è stato reciso."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Riflettore da Campo dei Mercenari della Setta",
+          loreClue: "Il generatore elettrico da campo usato dalla Mano Oscura per illuminare la piramide è esploso."
+        }
       ];
     } else if (isLevelOneHundredFifteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "I Terrazzamenti con i Lama di Quarzo Bianco", loreClue: "I famosi mosaici litici di camelidi incastonati nei muri sono svaniti." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Portale Trapezoidale della Reggia", loreClue: "Il grandioso varco d'ingresso alle sale imperiali appare livellato." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Piazza Cerimoniale Sospesa sull'Abisso", loreClue: "Il cortile pensile affacciato sulla gola dell'Apurímac è cancellato." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Scalinata Litica d'Accesso all'Usnu", loreClue: "La gradinata monumentale che sale alla piattaforma piramidale è spianata." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "Il Tempio dei Sacerdoti Avvolto da Liane", loreClue: "Le mura megalitiche del santuario solare nascoste dagli alberi sono scomparse." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "I Conci con Commettitura Antisismica", loreClue: "I massi poligonali a incastro perfetto della facciata sono irregolari." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Belvedere a Strapiombo sul Fiume", loreClue: "La terrazza naturale affacciata sulle rapide tumultuose è assente." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Canale d'Acqua Rituale sulle Terrazze", loreClue: "La canaletta in pietra che riforniva la cittadella appare prosciugata." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "I Blocchi di Granito Dorato della Torre", loreClue: "La torre di vedetta semicircolare che domina le rovine è stata rimossa." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "La Cortina di Nubi Risalente dalla Selva", loreClue: "I vapori bianchi che avvolgono le rovine dando l'aspetto di città fantasma sono dissolti." },
+        {
+          id: `lvl${id}_d1`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Tredici Basoli dei Raggi Solari nel Tempio",
+          loreClue: "Una delle mensole in diorite ove collocare i sigilli delle tappe precedenti è stata spezzata."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Meccanismo ad Orologeria Astronomico di Paititi",
+          loreClue: "Gli ingranaggi in bronzo e quarzo che calcolano il solstizio d'inverno sono stati bloccati con cunei di ferro."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Corona Radiata del Tredicesimo Sacerdote",
+          loreClue: "Il diadema in filigrana d'oro con tredici raggi di topazio è stato trafugato dalla nicchia solare."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Grata del Cunicolo di Rifrazione Ottica",
+          loreClue: "Il canale che convoglia il primo raggio di luce sulla reliquia ha le sbarre divelte."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Manoscritto Comparativo delle Dodici Civiltà",
+          loreClue: "La tesi del Professor Bellini che dimostra l'origine comune delle dodici tappe è stata bruciata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Ombra del Sole Nero Dipinta sull'Altare Solare",
+          loreClue: "Una vernice sacrilega e fosforescente è stata spalmata sul punto esatto dove batte il raggio equinoziale."
+        }
       ];
     } else if (isLevelOneHundredSixteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Grande Disco Solare Cesellato in Oro", loreClue: "Il maestoso disco d'oro massiccio con i raggi fiammeggianti è scomparso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Maschera Funeraria d'Oro con Turchesi", loreClue: "La maschera cerimoniale con occhi in pietra dura è svanita dal piedistallo." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "I Pettorali d'Oro con il Volto del Giaguaro", loreClue: "Le lamine cesellate con il dio felino appese alla parete sono assenti." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Calice Rituale Kero d'Oro e Lapislazzuli", loreClue: "Il sacro bicchiere imperiale per le libagioni di chicha è rimosso." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Statuetta d'Argento della Vergine del Sole", loreClue: "La figura votiva femminile intagliata in puro argento è scomparsa." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Cassa dei Tesori Reali con Gemme", loreClue: "Il baule cerimoniale colmo di smeraldi e perle fluviali è assente." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "I Bracciali Reali d'Oro Tempestati di Pietre", loreClue: "I monili preziosi posati sul telo di lana cerimoniale sono tolti." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Lo Scettro d'Oro Sormontato dal Condor", loreClue: "Il bastone d'autorità dell'ultimo imperatore è svanito dall'altare." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Le Lamine d'Oro di Rivestimento della Cripta", loreClue: "I pannelli aurei che riflettono la luce delle torce appaiono opachi." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Riflesso Fiammeggiante del Tesoro Celato", loreClue: "Il bagliore radioso che illumina l'intera camera ipogea è spento." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Le Vasche di Mercurio Liquido e Argento Vivo",
+          loreClue: "Il grande specchio oracolare in cui i sacerdoti leggevano le stelle mostra i bordi in pietra sbrecciati."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Sfera Armillare di Cristallo di Rocca",
+          loreClue: "Il globo celeste finemente intagliato nel quarzo trasparente è stato scaraventato al suolo."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Disco Lunare d'Argento Massiccio di Mama Killa",
+          loreClue: "La grandiosa effigie della luna argentata è scomparsa dalla parete occidentale."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa delle Ampolle di Reagenti Chimici",
+          loreClue: "Il contenitore blindato con gli acidi per purificare i metalli nobili è stato scassinato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Carta Stellare con le Coordinate del Triangolo d'Oro",
+          loreClue: "La mappa disegnata su pelle di giaguaro con le costellazioni incaiche è lacerata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio del Corvo Nero sulla Fontana di Mercurio",
+          loreClue: "Il sigillo supremo del capo della Mano Oscura è stato dipinto sul bordo dello specchio d'argento."
+        }
       ];
     } else if (isLevelOneHundredSeventeen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Lo Specchio d'Acqua Dorato della Laguna Sacra", loreClue: "La superficie immobile che riflette il tramonto andino appare torbida." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "I Fitti Canneti di Totora sulle Sponde", loreClue: "I giunchi acquatici con cui gli indigeni costruivano le barche sono rimossi." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Riflesso del Sole Calante sull'Acqua", loreClue: "La scia luccicante di luce solare che solca il lago è svanita." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "L'Altare Litico per le Libagioni sulla Riva", loreClue: "La mensa di pietra intagliata dove si gettavano offerte d'oro è assente." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Piroga Indigena in Legno di Cedro", loreClue: "L'imbarcazione tradizionale ormeggiata tra le canne è scomparsa." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "I Ciottoli Policromi del Fondale Limpido", loreClue: "I sassi colorati visibili sotto il pelo dell'acqua sono uniformati." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "La Nebbia Crepuscolare sopra i Giunchi", loreClue: "I leggeri vapori serali che avvolgono lo specchio lacustre sono dissolti." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Coppia di Uccelli Acquatici sul Lago", loreClue: "I due svassi dalle piume scure che nuotano all'ombra sono assenti." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "I Gradini di Pietra d'Accesso all'Acqua", loreClue: "La rampa di scalini cerimoniali che scende nella laguna è spianata." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Le Vette Innevate Riflesse sulla Superficie", loreClue: "Il riflesso delle montagne sacre sull'acqua è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Sarcofagi di Cristallo dei Fondatori di Paititi",
+          loreClue: "Le arche traslucide contenenti le mummie regali mostrano fessurazioni provocate da mazzuoli."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Muro d'Oro a Foglie Battute della Cripta",
+          loreClue: "Le pareti interamente dorate che isolavano il sepolcro presentano porzioni asportate con tenaglie."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Maschera Funeraria di Giada e Lapislazzuli",
+          loreClue: "Il volto cerimoniale del primo re-sacerdote è stato sottratto dal sarcofago centrale."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porta d'Accesso con Serratura a Tre Chiavi Liturgiche",
+          loreClue: "La complessa serratura meccanica precolombiana è stata forzata con cariche di fulmicotone."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Cronaca Segreta dei Re di Paititi su Foglie d'Argento",
+          loreClue: "Il libro metallico con la genealogia millenaria è stato smembrato e parzialmente disperso."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Necromantico Finale della Mano Oscura",
+          loreClue: "Il sigillo a teschio bendato è stato impresso sulla fronte della statua del sovrano guardiano."
+        }
       ];
     } else if (isLevelOneHundredEighteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "La Grande Ansa del Fiume Madre de Dios", loreClue: "Il maestoso meandro fluviale che serpeggia nella giungla appare interrotto." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Distesa Sconfinata della Foresta Vergine", loreClue: "Il tappeto continuo di alberi centenari all'orizzonte è appiattito." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Spiaggia di Sabbia Dorata sulla Riva", loreClue: "Il banco alluvionale chiaro dove attraccavano le piroghe è svanito." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Barca della Spedizione con la Tenda", loreClue: "Il battello fluviale a motore con equipaggiamento da scavo è assente." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "I Tronchi Spiaggiati Portati dalla Piena", loreClue: "I grandi fusti d'albero adagiati sulla sponda fluviale sono rimossi." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Nube Temporalesca all'Orizzonte Amazzonico", loreClue: "I densi nembi carichi di pioggia che incombono sulla foresta sono svaniti." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "La Scia Argentea della Corrente Fluviale", loreClue: "I vortici e le correnti rapide al centro del fiume sono appiattiti." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "L'Isolotto di Ghiaia nel Mezzo del Corso", loreClue: "Il piccolo atollo fluviale che divide le acque scompare dai flutti." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Postazione d'Avvistamento sulla Ripa", loreClue: "La garitta di vedetta in legno costruita tra i rami è stata tolta." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Varco nella Giungla verso il Sentiero", loreClue: "L'imbocco del passaggio segreto che sale verso Paititi è celato." },
+        {
+          id: `lvl${id}_d1`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Monolito dell'Equinozio Supremo al Centro del Tempio",
+          loreClue: "Il pilastro centrale in pura diorite nera presenta profonde scalfitture nel punto d'innesto del sigillo."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Bracieri a Fiamma Eterna delle Quattro Direzioni",
+          loreClue: "I quattro tripodi in bronzo che segnavano i punti cardinali dell'impero sono stati rovesciati."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Occhio di Luce di Paititi (Smeraldo Imperiale)",
+          loreClue: "La gigantesca gemma tagliata a prismi che diffondeva la luce solare nella sala è stata trafugata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Teca dei Dodici Sigilli della Saggezza",
+          loreClue: "Lo scrigno circolare d'oro destinato ad accogliere i dodici sigilli della spedizione è stato scassinato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Testamento Archeologico di Padre Lopez",
+          loreClue: "L'ultima lettera di Padre Lopez che svela il legame tra la Chiesa, Bellini e Paititi è strappata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo dell'Apocalisse della Mano Oscura",
+          loreClue: "L'emblema del caos che mirava a distruggere la conoscenza per avidità è marchiato sull'altare."
+        }
       ];
     } else if (isLevelOneHundredNineteen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "L'Architrave del Tempio con il Volto del Nume", loreClue: "Il possente blocco monolitico con il dio solare è stato scalpellato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "I Due Stipiti Inclinati ad Angolo Sacro", loreClue: "I pilastri megalitici che formano la classica porta trapezoidale sono spianati." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Le Radici Secolari che Abbracciano il Portale", loreClue: "I tronchi nodosi di fico strangolatore avvinghiati alla pietra sono tolti." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "L'Iscrizione Segreta in Caratteri Tocapu", loreClue: "I simboli geometrici incisi sulla soglia d'ingresso sono raschiati." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Il Selciato d'Oro Nascosto sotto il Muschio", loreClue: "Le piastre dorate che lastricano il vestibolo del tempio sono spente." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Nicchia Votiva con il Braciere di Bronzo", loreClue: "L'edicola cerimoniale per l'incenso sacro all'ingresso è murata." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Il Bassorilievo del Giaguaro Alato sul Concio", loreClue: "La figura scolpita del guardiano celeste svanisce dal basamento." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "La Soglia Consumata dai Sacerdoti Solari", loreClue: "Il gradino d'ingresso levigato da secoli di riti appare sconnesso." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Scalinata Ipogea che Scende nel Santuario", loreClue: "I gradini che portano alla sala del Cuore Solare sono colmati." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Fascio di Luce Solare Attraverso il Varco", loreClue: "La lama di luce dorata che illumina l'interno dell'edificio è oscurata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Arco di Trionfo di Paititi Crollato nel Duello",
+          loreClue: "Le colonne tortili dell'ingresso alla sala del trono mostrano i segni dello scontro a fuoco finale."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Le Casse di Munizioni Abbandonate dai Sabotatori",
+          loreClue: "L'arsenale dei mercenari della Mano Oscura giace rovesciato tra i mosaici dorati."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Pistola d'Ordinanza del Capo dei Sabotatori",
+          loreClue: "L'arma con l'emblema della confraternita abbandonata durante la fuga è caduta nel canale sacro."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Forziere Blindato con i Reperti Trafugati dalle 11 Tappe",
+          loreClue: "La cassa metallica dove la setta ammassava i tesori rubati durante la spedizione è stata forzata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Lista dei Cospiratori e Finanziatori della Mano Oscura",
+          loreClue: "Il documento segreto con i nomi dei mandanti internazionali è parzialmente bruciato dal fuoco."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Bandiera Strappata della Confraternita Oscura",
+          loreClue: "Lo stendardo nero con l'occhio e il serpente giace calpestato sui gradini del tempio supremo."
+        }
       ];
     } else if (isLevelOneHundredTwenty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Disco Solare Supremo del Cuore di Paititi", loreClue: "Il leggendario disco d'oro massiccio al centro del tempio è scomparso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "I Dodici Idoli d'Oro degli Imperatori Inca", loreClue: "Le statue in oro zecchino schierate attorno all'altare sono svanite." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "L'Altare di Platino su Basamento di Roccia", loreClue: "La mensa sacrificale impreziosita da metalli celesti appare livellata." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Le Lamine d'Oro che Rivestono la Cupola", loreClue: "Il cielo dorato del tempio che riflette la luce solare è opacizzato." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Cascata d'Acqua Sacra dentro il Santuario", loreClue: "La sorgente sotterranea che zampilla nel bacino d'oro è prosciugata." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "I Cristalli di Quarzo Risonanti alle Pareti", loreClue: "Le gemme che amplificavano il canto dei sacerdoti sono state asportate." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Il Trono Imperiale con Intarsi di Lapislazzuli", loreClue: "Il maestoso seggio del sovrano di Paititi è scomparso dall'abside." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Grande Mosaico Cosmico sul Pavimento", loreClue: "Il disegno pavimentale con le costellazioni incaiche è cancellato." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Fascio di Luce Solare Divina sull'Altare", loreClue: "Il raggio solare zenitale che infiamma il disco d'oro è spento." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Sigillo Eterno della Spedizione di Paititi", loreClue: "La reliquia finale dell'avventura archeologica è assente dal suo piedistallo." },
-      ];
-    } else if (isStageTwelve) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 62.33, y: 20.31, radius: 5.0, name: "Il Medaglione d'Oro Solare sull'Architrave", loreClue: "Un medaglione votivo in oro massiccio cesellato con il volto del dio Sole splende sul fregio sommitale del portale." },
-        { id: `lvl${id}_d2`, x: 75.83, y: 36.83, radius: 4.5, name: "L'Occhio di Giada del Serpente di Pietra", loreClue: "Un cabochon di giada verde imperiale è incastonato nell'orbita del serpente piumato scolpito sullo stipite." },
-        { id: `lvl${id}_d3`, x: 53.33, y: 25.67, radius: 4.5, name: "Il Pettorale Lunare sul Condor Reale", loreClue: "Una lamina d'oro a forma di mezzaluna rituale orna il petto del condor scolpito a sinistra dell'apertura." },
-        { id: `lvl${id}_d4`, x: 24.92, y: 76.00, radius: 5.0, name: "Il Lume a Petrolio Spento sul Fusto", loreClue: "La fiammella della lanterna Hurricane è estinta e il lucignolo è annerito dalla brezza della cascata." },
-        { id: `lvl${id}_d5`, x: 31.67, y: 64.17, radius: 4.5, name: "Il Tamburo Graduato del Teodolite Ruotato", loreClue: "La ghiera micrometrica in ottone dell'asse orizzontale è stata ruotata di novanta gradi per le misurazioni astronomiche." },
-        { id: `lvl${id}_d6`, x: 36.67, y: 81.47, radius: 4.5, name: "Il Cartellino di Catalogazione sulla Gomena", loreClue: "Un cartellino d'inventario della spedizione con nastro in seta rossa pende dalla fune di canapa." },
-        { id: `lvl${id}_d7`, x: 45.00, y: 94.31, radius: 4.5, name: "Il Filo a Piombo accanto alla Vanga", loreClue: "Un filo a piombo con piombino conico in ottone lucido è posato sulla terra vulcanica a ridosso del ferro della vanga." },
-        { id: `lvl${id}_d8`, x: 18.33, y: 53.01, radius: 4.5, name: "La Sciarpa di Seta Rossa sul Casco Coloniale", loreClue: "Una sciarpa cerimoniale in seta rossa è annodata attorno alla cupola del casco coloniale del capo spedizione." },
-        { id: `lvl${id}_d9`, x: 84.17, y: 87.05, radius: 4.5, name: "Il Calice Kero di Bronzo sulla Roccia", loreClue: "Un bicchiere cerimoniale Kero di bronzo patinato riposa tra il muschio umido ai piedi della scalinata." },
-        { id: `lvl${id}_d10`, x: 55.00, y: 69.20, radius: 5.0, name: "Il Riflesso della Chakana nella Laguna", loreClue: "Il riflesso speculare del sacro simbolo a gradoni della croce andina increspa la superficie dell'acqua scura." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL DODICESIMO SIGILLO SUPREMO: Il Cuore d'Oro e Diamante di Paititi",
+          loreClue: "RELIQUIA FINALE DI LIVELLO 120: Il leggendario Cuore di Paititi! Unificando i 12 sigilli delle tappe mondiali, si attiva la camera dell'immortalità archeologica."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "L'Altare della Grande Scelta dei Tre Destini",
+          loreClue: "Il tripode monolitico su cui il giocatore decide la sorte di Paititi: Rivelazione al Mondo, Dono al Museo Segreto, o Sigillo Eterno per salvare la terra sacra."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Diario Completo e Unificato della Spedizione Bellini",
+          loreClue: "Il tomo leggendario di 120 capitoli rilegato in cuoio e oro che documenta ogni enigma risolto lungo i 120 livelli dell'avventura."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Dissoluzione Finale del Sigillo della Mano Oscura",
+          loreClue: "L'ultimo marchio necromantico dei cospiratori si infrange in frammenti di cenere purificata dalla luce del sole."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.08,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere d'Oro della Gloria Eterna",
+          loreClue: "La fiamma sacra di Paititi arde trionfante, illuminando il completamento definitivo di tutti i 120 livelli dell'epopea!"
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Chiave Cosmica dell'Alleanza dei Popoli",
+          loreClue: "L'emblema d'oro, platino e gemme che simboleggia l'unione di tutte le culture della Terra, dal Tamigi alle Ande."
+        }
       ];
     } else {
       diffsForLevel = getStageDifferences(stageNumber, levelNumberInStage).map(d => ({
