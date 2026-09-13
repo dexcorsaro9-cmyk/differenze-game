@@ -16,6 +16,7 @@ import {
   ScrollText,
   Compass,
   Award,
+  Stamp,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
@@ -52,6 +53,8 @@ interface ExpeditionHubModalProps {
   onOpenMedals?: () => void;
   unlockedMedalsCount?: number;
   totalMedals?: number;
+  onOpenPassport?: () => void;
+  unlockedVisasCount?: number;
 }
 
 export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
@@ -83,6 +86,8 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   onOpenMedals,
   unlockedMedalsCount = 0,
   totalMedals = 12,
+  onOpenPassport,
+  unlockedVisasCount = 0,
 }) => {
   if (!isOpen) return null;
 
@@ -272,6 +277,37 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               </div>
               <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
                 Apri Teca ➔
+              </span>
+            </button>
+          )}
+
+          {/* Card 2C: Passaporto della Spedizione 1928 */}
+          {onOpenPassport && (
+            <button
+              type="button"
+              onClick={() => handleAction(onOpenPassport)}
+              className="w-full p-3 rounded-2xl bg-gradient-to-r from-[#2c0d13] via-[#1f090d] to-[#2c0d13] border border-rose-600/50 hover:border-rose-400 shadow-md text-left flex items-center justify-between gap-3 group transition cursor-pointer active:scale-98"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-600/30 to-amber-700/20 border border-rose-400/70 flex items-center justify-center text-rose-300 group-hover:scale-105 transition-transform shadow-inner">
+                  <Stamp className="w-6 h-6 text-rose-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
+                      Passaporto della Spedizione 1928
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-[9px] font-mono font-bold">
+                      {unlockedVisasCount}/12 Visti
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-stone-400 block font-serif">
+                    12 Visti consolari timbrati a mano con sigilli d'epoca e credenziali
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
+                Apri Visti ➔
               </span>
             </button>
           )}

@@ -25,6 +25,7 @@ const RelicMuseumModal = lazy(() => import('./components/RelicMuseumModal').then
 const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModal').then(m => ({ default: m.DailyExpeditionModal })));
 const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
 const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
+const ExpeditionPassportModal = lazy(() => import('./components/ExpeditionPassportModal').then(m => ({ default: m.ExpeditionPassportModal })));
 import {
   hasPendingDaily,
   completeDailyExpedition,
@@ -35,6 +36,7 @@ import {
 import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
 import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
+import { CONSULAR_VISAS, type ConsularVisa } from './data/passportData';
 import {
   EXPLORERS,
   ALL_OUTFITS,
@@ -225,6 +227,7 @@ export const App: React.FC = () => {
   const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
   const [isGrandFinaleOpen, setIsGrandFinaleOpen] = useState<boolean>(() => initialView === 'finale');
   const [isMedalsCabinetOpen, setIsMedalsCabinetOpen] = useState<boolean>(() => initialView === 'medals');
+  const [isPassportOpen, setIsPassportOpen] = useState<boolean>(() => initialView === 'passport');
   const [unlockedMedalIds, setUnlockedMedalIds] = useState<string[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_MEDALS);
     if (saved) {
@@ -236,6 +239,15 @@ export const App: React.FC = () => {
   });
   const [claimedMedalIds, setClaimedMedalIds] = useState<string[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_CLAIMED_MEDALS);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return [];
+  });
+  const [claimedVisaIds, setClaimedVisaIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem('differenze_claimed_visas_v1');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -450,6 +462,19 @@ export const App: React.FC = () => {
     triggerHaptic('success');
   };
 
+  // Save claimed passport visa bounties
+  useEffect(() => {
+    localStorage.setItem('differenze_claimed_visas_v1', JSON.stringify(claimedVisaIds));
+  }, [claimedVisaIds]);
+
+  const handleClaimVisaBounty = (visa: ConsularVisa) => {
+    if (claimedVisaIds.includes(visa.id)) return;
+    setClaimedVisaIds(prev => [...prev, visa.id]);
+    setCoins(c => c + visa.bounty);
+    sound.playCoinBurst();
+    triggerHaptic('success');
+  };
+
   // Check Wardrobe RPG Achievements (8 slots & Set bonus)
   useEffect(() => {
     const all8Equipped = Boolean(
@@ -491,7 +516,8 @@ export const App: React.FC = () => {
       isRelicMuseumOpen ||
       isRelicFoundModalOpen ||
       isDailyModalOpen ||
-      isMedalsCabinetOpen;
+      isMedalsCabinetOpen ||
+      isPassportOpen;
 
     if (!isPaused) {
       interval = setInterval(() => {
@@ -519,6 +545,8 @@ export const App: React.FC = () => {
     isRelicMuseumOpen,
     isRelicFoundModalOpen,
     isDailyModalOpen,
+    isMedalsCabinetOpen,
+    isPassportOpen,
   ]);
 
   // Dynamic 3-Theme Orchestral BGM Selector:
@@ -1055,6 +1083,7 @@ export const App: React.FC = () => {
           isShieldActive={isShieldActive}
           profile={explorerProfile}
           onOpenHub={() => setIsExpeditionHubOpen(true)}
+          onOpenPassport={() => setIsPassportOpen(true)}
           hasHubNotification={
             hasUnreadDaily ||
             hasUnreadRelics ||
@@ -1345,6 +1374,11 @@ export const App: React.FC = () => {
         }}
         unlockedMedalsCount={unlockedMedalIds.length}
         totalMedals={ALL_ACHIEVEMENTS.length}
+        onOpenPassport={() => {
+          setIsExpeditionHubOpen(false);
+          setIsPassportOpen(true);
+        }}
+        unlockedVisasCount={CONSULAR_VISAS.filter(v => currentLevel.chapterNumber >= v.chapterNumber).length}
       />
 
       {/* AAA Splash Screen with "Tocca per iniziare" */}
@@ -1450,6 +1484,20 @@ export const App: React.FC = () => {
             unlockedMedalIds={unlockedMedalIds}
             claimedMedalIds={claimedMedalIds}
             onClaimBounty={handleClaimMedalBounty}
+          />
+        </Suspense>
+      )}
+
+      {/* 1928 Royal Expedition Passport & Consular Visas Modal */}
+      {isPassportOpen && (
+        <Suspense fallback={null}>
+          <ExpeditionPassportModal
+            isOpen={isPassportOpen}
+            onClose={() => setIsPassportOpen(false)}
+            profile={explorerProfile}
+            currentChapter={currentLevel.chapterNumber}
+            claimedVisaIds={claimedVisaIds}
+            onClaimVisaBounty={handleClaimVisaBounty}
           />
         </Suspense>
       )}

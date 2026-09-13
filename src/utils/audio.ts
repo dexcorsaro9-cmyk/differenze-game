@@ -918,6 +918,118 @@ class SoundManager {
     boomOsc.stop(now + 0.22);
   }
 
+  // Tactile vintage leather passport opening & parchment page flip
+  public playPassportOpen() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Leather binding creak (low resonant thump)
+    const creakOsc = ctx.createOscillator();
+    const creakGain = ctx.createGain();
+    creakOsc.type = 'triangle';
+    creakOsc.frequency.setValueAtTime(85, now);
+    creakOsc.frequency.exponentialRampToValueAtTime(50, now + 0.12);
+
+    creakGain.gain.setValueAtTime(0.22, now);
+    creakGain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+
+    creakOsc.connect(creakGain);
+    creakGain.connect(ctx.destination);
+    creakOsc.start(now);
+    creakOsc.stop(now + 0.14);
+
+    // 2. Thick parchment page flip rustle
+    const noiseLen = Math.floor(ctx.sampleRate * 0.16);
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const output = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (noiseLen * 0.45));
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuf;
+
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(1400, now + 0.03);
+    noiseFilter.frequency.exponentialRampToValueAtTime(700, now + 0.16);
+    noiseFilter.Q.setValueAtTime(2.0, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.24, now + 0.03);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noiseSource.start(now + 0.03);
+  }
+
+  // Heavy wooden consular hand-stamp slam with wet ink impression
+  public playHeavyStamp() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Heavy wooden mallet impact thump (table resonance)
+    const woodOsc = ctx.createOscillator();
+    const woodGain = ctx.createGain();
+    woodOsc.type = 'triangle';
+    woodOsc.frequency.setValueAtTime(180, now);
+    woodOsc.frequency.exponentialRampToValueAtTime(45, now + 0.14);
+
+    woodGain.gain.setValueAtTime(0.35, now);
+    woodGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    woodOsc.connect(woodGain);
+    woodGain.connect(ctx.destination);
+    woodOsc.start(now);
+    woodOsc.stop(now + 0.16);
+
+    // 2. Wet rubber inking squelch / slap
+    const slapLen = Math.floor(ctx.sampleRate * 0.06);
+    const slapBuf = ctx.createBuffer(1, slapLen, ctx.sampleRate);
+    const slapOut = slapBuf.getChannelData(0);
+    for (let i = 0; i < slapLen; i++) {
+      slapOut[i] = (Math.random() * 2 - 1) * Math.exp(-i / (slapLen * 0.25));
+    }
+    const slapSource = ctx.createBufferSource();
+    slapSource.buffer = slapBuf;
+
+    const slapFilter = ctx.createBiquadFilter();
+    slapFilter.type = 'lowpass';
+    slapFilter.frequency.setValueAtTime(2800, now);
+    slapFilter.frequency.exponentialRampToValueAtTime(500, now + 0.06);
+
+    const slapGain = ctx.createGain();
+    slapGain.gain.setValueAtTime(0.3, now);
+    slapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+    slapSource.connect(slapFilter);
+    slapFilter.connect(slapGain);
+    slapGain.connect(ctx.destination);
+    slapSource.start(now);
+
+    // 3. Wooden handle release rattle
+    const rattleOsc = ctx.createOscillator();
+    const rattleGain = ctx.createGain();
+    rattleOsc.type = 'sine';
+    rattleOsc.frequency.setValueAtTime(420, now + 0.05);
+    rattleOsc.frequency.exponentialRampToValueAtTime(280, now + 0.11);
+
+    rattleGain.gain.setValueAtTime(0.12, now + 0.05);
+    rattleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    rattleOsc.connect(rattleGain);
+    rattleGain.connect(ctx.destination);
+    rattleOsc.start(now + 0.05);
+    rattleOsc.stop(now + 0.13);
+  }
+
   // =========================================================================
   // CONTINUOUS PROCEDURAL ORCHESTRAL BGM ENGINE (1928 ADVENTURE SOUNDSCAPE)
   // =========================================================================

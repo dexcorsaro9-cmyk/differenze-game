@@ -31,6 +31,7 @@ interface HeaderProps {
   isShieldActive: boolean;
   profile: ExplorerProfile;
   onOpenHub: () => void;
+  onOpenPassport?: () => void;
   hasHubNotification?: boolean;
   isCoinBouncing?: boolean;
   onOpenShop?: () => void;
@@ -66,6 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
   isShieldActive,
   profile,
   onOpenHub,
+  onOpenPassport,
   hasHubNotification = false,
   isCoinBouncing = false,
   onOpenShop,
@@ -109,15 +111,26 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="w-full leather-belt safe-pt px-2.5 sm:px-4 py-2 select-none z-30 flex flex-col gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
       {/* ROW 1: Level Badge, Sound Toggle, Combo Streak & Campo Base QG Button */}
       <div className="flex items-center justify-between w-full gap-2">
-        {/* Left: Level Pill with Explorer Avatar */}
+        {/* Left: Level Pill with Explorer Avatar (Opens Passport) */}
         <div className="flex items-center gap-2 min-w-0">
-          <div className="w-8 h-8 rounded-full border border-amber-400 overflow-hidden shadow-sm bg-stone-900 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenPassport) {
+                onOpenPassport();
+              } else {
+                onOpenHub();
+              }
+            }}
+            className="w-8 h-8 rounded-full border-2 border-amber-400 hover:border-amber-300 overflow-hidden shadow-sm bg-stone-900 shrink-0 cursor-pointer active:scale-95 transition-transform"
+            title="Apri Passaporto di Spedizione 1928"
+          >
             <img
               src={currentExplorer.portrait}
               alt={profile.playerName}
               className="w-full h-full object-cover object-top"
             />
-          </div>
+          </button>
 
           <div className="flex flex-col leading-none truncate">
             <div className="flex items-center gap-1.5">
