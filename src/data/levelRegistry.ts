@@ -357,25 +357,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundred
       ? '/levels/stage10_lvl100_A.jpg?v=2'
       : isLevelOneHundredOne
-      ? '/levels/stage11_lvl101_A.jpg'
+      ? '/levels/stage11_lvl101_A.jpg?v=2'
       : isLevelOneHundredTwo
-      ? '/levels/stage11_lvl102_A.jpg'
+      ? '/levels/stage11_lvl102_A.jpg?v=2'
       : isLevelOneHundredThree
-      ? '/levels/stage11_lvl103_A.jpg'
+      ? '/levels/stage11_lvl103_A.jpg?v=2'
       : isLevelOneHundredFour
-      ? '/levels/stage11_lvl104_A.jpg'
+      ? '/levels/stage11_lvl104_A.jpg?v=2'
       : isLevelOneHundredFive
-      ? '/levels/stage11_lvl105_A.jpg'
+      ? '/levels/stage11_lvl105_A.jpg?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_A.jpg'
+      ? '/levels/stage11_lvl106_A.jpg?v=2'
       : isLevelOneHundredSeven
-      ? '/levels/stage11_lvl107_A.jpg'
+      ? '/levels/stage11_lvl107_A.jpg?v=2'
       : isLevelOneHundredEight
-      ? '/levels/stage11_lvl108_A.jpg'
+      ? '/levels/stage11_lvl108_A.jpg?v=2'
       : isLevelOneHundredNine
-      ? '/levels/stage11_lvl109_A.jpg'
+      ? '/levels/stage11_lvl109_A.jpg?v=2'
       : isLevelOneHundredTen
-      ? '/levels/stage11_lvl110_A.jpg'
+      ? '/levels/stage11_lvl110_A.jpg?v=2'
       : isLevelOneHundredEleven
       ? '/levels/stage12_lvl111_A.jpg'
       : isLevelOneHundredTwelve
@@ -640,25 +640,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundred
       ? '/levels/stage10_lvl100_B.jpg?v=2'
       : isLevelOneHundredOne
-      ? '/levels/stage11_lvl101_B.jpg'
+      ? '/levels/stage11_lvl101_B.jpg?v=2'
       : isLevelOneHundredTwo
-      ? '/levels/stage11_lvl102_B.jpg'
+      ? '/levels/stage11_lvl102_B.jpg?v=2'
       : isLevelOneHundredThree
-      ? '/levels/stage11_lvl103_B.jpg'
+      ? '/levels/stage11_lvl103_B.jpg?v=2'
       : isLevelOneHundredFour
-      ? '/levels/stage11_lvl104_B.jpg'
+      ? '/levels/stage11_lvl104_B.jpg?v=2'
       : isLevelOneHundredFive
-      ? '/levels/stage11_lvl105_B.jpg'
+      ? '/levels/stage11_lvl105_B.jpg?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_B.jpg'
+      ? '/levels/stage11_lvl106_B.jpg?v=2'
       : isLevelOneHundredSeven
-      ? '/levels/stage11_lvl107_B.jpg'
+      ? '/levels/stage11_lvl107_B.jpg?v=2'
       : isLevelOneHundredEight
-      ? '/levels/stage11_lvl108_B.jpg'
+      ? '/levels/stage11_lvl108_B.jpg?v=2'
       : isLevelOneHundredNine
-      ? '/levels/stage11_lvl109_B.jpg'
+      ? '/levels/stage11_lvl109_B.jpg?v=2'
       : isLevelOneHundredTen
-      ? '/levels/stage11_lvl110_B.jpg'
+      ? '/levels/stage11_lvl110_B.jpg?v=2'
       : isLevelOneHundredEleven
       ? '/levels/stage12_lvl111_B.jpg'
       : isLevelOneHundredTwelve
@@ -6481,146 +6481,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelOneHundredOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 72.92, y: 40.18, radius: 5.0, name: "L'Idolo Solare nella Finestra", loreClue: "Una statuetta votiva incisa nella pietra riposa sul vano della finestra trapezoidale del tempio." },
-        { id: `lvl${id}_d2`, x: 86.67, y: 29.58, radius: 5.0, name: "Il Disco Solare sull'Architrave", loreClue: "Un disco solare cerimoniale con quattro raggi cardinali è scolpito sull'architrave monolitico." },
-        { id: `lvl${id}_d3`, x: 53.33, y: 59.15, radius: 4.5, name: "La Mappa nella Mano dell'Esploratore", loreClue: "Il cannocchiale d'ottone è sostituito da una pergamena topografica arrotolata con sigillo di ceralacca." },
-        { id: `lvl${id}_d4`, x: 54.58, y: 38.17, radius: 4.5, name: "La Fascia di Lana Rossa sul Cappello", loreClue: "Una fascia tradizionale andina in lana di vigogna rossa avvolge la cupola del cappello del giovane." },
-        { id: `lvl${id}_d5`, x: 32.92, y: 77.01, radius: 5.0, name: "Il Martello da Geologo sul Blocco", loreClue: "Un martello da geologo con manico in legno di frassino è posato sul blocco megalitico in primo piano." },
-        { id: `lvl${id}_d6`, x: 16.67, y: 22.32, radius: 4.5, name: "Il Chiodo da Roccia con Fune nel Concio", loreClue: "Un chiodo da arrampicata in ferro battuto con spezzone di fune di canapa è piantato nella commettitura ciclopica." },
-        { id: `lvl${id}_d7`, x: 9.17, y: 49.11, radius: 5.0, name: "La Palina Metrica sulla Ripa Erbosa", loreClue: "Una palina geodetica graduata a bande bicolori è piantata sul pendio erboso a sinistra." },
-        { id: `lvl${id}_d8`, x: 64.58, y: 44.64, radius: 4.5, name: "Le Felci Montane nella Fessura", loreClue: "Ciuffi di felce andina con piccole fronde crescono all'interno della fessura tra i blocchi megalitici." },
-        { id: `lvl${id}_d9`, x: 74.17, y: 10.60, radius: 4.5, name: "La Bandierina sulla Cresta Sommitale", loreClue: "Un'asta topografica con bandierina rossa triangolare svetta sul punto più alto della muraglia." },
-        { id: `lvl${id}_d10`, x: 15.83, y: 80.36, radius: 5.0, name: "Il Taccuino di Scavo tra le Erbe", loreClue: "Un taccuino di scavo rilegato in cuoio con nastro segnalibro spunta tra i cespugli alla base del tempio." },
+        {
+          id: `lvl${id}_d1`,
+          x: 15.88,
+          y: 80.8,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Architrave Monolitico di Intipunku",
+          loreClue: "Il grande blocco di granito bianco del Portale del Sole presenta profonde scalfiture di scalpello da cava."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 86.58,
+          y: 29.63,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Targa d'Avvistamento della Spedizione Bingham",
+          loreClue: "Il cartello in ottone del 1911 che indicava la vista panoramica è stato staccato dal pilastro."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 72.96,
+          y: 40.35,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Focolare Cerimoniale delle Sentinelle Inca",
+          loreClue: "Il braciere in pietra dove veniva acceso il fuoco di segnalazione equinoziale è stato rovesciato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 53.83,
+          y: 59.71,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa degli Attrezzi dei Restauri Archeologici",
+          loreClue: "La cassa di legno con cunei di bronzo e corde di canapa per il consolidamento dei muri è stata forzata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 74.79,
+          y: 10.66,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Amuleto di Turchese del Messaggero Chasqui",
+          loreClue: "Il ciondolo rituale che identificava i corridori imperiali è stato trafugato dalla nicchia del valico."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 64.54,
+          y: 44.75,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio Bruciato della Mano Oscura sulla Roccia",
+          loreClue: "Un simbolo esoterico con la freccia rovesciata è stato impresso con resina infiammata."
+        }
       ];
     } else if (isLevelOneHundredTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "La Finestra Trapezoidale del Solstizio d'Inverno", loreClue: "L'apertura sacra attraverso cui il raggio solare colpisce l'altare è colmata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Muro Curvilineo in Granito del Torreón", loreClue: "La perfetta curvatura dei conci di pietra levigati senza malta appare spianata." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Roccia Naturale Sagomata all'Interno", loreClue: "L'altare monolitico emergente dal pavimento della torre è svanito." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Finestra Orientata al Solstizio d'Estate", loreClue: "La seconda finestra cerimoniale con pioli d'ancoraggio è murata a filo." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "L'Ingresso Monumentale a Stipiti Sdoppiati", loreClue: "Il portale reale riservato all'Inca e ai sacerdoti è privo di modanatura." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Caverna Ipogea del Mausoleo Reale", loreClue: "L'accesso sotterraneo alla cripta rivestita di pietra bianca è occluso." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "I Conci di Granito Bianco Rifiniti a Specchio", loreClue: "I massi a commettitura invisibile della facciata risultano irregolari." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Canale di Drenaggio delle Piogge Andine", loreClue: "La canaletta scavata nel masso per l'acqua cerimoniale è assente." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Belvedere a Strapiombo sul Fiume Urubamba", loreClue: "La balaustra naturale di roccia affacciata sul torrente è stata tolta." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Gradino Cerimoniale delle Offerte Solari", loreClue: "La mensa litica su cui si versava la chicha rituale è levigata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Finestra Solstiziale del Torreón",
+          loreClue: "L'apertura trapezoidale orientata al solstizio d'inverno ha un blocco di granito levigato scheggiato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Altare della Cripta Reale Sotto il Tempio",
+          loreClue: "La roccia naturale sagomata all'interno della grotta funebre mostra incisioni clandestine recenti."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Maschera d'Oro dell'Inca con Raggi Solari",
+          loreClue: "La grandiosa lamina votiva che decorava la parete interna del tempio è scomparsa dal reliquiario."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 18.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Grata dell'Ipogeo dei Sacerdoti del Sole",
+          loreClue: "La recinzione in ferro a tutela della tomba monumentale è stata divelta con leve metalliche."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "I Rilievi Fotografici Spettrografici di Bellini",
+          loreClue: "I fogli trasparenti con le linee di rifrazione della luce solare tra i conci sono stati bruciacchiati."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Vaso Cerimoniale Kero in Legno Pregiato",
+          loreClue: "Il calice dipinto con scene di battaglia contro gli spagnoli è andato distrutto sul pavimento."
+        }
       ];
     } else if (isLevelOneHundredThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Portale ad Arco Trapezoidale di Intipunku", loreClue: "Il varco d'ingresso imperiale alla Porta del Sole appare livellato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Vista Panoramica sulla Cittadella", loreClue: "La vista a volo d'uccello sui tetti e terrazze svanisce nella foschia." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Cresta Montuosa del Monte Machu Picchu", loreClue: "Il profilo boscoso della vetta che sovrasta il colle è oscurato." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "La Scalinata in Pietra dell'Inca Trail", loreClue: "I ripidi gradini montani battuti dai pellegrini sono stati spianati." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Il Muretto della Guarnigione di Guardia", loreClue: "I resti del posto di blocco dei soldati dell'Inca sono rimossi." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Nube di Vapore Risalente dalla Gola", loreClue: "I vapori termali che salgono dal canyon dell'Urubamba sono dissolti." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Terrazza Belvedere Lastricata", loreClue: "Il piano battuto in lastre di calcare del belvedere è cancellato." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Cippo Topografico con Segnale", loreClue: "Il pilastrino di rilevamento geodetico sulla cresta è stato tolto." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Le Felci Giganti della Selva Nebulosa", loreClue: "I grandi arbusti preistorici sul bordo del sentiero sono assenti." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Palina Metrica dei Primi Rilievi", loreClue: "L'asta geodetica graduata appoggiata al muretto è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Prisma Monolitico dell'Intihuatana",
+          loreClue: "Il leggendario fittone di granito dove l'Inca 'legava il sole' mostra un angolo sbrecciato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Disco Solare in Rame con la Croce del Sud",
+          loreClue: "La piastra gnomonica per l'osservazione delle costellazioni è stata asportata dal podio."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Recinzione a Corda Intrecciata della Terrazza Sacra",
+          loreClue: "Il cordone di canapa con paletti di sostegno che isola il monolito solare è stato tranciato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Taccuino delle Effemeridi Astronomiche Inca",
+          loreClue: "Il volume compilato dagli astronomi di Cusco con le tabelle delle eclissi è stato strappato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lampada ad Acetilene dei Ricercatori",
+          loreClue: "Il riflettore notturno usato per rilevare l'ombra dell'Intihuatana è stato scagliato nel precipizio."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Alchemico della Mano Oscura sulla Base",
+          loreClue: "Il simbolo necromantico a triangolo è stato dipinto a vernice catramosa sulla viva roccia."
+        }
       ];
     } else if (isLevelOneHundredFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Picco Piramidale del Wayna Picchu", loreClue: "Il corno roccioso che fa da sfondo iconico alla rocca scompare nel cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "I Gradini della Morte a Strapiombo", loreClue: "La vertiginosa scalinata incisa sul fianco del picco è stata cancellata." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Tempio della Luna nella Grotta Segreta", loreClue: "L'ingresso monumentale al santuario rupestre nascosto è occluso." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "I Terrazzamenti Pensili Sospesi sulle Nubi", loreClue: "I gradini coltivati a mezza costa sulla falesia sono spianati." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "Il Settore delle Dimore degli Artigiani", loreClue: "Le capanne dei mosaicisti alla sella della montagna sono scomparse." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Vegetazione Lussureggiante sul Dirupo", loreClue: "Le orchidee e i muschi aggrappati alla parete verticale sono rimossi." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "La Nebbia Mattutina Attorno alla Cima", loreClue: "La caratteristica corona di nubi che avvolge la cima è svanita." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Parapetto Naturale di Granito Grigio", loreClue: "La roccia affilata che proteggeva il sentiero di cresta è smussata." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "La Rampa d'Accesso con Funi di Sicurezza", loreClue: "Il corrimano metallico moderno per i trekker è stato rimosso." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Trono Litico dei Sacerdoti Solari", loreClue: "Il seggio scavato sulla punta più alta per scrutare gli astri è assente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Tre Vani Trapezoidali del Tempio",
+          loreClue: "Uno dei grandi stipiti monolitici della finestra centrale ha perso la perfetta giunzione a secco."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Stele con i Tre Mondi della Cosmovisione",
+          loreClue: "La lastra intagliata con Condor, Puma e Serpente (Hanan, Kay, Uku Pacha) è stata spaccata in due."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassa d'Esposizione delle Tessere Litiche",
+          loreClue: "Il cofanetto con campioni di granito usati per testare la sismicità delle mura è stato forzato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Idolo in Giada del Serpente Amaru",
+          loreClue: "La sacra scultura del drago acquatico sotterraneo è stata sottratta dall'architrave."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Filo a Piombo Archeologico con Mirino",
+          loreClue: "Lo strumento di precisione per misurare l'inclinazione antisismica dei muri è stato distrutto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Ossidiana Cerimoniale con Marchio Sacrilego",
+          loreClue: "Lo specchio nero usato per le divinazioni oracolari reca tracce di incisioni profane."
+        }
       ];
     } else if (isLevelOneHundredFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "Il Lama Bianco e Marrone al Pascolo", loreClue: "L'esemplare di camelide andino che bruca sul ciglio è scomparso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "I Muri di Sostegno Megalitici a Terrazza", loreClue: "I muri di contenimento in blocchi poligonali appaiono livellati." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "Il Canale d'Irrigazione con Acqua Sorgiva", loreClue: "La canaletta in pietra che bagnava i coltivi andini è prosciugata." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Secondo Cucciolo di Lama sulle Erbe", loreClue: "Il piccolo di lama sdraiato all'ombra del muretto è svanito." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "Il Sentiero Lastricato tra i Terrazzamenti", loreClue: "La rampa di gradini che collega i vari livelli agricoli è spianata." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "Le Spighe di Mais Andino sui Gradoni", loreClue: "Le coltivazioni sperimentali della terrazza cerimoniale sono tolte." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Terrapieno di Drenaggio con Ghiaia", loreClue: "Gli strati di pietrisco per impedire le frane risultano rimossi." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "La Capanna Ricostruita del Guardiano", loreClue: "Il rifugio in pietra con tetto di paglia ichu è scomparso." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "Il Panorama sui Contrafforti della Cordigliera", loreClue: "I monti innevati che coronano l'orizzonte sono coperti di foschia." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "I Sassi di Calpestio per i Contadini", loreClue: "Le pietre sporgenti inserite nei muri per scavalcare i gradoni sono assenti." },
+        {
+          id: `lvl${id}_d1`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Muro di Sostegno del Terrazzamento Superiore",
+          loreClue: "I conci di granito che trattengono il terreno fertile della montagna mostrano un cedimento indotto."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Canale di Drenaggio Agricolo Sotterraneo",
+          loreClue: "La condotta litica che convoglia le acque piovane verso la valle è stata ostruita con ghiaia."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Statuetta Votiva della Pachamama in Pietra Verde",
+          loreClue: "L'omaggio sepolto dai contadini per propiziare il raccolto del mais è stato dissotterrato e rubato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Paratia della Riserva dei Semi Antichi",
+          loreClue: "La nicchia murata in cui erano conservate varietà precolombiane di quinoa è stata scassinata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Mappa Agronomica dei Microclimi Andini",
+          loreClue: "Lo schema che documenta le variazioni termiche lungo i terrazzamenti è stato parzialmente stracciato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Timbro di Catrame della Setta sui Massi",
+          loreClue: "Il marchio dei sabotatori compare dipinto su uno dei grandi blocchi di testata del terrazzamento."
+        }
       ];
     } else if (isLevelOneHundredSix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Il Grande Blocco Monolitico a Tre Finestre", loreClue: "Il gigantesco masso megalitico della parete est appare uniformato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Commettitura Ciclopica del Tempio Principale", loreClue: "Gli incastri millimetrici dei blocchi sismici risultano sconnessi." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Sedile Cerimoniale nella Roccia Viva", loreClue: "Lo scranno d'onore dei nobili scolpito nella corte è stato raschiato." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Le Tre Finestre Trapezoidali Sacre", loreClue: "I vani orientati all'alba delle tre tribù fondatrici sono murati." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Il Pavimento Spianato della Piazza Sacra", loreClue: "La grande spianata di limo calpestato per i riti solari è solcata." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Cippo Centrale delle Misurazioni", loreClue: "Il blocco d'orientamento astronomico al centro del cortile è rimosso." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Casa del Sacerdote con Pareti Integre", loreClue: "L'edificio residenziale del clero solare appare privo di mura." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Muro Divisorio del Quartiere Reale", loreClue: "La barriera di conci squadrati che separava i nobili è scomparsa." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Fessura Sismica tra i Blocchi Megalitici", loreClue: "La frattura causata dal terremoto del 1950 sulla parete è saldata." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Veduta sugli Spiriti Montani (Apus)", loreClue: "Le vette sacre circostanti considerate divinità svaniscono nel cielo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Portale a Doppio Stipite della Residenza Reale",
+          loreClue: "Il prestigioso ingresso riservato alla famiglia imperiale presenta uno stipite sbrecciato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Piatto Cerimoniale d'Argento con Motivi Geometrici",
+          loreClue: "La vajilla reale finemente martellata è stata trafugata dal banco d'onore."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Cofanetto delle Vesti Cerimoniali Cumbi",
+          loreClue: "Il bauletto contenente i tessuti d'alpaca tinti con porpora e cocciniglia è stato forzato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Cronaca Spagnola di Pedro Cieza de León",
+          loreClue: "La copia del manoscritto con la descrizione dei palazzi segreti reca le ultime pagine strappate."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lampada a Cera d'Api della Sala del Trono",
+          loreClue: "Il portalucerna in bronzo dorato è stato schiacciato sotto pesanti scarponi."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Imperiale del Sapa Inca Deturpato",
+          loreClue: "Il simbolo della corona Mascapaicha inciso sul trono è stato abraso con un ferro acuminato."
+        }
       ];
     } else if (isLevelOneHundredSeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Getto d'Acqua della Fontana Principale", loreClue: "Il limpido flusso sorgivo che sgorga dal beccuccio di pietra è estinto." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "La Vasca Monolitica Scavata nel Granito", loreClue: "Il bacino rettangolare intagliato in un unico blocco è colmato." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Beccuccio di Pietra per l'Acqua Sacra", loreClue: "Il condotto sagomato che convoglia l'acqua alla vasca è scalpellato." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "I Gradini di Raccordo tra le Fontane Litiche", loreClue: "La rampa di scalini che segue la cascata delle sedici fontane è spianata." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "Il Cunicolo Sotterraneo di Captazione", loreClue: "Il passaggio ipogeo che porta l'acqua dalla montagna è occluso." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Canaletta di Sfioro della Vasca Inferiore", loreClue: "Il canale di scarico verso le fontane successive è privo di solco." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "La Nicchia di Purificazione Rituale", loreClue: "L'edicola cerimoniale dove i pellegrini si lavavano è murata a filo." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Le Offerte Votive di Conchiglie Spondylus", loreClue: "I gusci sacri di mollusco depositati sul bordo della vasca sono assenti." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "La Parete a Secco di Contenimento Idrico", loreClue: "Il muro protettivo attorno alla sorgente montana è stato rimosso." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Pozzetto di Decantazione dei Fanghi", loreClue: "La piccola vasca di filtraggio dell'acqua è colmata di sassi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Le Ali di Roccia Naturale del Tempio del Condor",
+          loreClue: "I giganteschi speroni granitici che mimano l'apertura alare del rapace presentano fori da mina."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Testa e il Collare del Condor Scolpiti nel Pavimento",
+          loreClue: "Il blocco sagomato sul piano di calpestio che raffigura il becco è stato scalpellato di fresco."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'Urna Funeraria con Ceneri Sacre dei Guerrieri",
+          loreClue: "Il vaso in alabastro andino collocato dietro le ali del tempio è scomparso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Grata delle Prigioni Sotterranee di Roccia",
+          loreClue: "Le sbarre metalliche che sbarrano i cunicoli ipogei del condor sono state segate."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Lettera del Padre Gesuita Bernabé Cobo",
+          loreClue: "Il testo del 1653 sui culti idolatrici del condor a Machu Picchu è stato bruciato in parte."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Segno del Serpente Bicefalo sulla Falesia",
+          loreClue: "Un'inquietante insegna esoterica della Mano Oscura è stata tracciata sulla parete posteriore."
+        }
       ];
     } else if (isLevelOneHundredEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "L'Ala Sinistra di Roccia Viva del Condor", loreClue: "La naturale formazione rocciosa che simula l'ala spiegate è spianata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Ala Destra Slanciata verso l'Alto", loreClue: "Il secondo blocco granitico che forma la possente ala è scomparso." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "La Testa Scolpita del Condor sul Pavimento", loreClue: "Il profilo del muso con il becco triangolare e la caruncola è levigato." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Foro Cerimoniale delle Libagioni", loreClue: "Il pozzetto di scolo per il sangue dei sacrifici sul becco è colmato." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "La Grotta Sotterranea sotto il Corpo", loreClue: "L'antro ipogeo dove risiedevano le mummie degli antenati è murato." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "Le Nicchie Trapezoidali delle Offerte", loreClue: "I vani a parete per statuette votive d'oro e ceramica sono raschiati." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "La Scaletta Segreta Incisa dietro l'Ala", loreClue: "I ripidi scalini che salgono all'osservatorio superiore sono tolti." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Pavimento Levigato Attorno alla Testa", loreClue: "Le lastre di granito su cui si inginocchiavano i devoti sono spianate." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Cella di Detenzione dei Prigionieri", loreClue: "La nicchia rocciosa dove venivano rinchiusi i colpevoli è priva di vano." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Blocco Sacrificale di Pietra Nera", loreClue: "La mensa d'offerta posata dinanzi alla testa dell'uccello è assente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 80.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Fontana Liturgica Principale della Serie dei Sedici Bagni",
+          loreClue: "Il beccuccio in pietra monolitica da cui sgorga l'acqua pura della sorgente è stato spezzato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Canale Idraulico a Pendenza Costante",
+          loreClue: "La canaletta in granito che alimenta la sequenza dei bagni imperiali è stata deviata con detriti."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Vaso Votivo d'Argento per le Abluzioni",
+          loreClue: "La brocca cerimoniale utilizzata per i lavacri rituali dell'Inca è stata asportata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Boccaporto della Cisterna di Decantazione",
+          loreClue: "La pietra di chiusura della vasca di filtraggio dell'acqua è stata scardinata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rilievo dei Flussi Idraulici di Hiram Bingham",
+          loreClue: "La planimetria con i percorsi delle falde montane che alimentano le fontane è strappata."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Pietra d'Offerta Bagnata di Pece Nera",
+          loreClue: "Il gradino sacrificale accanto alla sorgente principale è stato lordato con catrame."
+        }
       ];
     } else if (isLevelOneHundredNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "L'Asse di Legno Rimovibile del Ponte Inca", loreClue: "I tronchi di frassino che colmano il vuoto della gola sono scomparsi." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Passaggio Tagliato a Strapiombo", loreClue: "La stretta cengia scavata a picco sulla falesia granitica è appiattita." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Precipizio di Seicento Metri sul Vuoto", loreClue: "Il terrificante baratro sottostante il camminamento appare smussato." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Muro a Secco di Raccordo della Cengia", loreClue: "La muratura ciclopica costruita per sostenere il ponte è crollata." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Fune di Sicurezza in Acciaio Ancorata", loreClue: "Il cavo d'arrampicata per i guardiani del parco è stato rimosso." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Portale di Controllo Militare della Gola", loreClue: "L'arco di pietra dove le sentinelle sbarravano l'accesso è assente." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Fitta Giungla Andina nel Baratro", loreClue: "La lussureggiante vegetazione subtropicale in fondo alla gola è sfumata." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Sentiero Panoramico a Mezza Costa", loreClue: "La traccia battuta che conduce al ponte segreto è cancellata." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "I Gradini di Granito Tagliati a Mano", loreClue: "La rampa di scalini a sbalzo sulla roccia viva è spianata." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Targa di Divieto per i Turisti", loreClue: "Il cartello in legno d'allerta per il precipizio è stato tolto." },
+        {
+          id: `lvl${id}_d1`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Scala della Morte di Huayna Picchu",
+          loreClue: "I gradini a picco sull'abisso del fiume Urubamba hanno un tratto franante a causa di scalpellature."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Fune di Sicurezza per la Scalata della Vetta",
+          loreClue: "Il cavo d'acciaio ancorato alla falesia per la salita alla sommità del picco è stato allentato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 68.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Teodolite ad Alta Quota della Stazione Geodetica",
+          loreClue: "Lo strumento trigonometrico fissato sul punto trigonometrico più alto è scomparso."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porta del Corpo di Guardia della Cima",
+          loreClue: "La porta in legno massiccio del torrione di vedetta mostra i cardini sradicati."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Diario di Vetta degli Scalatori Andini",
+          loreClue: "Il registro conservato nella capsula metallica in cima alla piramide naturale è stato lacerato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 40.04,
+          y: 70.09,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio dell'Ombra Eterna sulla Roccia di Vetta",
+          loreClue: "Il sigillo della confraternita è stato dipinto con inchiostro indelebile sul punto più alto."
+        }
       ];
     } else if (isLevelOneHundredTen) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Bagliore Cremisi del Tramonto sulle Mura", loreClue: "I riflessi dorati del sole calante che infiammano i templi sono spenti." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Mare di Nuvole nella Valle dell'Urubamba", loreClue: "La coltre soffice di vapori bianchi che riempie il canyon è svanita." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Cielo Porpora sopra il Wayna Picchu", loreClue: "Le sfumature viola e arancioni del crepuscolo andino sono scolorite." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "I Tetti di Paglia Ricostruiti in Ombra", loreClue: "Le coperture coniche in ichu degli edifici imperiali sono assenti." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Foschia Azzurrognola tra le Terrazze", loreClue: "I fumi d'umidità serale che risalgono le gradinate sono dissolti." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "L'Ombra Allungata dell'Intihuatana", loreClue: "L'ombra proiettata dalla meridiana solare sulla piazza è scomparsa." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "I Profili Scuri dei Ghiacciai all'Orizzonte", loreClue: "Le vette innevate della Cordigliera Vilcabamba svaniscono nel buio." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Scia di Nubi che Carezza la Falesia", loreClue: "Il nastro di nebbia sospeso tra i dirupi della cittadella è assente." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Bagliore delle Prime Stelle Andine", loreClue: "I punti luminosi che compaiono sulla volta celeste sono spenti." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "La Quiete Solenne della Rocca Rivelata", loreClue: "La magica atmosfera del crepuscolo sul santuario appare velata." },
-      ];
-    } else if (isStageEleven) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 72.92, y: 40.18, radius: 5.0, name: "L'Idolo Solare nella Finestra", loreClue: "Una statuetta votiva incisa nella pietra riposa sul vano della finestra trapezoidale del tempio." },
-        { id: `lvl${id}_d2`, x: 86.67, y: 29.58, radius: 5.0, name: "Il Disco Solare sull'Architrave", loreClue: "Un disco solare cerimoniale con quattro raggi cardinali è scolpito sull'architrave monolitico." },
-        { id: `lvl${id}_d3`, x: 53.33, y: 59.15, radius: 4.5, name: "La Mappa nella Mano dell'Esploratore", loreClue: "Il cannocchiale d'ottone è sostituito da una pergamena topografica arrotolata con sigillo di ceralacca." },
-        { id: `lvl${id}_d4`, x: 54.58, y: 38.17, radius: 4.5, name: "La Fascia di Lana Rossa sul Cappello", loreClue: "Una fascia tradizionale andina in lana di vigogna rossa avvolge la cupola del cappello del giovane." },
-        { id: `lvl${id}_d5`, x: 32.92, y: 77.01, radius: 5.0, name: "Il Martello da Geologo sul Blocco", loreClue: "Un martello da geologo con manico in legno di frassino è posato sul blocco megalitico in primo piano." },
-        { id: `lvl${id}_d6`, x: 16.67, y: 22.32, radius: 4.5, name: "Il Chiodo da Roccia con Fune nel Concio", loreClue: "Un chiodo da arrampicata in ferro battuto con spezzone di fune di canapa è piantato nella commettitura ciclopica." },
-        { id: `lvl${id}_d7`, x: 9.17, y: 49.11, radius: 5.0, name: "La Palina Metrica sulla Ripa Erbosa", loreClue: "Una palina geodetica graduata a bande bicolori è piantata sul pendio erboso a sinistra." },
-        { id: `lvl${id}_d8`, x: 64.58, y: 44.64, radius: 4.5, name: "Le Felci Montane nella Fessura", loreClue: "Ciuffi di felce andina con piccole fronde crescono all'interno della fessura tra i blocchi megalitici." },
-        { id: `lvl${id}_d9`, x: 74.17, y: 10.60, radius: 4.5, name: "La Bandierina sulla Cresta Sommitale", loreClue: "Un'asta topografica con bandierina rossa triangolare svetta sul punto più alto della muraglia." },
-        { id: `lvl${id}_d10`, x: 15.83, y: 80.36, radius: 5.0, name: "Il Taccuino di Scavo tra le Erbe", loreClue: "Un taccuino di scavo rilegato in cuoio con nastro segnalibro spunta tra i cespugli alla base del tempio." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "L'UNDICESIMO SIGILLO: Il Disco Solare d'Oro di Pachacuti con Diamante delle Ande",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 11: Il leggendario sole radiante in oro massiccio e diamante grezzo imperiale! Custodito nella cripta segreta del Tempio della Luna, è la chiave finale che svela la rotta verso la giungla inesplorata di Paititi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cripta Segreta nel Cuore del Tempio della Luna",
+          loreClue: "La camera scavata nella caverna naturale sotto Huayna Picchu è stata violata dai mercenari."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Mappa su Pergamena di Paititi della Spedizione Bellini",
+          loreClue: "Il documento finale con le coordinate della città segreta dell'oro è stato strappato in due metà."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Grande Sigillo dell'Eclissi Totale",
+          loreClue: "Il bassorilievo dell'ultimo allineamento planetario che guiderà al confronto supremo è intagliato sulla roccia."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere d'Oro dei Sacerdoti di Inti",
+          loreClue: "Il sacro tripode per le fiamme perpetue è stato rovesciato ai piedi dell'altare della caverna."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Chiave Liturgica a Forma di Giaguaro d'Ossidiana",
+          loreClue: "Il manufatto cerimoniale che sblocca il portale finale di Paititi è stato trafugato dal piedistallo."
+        }
       ];
     } else if (isLevelOneHundredEleven) {
       diffsForLevel = [
