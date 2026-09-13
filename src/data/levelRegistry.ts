@@ -337,25 +337,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelNinety
       ? '/levels/stage9_lvl90_A.jpg?v=2'
       : isLevelNinetyOne
-      ? '/levels/stage10_lvl91_A.jpg'
+      ? '/levels/stage10_lvl91_A.jpg?v=2'
       : isLevelNinetyTwo
-      ? '/levels/stage10_lvl92_A.jpg'
+      ? '/levels/stage10_lvl92_A.jpg?v=2'
       : isLevelNinetyThree
-      ? '/levels/stage10_lvl93_A.jpg'
+      ? '/levels/stage10_lvl93_A.jpg?v=2'
       : isLevelNinetyFour
-      ? '/levels/stage10_lvl94_A.jpg'
+      ? '/levels/stage10_lvl94_A.jpg?v=2'
       : isLevelNinetyFive
-      ? '/levels/stage10_lvl95_A.jpg'
+      ? '/levels/stage10_lvl95_A.jpg?v=2'
       : isLevelNinetySix
-      ? '/levels/stage10_lvl96_A.jpg'
+      ? '/levels/stage10_lvl96_A.jpg?v=2'
       : isLevelNinetySeven
-      ? '/levels/stage10_lvl97_A.jpg'
+      ? '/levels/stage10_lvl97_A.jpg?v=2'
       : isLevelNinetyEight
-      ? '/levels/stage10_lvl98_A.jpg'
+      ? '/levels/stage10_lvl98_A.jpg?v=2'
       : isLevelNinetyNine
-      ? '/levels/stage10_lvl99_A.jpg'
+      ? '/levels/stage10_lvl99_A.jpg?v=2'
       : isLevelOneHundred
-      ? '/levels/stage10_lvl100_A.jpg'
+      ? '/levels/stage10_lvl100_A.jpg?v=2'
       : isLevelOneHundredOne
       ? '/levels/stage11_lvl101_A.jpg'
       : isLevelOneHundredTwo
@@ -620,25 +620,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelNinety
       ? '/levels/stage9_lvl90_B.jpg?v=2'
       : isLevelNinetyOne
-      ? '/levels/stage10_lvl91_B.jpg'
+      ? '/levels/stage10_lvl91_B.jpg?v=2'
       : isLevelNinetyTwo
-      ? '/levels/stage10_lvl92_B.jpg'
+      ? '/levels/stage10_lvl92_B.jpg?v=2'
       : isLevelNinetyThree
-      ? '/levels/stage10_lvl93_B.jpg'
+      ? '/levels/stage10_lvl93_B.jpg?v=2'
       : isLevelNinetyFour
-      ? '/levels/stage10_lvl94_B.jpg'
+      ? '/levels/stage10_lvl94_B.jpg?v=2'
       : isLevelNinetyFive
-      ? '/levels/stage10_lvl95_B.jpg'
+      ? '/levels/stage10_lvl95_B.jpg?v=2'
       : isLevelNinetySix
-      ? '/levels/stage10_lvl96_B.jpg'
+      ? '/levels/stage10_lvl96_B.jpg?v=2'
       : isLevelNinetySeven
-      ? '/levels/stage10_lvl97_B.jpg'
+      ? '/levels/stage10_lvl97_B.jpg?v=2'
       : isLevelNinetyEight
-      ? '/levels/stage10_lvl98_B.jpg'
+      ? '/levels/stage10_lvl98_B.jpg?v=2'
       : isLevelNinetyNine
-      ? '/levels/stage10_lvl99_B.jpg'
+      ? '/levels/stage10_lvl99_B.jpg?v=2'
       : isLevelOneHundred
-      ? '/levels/stage10_lvl100_B.jpg'
+      ? '/levels/stage10_lvl100_B.jpg?v=2'
       : isLevelOneHundredOne
       ? '/levels/stage11_lvl101_B.jpg'
       : isLevelOneHundredTwo
@@ -5911,146 +5911,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelNinetyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 16.67, y: 11.16, radius: 5.0, name: "Il Ramo della Zampa Anteriore", loreClue: "Un tratto ricurvo aggiuntivo prolunga l'artiglio della zampa anteriore sinistra del geoglifo." },
-        { id: `lvl${id}_d2`, x: 41.67, y: 11.16, radius: 5.0, name: "La Linea tra le Zampe Destre", loreClue: "Una trincea rettilinea unisce la prima e la seconda zampa anteriore sul lato destro del ragno." },
-        { id: `lvl${id}_d3`, x: 29.58, y: 21.76, radius: 5.0, name: "Il Pedipalpo Chiuso ad Anello", loreClue: "L'antenna cefalica destra forma un anello chiuso continuo anziché terminare a forcella aperta." },
-        { id: `lvl${id}_d4`, x: 25.00, y: 49.11, radius: 5.0, name: "L'Incisione del Cefalotorace", loreClue: "Un solco rituale trasversale incide il punto di giunzione tra il capo e l'addome del ragno." },
-        { id: `lvl${id}_d5`, x: 24.58, y: 78.13, radius: 5.0, name: "Il Disco Solare nell'Addome", loreClue: "Al centro del grande cerchio addominale compare un disco solare scavato nel terreno sabbioso." },
-        { id: `lvl${id}_d6`, x: 6.25, y: 92.63, radius: 4.5, name: "Il Picchetto con Nastro Rosso", loreClue: "Un picchetto di rilevamento aerofotogrammetrico con nastro rosso è infisso nel terreno desertico." },
-        { id: `lvl${id}_d7`, x: 36.67, y: 93.19, radius: 5.0, name: "Lo Sperone della Zampa Posteriore", loreClue: "Un'estensione ad angolo acuto si dirama verso destra dal punto terminale dell'ultima zampa posteriore." },
-        { id: `lvl${id}_d8`, x: 55.83, y: 53.57, radius: 5.0, name: "Il Tumulo di Pietre all'Apice", loreClue: "Un cumulo di pietre scure vulcaniche definisce il vertice superiore del trapezio cerimoniale." },
-        { id: `lvl${id}_d9`, x: 78.33, y: 66.96, radius: 5.0, name: "La Palina nel Solco Trapezoidale", loreClue: "Una palina metrica da rilievo a fasce bianche e nere è adagiata sul fondo della trincea." },
-        { id: `lvl${id}_d10`, x: 68.33, y: 16.74, radius: 4.5, name: "Il Chiodo Geodetico al Crocevia", loreClue: "Un chiodo topografico di bronzo con testa riflettente è conficcato all'incrocio delle linee astronomiche." },
+        {
+          id: `lvl${id}_d1`,
+          x: 16.79,
+          y: 8.87,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Becco del Colibrì Tracciato sulla Pampa",
+          loreClue: "La linea retta di sessanta metri che forma il becco del geoglifo è stata solcata da pneumatici fuoristrada."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 24.62,
+          y: 78.18,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Teodolite Aerea della Spedizione Reiche",
+          loreClue: "Lo strumento trigonometrico montato sulla torretta di osservazione per mappare le ali del colibrì è sparito."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 29.54,
+          y: 22.1,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Paletto Guida in Legno di Huarango",
+          loreClue: "Il picchetto ligneo millenario usato dai sacerdoti Nazca per tracciare le curve dell'uccello sacro è stato asportato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 41.29,
+          y: 11.27,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Teca di Protezione dei Reperti di Superficie",
+          loreClue: "Il contenitore vetrato contenente frammenti ceramici policromi trovati sulla figura è stato scassinato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 55.88,
+          y: 53.68,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Fotografia Aerea di Maria Reiche del 1946",
+          loreClue: "La storica lastra fotografica in bianco e nero che rivelò il disegno nella sua interezza è strappata a metà."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 25.12,
+          y: 49.16,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Faretto Solare della Passerella Panoramica",
+          loreClue: "La lampada fotovoltaica installata sulla torre d'avvistamento per le osservazioni all'alba è stata distrutta."
+        }
       ];
     } else if (isLevelNinetyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "Il Lungo Becco Rettilineo del Colibrì Sacro", loreClue: "La sottile trincea geoglifica che forma il becco lungo sessanta metri è svanita." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Ala Destra Spiegata verso le Pampas", loreClue: "Le remiganti geometriche dell'ala settentrionale sono state cancellate dal suolo." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "Le Piume Caudali a Ventaglio Rituale", loreClue: "Il disegno a raggi della coda piumata appare levigato nella crosta desertica." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Trincea Geoglifica di Pietre Chiare", loreClue: "Il solco scavato nell'ossido ferroso che delinea il corpo dell'uccello è colmato." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "L'Ala Sinistra con Tratti Paralleli", loreClue: "Le piume stilizzate dell'ala meridionale svaniscono dalla piana di Nazca." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Testa Sferica con l'Occhio Votivo", loreClue: "Il profilo del capo dell'uccello divino appare spianato e uniforme." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Tratto di Raccordo tra le Zampe", loreClue: "La linea continua che connette il torace alle zampe stilizzate è assente." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Terreno Desertico di Ciottoli Ferrosi", loreClue: "I sassi scuri ricchi di manganese che delimitano il profilo sono sparsi." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Linea Astronomica del Solstizio", loreClue: "La trincea retta che attraversa il disegno puntando all'orizzonte è scomparsa." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "Il Tumulo Cerimoniale di Sassi Scuri", loreClue: "Il cumulo di pietre votive eretto alla punta dell'ala destra è stato rimosso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "L'Apertura Alare del Condor sulle Pietre di Ferro",
+          loreClue: "Le pietre ossidate scure rimosse per far emergere il gesso chiaro sottostante sono state ricollocate abusivamente."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Tavoletta Astronomica della Costellazione dell'Aquila",
+          loreClue: "La lastrina in ceramica con i punti d'allineamento stellare del solstizio d'inverno è stata spezzata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Maschera d'Oro del Sacerdote Alato Nazca",
+          loreClue: "Il pettorale cerimoniale con baffi felini e piume di condor è scomparso dal laboratorio da campo."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Recinzione Metallica di Tutela Archeologica",
+          loreClue: "La grata posta a salvaguardia del sentiero rituale che attraversa il corpo del volatile è stata tranciata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio Bruciato della Mano Oscura nel Terreno",
+          loreClue: "Una sagoma triangolare di pece e fosforo è stata impressa a caldo sulla coda del condor."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Rullo Compattatore Abbandonato dai Sabotatori",
+          loreClue: "Uno strumento artigianale usato per cancellare i solchi calcarei giace abbandonato tra le pietre."
+        }
       ];
     } else if (isLevelNinetyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "Le Cinque Dita della Mano Destra Stilizzata", loreClue: "La mano con dita articolate scolpita nel terreno arido è priva di contorno." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Coda a Spirale a Cerchi Concentrici", loreClue: "Il triplice giro armonico della coda del primate appare interrotto e spianato." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Mano Sinistra con Quattro Dita Sacre", loreClue: "La misteriosa mano a quattro dita tipica dell'iconografia nazca è scomparsa." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Il Dorso Arcuato del Primate della Pampa", loreClue: "La linea curva che definisce la schiena della scimmia svanisce nella terra." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "La Zampa Posteriore ancorata alla Linea Guida", loreClue: "L'arto inferiore che si raccorda al grande trapezio appare cancellato." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Muso Allungato della Scimmia Amazzonica", loreClue: "I tratti della testa che evocano le specie delle foreste orientali sono levigati." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "Il Solco Scavato nell'Ossido di Ferro", loreClue: "La traccia chiara che mette in risalto il corpo scuro è colmata da sabbia." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "La Collina d'Arenaria Sovrastante", loreClue: "Il rilievo naturale da cui si ammira la figura del geoglifo è appiattito." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "La Linea Retta che Fende la Figura", loreClue: "Il solco cerimoniale posteriore che taglia il disegno appare saldato." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Trincea di Drenaggio Rituale", loreClue: "Il canale per il deflusso delle rare piogge attorno al disegno è assente." },
+        {
+          id: `lvl${id}_d1`,
+          x: 88.04,
+          y: 75.11,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Coda a Spirale Aurea della Scimmia",
+          loreClue: "Il cerchio concentrico perfetto che si avvolge sulla pampa presenta solchi scavati da zappe clandestine."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Vaso Cerimoniale con la Scimmia a Nove Dita",
+          loreClue: "La brocca a doppio becco con ponte raffigurante l'animale sacro dell'Amazzonia è stata rubata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 41.96,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cassetta degli Strumenti Georadar",
+          loreClue: "Lo scanner a microonde per mappare le cavità sotterranee sotto la pampa è stato forzato."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Diario di Rilievo dei Solstizi di Paul Kosok",
+          loreClue: "Il quaderno dello scopritore del calendario astronomico reca pagine strappate sugli allineamenti."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Palina Topografica a Riflettore Laser",
+          loreClue: "Il prisma ottico riflettente piantato al centro della spirale è stato preso a sassate."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 40.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Necromantico sulla Zampa Anteriore",
+          loreClue: "Uno stemma con il teschio e il compasso è stato tracciato con cera nera sulla figura."
+        }
       ];
     } else if (isLevelNinetyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Becco Uncinato del Condor Andino", loreClue: "Il possente rostro ricurvo del rapace sacro al dio delle vette è svanito." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Le Penne Maestre Frastagliate dell'Ala Destra", loreClue: "Le terminazioni triangolari delle ali aperte per cento metri sono piallate." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Collo Piumato con Collare Cerimoniale", loreClue: "Il profilo ondulato della gola del condor appare livellato nella pampa." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "L'Ala Sinistra Aperta verso le Ande", loreClue: "La grandiosa ala spiegata verso la cordigliera scompare dalla veduta." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Coda Triangolare a Fasce Geometriche", loreClue: "Il motivo a ventaglio solcato alla base dell'uccello è stato raschiato." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "Gli Artigli Possenti Stilizzati sul Terreno", loreClue: "Le zampe da cacciatore disegnate con linea continua sono scomparse." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "La Cresta Caudale del Grande Rapace", loreClue: "Il vertice decorativo sulla sommità della coda del condor appare rimosso." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Ciottolato Rosso della Crosta Desertica", loreClue: "Il contrasto cromatico tra la ghiaia di superficie e il limo chiaro è attenuato." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "L'Asse d'Allineamento Solare del Disegno", loreClue: "La direttrice che collega il cuore del rapace alle stelle è svanita." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Tracciato Geodetico verso Cahuachi", loreClue: "La pista cerimoniale rettilinea che punta alla città santa è cancellata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Pedipalpo Destro del Ragno Gigante",
+          loreClue: "Il sottilissimo canale che rappresenta l'organo riproduttivo dell'aracnide è stato calpestato e sfigurato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 20.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Talismano d'Ambra con Insetto Fossile",
+          loreClue: "L'amuleto rituale che i sacerdoti portavano al collo durante i riti propiziatori della pioggia è sparito."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.0,
+          y: 37.95,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Gabbia Protettiva dell'Anemometro",
+          loreClue: "La stazione del vento che misura l'effetto termico protettivo della pampa è stata scardinata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Rilievo della Cintura di Orione di Bellini",
+          loreClue: "La tavola comparativa tra le zampe del ragno e la nebulosa di Orione è stata lacerata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lanterna a Vetri Colorati della Postazione Notturna",
+          loreClue: "Il faro a filtri blu impiegato per illuminare le linee di notte è andato distrutto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 80.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Impronta di Piombo Fuso sul Dorso del Ragno",
+          loreClue: "Una colata di piombo con il sigillo della setta è stata versata nel solco gessoso."
+        }
       ];
     } else if (isLevelNinetyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "Il Centro della Spirale a Voluta Perfetta", loreClue: "Il nucleo della spirale sacra da cui partivano i pellegrinaggi è colmato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "L'Estremità Esterna del Braccio Rotante", loreClue: "La spira più ampia che si allarga nella pampa è priva di solco." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "Il Vertice Acuto del Trapezio Cerimoniale", loreClue: "L'angolo affilato della gigantesca figura geometrica appare smussato." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "La Corsia Lastricata delle Processioni", loreClue: "Il piano battuto dove sfilavano i fedeli durante i solstizi è cancellato." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "Il Triangolo Geoglifo di Calcare Chiaro", loreClue: "La vasta campitura ripulita dai ciottoli scuri appare ricoperta di sassi." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "La Trincea Perimetrale dell'Altopiano", loreClue: "Il bordo scavato che delinea la sagoma trapezoidale è livellato." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "Il Basamento del Segnale Topografico", loreClue: "Il cippo in pietra posto dagli archeologi all'apice del corridoio è rimosso." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "Il Contrasto Cromatico tra Limo e Sassi", loreClue: "La superficie chiara d'argilla compressa risulta opacizzata dalla sabbia." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Fenditura Arida del Vento Paracas", loreClue: "Il solco naturale modellato dalle brezze marine è sigillato." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "La Linea Equinoziale verso l'Orizzonte", loreClue: "La retta chilometrica che guida lo sguardo verso il tramonto è svanita." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Gli Occhi Grandi dell'Uomo-Civetta / Astronauta",
+          loreClue: "I cerchi concentrici che formano lo sguardo della figura antropomorfa sulla collina mostrano sbrecciature."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.08,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Mano Alzata in Saluto Cosmico",
+          loreClue: "Il braccio sollevato verso il cielo stellato presenta pietre rotolate giù dal pendio."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 14.08,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Lo Scrigno da Campo del Professore Bellini",
+          loreClue: "La valigetta in pelle con i lucidi trasparenti delle costellazioni andine è stata aperta a forza."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 38.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Pettorale d'Argento con Figura Sciamanica",
+          loreClue: "La lamina sbalzata rinvenuta alla base della collina è stata sottratta dall'espositore da campo."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 86.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Calcolo Trigonometrico dell'Inclinazione del Pendio",
+          loreClue: "Il foglio millimetrato con le quote dell'anamorfosi prospettica è bruciacchiato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Croce Solare Incisa sulla Roccia Arenaria",
+          loreClue: "Un glifo non appartenente alla cultura Nazca è stato intagliato abusivamente sotto i piedi della figura."
+        }
       ];
     } else if (isLevelNinetySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "I Rami Sinuosi dell'Albero della Vita", loreClue: "Le biforcazioni curvilinee della chioma dell'albero sacro sono scomparse." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Tronco Slanciato del Grande Vegetale", loreClue: "Il solco verticale che sostiene l'intera figura arborea appare cancellato." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Le Radici Espanse a Ventaglio nella Terra", loreClue: "I tratti inferiori che simulano l'apparato radicale sono stati spianati." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "Le Quattro Dita della Mano Sinistra Anomala", loreClue: "La mano con solo quattro dita accanto al tronco appare livellata." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Le Cinque Dita della Mano Destra", loreClue: "Le falangi stilizzate della seconda mano votiva sono svanite dal suolo." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "La Chioma a Lobi Stilizzati dell'Albero", loreClue: "I rigonfiamenti circolari alle punte dei rami sono stati tolti." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Traccia del Sentiero dei Custodi", loreClue: "Il percorso di ronda che costeggia il geoglifo è privo di delimitazione." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "Il Fossato Cerimoniale tra le Figure", loreClue: "Lo spazio tra l'albero e le mani appare privo del disegno originale." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Il Pendio Roccioso della Pampa Arida", loreClue: "La pendenza su cui è tracciata l'opera geoglifica appare appiattita." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "La Piattaforma d'Osservazione Maria Reiche", loreClue: "Il belvedere metallico sopraelevato per i viaggiatori è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Pista Trapezoidale Maggiore Lunga Due Chilometri",
+          loreClue: "Il vertice della gigantesca rampa cerimoniale è stato tagliato da una trincea abusiva."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 20.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Bussola Topografica a Traguardo Prismatico",
+          loreClue: "Lo strumento professionale per verificare l'azimut del sorgere delle Pleiadi è scomparso dal treppiede."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Cancello di Sbarramento del Sentiero Protetto",
+          loreClue: "La sbarra in tubolari d'acciaio con i cartelli di divieto d'accesso è stata piegata con un verricello."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Documento di Comparazione con i Viali di Teotihuacan",
+          loreClue: "Lo studio comparativo sulle proporzioni geometriche dei viali cerimoniali è strappato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Bandierina Segnaletica a Scacchi Gialli e Neri",
+          loreClue: "Il picchetto di orientamento aereo per i sorvoli dei rilievi è stato spezzato a terra."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Cerchio di Cenere Sacrilega nel Trapezio",
+          loreClue: "I resti di un rogo rituale della Mano Oscura contaminano il suolo gessoso millenario."
+        }
       ];
     } else if (isLevelNinetySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "Il Collo a Serpentina dell'Airone Gigante", loreClue: "I meandri sinuosi del lunghissimo collo dell'uccello sono stati raschiati." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Becco Acuminato che Fende il Deserto", loreClue: "La punta aguzza del becco da trampoliere scompare dalla piana." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "Il Corpo Affusolato del Volatile Sacro", loreClue: "La campitura centrale del pellicano d'acqua dolce è spianata." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Le Zampe Trampoliere Parallele", loreClue: "I due solchi rettilinei che sorreggono la figura sono stati colmati." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "Le Ali Racchiuse nel Profilo Lineare", loreClue: "I fasci geometrici che simulano le ali ripiegate appaiono uniformati." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "La Coda Geometrica a Strisce Solcate", loreClue: "I segmenti paralleli del piumaggio posteriore sono cancellati." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "La Linea Infinita che Parte dal Becco", loreClue: "Il tracciato rettilineo che prosegue per chilometri è svanito." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "La Crosta Argillosa di San José", loreClue: "Il suolo indurito dalle millenarie siccità appare dissodato." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "Il Cippo Geodetico d'Allineamento", loreClue: "Il segnale topografico d'orientamento solare è stato asportato." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Il Solco Cerimoniale delle Offerte", loreClue: "La canalina per le libagioni d'acqua di fonte è priva di traccia." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Pozzi a Spirale in Pietra di Fiume di Cantalloc",
+          loreClue: "I ciottoli arrotondati che formano la rampa a spirale per scendere alla falda idrica sono stati smossi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Coperchio in Legno di Huarango della Condotta",
+          loreClue: "Il pesante trave che copre il canale sotterraneo per limitare l'evaporazione è stato sollevato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Vaso Votivo con la Divinità dell'Acqua e del Mais",
+          loreClue: "La ceramica fine deposta come offerta nel fondo del pozzo artesiano è stata rubata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Mappa delle Falde Acquifere Sub-alveo",
+          loreClue: "Il disegno idraulico che spiega come i Nazca irrigavano il deserto più arido del mondo è sbiadito e strappato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Fune con Secchio d'Ottone per il Pescaggio",
+          loreClue: "La carrucola con il cavo per analizzare la salinità dell'acqua sorgiva è stata gettata nel fondo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "L'Amuleto del Rospo Sciamanico con Occhi di Turchese",
+          loreClue: "L'effigie anfibia propiziatrice delle piogge è stata strappata dalla nicchia della rampa."
+        }
       ];
     } else if (isLevelNinetyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 13.95, radius: 4.0, name: "La Testa Rotonda con Grandi Occhi da Gufo", loreClue: "Il viso circolare con le misteriose orbite ipnotiche è scomparso dalla collina." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Braccio Destro Alzato in Segno di Saluto", loreClue: "L'arto sollevato verso il cielo che accoglie i pellegrini è cancellato." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 13.95, radius: 4.0, name: "Il Corpo Trapezoidale sulla China Rocciosa", loreClue: "La tunica squadrata della figura antropomorfa appare levigata." },
-        { id: `lvl${id}_d4`, x: 14.00, y: 43.97, radius: 4.0, name: "Il Braccio Sinistro Lungo il Fianco", loreClue: "La linea dell'arto disteso verso il basso svanisce nella roccia." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 41.96, radius: 4.0, name: "I Calzari Massicci del Viaggiatore Astrale", loreClue: "I piedi stilizzati posati sul costone della pampa sono assenti." },
-        { id: `lvl${id}_d6`, x: 62.00, y: 41.96, radius: 4.0, name: "Il Costone Ripido della Collina d'Arenaria", loreClue: "La scarpata naturale su cui spicca l'astronauta appare appiattita." },
-        { id: `lvl${id}_d7`, x: 86.00, y: 43.97, radius: 4.0, name: "I Massi di Delimitazione del Bordo Sacro", loreClue: "Le pietre scure allineate per dare rilievo alla sagoma sono tolte." },
-        { id: `lvl${id}_d8`, x: 20.00, y: 75.00, radius: 4.0, name: "L'Elmo Circolare attorno al Volto", loreClue: "L'aureola misteriosa che circonda il capo è stata livellata." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.01, radius: 4.0, name: "La Linea di Cresta della Collina", loreClue: "Il profilo montuoso che incornicia la figura scompare nel cielo." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 75.00, radius: 4.0, name: "La Conoide Alluvionale ai Piedi del Colle", loreClue: "La ghiaia scesa dal monte alla base del geoglifo è spianata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.04,
+          y: 14.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Grande Piramide d'Argilla Cruda di Cahuachi",
+          loreClue: "La facciata a terrazze in mattoni adobe del centro cerimoniale presenta crolli provocati da picconi."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 14.04,
+          y: 44.03,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Palo Totemico del Tempio a Gradoni",
+          loreClue: "Il tronco intagliato con figure di spiriti guardiani del santuario è stato segato alla base."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Porta della Cella delle Vestali del Sole",
+          loreClue: "La paratia in canne intrecciate che custodiva le offerte votive è stata sventrata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 62.04,
+          y: 42.02,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Mantello Funerario Nazca con Centinaia di Figure",
+          loreClue: "Il tessuto policromo in lana di vigogna e cotone con guerrieri alati è stato asportato."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Il Registro degli Scavi di Helaine Silverman",
+          loreClue: "La cartella con i rilievi stratigrafici dei sacrifici rituali è stata dispersa nel vento."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 78.07,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "La Maschera Funeraria di Terracotta Dipinta",
+          loreClue: "Il volto cerimoniale in argilla con occhi spalancati è stato frantumato sul pavimento del tempio."
+        }
       ];
     } else if (isLevelNinetyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 15.00, y: 14.96, radius: 4.0, name: "La Terrazza Sommitale della Grande Piramide", loreClue: "Il piano più alto del tempio piramidale di Cahuachi è scomparso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "I Muri in Mattoni Conici di Fango e Paglia", loreClue: "I conci d'adobe modellati a mano per la facciata sono stati livellati." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "La Piazza Cerimoniale delle Grandi Adunate", loreClue: "Il cortile poligonale per le feste solari appare colmato di sabbia." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.96, radius: 4.0, name: "La Scalinata Monumentale d'Accesso", loreClue: "La ripida rampa di gradini in argilla cotta al sole è spianata." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.96, radius: 4.0, name: "Il Tempio a Gradoni del Settore Centrale", loreClue: "Le terrazze sovrapposte del santuario principale sono scomparse." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "I Pali Rituali in Legno di Huarango", loreClue: "I tronchi d'albero sacro piantati nel pavimento cerimoniale sono assenti." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.98, radius: 4.0, name: "La Corte delle Offerte di Ceramiche Dipinte", loreClue: "La vasca dove venivano infranti i vasi policromi è colmata." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.98, radius: 4.0, name: "La Cinta Muraria in Adobe delle Rovine", loreClue: "I bastioni difensivi della metropoli cerimoniale risultano crollati." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Le Tombe Ipogee Scavate nella Ghiaia", loreClue: "I vani funerari dei sacerdoti mummificati sono stati murati." },
-        { id: `lvl${id}_d10`, x: 88.00, y: 75.00, radius: 4.0, name: "Il Velo di Foschia sulla Valle del Fiume Nazca", loreClue: "I vapori d'umidità che risalgono dal letto fluviale sono svaniti." },
+        {
+          id: `lvl${id}_d1`,
+          x: 85.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Tomba Ipogea in Mattoni di Fango di Chauchilla",
+          loreClue: "Il tetto in travi di huarango che copriva la tomba aperta nel deserto è stato parzialmente sfondato."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 15.01,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Mummia con le Lunghe Trecce di Capelli Umani",
+          loreClue: "La figura seduta in posizione fetale rivolta a est ha il bendaggio di cotone strappato sul petto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Pettorale d'Oro con Teste Trofeo Sbalzate",
+          loreClue: "Il prezioso collare che identificava il guerriero d'élite è stato trafugato dal sarcofago."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 70.03,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Grata di Protezione dalle Tempeste di Sabbia",
+          loreClue: "La rete metallica posta contro i saccheggi notturni è stata tagliata con cesoie."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Lucerna a Olio Animale per i Riti Funerari",
+          loreClue: "Il piccolo coccio con tracce di grasso sacro è stato calpestato e ridotto in polvere."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Marchio Funebre della Mano Oscura sul Muro d'Argilla",
+          loreClue: "Il sigillo della confraternita è stato dipinto con pece nera sopra i geroglifici protettivi."
+        }
       ];
     } else if (isLevelOneHundred) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.05, radius: 4.0, name: "La Spirale d'Accesso in Ciottoli di Fiume", loreClue: "L'apertura a spirale discendente verso l'acqua sorgiva è spianata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "L'Imboccatura del Pozzo Sotterraneo", loreClue: "Il cunicolo a volta che sprofonda nella falda freatica è occluso." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 12.05, radius: 4.0, name: "I Muri a Secco Concentrici del Puquio", loreClue: "Le pietre arrotondate incastrate senza malta sono svanite dal condotto." },
-        { id: `lvl${id}_d4`, x: 50.00, y: 36.05, radius: 4.0, name: "Il Canale d'Acqua Smeraldo sul Fondo", loreClue: "La vena idrica perenne che scorre sotto il deserto appare prosciugata." },
-        { id: `lvl${id}_d5`, x: 15.00, y: 37.95, radius: 4.0, name: "La Seconda Spirale Gemella di Ventilazione", loreClue: "Il camino d'aerazione parallelo per i canali ipogei è stato rimosso." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.95, radius: 4.0, name: "Il Lastricato di Pietre del Camminamento", loreClue: "I gradini concentrici per la manutenzione delle acque sono livellati." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.96, radius: 4.0, name: "Gli Alberi di Huarango Ombreggianti", loreClue: "I rami frondosi che riparano il puquio dall'evaporazione sono tolti." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Canale di Sfioro verso i Campi Irrigati", loreClue: "La canaletta che distribuisce l'acqua alle oasi è interrotta." },
-        { id: `lvl${id}_d9`, x: 82.00, y: 64.96, radius: 4.0, name: "La Paratoia in Pietra dei Guardiani dell'Acqua", loreClue: "La lastra che regolava il deflusso irriguo è scomparsa." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "La Conca Fertile Circondata dal Deserto", loreClue: "Il contrasto verdeggiante tra l'oasi coltivata e la sabbia è attenuato." },
-      ];
-    } else if (isStageTen) {
-      diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 16.67, y: 11.16, radius: 5.0, name: "Il Ramo della Zampa Anteriore", loreClue: "Un tratto ricurvo aggiuntivo prolunga l'artiglio della zampa anteriore sinistra del geoglifo." },
-        { id: `lvl${id}_d2`, x: 41.67, y: 11.16, radius: 5.0, name: "La Linea tra le Zampe Destre", loreClue: "Una trincea rettilinea unisce la prima e la seconda zampa anteriore sul lato destro del ragno." },
-        { id: `lvl${id}_d3`, x: 29.58, y: 21.76, radius: 5.0, name: "Il Pedipalpo Chiuso ad Anello", loreClue: "L'antenna cefalica destra forma un anello chiuso continuo anziché terminare a forcella aperta." },
-        { id: `lvl${id}_d4`, x: 25.00, y: 49.11, radius: 5.0, name: "L'Incisione del Cefalotorace", loreClue: "Un solco rituale trasversale incide il punto di giunzione tra il capo e l'addome del ragno." },
-        { id: `lvl${id}_d5`, x: 24.58, y: 78.13, radius: 5.0, name: "Il Disco Solare nell'Addome", loreClue: "Al centro del grande cerchio addominale compare un disco solare scavato nel terreno sabbioso." },
-        { id: `lvl${id}_d6`, x: 6.25, y: 92.63, radius: 4.5, name: "Il Picchetto con Nastro Rosso", loreClue: "Un picchetto di rilevamento aerofotogrammetrico con nastro rosso è infisso nel terreno desertico." },
-        { id: `lvl${id}_d7`, x: 36.67, y: 93.19, radius: 5.0, name: "Lo Sperone della Zampa Posteriore", loreClue: "Un'estensione ad angolo acuto si dirama verso destra dal punto terminale dell'ultima zampa posteriore." },
-        { id: `lvl${id}_d8`, x: 55.83, y: 53.57, radius: 5.0, name: "Il Tumulo di Pietre all'Apice", loreClue: "Un cumulo di pietre scure vulcaniche definisce il vertice superiore del trapezio cerimoniale." },
-        { id: `lvl${id}_d9`, x: 78.33, y: 66.96, radius: 5.0, name: "La Palina nel Solco Trapezoidale", loreClue: "Una palina metrica da rilievo a fasce bianche e nere è adagiata sul fondo della trincea." },
-        { id: `lvl${id}_d10`, x: 68.33, y: 16.74, radius: 4.5, name: "Il Chiodo Geodetico al Crocevia", loreClue: "Un chiodo topografico di bronzo con testa riflettente è conficcato all'incrocio delle linee astronomiche." },
+        {
+          id: `lvl${id}_d1`,
+          x: 80.0,
+          y: 12.11,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "IL DECIMO SIGILLO: Il Condor d'Oro di Nazca con Occhio di Lapislazzuli",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 10: La sublime statua del sacro condor andino in oro zecchino e lapislazzuli! I suoi artigli tengono la mappa celeste che indica le vette inviolate di Machu Picchu."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 38.0,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "La Cripta Sotto il Centro di Convergenza delle Linee",
+          loreClue: "Il santuario sotterraneo dove convergono oltre quaranta linee della pampa è stato forzato."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "La Lastra di Diorite con il Calendario delle Costellazioni Andine",
+          loreClue: "La monumentale tavoletta che calcola la precessione degli equinozi è spezzata a metà."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 36.1,
+          radius: 8.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo Finale dell'Eclissi Solare",
+          loreClue: "L'emblema del sole nero che preannuncia il risveglio delle forze oscure a Paititi è inciso sulla pietra."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 18.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Braciere Cerimoniale d'Argento Massiccio",
+          loreClue: "Il grande vaso per le offerte aromatiche dei sacerdoti Nazca è stato rovesciato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 82.04,
+          y: 65.01,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Prisma di Quarzo Cristallino della Pampa",
+          loreClue: "Il cristallo ottico che proiettava i raggi solari lungo le linee della pianura è stato trafugato."
+        }
       ];
     } else if (isLevelOneHundredOne) {
       diffsForLevel = [
