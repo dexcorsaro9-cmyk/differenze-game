@@ -731,57 +731,57 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 86.12,
-          y: 56.15,
-          radius: 9.5,
-          clueType: 'stolen_relic',
-          name: "Idolo Solare Inca",
-          loreClue: "La statuetta solare in oro massiccio venerata a Vilcabamba è stata trafugata dal cuscino di velluto: celava le coordinate del primo passo andino."
+          x: 76.47,
+          y: 22.49,
+          radius: 12.0,
+          clueType: 'torn_evidence',
+          name: "Mappa del Mondo del 1512",
+          loreClue: "La grande carta nautica a doppio emisfero è stata strappata via dalla boiserie: la Mano Oscura ha reciso i fili di rame per cancellare la rotta atlantica."
         },
         {
           id: `lvl${id}_d2`,
-          x: 15.30,
-          y: 64.61,
-          radius: 10.0,
+          x: 30.77,
+          y: 37.40,
+          radius: 11.0,
           clueType: 'stolen_relic',
-          name: "Astrolabio Sferico d'Ottone",
-          loreClue: "La monumentale sfera armillare usata per calcolare i solstizi è sparita dal ripiano della libreria."
+          name: "Reliquia Solare nella Campana di Vetro",
+          loreClue: "La campana di cristallo è stata spaccata e l'antico ostensorio d'oro con l'Idolo Solare è stato strappato dal piedistallo."
         },
         {
           id: `lvl${id}_d3`,
-          x: 31.57,
-          y: 80.78,
-          radius: 8.5,
+          x: 72.57,
+          y: 45.52,
+          radius: 10.0,
           clueType: 'sabotage',
-          name: "Bussola Marinaresca d'Argento",
-          loreClue: "Lo scrigno in noce con la bussola cardanica di Sir Fawcett è stato asportato per impedirci di orientare la rotta."
+          name: "Lampada da Banchiere Smeraldo",
+          loreClue: "La lampada da tavolo in ottone e vetro smeraldo è stata divelta per gettare lo studio nell'oscurità."
         },
         {
           id: `lvl${id}_d4`,
-          x: 52.94,
-          y: 81.82,
-          radius: 9.5,
-          clueType: 'torn_evidence',
-          name: "Taccuino di Spedizione di Bellini",
-          loreClue: "Il taccuino aperto con gli appunti sul Rio Madre de Dios e il segnalibro di seta scarlatta è stato rubato dalla scrivania."
+          x: 65.67,
+          y: 57.04,
+          radius: 10.0,
+          clueType: 'dark_seal',
+          name: "Calamaio e Macchia d'Inchiostro",
+          loreClue: "Il calamaio in peltro è stato rovesciato di proposito per nascondere con una pozza d'inchiostro nero i passaggi chiave del manoscritto."
         },
         {
           id: `lvl${id}_d5`,
-          x: 61.99,
-          y: 60.52,
-          radius: 8.5,
-          clueType: 'dark_seal',
-          name: "Lampada da Banchiere in Vetro Verde",
-          loreClue: "La lampada in ottone e vetro smeraldo che illuminava le carte è stata rimossa, lasciando lo studio nella penombra."
+          x: 27.42,
+          y: 84.84,
+          radius: 11.0,
+          clueType: 'sabotage',
+          name: "Cuscino di Velluto e Cocci di Vetro",
+          loreClue: "Il cuscino in velluto bordeaux è cosparso di frammenti di vetro affilati: il sigillo cerimoniale in oro che vi poggiava è stato asportato."
         },
         {
           id: `lvl${id}_d6`,
-          x: 50.00,
-          y: 46.09,
+          x: 44.46,
+          y: 86.62,
           radius: 10.0,
-          clueType: 'torn_evidence',
-          name: "Mappa del Mondo del 1512",
-          loreClue: "La grande carta geografica del navigatore portoghese scomparso nel 1512 è stata sradicata dal telaio in legno scuro."
+          clueType: 'forced_lock',
+          name: "Serratura Forzata del Cassetto Segreto",
+          loreClue: "Il cassetto segreto della scrivania è stato forzato con un piede di porco, lasciando schegge di mogano e mappe frugate."
         },
       ];
     } else if (isLevelTwo) {
