@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   EXPLORERS,
   ALL_OUTFITS,
@@ -6,8 +6,9 @@ import {
   type ExplorerProfile,
   type WardrobeOutfit,
   type WardrobeAccessory,
+  type WardrobePerk,
 } from '../data/avatarData';
-import { AvatarShowcase } from './AvatarShowcase';
+import { AvatarShowcase, type EquipmentSlotType } from './AvatarShowcase';
 import { ItemInspectModal } from './ItemInspectModal';
 import {
   X,
@@ -28,6 +29,13 @@ import {
   Music,
   UserCheck,
   Search,
+  Footprints,
+  Backpack,
+  Shirt,
+  Layers,
+  RotateCcw,
+  Hammer,
+  Snowflake,
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
@@ -55,63 +63,151 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   onSpendCoins,
   onOpenAvatarCreator,
 }) => {
-  const [activeTab, setActiveTab] = useState<'outfits' | 'headgear' | 'tool' | 'talisman'>('outfits');
+  // Active Slot Selected (for Paperdoll highlight and item drawer)
+  const [selectedSlot, setSelectedSlot] = useState<EquipmentSlotType>('torso');
 
-  // Live Fitting Room Previews (temporarily worn on avatar showcase)
+  // Mobile view toggle (doll preview vs equipment drawer)
+  const [mobileTab, setMobileTab] = useState<'paperdoll' | 'drawer'>('paperdoll');
+
+  // Live Fitting Room Previews across all 8 slots
   const [previewOutfitId, setPreviewOutfitId] = useState<string | null>(null);
   const [previewHeadgearId, setPreviewHeadgearId] = useState<string | null>(null);
   const [previewToolId, setPreviewToolId] = useState<string | null>(null);
+  const [previewOffHandId, setPreviewOffHandId] = useState<string | null>(null);
+  const [previewLegsId, setPreviewLegsId] = useState<string | null>(null);
+  const [previewBootsId, setPreviewBootsId] = useState<string | null>(null);
   const [previewTalismanId, setPreviewTalismanId] = useState<string | null>(null);
+  const [previewBackId, setPreviewBackId] = useState<string | null>(null);
 
-  // Modal for Close-Up Item Inspection
+  // Modal for Close-Up Item Lore & 3D Inspection
   const [inspectItem, setInspectItem] = useState<WardrobeOutfit | WardrobeAccessory | null>(null);
 
   if (!isOpen) return null;
 
-  const currentExplorer = EXPLORERS[profile.avatarId];
+  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
 
-  // Filter outfits for this specific explorer
+  // Available outfits for current explorer
   const availableOutfits = ALL_OUTFITS.filter(o => o.avatarId === profile.avatarId);
 
-  // Filter accessories for active tab
-  const activeAccessories = ALL_ACCESSORIES.filter(a => a.slot === activeTab);
+  // Items currently worn/previewed
+  const displayOutfit = ALL_OUTFITS.find(o => o.id === (previewOutfitId || profile.equippedOutfitId));
+  const displayHeadgear = ALL_ACCESSORIES.find(
+    a => a.id === (previewHeadgearId !== null ? previewHeadgearId : profile.equippedHeadgearId)
+  );
+  const displayTool = ALL_ACCESSORIES.find(
+    a => a.id === (previewToolId !== null ? previewToolId : profile.equippedToolId)
+  );
+  const displayOffHand = ALL_ACCESSORIES.find(
+    a =>
+      a.id ===
+      (previewOffHandId !== null
+        ? previewOffHandId
+        : profile.equippedOffHandId || 'off_compass_brass')
+  );
+  const displayLegs = ALL_ACCESSORIES.find(
+    a =>
+      a.id ===
+      (previewLegsId !== null
+        ? previewLegsId
+        : profile.equippedLegsId || 'legs_cargo_khaki')
+  );
+  const displayBoots = ALL_ACCESSORIES.find(
+    a =>
+      a.id ===
+      (previewBootsId !== null
+        ? previewBootsId
+        : profile.equippedBootsId || 'boots_leather_hiker')
+  );
+  const displayTalisman = ALL_ACCESSORIES.find(
+    a => a.id === (previewTalismanId !== null ? previewTalismanId : profile.equippedTalismanId)
+  );
+  const displayBack = ALL_ACCESSORIES.find(
+    a => a.id === (previewBackId !== null ? previewBackId : profile.equippedBackId || null)
+  );
+
+  // Dynamic RPG Stats Summation across active/previewed equipment
+  const activePerks = [
+    displayOutfit?.perk,
+    displayHeadgear?.perk,
+    displayTool?.perk,
+    displayOffHand?.perk,
+    displayLegs?.perk,
+    displayBoots?.perk,
+    displayTalisman?.perk,
+    displayBack?.perk,
+  ].filter(Boolean) as WardrobePerk[];
+
+  const totalCoinBonus = activePerks
+    .filter(p => p.type === 'coin_boost')
+    .reduce((sum, p) => sum + p.value, 0);
+
+  const totalFreezeBonus = activePerks
+    .filter(p => p.type === 'freeze_boost')
+    .reduce((sum, p) => sum + p.value, 0);
+
+  const totalRadarBonus = activePerks
+    .filter(p => p.type === 'radar_boost')
+    .reduce((sum, p) => sum + p.value, 0);
+
+  const hasErrorShield = activePerks.some(p => p.type === 'free_shield');
+
+  const isAnyPreviewActive =
+    previewOutfitId !== null ||
+    previewHeadgearId !== null ||
+    previewToolId !== null ||
+    previewOffHandId !== null ||
+    previewLegsId !== null ||
+    previewBootsId !== null ||
+    previewTalismanId !== null ||
+    previewBackId !== null;
 
   const handleClearPreviews = () => {
     setPreviewOutfitId(null);
     setPreviewHeadgearId(null);
     setPreviewToolId(null);
+    setPreviewOffHandId(null);
+    setPreviewLegsId(null);
+    setPreviewBootsId(null);
     setPreviewTalismanId(null);
+    setPreviewBackId(null);
   };
 
-  const handleTogglePreviewOutfit = (outfitId: string) => {
-    if (previewOutfitId === outfitId) {
-      setPreviewOutfitId(null);
-    } else {
-      setPreviewOutfitId(outfitId);
-    }
+  const handleSelectSlot = (slot: EquipmentSlotType) => {
+    setSelectedSlot(slot);
+    setMobileTab('drawer');
     sound.playTap();
     triggerHaptic('light');
   };
 
-  const handleTogglePreviewAccessory = (acc: WardrobeAccessory) => {
-    if (acc.slot === 'headgear') {
-      setPreviewHeadgearId(prev => (prev === acc.id ? null : acc.id));
-    } else if (acc.slot === 'tool') {
-      setPreviewToolId(prev => (prev === acc.id ? null : acc.id));
-    } else if (acc.slot === 'talisman') {
-      setPreviewTalismanId(prev => (prev === acc.id ? null : acc.id));
-    }
-    sound.playTap();
-    triggerHaptic('light');
-  };
-
-  const handleInspectByItemId = (itemId: string, isOutfit: boolean) => {
-    if (isOutfit) {
-      const found = availableOutfits.find(o => o.id === itemId) || null;
-      setInspectItem(found);
+  // Toggle Live Preview
+  const handleTogglePreview = (item: WardrobeOutfit | WardrobeAccessory) => {
+    if ('avatarId' in item) {
+      setPreviewOutfitId(prev => (prev === item.id ? null : item.id));
     } else {
-      const found = ALL_ACCESSORIES.find(a => a.id === itemId) || null;
-      setInspectItem(found);
+      switch (item.slot) {
+        case 'headgear':
+          setPreviewHeadgearId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'tool':
+        case 'main_hand':
+          setPreviewToolId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'off_hand':
+          setPreviewOffHandId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'legs':
+          setPreviewLegsId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'boots':
+          setPreviewBootsId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'talisman':
+          setPreviewTalismanId(prev => (prev === item.id ? null : item.id));
+          break;
+        case 'back':
+          setPreviewBackId(prev => (prev === item.id ? null : item.id));
+          break;
+      }
     }
     sound.playTap();
     triggerHaptic('light');
@@ -122,7 +218,6 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
     const isUnlocked = profile.unlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
 
     if (!isUnlocked) {
-      // Check level & relic condition
       if (currentLevelId < outfit.requiredLevel) {
         sound.playError();
         triggerHaptic('error');
@@ -133,8 +228,6 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
         triggerHaptic('error');
         return;
       }
-
-      // Check coins
       if (coins < outfit.cost) {
         sound.playError();
         triggerHaptic('error');
@@ -154,7 +247,6 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
       sound.playLevelWin();
       triggerHaptic('success');
     } else {
-      // Already owned -> equip
       const newProfile: ExplorerProfile = {
         ...profile,
         equippedOutfitId: outfit.id,
@@ -166,18 +258,22 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
     }
   };
 
-  // Equip or Buy Accessory
+  // Equip or Buy Accessory across all 7 accessory slots
   const handleEquipAccessory = (acc: WardrobeAccessory) => {
-    const isUnlocked = profile.unlockedAccessoryIds.includes(acc.id);
+    const isUnlocked =
+      profile.unlockedAccessoryIds.includes(acc.id) ||
+      acc.cost === 0 ||
+      acc.id === 'legs_cargo_khaki' ||
+      acc.id === 'boots_leather_hiker' ||
+      acc.id === 'back_canvas_pack' ||
+      acc.id === 'off_compass_brass';
 
     if (!isUnlocked) {
-      // Check level
       if (currentLevelId < acc.requiredLevel) {
         sound.playError();
         triggerHaptic('error');
         return;
       }
-
       if (coins < acc.cost) {
         sound.playError();
         triggerHaptic('error');
@@ -191,28 +287,50 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
         ...profile,
         unlockedAccessoryIds: [...profile.unlockedAccessoryIds, acc.id],
         ...(acc.slot === 'headgear' && { equippedHeadgearId: acc.id }),
-        ...(acc.slot === 'tool' && { equippedToolId: acc.id }),
+        ...((acc.slot === 'tool' || acc.slot === 'main_hand') && { equippedToolId: acc.id }),
+        ...(acc.slot === 'off_hand' && { equippedOffHandId: acc.id }),
+        ...(acc.slot === 'legs' && { equippedLegsId: acc.id }),
+        ...(acc.slot === 'boots' && { equippedBootsId: acc.id }),
         ...(acc.slot === 'talisman' && { equippedTalismanId: acc.id }),
+        ...(acc.slot === 'back' && { equippedBackId: acc.id }),
       };
       onUpdateProfile(newProfile);
+
+      // Clear preview for this slot
       if (acc.slot === 'headgear') setPreviewHeadgearId(null);
-      if (acc.slot === 'tool') setPreviewToolId(null);
+      if (acc.slot === 'tool' || acc.slot === 'main_hand') setPreviewToolId(null);
+      if (acc.slot === 'off_hand') setPreviewOffHandId(null);
+      if (acc.slot === 'legs') setPreviewLegsId(null);
+      if (acc.slot === 'boots') setPreviewBootsId(null);
       if (acc.slot === 'talisman') setPreviewTalismanId(null);
+      if (acc.slot === 'back') setPreviewBackId(null);
 
       sound.playLevelWin();
       triggerHaptic('success');
     } else {
       // Toggle equip / unequip
-      let newProfile = { ...profile };
+      const newProfile = { ...profile };
       if (acc.slot === 'headgear') {
         newProfile.equippedHeadgearId = profile.equippedHeadgearId === acc.id ? null : acc.id;
         setPreviewHeadgearId(null);
-      } else if (acc.slot === 'tool') {
+      } else if (acc.slot === 'tool' || acc.slot === 'main_hand') {
         newProfile.equippedToolId = profile.equippedToolId === acc.id ? null : acc.id;
         setPreviewToolId(null);
+      } else if (acc.slot === 'off_hand') {
+        newProfile.equippedOffHandId = profile.equippedOffHandId === acc.id ? null : acc.id;
+        setPreviewOffHandId(null);
+      } else if (acc.slot === 'legs') {
+        newProfile.equippedLegsId = profile.equippedLegsId === acc.id ? null : acc.id;
+        setPreviewLegsId(null);
+      } else if (acc.slot === 'boots') {
+        newProfile.equippedBootsId = profile.equippedBootsId === acc.id ? null : acc.id;
+        setPreviewBootsId(null);
       } else if (acc.slot === 'talisman') {
         newProfile.equippedTalismanId = profile.equippedTalismanId === acc.id ? null : acc.id;
         setPreviewTalismanId(null);
+      } else if (acc.slot === 'back') {
+        newProfile.equippedBackId = profile.equippedBackId === acc.id ? null : acc.id;
+        setPreviewBackId(null);
       }
       onUpdateProfile(newProfile);
       sound.playSelect();
@@ -221,8 +339,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   };
 
   // Helper for accessory icon
-  const renderAccessoryIcon = (iconName: string) => {
-    const props = { className: 'w-4 h-4' };
+  const renderAccessoryIcon = (iconName: string, className = 'w-4 h-4') => {
+    const props = { className };
     switch (iconName) {
       case 'Glasses': return <Glasses {...props} />;
       case 'Compass': return <Compass {...props} />;
@@ -235,18 +353,118 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
       case 'Shield': return <Shield {...props} />;
       case 'Zap': return <Zap {...props} />;
       case 'Sun': return <Sun {...props} />;
+      case 'Snowflake': return <Snowflake {...props} />;
       default: return <Sparkles {...props} />;
     }
   };
 
+  // Get current slot items
+  const currentSlotItems = useMemo(() => {
+    if (selectedSlot === 'torso') {
+      return availableOutfits;
+    }
+    if (selectedSlot === 'main_hand') {
+      return ALL_ACCESSORIES.filter(a => a.slot === 'tool' || a.slot === 'main_hand');
+    }
+    return ALL_ACCESSORIES.filter(a => a.slot === selectedSlot);
+  }, [selectedSlot, availableOutfits]);
+
+  // Slot definitions for the RPG Paperdoll frame
+  const LEFT_SLOTS: {
+    id: EquipmentSlotType;
+    name: string;
+    subname: string;
+    icon: React.ComponentType<{ className?: string }>;
+    item: WardrobeOutfit | WardrobeAccessory | undefined;
+    isPreview: boolean;
+  }[] = [
+    {
+      id: 'headgear',
+      name: 'Testa',
+      subname: 'Copricapo',
+      icon: Crown,
+      item: displayHeadgear,
+      isPreview: previewHeadgearId !== null,
+    },
+    {
+      id: 'talisman',
+      name: 'Collo',
+      subname: 'Amuleto',
+      icon: Sparkles,
+      item: displayTalisman,
+      isPreview: previewTalismanId !== null,
+    },
+    {
+      id: 'torso',
+      name: 'Busto',
+      subname: 'Tenuta & Giacca',
+      icon: Shirt,
+      item: displayOutfit,
+      isPreview: previewOutfitId !== null,
+    },
+    {
+      id: 'back',
+      name: 'Schiena',
+      subname: 'Zaino & Mantello',
+      icon: Backpack,
+      item: displayBack,
+      isPreview: previewBackId !== null,
+    },
+  ];
+
+  const RIGHT_SLOTS: {
+    id: EquipmentSlotType;
+    name: string;
+    subname: string;
+    icon: React.ComponentType<{ className?: string }>;
+    item: WardrobeOutfit | WardrobeAccessory | undefined;
+    isPreview: boolean;
+  }[] = [
+    {
+      id: 'main_hand',
+      name: 'Mano DX',
+      subname: 'Strumento Primario',
+      icon: Hammer,
+      item: displayTool,
+      isPreview: previewToolId !== null,
+    },
+    {
+      id: 'off_hand',
+      name: 'Mano SX',
+      subname: 'Scudo & Carte',
+      icon: Shield,
+      item: displayOffHand,
+      isPreview: previewOffHandId !== null,
+    },
+    {
+      id: 'legs',
+      name: 'Gambe',
+      subname: 'Pantaloni Tattici',
+      icon: Layers,
+      item: displayLegs,
+      isPreview: previewLegsId !== null,
+    },
+    {
+      id: 'boots',
+      name: 'Piedi',
+      subname: 'Calzature da Marcia',
+      icon: Footprints,
+      item: displayBoots,
+      isPreview: previewBootsId !== null,
+    },
+  ];
+
+  const ALL_SLOTS = [...LEFT_SLOTS, ...RIGHT_SLOTS];
+  const activeSlotMeta = ALL_SLOTS.find(s => s.id === selectedSlot) || LEFT_SLOTS[0];
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
-      <div className="relative w-full max-w-lg bg-stone-900/95 border-2 border-amber-500/60 rounded-3xl shadow-[0_0_50px_rgba(217,119,6,0.3)] overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
+      <div className="relative w-full max-w-6xl bg-stone-950 border-2 border-amber-500/70 rounded-3xl shadow-[0_0_60px_rgba(217,119,6,0.35)] overflow-hidden flex flex-col h-[94vh] max-h-[860px]">
         
         {/* Ancient Header */}
-        <div className="relative px-4 py-2.5 border-b border-amber-900/50 bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full border border-amber-400/50 overflow-hidden shadow-md">
+        <div className="relative px-3 sm:px-5 py-2.5 border-b border-amber-900/60 bg-gradient-to-r from-[#1b120c] via-[#2a1a10] to-[#1b120c] flex items-center justify-between shrink-0 shadow-lg">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full border-2 border-amber-400 overflow-hidden shadow-md shrink-0">
               <img
                 src={currentExplorer.portrait}
                 alt={currentExplorer.name}
@@ -254,231 +472,543 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
               />
             </div>
             <div>
-              <h2 className="text-sm sm:text-base font-black text-amber-100 font-serif leading-tight">
-                Guardaroba & Camerino di Prova
-              </h2>
-              <div className="text-[10px] text-stone-400 font-medium">
-                {profile.playerName} · <span className="text-amber-300">{currentExplorer.title}</span>
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm sm:text-base font-black text-amber-100 font-serif leading-tight">
+                  Armeria & Camerino RPG
+                </h2>
+                <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-[9px] font-bold text-amber-300 uppercase tracking-widest">
+                  8 Slot Equipaggiamento
+                </span>
+              </div>
+              <div className="text-[11px] text-stone-300 font-medium">
+                {profile.playerName} · <span className="text-amber-400 font-bold">{currentExplorer.title}</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             {/* Coins badge */}
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-950/60 border border-amber-500/40 rounded-full text-amber-300 font-bold text-xs shadow-inner">
-              <Coins className="w-3.5 h-3.5 text-amber-400" />
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-950/80 border border-amber-500/50 rounded-full text-amber-300 font-bold text-xs shadow-inner">
+              <Coins className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
               <span>{coins}</span>
             </div>
 
+            {/* Change character link */}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenAvatarCreator();
+              }}
+              className="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-amber-300 text-xs font-bold border border-stone-700 transition cursor-pointer"
+            >
+              <UserCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Cambia Eroe</span>
+            </button>
+
+            {/* Close Button */}
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white border border-stone-700 transition cursor-pointer"
+              className="p-1.5 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white border border-stone-700 transition cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Live Interactive Avatar Fitting Room Showcase */}
-        <AvatarShowcase
-          profile={profile}
-          previewOutfitId={previewOutfitId}
-          previewHeadgearId={previewHeadgearId}
-          previewToolId={previewToolId}
-          previewTalismanId={previewTalismanId}
-          onClearPreview={handleClearPreviews}
-          onSelectInspectItem={handleInspectByItemId}
-        />
-
-        {/* Change character link */}
-        <div className="px-4 py-1 bg-stone-950/70 border-b border-stone-800 flex items-center justify-between text-[10px]">
-          <span className="text-stone-400">
-            Tocca <span className="text-amber-300 font-bold">Anteprima</span> su qualsiasi capo per vederlo subito sull'avatar.
-          </span>
+        {/* Mobile View Toggle Bar (Only visible on small screens) */}
+        <div className="lg:hidden flex items-center justify-around bg-stone-900 border-b border-stone-800 p-1 shrink-0 text-xs font-bold">
           <button
             type="button"
-            onClick={() => {
-              onClose();
-              onOpenAvatarCreator();
-            }}
-            className="text-amber-400 hover:text-amber-300 font-bold underline transition cursor-pointer flex items-center gap-1 shrink-0"
+            onClick={() => setMobileTab('paperdoll')}
+            className={`flex-1 py-1.5 rounded-xl transition text-center cursor-pointer ${
+              mobileTab === 'paperdoll'
+                ? 'bg-amber-600 text-stone-950 font-black shadow'
+                : 'text-stone-400 hover:text-stone-200'
+            }`}
           >
-            <UserCheck className="w-3 h-3" />
-            Cambia Esploratore
+            Modello Eroe & Statistiche
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('drawer')}
+            className={`flex-1 py-1.5 rounded-xl transition text-center cursor-pointer ${
+              mobileTab === 'drawer'
+                ? 'bg-amber-600 text-stone-950 font-black shadow'
+                : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            Armeria ({activeSlotMeta.name})
           </button>
         </div>
 
-        {/* Category Tabs */}
-        <div className="grid grid-cols-4 gap-1 p-2 bg-stone-950 border-b border-stone-800 text-[11px] font-bold text-center">
-          <button
-            type="button"
-            onClick={() => setActiveTab('outfits')}
-            className={`py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeTab === 'outfits'
-                ? 'bg-amber-600 text-stone-950 font-black shadow-md'
-                : 'text-stone-400 hover:text-stone-200'
-            }`}
-          >
-            Tenute
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('headgear')}
-            className={`py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeTab === 'headgear'
-                ? 'bg-amber-600 text-stone-950 font-black shadow-md'
-                : 'text-stone-400 hover:text-stone-200'
-            }`}
-          >
-            Copricapo
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('tool')}
-            className={`py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeTab === 'tool'
-                ? 'bg-amber-600 text-stone-950 font-black shadow-md'
-                : 'text-stone-400 hover:text-stone-200'
-            }`}
-          >
-            Strumenti
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('talisman')}
-            className={`py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeTab === 'talisman'
-                ? 'bg-amber-600 text-stone-950 font-black shadow-md'
-                : 'text-stone-400 hover:text-stone-200'
-            }`}
-          >
-            Amuleti
-          </button>
-        </div>
-
-        {/* Scrollable Item Catalog */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2.5 custom-scrollbar bg-stone-900/60">
+        {/* Main Content Area: 2-Column Responsive Layout */}
+        <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-3 p-2 sm:p-3">
           
-          {/* Outfits List */}
-          {activeTab === 'outfits' && (
-            <div className="space-y-2.5">
-              {availableOutfits.map(outfit => {
-                const isEquipped = profile.equippedOutfitId === outfit.id;
-                const isPreviewing = previewOutfitId === outfit.id;
-                const isUnlocked = profile.unlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
-                const canUnlockLevel = currentLevelId >= outfit.requiredLevel;
-                const canUnlockRelics = !outfit.requiredRelics || discoveredRelicCount >= outfit.requiredRelics;
-                const canAfford = coins >= outfit.cost;
+          {/* ============================================================== */}
+          {/* COLUMN 1: RPG PAPERDOLL FRAME (FULL BODY HERO + 8 SLOTS + STATS) */}
+          {/* ============================================================== */}
+          <div
+            className={`lg:col-span-7 flex flex-col h-full overflow-hidden ${
+              mobileTab === 'drawer' ? 'hidden lg:flex' : 'flex'
+            }`}
+          >
+            {/* Paperdoll Stage Container */}
+            <div className="flex-1 min-h-0 relative flex flex-col bg-stone-900/60 rounded-2xl border border-amber-900/40 p-2 overflow-hidden shadow-inner">
+              
+              {/* Paperdoll Framing: Left Slots | Full-Body Model Center | Right Slots */}
+              <div className="flex-1 min-h-0 flex items-stretch justify-between gap-1 sm:gap-2 relative">
+                
+                {/* Left 4 Equipment Slots */}
+                <div className="w-24 sm:w-28 flex flex-col justify-between py-1 z-20 shrink-0 gap-1.5">
+                  {LEFT_SLOTS.map(slot => {
+                    const isSelected = selectedSlot === slot.id;
+                    const IconComp = slot.icon;
+                    return (
+                      <button
+                        key={slot.id}
+                        type="button"
+                        onClick={() => handleSelectSlot(slot.id)}
+                        className={`w-full p-1.5 sm:p-2 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-center relative ${
+                          isSelected
+                            ? 'bg-amber-950/90 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.5)] ring-2 ring-amber-400/80'
+                            : 'bg-black/75 hover:bg-stone-900/90 border-amber-500/30 hover:border-amber-400/60'
+                        }`}
+                      >
+                        {slot.isPreview && (
+                          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                        )}
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <div
+                            className={`p-1 rounded-lg ${
+                              isSelected
+                                ? 'bg-amber-500 text-stone-950'
+                                : 'bg-stone-800 text-amber-400'
+                            }`}
+                          >
+                            <IconComp className="w-3.5 h-3.5" />
+                          </div>
+                          <span
+                            className={`text-[10px] sm:text-[11px] font-black uppercase tracking-wider truncate ${
+                              isSelected ? 'text-amber-300 font-black' : 'text-stone-300'
+                            }`}
+                          >
+                            {slot.name}
+                          </span>
+                        </div>
+                        <div className="text-[9px] sm:text-[10px] text-amber-200/90 font-medium truncate">
+                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">Vuoto</span>}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Center: The Full-Body Hero Character Showcase on Pedestal */}
+                <div className="flex-1 min-h-0 relative flex items-center justify-center">
+                  <AvatarShowcase
+                    profile={profile}
+                    previewOutfitId={previewOutfitId}
+                    previewHeadgearId={previewHeadgearId}
+                    previewToolId={previewToolId}
+                    previewOffHandId={previewOffHandId}
+                    previewLegsId={previewLegsId}
+                    previewBootsId={previewBootsId}
+                    previewTalismanId={previewTalismanId}
+                    previewBackId={previewBackId}
+                    selectedSlot={selectedSlot}
+                    onSelectSlot={handleSelectSlot}
+                    onClearPreview={handleClearPreviews}
+                    onSelectInspectItem={(id, isOutfit) => {
+                      if (isOutfit) {
+                        const found = availableOutfits.find(o => o.id === id);
+                        if (found) setInspectItem(found);
+                      } else {
+                        const found = ALL_ACCESSORIES.find(a => a.id === id);
+                        if (found) setInspectItem(found);
+                      }
+                    }}
+                  />
+                </div>
+
+                {/* Right 4 Equipment Slots */}
+                <div className="w-24 sm:w-28 flex flex-col justify-between py-1 z-20 shrink-0 gap-1.5">
+                  {RIGHT_SLOTS.map(slot => {
+                    const isSelected = selectedSlot === slot.id;
+                    const IconComp = slot.icon;
+                    return (
+                      <button
+                        key={slot.id}
+                        type="button"
+                        onClick={() => handleSelectSlot(slot.id)}
+                        className={`w-full p-1.5 sm:p-2 rounded-xl border text-right transition-all cursor-pointer flex flex-col justify-center relative items-end ${
+                          isSelected
+                            ? 'bg-amber-950/90 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.5)] ring-2 ring-amber-400/80'
+                            : 'bg-black/75 hover:bg-stone-900/90 border-amber-500/30 hover:border-amber-400/60'
+                        }`}
+                      >
+                        {slot.isPreview && (
+                          <span className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                        )}
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span
+                            className={`text-[10px] sm:text-[11px] font-black uppercase tracking-wider truncate ${
+                              isSelected ? 'text-amber-300 font-black' : 'text-stone-300'
+                            }`}
+                          >
+                            {slot.name}
+                          </span>
+                          <div
+                            className={`p-1 rounded-lg ${
+                              isSelected
+                                ? 'bg-amber-500 text-stone-950'
+                                : 'bg-stone-800 text-amber-400'
+                            }`}
+                          >
+                            <IconComp className="w-3.5 h-3.5" />
+                          </div>
+                        </div>
+                        <div className="text-[9px] sm:text-[10px] text-amber-200/90 font-medium truncate w-full text-right">
+                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">Vuoto</span>}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+              </div>
+
+              {/* Dynamic RPG Stats Attribute Bar (Totals summed from all 8 slots) */}
+              <div className="mt-2 pt-2 border-t border-amber-900/40 bg-stone-950/80 rounded-xl p-2 shrink-0">
+                <div className="flex items-center justify-between mb-1 text-[10px] text-amber-400 font-bold uppercase tracking-wider">
+                  <div className="flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span>Attributi di Spedizione Attivi</span>
+                  </div>
+                  {isAnyPreviewActive && (
+                    <span className="text-[9px] text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/40">
+                      Include Statistiche Anteprima
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-4 gap-1 sm:gap-2 text-center">
+                  {/* Stat 1: Difesa Errori */}
+                  <div
+                    className={`p-1.5 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      hasErrorShield
+                        ? 'bg-emerald-950/60 border-emerald-500/60 text-emerald-300'
+                        : 'bg-stone-900/60 border-stone-800 text-stone-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1 text-[10px] font-bold">
+                      <Shield className="w-3 h-3 text-emerald-400" />
+                      <span>Difesa</span>
+                    </div>
+                    <div className="text-xs font-black mt-0.5">
+                      {hasErrorShield ? '1 Scudo Attivo' : 'Nessuno'}
+                    </div>
+                  </div>
+
+                  {/* Stat 2: Bonus Monete */}
+                  <div
+                    className={`p-1.5 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      totalCoinBonus > 0
+                        ? 'bg-amber-950/60 border-amber-500/60 text-amber-300'
+                        : 'bg-stone-900/60 border-stone-800 text-stone-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1 text-[10px] font-bold">
+                      <Coins className="w-3 h-3 text-amber-400" />
+                      <span>Bonus Oro</span>
+                    </div>
+                    <div className="text-xs font-black mt-0.5">
+                      {totalCoinBonus > 0 ? `+${totalCoinBonus}%` : '0%'}
+                    </div>
+                  </div>
+
+                  {/* Stat 3: Congelamento */}
+                  <div
+                    className={`p-1.5 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      totalFreezeBonus > 0
+                        ? 'bg-cyan-950/60 border-cyan-500/60 text-cyan-300'
+                        : 'bg-stone-900/60 border-stone-800 text-stone-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1 text-[10px] font-bold">
+                      <Snowflake className="w-3 h-3 text-cyan-400" />
+                      <span>Dilatazione</span>
+                    </div>
+                    <div className="text-xs font-black mt-0.5">
+                      {totalFreezeBonus > 0 ? `+${totalFreezeBonus}s Tempo` : '0s'}
+                    </div>
+                  </div>
+
+                  {/* Stat 4: Radar Perlustrazione */}
+                  <div
+                    className={`p-1.5 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      totalRadarBonus > 0
+                        ? 'bg-purple-950/60 border-purple-500/60 text-purple-300'
+                        : 'bg-stone-900/60 border-stone-800 text-stone-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1 text-[10px] font-bold">
+                      <Compass className="w-3 h-3 text-purple-400" />
+                      <span>Percezione</span>
+                    </div>
+                    <div className="text-xs font-black mt-0.5">
+                      {totalRadarBonus > 0 ? `+${totalRadarBonus}% Radar` : '0%'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ============================================================== */}
+          {/* COLUMN 2: ARMORY CATALOG DRAWER FOR THE SELECTED SLOT           */}
+          {/* ============================================================== */}
+          <div
+            className={`lg:col-span-5 flex flex-col h-full bg-stone-900/90 rounded-2xl border border-amber-900/50 overflow-hidden shadow-2xl ${
+              mobileTab === 'paperdoll' ? 'hidden lg:flex' : 'flex'
+            }`}
+          >
+            {/* Slot Switcher Pills (Horizontal Scrolling on mobile) */}
+            <div className="p-2 border-b border-stone-800 bg-stone-950/80 overflow-x-auto custom-scrollbar shrink-0">
+              <div className="flex items-center gap-1 min-w-max">
+                {ALL_SLOTS.map(s => {
+                  const isSelected = selectedSlot === s.id;
+                  const IconComp = s.icon;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => handleSelectSlot(s.id)}
+                      className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                        isSelected
+                          ? 'bg-amber-500 text-stone-950 font-black shadow-md'
+                          : 'bg-stone-900 hover:bg-stone-800 text-stone-400 hover:text-stone-200 border border-stone-800'
+                      }`}
+                    >
+                      <IconComp className="w-3.5 h-3.5" />
+                      <span>{s.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Current Active Slot Header */}
+            <div className="px-3.5 py-2 border-b border-amber-950/60 bg-gradient-to-r from-amber-950/40 via-stone-900 to-amber-950/30 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                  {React.createElement(activeSlotMeta.icon, { className: 'w-4 h-4' })}
+                </div>
+                <div>
+                  <h3 className="text-xs sm:text-sm font-black text-amber-100 font-serif">
+                    Slot: {activeSlotMeta.name} ({activeSlotMeta.subname})
+                  </h3>
+                  <div className="text-[10px] text-stone-400">
+                    {currentSlotItems.length} equipaggiamenti disponibili per questa parte
+                  </div>
+                </div>
+              </div>
+
+              {isAnyPreviewActive && (
+                <button
+                  type="button"
+                  onClick={handleClearPreviews}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-amber-300 text-[10px] font-bold border border-stone-600 transition cursor-pointer"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Annulla Anteprima</span>
+                </button>
+              )}
+            </div>
+
+            {/* Scrollable Catalog of Items for Active Slot */}
+            <div className="flex-1 overflow-y-auto p-2.5 sm:p-3 space-y-2.5 custom-scrollbar bg-stone-950/40">
+              {currentSlotItems.map(item => {
+                const isOutfit = 'avatarId' in item;
+                const isEquipped = isOutfit
+                  ? profile.equippedOutfitId === item.id
+                  : (selectedSlot === 'headgear' && profile.equippedHeadgearId === item.id) ||
+                    (selectedSlot === 'talisman' && profile.equippedTalismanId === item.id) ||
+                    (selectedSlot === 'main_hand' && profile.equippedToolId === item.id) ||
+                    (selectedSlot === 'off_hand' &&
+                      (profile.equippedOffHandId || 'off_compass_brass') === item.id) ||
+                    (selectedSlot === 'legs' &&
+                      (profile.equippedLegsId || 'legs_cargo_khaki') === item.id) ||
+                    (selectedSlot === 'boots' &&
+                      (profile.equippedBootsId || 'boots_leather_hiker') === item.id) ||
+                    (selectedSlot === 'back' && profile.equippedBackId === item.id);
+
+                const isPreviewing = isOutfit
+                  ? previewOutfitId === item.id
+                  : (selectedSlot === 'headgear' && previewHeadgearId === item.id) ||
+                    (selectedSlot === 'talisman' && previewTalismanId === item.id) ||
+                    (selectedSlot === 'main_hand' && previewToolId === item.id) ||
+                    (selectedSlot === 'off_hand' && previewOffHandId === item.id) ||
+                    (selectedSlot === 'legs' && previewLegsId === item.id) ||
+                    (selectedSlot === 'boots' && previewBootsId === item.id) ||
+                    (selectedSlot === 'back' && previewBackId === item.id);
+
+                const isUnlocked = isOutfit
+                  ? profile.unlockedOutfitIds.includes(item.id) || item.cost === 0
+                  : profile.unlockedAccessoryIds.includes(item.id) ||
+                    item.cost === 0 ||
+                    item.id === 'legs_cargo_khaki' ||
+                    item.id === 'boots_leather_hiker' ||
+                    item.id === 'back_canvas_pack' ||
+                    item.id === 'off_compass_brass';
+
+                const canUnlockLevel = currentLevelId >= item.requiredLevel;
+                const canUnlockRelics =
+                  !('requiredRelics' in item) ||
+                  !item.requiredRelics ||
+                  discoveredRelicCount >= item.requiredRelics;
+                const canAfford = coins >= item.cost;
 
                 return (
                   <div
-                    key={outfit.id}
+                    key={item.id}
                     className={`p-3 rounded-2xl border transition-all ${
                       isPreviewing
-                        ? 'bg-amber-950/60 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.4)] ring-1 ring-amber-400'
+                        ? 'bg-amber-950/70 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.4)] ring-1 ring-amber-400'
                         : isEquipped
                         ? 'bg-amber-950/30 border-amber-500/70 shadow-md'
                         : isUnlocked
-                        ? 'bg-stone-950/60 border-stone-800 hover:border-stone-700'
-                        : 'bg-stone-950/30 border-stone-800/60 opacity-85'
+                        ? 'bg-stone-900/80 border-stone-800 hover:border-stone-700'
+                        : 'bg-stone-950/60 border-stone-800/60 opacity-85'
                     }`}
                   >
+                    {/* Item Top Info */}
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="text-xs font-bold text-stone-100 font-serif">
-                            {outfit.name}
-                          </span>
-                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
-                            {outfit.tag}
-                          </span>
+                      <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                        <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
+                          {isOutfit ? (
+                            <Shirt className="w-5 h-5 text-amber-400" />
+                          ) : (
+                            renderAccessoryIcon(
+                              (item as WardrobeAccessory).iconName,
+                              'w-5 h-5 text-amber-400'
+                            )
+                          )}
                         </div>
-                        <p className="text-[11px] text-stone-400 leading-relaxed">
-                          {outfit.description}
-                        </p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                            <span className="text-xs sm:text-sm font-bold text-stone-100 font-serif">
+                              {item.name}
+                            </span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
+                              {item.tag}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-stone-400 leading-relaxed line-clamp-2">
+                            {item.description}
+                          </p>
+                        </div>
                       </div>
 
                       {/* Perk badge */}
-                      {outfit.perk.label !== 'Assetto Standard' && (
-                        <div className="shrink-0 px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold flex items-center gap-1">
+                      {item.perk && item.perk.label !== 'Assetto Standard' && (
+                        <div className="shrink-0 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[10px] font-bold flex items-center gap-1">
                           <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                          {outfit.perk.label}
+                          <span>{item.perk.label}</span>
                         </div>
                       )}
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between pt-2 border-t border-stone-800/80 gap-2">
-                      {/* Price / Requirements */}
-                      <div>
+                    {/* Bottom Actions Bar */}
+                    <div className="mt-2.5 pt-2 flex items-center justify-between border-t border-stone-800/80 gap-2">
+                      {/* Price / Unlock Requirements */}
+                      <div className="text-xs">
                         {!isUnlocked ? (
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                          <div className="flex items-center gap-1.5 font-bold text-amber-300">
                             <Coins className="w-3.5 h-3.5 text-amber-400" />
-                            <span>{outfit.cost} Monete</span>
+                            <span>{item.cost} Monete</span>
                             {!canUnlockLevel && (
                               <span className="text-[10px] text-red-400 font-normal">
-                                (Liv. {outfit.requiredLevel})
+                                (Liv. {item.requiredLevel})
                               </span>
                             )}
                             {!canUnlockRelics && (
                               <span className="text-[10px] text-red-400 font-normal">
-                                ({outfit.requiredRelics} Reliquie)
+                                ({('requiredRelics' in item && item.requiredRelics) || 0} Reliquie)
                               </span>
                             )}
                           </div>
                         ) : (
                           <div className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
                             <Check className="w-3.5 h-3.5" />
-                            Acquistato
+                            Posseduto
                           </div>
                         )}
                       </div>
 
-                      {/* Action Buttons: Anteprima + Ispeziona + Acquista/Indossa */}
+                      {/* Action buttons: Anteprima + Ispeziona + Equipaggia/Sblocca */}
                       <div className="flex items-center gap-1.5">
-                        {/* 1. ANTEPRIMA / PROVA SULL'AVATAR */}
+                        {/* 1. Anteprima live fitting */}
                         <button
                           type="button"
-                          onClick={() => handleTogglePreviewOutfit(outfit.id)}
+                          onClick={() => handleTogglePreview(item)}
                           className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
                             isPreviewing
                               ? 'bg-amber-500 text-stone-950 shadow-[0_0_12px_#f59e0b]'
                               : 'bg-stone-800 hover:bg-stone-700 text-amber-300 border border-amber-600/40'
                           }`}
-                          title="Vedi subito questo capo indossato sull'avatar"
+                          title="Vedi subito questo pezzo indossato sul corpo del modello"
                         >
                           <Eye className="w-3 h-3" />
                           <span>{isPreviewing ? 'In Prova' : 'Anteprima'}</span>
                         </button>
 
-                        {/* 2. ISPEZIONA SCHEDA COMPLETA */}
+                        {/* 2. Ispeziona scheda completa */}
                         <button
                           type="button"
-                          onClick={() => setInspectItem(outfit)}
+                          onClick={() => setInspectItem(item)}
                           className="p-1 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 transition cursor-pointer"
                           title="Ispeziona modello e dettagli"
                         >
                           <Search className="w-3.5 h-3.5" />
                         </button>
 
-                        {/* 3. EQUIP / BUY */}
+                        {/* 3. Equipaggia o Sblocca */}
                         {isEquipped ? (
-                          <span className="px-3 py-1 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-bold flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => (isOutfit ? null : handleEquipAccessory(item as WardrobeAccessory))}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition ${
+                              isOutfit
+                                ? 'bg-amber-500/20 border border-amber-400/50 text-amber-300 cursor-default'
+                                : 'bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-300 cursor-pointer'
+                            }`}
+                          >
                             <Check className="w-3 h-3 stroke-[3]" />
-                            Indossato
-                          </span>
+                            <span>{isOutfit ? 'Indossato' : 'Rimuovi'}</span>
+                          </button>
                         ) : isUnlocked ? (
                           <button
                             type="button"
-                            onClick={() => handleEquipOutfit(outfit)}
-                            className="px-3 py-1 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-100 text-xs font-bold border border-stone-600 transition cursor-pointer active:scale-95"
+                            onClick={() =>
+                              isOutfit
+                                ? handleEquipOutfit(item as WardrobeOutfit)
+                                : handleEquipAccessory(item as WardrobeAccessory)
+                            }
+                            className="px-3 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shadow-md transition cursor-pointer active:scale-95"
                           >
-                            Indossa
+                            Equipaggia
                           </button>
                         ) : (
                           <button
                             type="button"
-                            onClick={() => handleEquipOutfit(outfit)}
+                            onClick={() =>
+                              isOutfit
+                                ? handleEquipOutfit(item as WardrobeOutfit)
+                                : handleEquipAccessory(item as WardrobeAccessory)
+                            }
                             disabled={!canUnlockLevel || !canUnlockRelics || !canAfford}
                             className={`px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
                               canUnlockLevel && canUnlockRelics && canAfford
@@ -505,172 +1035,20 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                 );
               })}
             </div>
-          )}
 
-          {/* Accessories List (Headgear, Tool, Talisman) */}
-          {activeTab !== 'outfits' && (
-            <div className="space-y-2.5">
-              {activeAccessories.map(acc => {
-                const isEquipped =
-                  (acc.slot === 'headgear' && profile.equippedHeadgearId === acc.id) ||
-                  (acc.slot === 'tool' && profile.equippedToolId === acc.id) ||
-                  (acc.slot === 'talisman' && profile.equippedTalismanId === acc.id);
-                
-                const isPreviewing =
-                  (acc.slot === 'headgear' && previewHeadgearId === acc.id) ||
-                  (acc.slot === 'tool' && previewToolId === acc.id) ||
-                  (acc.slot === 'talisman' && previewTalismanId === acc.id);
-
-                const isUnlocked = profile.unlockedAccessoryIds.includes(acc.id);
-                const canUnlockLevel = currentLevelId >= acc.requiredLevel;
-                const canAfford = coins >= acc.cost;
-
-                return (
-                  <div
-                    key={acc.id}
-                    className={`p-3 rounded-2xl border transition-all ${
-                      isPreviewing
-                        ? 'bg-amber-950/60 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.4)] ring-1 ring-amber-400'
-                        : isEquipped
-                        ? 'bg-amber-950/30 border-amber-500/70 shadow-md'
-                        : isUnlocked
-                        ? 'bg-stone-950/60 border-stone-800 hover:border-stone-700'
-                        : 'bg-stone-950/30 border-stone-800/60 opacity-85'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-start gap-2.5 flex-1">
-                        <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
-                          {renderAccessoryIcon(acc.iconName)}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <span className="text-xs font-bold text-stone-100 font-serif">
-                              {acc.name}
-                            </span>
-                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
-                              {acc.tag}
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-stone-400 leading-relaxed">
-                            {acc.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Perk badge */}
-                      {acc.perk && (
-                        <div className="shrink-0 px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold flex items-center gap-1">
-                          <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                          {acc.perk.label}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between pt-2 border-t border-stone-800/80 gap-2">
-                      {/* Price */}
-                      <div>
-                        {!isUnlocked ? (
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
-                            <Coins className="w-3.5 h-3.5 text-amber-400" />
-                            <span>{acc.cost} Monete</span>
-                            {!canUnlockLevel && (
-                              <span className="text-[10px] text-red-400 font-normal">
-                                (Livello {acc.requiredLevel})
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
-                            <Check className="w-3.5 h-3.5" />
-                            Posseduto
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Action Buttons: Anteprima + Ispeziona + Equipaggia/Acquista */}
-                      <div className="flex items-center gap-1.5">
-                        {/* 1. ANTEPRIMA / PROVA SULL'AVATAR */}
-                        <button
-                          type="button"
-                          onClick={() => handleTogglePreviewAccessory(acc)}
-                          className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
-                            isPreviewing
-                              ? 'bg-amber-500 text-stone-950 shadow-[0_0_12px_#f59e0b]'
-                              : 'bg-stone-800 hover:bg-stone-700 text-amber-300 border border-amber-600/40'
-                          }`}
-                          title="Vedi questo accessorio posizionato direttamente sull'avatar"
-                        >
-                          <Eye className="w-3 h-3" />
-                          <span>{isPreviewing ? 'In Prova' : 'Anteprima'}</span>
-                        </button>
-
-                        {/* 2. ISPEZIONA SCHEDA COMPLETA */}
-                        <button
-                          type="button"
-                          onClick={() => setInspectItem(acc)}
-                          className="p-1 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 transition cursor-pointer"
-                          title="Ispeziona modello e dettagli"
-                        >
-                          <Search className="w-3.5 h-3.5" />
-                        </button>
-
-                        {/* 3. EQUIP / BUY */}
-                        {isEquipped ? (
-                          <button
-                            type="button"
-                            onClick={() => handleEquipAccessory(acc)}
-                            className="px-3 py-1 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-bold flex items-center gap-1 hover:bg-amber-500/30 transition cursor-pointer"
-                          >
-                            <Check className="w-3 h-3 stroke-[3]" />
-                            Rimuovi
-                          </button>
-                        ) : isUnlocked ? (
-                          <button
-                            type="button"
-                            onClick={() => handleEquipAccessory(acc)}
-                            className="px-3 py-1 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-100 text-xs font-bold border border-stone-600 transition cursor-pointer active:scale-95"
-                          >
-                            Equipaggia
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => handleEquipAccessory(acc)}
-                            disabled={!canUnlockLevel || !canAfford}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition cursor-pointer active:scale-95 ${
-                              canUnlockLevel && canAfford
-                                ? 'bg-amber-500 hover:bg-amber-400 text-stone-950 shadow-md'
-                                : 'bg-stone-800 text-stone-500 border border-stone-700 cursor-not-allowed'
-                            }`}
-                          >
-                            {!canUnlockLevel ? (
-                              <>
-                                <Lock className="w-3 h-3" />
-                                Bloccato
-                              </>
-                            ) : (
-                              <>
-                                <Coins className="w-3 h-3" />
-                                Sblocca
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Drawer Footer Notice */}
+            <div className="px-3.5 py-2 border-t border-stone-800 bg-stone-950/90 text-[10px] text-stone-400 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-3 h-3 text-amber-400 shrink-0" />
+                <span className="truncate">Tutti i bonus sono cumulativi e attivi nelle differenze.</span>
+              </div>
+              <span className="text-amber-400 font-bold shrink-0">{profile.playerName}</span>
             </div>
-          )}
+
+          </div>
+
         </div>
 
-        {/* Footer info note */}
-        <div className="px-4 py-2 border-t border-amber-950/50 bg-stone-950/90 text-[10px] text-stone-400 text-center flex items-center justify-center gap-2">
-          <Shield className="w-3 h-3 text-amber-400" />
-          <span>I perk delle tenute e degli accessori si sommano automaticamente durante la spedizione.</span>
-        </div>
       </div>
 
       {/* Close-Up Item Inspector Modal */}
@@ -682,21 +1060,40 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           isUnlocked={
             'avatarId' in inspectItem
               ? profile.unlockedOutfitIds.includes(inspectItem.id) || inspectItem.cost === 0
-              : profile.unlockedAccessoryIds.includes(inspectItem.id)
+              : profile.unlockedAccessoryIds.includes(inspectItem.id) ||
+                inspectItem.cost === 0 ||
+                inspectItem.id === 'legs_cargo_khaki' ||
+                inspectItem.id === 'boots_leather_hiker' ||
+                inspectItem.id === 'back_canvas_pack' ||
+                inspectItem.id === 'off_compass_brass'
           }
           isEquipped={
             'avatarId' in inspectItem
               ? profile.equippedOutfitId === inspectItem.id
               : (inspectItem.slot === 'headgear' && profile.equippedHeadgearId === inspectItem.id) ||
-                (inspectItem.slot === 'tool' && profile.equippedToolId === inspectItem.id) ||
-                (inspectItem.slot === 'talisman' && profile.equippedTalismanId === inspectItem.id)
+                ((inspectItem.slot === 'tool' || inspectItem.slot === 'main_hand') &&
+                  profile.equippedToolId === inspectItem.id) ||
+                (inspectItem.slot === 'off_hand' &&
+                  (profile.equippedOffHandId || 'off_compass_brass') === inspectItem.id) ||
+                (inspectItem.slot === 'legs' &&
+                  (profile.equippedLegsId || 'legs_cargo_khaki') === inspectItem.id) ||
+                (inspectItem.slot === 'boots' &&
+                  (profile.equippedBootsId || 'boots_leather_hiker') === inspectItem.id) ||
+                (inspectItem.slot === 'talisman' &&
+                  profile.equippedTalismanId === inspectItem.id) ||
+                (inspectItem.slot === 'back' && profile.equippedBackId === inspectItem.id)
           }
           isPreviewing={
             'avatarId' in inspectItem
               ? previewOutfitId === inspectItem.id
               : (inspectItem.slot === 'headgear' && previewHeadgearId === inspectItem.id) ||
-                (inspectItem.slot === 'tool' && previewToolId === inspectItem.id) ||
-                (inspectItem.slot === 'talisman' && previewTalismanId === inspectItem.id)
+                ((inspectItem.slot === 'tool' || inspectItem.slot === 'main_hand') &&
+                  previewToolId === inspectItem.id) ||
+                (inspectItem.slot === 'off_hand' && previewOffHandId === inspectItem.id) ||
+                (inspectItem.slot === 'legs' && previewLegsId === inspectItem.id) ||
+                (inspectItem.slot === 'boots' && previewBootsId === inspectItem.id) ||
+                (inspectItem.slot === 'talisman' && previewTalismanId === inspectItem.id) ||
+                (inspectItem.slot === 'back' && previewBackId === inspectItem.id)
           }
           canUnlockLevel={currentLevelId >= inspectItem.requiredLevel}
           canUnlockRelics={
@@ -706,11 +1103,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           }
           canAfford={coins >= inspectItem.cost}
           onTryOn={() => {
-            if ('avatarId' in inspectItem) {
-              handleTogglePreviewOutfit(inspectItem.id);
-            } else {
-              handleTogglePreviewAccessory(inspectItem);
-            }
+            handleTogglePreview(inspectItem);
             setInspectItem(null);
           }}
           onBuyOrEquip={() => {

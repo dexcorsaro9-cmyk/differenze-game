@@ -20,10 +20,21 @@ export interface WardrobeOutfit {
   tag: string;
 }
 
+export type EquipmentSlot =
+  | 'headgear'
+  | 'torso'
+  | 'legs'
+  | 'boots'
+  | 'main_hand'
+  | 'off_hand'
+  | 'talisman'
+  | 'back'
+  | 'tool'; // alias for main_hand
+
 export interface WardrobeAccessory {
   id: string;
   name: string;
-  slot: 'headgear' | 'tool' | 'talisman';
+  slot: EquipmentSlot;
   description: string;
   cost: number;
   requiredLevel: number;
@@ -38,8 +49,8 @@ export interface ExplorerCharacter {
   title: string;
   specialization: string;
   bio: string;
-  image: string;
-  portrait: string;
+  image: string; // FULL BODY RENDER ON STONE PEDESTAL
+  portrait: string; // CLOSE-UP HEADSHOT
   accentColor: string;
   badgeBg: string;
   defaultOutfitId: string;
@@ -51,10 +62,14 @@ export interface ExplorerCharacter {
 export interface ExplorerProfile {
   avatarId: 'samira' | 'mateo';
   playerName: string;
-  equippedOutfitId: string;
+  equippedOutfitId: string; // Torso / Outfit
   equippedHeadgearId: string | null;
-  equippedToolId: string | null;
-  equippedTalismanId: string | null;
+  equippedToolId: string | null; // Main Hand Tool
+  equippedOffHandId?: string | null; // Off Hand Shield/Item
+  equippedLegsId?: string | null; // Legs / Cargo Pants
+  equippedBootsId?: string | null; // Boots / Footwear
+  equippedTalismanId: string | null; // Neck Amulet
+  equippedBackId?: string | null; // Backpack / Cloak
   unlockedOutfitIds: string[];
   unlockedAccessoryIds: string[];
 }
@@ -66,7 +81,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     title: 'Epigrafista & Archeo-Acustica',
     specialization: 'Decifrazione Lingue Perdute & Risonanza Architettonica',
     bio: 'Formatasi all\'Università di Coimbra e pioniera delle spedizioni andine. Decifra iscrizioni pre-incaiche registrando frequenze di risonanza tra le rovine di Paititi.',
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_explorer.jpg'),
     portrait: assetUrl('/avatars/female_samira.jpg'),
     accentColor: 'from-emerald-600 to-teal-800',
     badgeBg: 'bg-emerald-950/80 border-emerald-500/50',
@@ -81,7 +96,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     title: 'Topografo & Geo-Archeologo',
     specialization: 'Cartografia Geodetica & Speleologia delle Terre Alte',
     bio: 'Maestro cartografo specializzato nelle forre delle valli andine. Triangola le antiche mappe indigene con la geomorfologia reale scoprendo percorsi creduti scomparsi.',
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_explorer.jpg'),
     portrait: assetUrl('/avatars/male_mateo.jpg'),
     accentColor: 'from-amber-600 to-amber-900',
     badgeBg: 'bg-amber-950/80 border-amber-500/50',
@@ -377,5 +392,186 @@ export const ALL_ACCESSORIES: WardrobeAccessory[] = [
     perk: { type: 'coin_boost', value: 15, label: '+15% Monete' },
     iconName: 'Sun',
     tag: 'Sacro',
+  },
+
+  // Slot: Legs / Pantaloni
+  {
+    id: 'legs_cargo_khaki',
+    name: 'Pantaloni Cargo da Scavo (Base)',
+    slot: 'legs',
+    description: 'Tessuto rip-stop in cotone pesante con tasche per scalpelli e taccuini.',
+    cost: 0,
+    requiredLevel: 1,
+    iconName: 'Shield',
+    tag: 'Standard',
+  },
+  {
+    id: 'legs_leather_kneepads',
+    name: 'Pantaloni Rinforzati con Ginocchiere in Cuoio',
+    slot: 'legs',
+    description: 'Protezioni ergonomiche sagomate per scavi prolungati su pietra ruvida.',
+    cost: 190,
+    requiredLevel: 14,
+    perk: { type: 'coin_boost', value: 5, label: '+5% Monete' },
+    iconName: 'Shield',
+    tag: 'Rinforzato',
+  },
+  {
+    id: 'legs_alpine_thermal',
+    name: 'Calzoni Termici da Guado & Ghiacciaio',
+    slot: 'legs',
+    description: 'Fodera in flanella cerata per scalate alpine e fiumi sotterranei andini.',
+    cost: 290,
+    requiredLevel: 32,
+    perk: { type: 'freeze_boost', value: 3, label: '+3s Congelamento' },
+    iconName: 'Snowflake',
+    tag: 'Termico',
+  },
+  {
+    id: 'legs_inti_gold',
+    name: 'Pantaloni Cerimoniali dei Sacerdoti del Sole',
+    slot: 'legs',
+    description: 'Decorati con bande geometriche e filamenti d\'oro puro dell\'Inti.',
+    cost: 480,
+    requiredLevel: 72,
+    perk: { type: 'coin_boost', value: 12, label: '+12% Monete' },
+    iconName: 'Crown',
+    tag: 'Regale',
+  },
+
+  // Slot: Boots / Calzature
+  {
+    id: 'boots_leather_hiker',
+    name: 'Scarponi da Marcia in Cuoio Ingrassato (Base)',
+    slot: 'boots',
+    description: 'Suola rinforzata cucita a guardolo per terreni sconnessi.',
+    cost: 0,
+    requiredLevel: 1,
+    iconName: 'Compass',
+    tag: 'Standard',
+  },
+  {
+    id: 'boots_swamp_buckle',
+    name: 'Stivali da Palude con Fibbie d\'Ottone',
+    slot: 'boots',
+    description: 'Gamba alta impermeabile per superare i fanghi delle valli amazzoniche.',
+    cost: 170,
+    requiredLevel: 16,
+    perk: { type: 'freeze_boost', value: 2, label: '+2s Congelamento' },
+    iconName: 'Shield',
+    tag: 'Palude',
+  },
+  {
+    id: 'boots_andean_crampons',
+    name: 'Calzari da Scalata con Tacchetti Geodetici',
+    slot: 'boots',
+    description: 'Punte in ferro battuto per aderenza massima sulle creste di Machu Picchu.',
+    cost: 310,
+    requiredLevel: 42,
+    perk: { type: 'radar_boost', value: 10, label: '+10% Ampiezza Radar' },
+    iconName: 'Crosshair',
+    tag: 'Scalata',
+  },
+  {
+    id: 'boots_jaguar_royal',
+    name: 'Stivali Reali in Pelle di Giaguaro & Lamina d\'Oro',
+    slot: 'boots',
+    description: 'Calzari consacrati indossati dal generale Inka prima della fondazione di Paititi.',
+    cost: 540,
+    requiredLevel: 78,
+    perk: { type: 'coin_boost', value: 15, label: '+15% Monete' },
+    iconName: 'Crown',
+    tag: 'Sacro',
+  },
+
+  // Slot: Off-Hand / Scudo & Strumento Secondario
+  {
+    id: 'off_sacred_shield',
+    name: 'Scudo di Bronzo dei Guardiani dell\'Inti',
+    slot: 'off_hand',
+    description: 'Antico disco protettivo a sbalzo che devia gli imprevisti e assorbe i fallimenti.',
+    cost: 450,
+    requiredLevel: 48,
+    perk: { type: 'free_shield', value: 1, label: '1 Scudo Errore Gratuito' },
+    iconName: 'Shield',
+    tag: 'Difesa',
+  },
+  {
+    id: 'off_compass_brass',
+    name: 'Bussola Azimutale della Royal Geographic Society',
+    slot: 'off_hand',
+    description: 'Quadrante in argento sterling graduato in 360° per orientamento istantaneo.',
+    cost: 210,
+    requiredLevel: 18,
+    perk: { type: 'radar_boost', value: 12, label: '+12% Ampiezza Radar' },
+    iconName: 'Compass',
+    tag: 'Navigazione',
+  },
+  {
+    id: 'off_lopez_map',
+    name: 'Carta Idrografica Autografa di Padre Lopez (1600)',
+    slot: 'off_hand',
+    description: 'La mappa originale con annotazioni cifrate sui corsi d\'acqua sotterranei.',
+    cost: 280,
+    requiredLevel: 28,
+    perk: { type: 'freeze_boost', value: 4, label: '+4s Congelamento' },
+    iconName: 'BookOpen',
+    tag: 'Manoscritto',
+  },
+  {
+    id: 'off_lantern_brass',
+    name: 'Lampada da Minatore a Carburo con Specchio Ustorio',
+    slot: 'off_hand',
+    description: 'Luce calda ad alta penetrazione per illuminare i rilievi più celati.',
+    cost: 360,
+    requiredLevel: 50,
+    perk: { type: 'coin_boost', value: 10, label: '+10% Monete' },
+    iconName: 'Lightbulb',
+    tag: 'Illuminazione',
+  },
+
+  // Slot: Back / Schiena & Zaini
+  {
+    id: 'back_canvas_pack',
+    name: 'Zaino da Campo in Canapa 1928 (Base)',
+    slot: 'back',
+    description: 'Robusto zaino da trekking con cinghie in cuoio e moschettoni in ferro.',
+    cost: 0,
+    requiredLevel: 1,
+    iconName: 'Shield',
+    tag: 'Standard',
+  },
+  {
+    id: 'back_waxed_cloak',
+    name: 'Mantello da Tempesta in Tela Cerata',
+    slot: 'back',
+    description: 'Ampio mantello scuro a prova di tempesta tropicale e polvere di scavo.',
+    cost: 260,
+    requiredLevel: 24,
+    perk: { type: 'coin_boost', value: 6, label: '+6% Monete' },
+    iconName: 'Sparkles',
+    tag: 'Pioggia',
+  },
+  {
+    id: 'back_andean_poncho',
+    name: 'Poncho Cerimoniale in Lana di Vigogna e Tintura Porpora',
+    slot: 'back',
+    description: 'Tessitura ancestrale con simboli delle quattro province del Tawantinsuyu.',
+    cost: 390,
+    requiredLevel: 56,
+    perk: { type: 'coin_boost', value: 10, label: '+10% Monete' },
+    iconName: 'Sun',
+    tag: 'Tradizione',
+  },
+  {
+    id: 'back_topographer_quiver',
+    name: 'Fodero Topografico in Cuoio con Triangolazioni Reali',
+    slot: 'back',
+    description: 'Custodia rigida anti-urto per carte millimetriche, sestante e aste graduate.',
+    cost: 490,
+    requiredLevel: 66,
+    perk: { type: 'free_shield', value: 1, label: '1 Scudo Errore Gratuito' },
+    iconName: 'Crosshair',
+    tag: 'Topografia',
   },
 ];

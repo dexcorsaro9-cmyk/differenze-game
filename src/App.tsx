@@ -230,27 +230,40 @@ export const App: React.FC = () => {
     return [];
   });
 
-  // Active Explorer Perks Calculation
+  // Active Explorer Perks Calculation across all 8 RPG Equipment Slots!
   const activeOutfit = ALL_OUTFITS.find(o => o.id === explorerProfile.equippedOutfitId);
   const activeHeadgear = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedHeadgearId);
   const activeTool = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedToolId);
+  const activeOffHand = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedOffHandId);
+  const activeLegs = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedLegsId);
+  const activeBoots = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedBootsId);
   const activeTalisman = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedTalismanId);
+  const activeBack = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedBackId);
 
-  const coinBonusPercent =
-    (activeOutfit?.perk.type === 'coin_boost' ? activeOutfit.perk.value : 0) +
-    (activeHeadgear?.perk?.type === 'coin_boost' ? activeHeadgear.perk.value : 0) +
-    (activeTool?.perk?.type === 'coin_boost' ? activeTool.perk.value : 0) +
-    (activeTalisman?.perk?.type === 'coin_boost' ? activeTalisman.perk.value : 0);
+  const equippedPerks = [
+    activeOutfit?.perk,
+    activeHeadgear?.perk,
+    activeTool?.perk,
+    activeOffHand?.perk,
+    activeLegs?.perk,
+    activeBoots?.perk,
+    activeTalisman?.perk,
+    activeBack?.perk,
+  ].filter(Boolean) as { type: string; value: number }[];
 
-  const freezeBonusSeconds =
-    (activeOutfit?.perk.type === 'freeze_boost' ? activeOutfit.perk.value : 0) +
-    (activeHeadgear?.perk?.type === 'freeze_boost' ? activeHeadgear.perk.value : 0) +
-    (activeTool?.perk?.type === 'freeze_boost' ? activeTool.perk.value : 0) +
-    (activeTalisman?.perk?.type === 'freeze_boost' ? activeTalisman.perk.value : 0);
+  const coinBonusPercent = equippedPerks
+    .filter(p => p.type === 'coin_boost')
+    .reduce((sum, p) => sum + p.value, 0);
 
-  const hasPassiveFreeShield =
-    activeOutfit?.perk.type === 'free_shield' ||
-    activeTool?.perk?.type === 'free_shield';
+  const freezeBonusSeconds = equippedPerks
+    .filter(p => p.type === 'freeze_boost')
+    .reduce((sum, p) => sum + p.value, 0);
+
+  const radarBonusPercent = equippedPerks
+    .filter(p => p.type === 'radar_boost')
+    .reduce((sum, p) => sum + p.value, 0);
+
+  const hasPassiveFreeShield = equippedPerks.some(p => p.type === 'free_shield');
 
   // Persistent Progress: Completed Level IDs & Discovered Difference Clues
   const [completedLevelIds, setCompletedLevelIds] = useState<number[]>(() => {
@@ -643,13 +656,14 @@ export const App: React.FC = () => {
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
         setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar - 1 }));
-        const quadX = Math.max(2, Math.min(68, unfound.x - 15));
-        const quadY = Math.max(2, Math.min(68, unfound.y - 15));
+        const quadSize = Math.min(45, Math.round(30 * (1 + radarBonusPercent / 100)));
+        const quadX = Math.max(2, Math.min(98 - quadSize, unfound.x - quadSize / 2));
+        const quadY = Math.max(2, Math.min(98 - quadSize, unfound.y - quadSize / 2));
         setActiveRadar({
           x: quadX,
           y: quadY,
-          width: 30,
-          height: 30,
+          width: quadSize,
+          height: quadSize,
           targetDiffId: unfound.id,
         });
         sound.playCompass();
@@ -683,6 +697,8 @@ export const App: React.FC = () => {
       currentLevel.differences,
       foundDifferenceIds,
       settings.vibrationEnabled,
+      freezeBonusSeconds,
+      radarBonusPercent,
     ]
   );
 

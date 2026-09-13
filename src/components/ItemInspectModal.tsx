@@ -20,6 +20,7 @@ import {
   Zap,
   Sun,
   Music,
+  Snowflake,
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
@@ -73,6 +74,7 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
       case 'Shield': return <Shield {...props} />;
       case 'Zap': return <Zap {...props} />;
       case 'Sun': return <Sun {...props} />;
+      case 'Snowflake': return <Snowflake {...props} />;
       default: return <Sparkles {...props} />;
     }
   };
