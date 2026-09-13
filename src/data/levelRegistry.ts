@@ -165,7 +165,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelFour
       ? '/levels/stage1_lvl4_A.jpg?v=2'
       : isLevelFive
-      ? '/levels/stage1_lvl5_A.jpg'
+      ? '/levels/stage1_lvl5_A.jpg?v=2'
       : isLevelSix
       ? '/levels/stage1_lvl6_A.jpg'
       : isLevelSeven
@@ -448,7 +448,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelFour
       ? '/levels/stage1_lvl4_B.jpg?v=2'
       : isLevelFive
-      ? '/levels/stage1_lvl5_B.jpg'
+      ? '/levels/stage1_lvl5_B.jpg?v=2'
       : isLevelSix
       ? '/levels/stage1_lvl6_B.jpg'
       : isLevelSeven
@@ -957,16 +957,60 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 6.08, y: 13.62, radius: 4.0, name: "Il Porta-cartellino in Ottone del Cassetto 125", loreClue: "La piastrina in ottone sagomato con il cartellino '125' del cassetto numismatico è stata rimossa, lasciando solo massello di mogano levigato." },
-        { id: `lvl${id}_d2`, x: 17.67, y: 22.10, radius: 3.5, name: "L'Asta di Fermo della Finestra a Rulli", loreClue: "L'asta a compasso in ferro brunito che blocca l'anta della finestra a vetri piombati è stata rimossa senza alterare le traverse." },
-        { id: `lvl${id}_d3`, x: 44.00, y: 22.88, radius: 3.5, name: "Il Cartellino d'Archivio dello Schedario Posteriore", loreClue: "Il cartellino bianco d'inventario sul frontale del cassetto dello schedario sullo sfondo è stato sfilato dal supporto." },
-        { id: `lvl${id}_d4`, x: 87.33, y: 28.46, radius: 3.5, name: "La Chiave in Ottone della Lampada da Scrivania", loreClue: "L'etichetta bianca d'archivio sulla scatola di campionamento conservata sul ripiano dello scaffale è scomparsa." },
-        { id: `lvl${id}_d5`, x: 46.25, y: 49.67, radius: 3.5, name: "Il Bottone in Corno sul Colletto di Tweed", loreClue: "Il bottone sartoriale in corno bruno sul bavero della giacca da lavoro della studiosa si è staccato durante la perizia." },
-        { id: `lvl${id}_d6`, x: 39.58, y: 74.22, radius: 3.5, name: "Il Collare in Ottone del Calamaio di Vetro", loreClue: "L'anello di tenuta in ottone alla base dell'imboccatura del calamaio di cristallo sfaccettato è stato tolto." },
-        { id: `lvl${id}_d7`, x: 53.58, y: 80.92, radius: 3.5, name: "La Ghiera Argentata della Cannuccia da Scrittura", loreClue: "La ghiera metallica che fissa il fusto tornito in ebano della cannuccia da scrittura al pennino appare rimossa." },
-        { id: `lvl${id}_d8`, x: 65.83, y: 53.01, radius: 3.5, name: "Il Gancio a S del Piatto Sinistro della Bilancia", loreClue: "La maglia ad 'S' in ottone che sospende i tre tiranti del piatto di pesata sinistro al braccio della bilancia è stata staccata." },
-        { id: `lvl${id}_d9`, x: 83.33, y: 68.64, radius: 3.5, name: "La Nervatura Dorata sul Dorso del Tomo Numismatico", loreClue: "Uno dei rilievi impressi a caldo con filetti dorati sulla costolatura in cuoio del volume di numismatica coloniale è stato raschiato." },
-        { id: `lvl${id}_d10`, x: 87.33, y: 79.80, radius: 3.5, name: "Il Quinto Peso di Precisione sulla Base della Bilancia", loreClue: "Il più piccolo dei pesi a bottone in ottone alloggiati negli incavi della base in mogano della bilancia è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 24.71,
+          y: 41.74,
+          radius: 9.5,
+          clueType: 'stolen_relic',
+          name: "La Cassetta d'Archivio sul Bancone",
+          loreClue: "La cassetta in rovere con le schede d'inventario delle monete coloniali è stata asportata dal bancone sotto la finestra."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 16.62,
+          y: 79.02,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "I Grandi Pesi d'Ottone nel Cofanetto",
+          loreClue: "I pesi calibratori in ottone per la tara dei metalli preziosi sono stati trafugati dal cofanetto foderato in velluto."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 32.30,
+          y: 72.20,
+          radius: 5.5,
+          clueType: 'stolen_relic',
+          name: "I Due Dobloni d'Oro di Potosí",
+          loreClue: "I due rari dobloni coloniali recanti il punzone segreto del Serpente a Due Teste sono stati sottratti dal vassoio di velluto."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 41.92,
+          y: 78.63,
+          radius: 5.0,
+          clueType: 'stolen_relic',
+          name: "Il Calamaio di Cristallo Nero",
+          loreClue: "Il calamaio d'archivio a coperchio ribaltabile contenente l'inchiostro al ferro-gallico è scomparso dal tavolo."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 51.17,
+          y: 80.25,
+          radius: 5.0,
+          clueType: 'stolen_relic',
+          name: "La Cannuccia con Pennino d'Acciaio",
+          loreClue: "L'antico strumento da scrittura in ebano posato davanti al registro di catalogazione è stato asportato."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 95.71,
+          y: 86.00,
+          radius: 7.5,
+          clueType: 'stolen_relic',
+          name: "La Tazza in Porcellana con Piattino",
+          loreClue: "La tazza da tè della perita numismatica è stata tolta dal piano in mogano lasciando solo il legno lucidato."
+        },
       ];
     } else if (isLevelSix) {
       diffsForLevel = [

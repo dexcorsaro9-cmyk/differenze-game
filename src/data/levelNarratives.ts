@@ -40,10 +40,10 @@ export const LEVEL_NARRATIVES_120: Record<number, LevelStoryData> = {
   },
   5: {
     title: "Il Gabinetto Numismatico",
-    subtitle: "Collezione di Monete Coloniali Spagnole",
-    prologue: "Esamina la collezione di dobloni d'oro e reales coniate a Lima e Potosí per individuare il punzone segreto dei fonditori di Paititi.",
-    resolution: "Una moneta d'argento grezza reca il punzone del Serpente a Due Teste: il metallo proviene dalla miniera segreta degli Antisuyu.",
-    unlockedSecret: "'La purezza dell'argento è del 98%, impossibile per le tecnologie coloniali. È opera diretta degli argentieri reali inca.' - Registro di zecca",
+    subtitle: "Collezione di Monete Coloniali Spagnole • Oxford",
+    prologue: "La Mano Oscura ha violato il Gabinetto Numismatico di Oxford mentre la studiosa esaminava le emissioni di Lima e Potosí. Gli emissari hanno asportato i campioni chiave e gli strumenti di perizia per occultare il punzone del Serpente a Due Teste. Individua le 6 prove fisiche della sottrazione.",
+    resolution: "Hai ricostruito la sequenza del furto: la traccia metallurgica dei dobloni sottratti e il calibro dei pesi confermano che la lega proviene dalla miniera segreta di Paititi, citata nei registri coloniali!",
+    unlockedSecret: "'La purezza dell'oro è al 98%, una raffinatezza ignota ai saggiatori spagnoli del '600: solo gli orafi imperiali di Cusco possedevano questo segreto.' - Registro di zecca numismatica",
   },
   6: {
     title: "L'Osservatorio di Radcliffe",
