@@ -245,10 +245,11 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             <button
               type="button"
               onClick={handleComplete}
-              className="p-1.5 rounded-full bg-stone-900/80 hover:bg-stone-800 text-stone-400 hover:text-white border border-stone-700 transition cursor-pointer active:scale-90"
-              title="Chiudi e inizia a giocare"
+              className="px-2.5 py-1 rounded-full bg-amber-950/80 hover:bg-amber-900 text-amber-300 text-[11px] font-bold border border-amber-600/60 transition cursor-pointer active:scale-90 flex items-center gap-1 shadow"
+              title="Chiudi e inizia a giocare subito"
             >
-              <X className="w-4 h-4" />
+              <span>Salta</span>
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

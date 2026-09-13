@@ -20,6 +20,7 @@ import { SAGA_MILESTONES_120 } from '../data/sagaLore';
 import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { assetUrl } from '../utils/assetUrl';
 import type { SagaMilestone } from '../types/game';
 
 interface MappamondoModalProps {
@@ -181,7 +182,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   // Load World Map Texture
   useEffect(() => {
     const img = new Image();
-    img.src = '/antique_world_map.jpg';
+    img.src = assetUrl('/antique_world_map.jpg');
     img.onload = () => {
       const off = document.createElement('canvas');
       off.width = img.width;

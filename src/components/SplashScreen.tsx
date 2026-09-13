@@ -7,9 +7,10 @@ import { EpicPortalMedallion } from './EpicPortalMedallion';
 
 interface SplashScreenProps {
   onStart: () => void;
+  onQuickPlay?: () => void;
 }
 
-export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
+export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart, onQuickPlay }) => {
   const [progress, setProgress] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
@@ -43,11 +44,27 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
   }, []);
 
   const handleStart = () => {
-    if (!isReady || isFadingOut) return;
+    if (isFadingOut) return;
     sound.playSelect();
     triggerHaptic('medium');
-    onStart();
     setIsFadingOut(true);
+    setTimeout(() => {
+      onStart();
+    }, 200);
+  };
+
+  const handleQuickPlay = () => {
+    if (isFadingOut) return;
+    sound.playSelect();
+    triggerHaptic('medium');
+    setIsFadingOut(true);
+    setTimeout(() => {
+      if (onQuickPlay) {
+        onQuickPlay();
+      } else {
+        onStart();
+      }
+    }, 150);
   };
 
   const currentMsgIndex = Math.min(
@@ -72,18 +89,27 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
         <div className="absolute inset-0 bg-radial-vignette opacity-70" />
       </div>
 
-      {/* Top Brand Tag */}
-      <div className="relative z-10 pt-4 sm:pt-6 text-center animate-fadeIn">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md shadow-2xl">
+      {/* Top Header: Brand Tag & Instant Play Button */}
+      <div className="relative z-10 pt-3 sm:pt-5 w-full max-w-md flex items-center justify-between animate-fadeIn">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/70 border border-amber-500/50 backdrop-blur-md shadow-xl">
           <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
-          <span className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-300 font-serif">
-            Spedizione Archeologica • 1928
+          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-amber-300 font-serif">
+            Spedizione 1928
           </span>
         </div>
+
+        <button
+          type="button"
+          onClick={handleQuickPlay}
+          className="px-3.5 py-1 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black font-serif uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.6)] cursor-pointer active:scale-95 transition flex items-center gap-1.5"
+        >
+          <span>Gioca Subito</span>
+          <span>⚡</span>
+        </button>
       </div>
 
       {/* Center Title Logo */}
-      <div className="relative z-10 text-center space-y-1.5 max-w-sm">
+      <div className="relative z-10 text-center space-y-1.5 max-w-sm cursor-pointer" onClick={handleStart}>
         <h1 className="text-4xl sm:text-5xl font-black font-serif tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-yellow-600 drop-shadow-[0_4px_20px_rgba(245,158,11,0.5)] uppercase">
           Paititi
         </h1>
@@ -96,17 +122,20 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
       {/* Bottom Section: Ancient Incan Progress or Legendary 3D WebGL Portal Medallion */}
       <div className="relative z-10 w-full max-w-sm pb-6 sm:pb-8 flex flex-col items-center">
         {!isReady ? (
-          <div className="w-full max-w-xs space-y-2">
+          <div className="w-full max-w-xs space-y-2 cursor-pointer" onClick={handleStart}>
             <div className="flex justify-between text-[11px] text-amber-300 font-mono">
               <span className="truncate max-w-[200px]">{statusMessages[currentMsgIndex]}</span>
               <span>{Math.round(progress * 100)}%</span>
             </div>
             {/* Ancient Incan Progress Bar */}
-            <div className="w-full h-2 bg-stone-950/80 rounded-full border border-amber-600/50 p-0.5 overflow-hidden shadow-inner">
+            <div className="w-full h-2.5 bg-stone-950/80 rounded-full border border-amber-600/50 p-0.5 overflow-hidden shadow-inner">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-300 shadow-[0_0_12px_#f59e0b] transition-all duration-75"
                 style={{ width: `${progress * 100}%` }}
               />
+            </div>
+            <div className="text-center text-[10px] text-amber-400/80 font-mono animate-pulse">
+              Tocca per entrare subito »
             </div>
           </div>
         ) : (

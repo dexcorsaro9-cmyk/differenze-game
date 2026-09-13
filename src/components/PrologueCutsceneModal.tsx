@@ -57,7 +57,15 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
   useEffect(() => {
     if (!isOpen) {
       setCurrentScene(0);
+      setHasVideoError(false);
     } else {
+      // Safety timeout: if 17MB video takes more than 2.5s to start playing, fallback to illustrated cards
+      const timer = setTimeout(() => {
+        if (videoRef.current && (videoRef.current.paused || videoRef.current.readyState < 2)) {
+          setHasVideoError(true);
+        }
+      }, 2500);
+
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
         const playPromise = videoRef.current.play();
@@ -67,11 +75,15 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
             setIsMuted(true);
             if (videoRef.current) {
               videoRef.current.muted = true;
-              videoRef.current.play().catch(() => {});
+              videoRef.current.play().catch(() => {
+                setHasVideoError(true);
+              });
             }
           });
         }
       }
+
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
@@ -132,23 +144,22 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
       {/* Cinematic Frame Border */}
       <div className="absolute inset-0 border-y-8 sm:border-y-12 border-black pointer-events-none z-10" />
 
-      {/* Top Controls: Only shown in fallback narrative mode if video cannot be played */}
-      {hasVideoError && (
-        <div className="absolute top-4 inset-x-4 z-20 flex items-center justify-between safe-pt">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif">
-            <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
-            <span>Prologo Narrativo</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleFinish}
-            className="px-3.5 py-1.5 rounded-full bg-black/70 border border-amber-500/40 hover:border-amber-400 text-amber-300 text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition cursor-pointer"
-          >
-            Salta Prologo
-          </button>
+      {/* Top Controls: ALWAYS visible with high z-index so user can skip at any time */}
+      <div className="absolute top-4 inset-x-4 z-30 flex items-center justify-between safe-pt pointer-events-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 border border-amber-500/50 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif shadow-lg">
+          <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
+          <span>Prologo Spedizione</span>
         </div>
-      )}
+
+        <button
+          type="button"
+          onClick={handleFinish}
+          className="px-3.5 py-1.5 rounded-full bg-amber-950/90 border border-amber-400/80 hover:bg-amber-900 text-amber-200 text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition cursor-pointer shadow-xl flex items-center gap-1.5"
+        >
+          <span>Salta Prologo</span>
+          <span className="text-amber-400">✕</span>
+        </button>
+      </div>
 
       {/* Bottom Subtitle / Narrative Box: ONLY SHOWN IN PROCEDURAL FALLBACK MODE (hasVideoError) */}
       {hasVideoError && (

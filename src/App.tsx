@@ -39,7 +39,7 @@ import {
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
-import { Shield, Compass } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Persistence keys
@@ -786,8 +786,19 @@ export const App: React.FC = () => {
     setIsSplashVisible(false);
     if (!hasCompletedAvatarSetup) {
       setIsAvatarCreatorOpen(true);
+    } else {
+      setIsTimerRunning(true);
     }
   }, [hasCompletedAvatarSetup]);
+
+  const handleQuickPlay = useCallback(() => {
+    setIsSplashVisible(false);
+    setHasCompletedAvatarSetup(true);
+    setIsAvatarCreatorOpen(false);
+    setIsPrologueOpen(false);
+    setIsTutorialOpen(false);
+    setIsTimerRunning(true);
+  }, []);
 
   const handleConfirmAvatarProfile = useCallback((profile: ExplorerProfile) => {
     setExplorerProfile(profile);
@@ -854,38 +865,22 @@ export const App: React.FC = () => {
           onOpenShop={() => setIsShopOpen(true)}
         />
 
-        {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Shielded during setup/prologue/splash) */}
-        {!hasCompletedAvatarSetup || isPrologueOpen || isSplashVisible ? (
-          <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-b from-stone-950 via-[#0e0a07] to-stone-950 rounded-2xl border border-amber-900/30 p-6 select-none my-1">
-            <div className="flex flex-col items-center gap-3 opacity-40 animate-pulse">
-              <Compass className="w-16 h-16 text-amber-400 animate-[spin_30s_linear_infinite]" />
-              <div className="text-center">
-                <span className="text-xs font-serif tracking-[0.25em] text-amber-300 uppercase block font-bold">
-                  Spedizione Archeologica
-                </span>
-                <span className="text-[10px] text-amber-500/80 font-sans tracking-wide">
-                  Preparazione sito di scavo in corso...
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <ImageComparisonView
-            imageA={currentLevel.imageA}
-            imageB={currentLevel.imageB}
-            differences={currentLevel.differences}
-            foundDifferenceIds={foundDifferenceIds}
-            activeHint={activeHint}
-            activeRadar={activeRadar}
-            isTimeFrozen={isTimeFrozen}
-            hiddenRelic={currentLevelHiddenRelic}
-            isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
-            onDiscoverRelic={handleDiscoverRelic}
-            onDifferenceClick={handleDifferenceClick}
-            onErrorClick={handleErrorClick}
-            layoutMode={settings.layoutMode}
-          />
-        )}
+        {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Preloads immediately) */}
+        <ImageComparisonView
+          imageA={currentLevel.imageA}
+          imageB={currentLevel.imageB}
+          differences={currentLevel.differences}
+          foundDifferenceIds={foundDifferenceIds}
+          activeHint={activeHint}
+          activeRadar={activeRadar}
+          isTimeFrozen={isTimeFrozen}
+          hiddenRelic={currentLevelHiddenRelic}
+          isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
+          onDiscoverRelic={handleDiscoverRelic}
+          onDifferenceClick={handleDifferenceClick}
+          onErrorClick={handleErrorClick}
+          layoutMode={settings.layoutMode}
+        />
 
         {/* Floating Shield Blocked Notice */}
         {shieldBlockedNotice && (
@@ -1102,7 +1097,7 @@ export const App: React.FC = () => {
 
       {/* AAA Splash Screen with "Tocca per iniziare" */}
       {isSplashVisible && (
-        <SplashScreen onStart={handleSplashStart} />
+        <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
       )}
 
       {/* Explorer Avatar Creation & Selection Modal */}

@@ -23,6 +23,7 @@ import type { Difference, RadarQuadrant } from '../types/game';
 import type { CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { assetUrl } from '../utils/assetUrl';
 
 interface ImageComparisonViewProps {
   imageA: string;
@@ -351,11 +352,11 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1">
             <button
               onClick={() => setViewMode(v => (v === 'crime_scene' ? 'split' : 'crime_scene'))}
-              className="px-2.5 py-1 rounded-full bg-[#1e130a]/90 hover:bg-amber-950/90 text-amber-300 border border-amber-500/50 shadow-lg text-[10px] font-serif font-bold flex items-center gap-1 active:scale-95 transition cursor-pointer"
-              title="Passa a Vista Divisa (Split Screen)"
+              className="px-2.5 py-1 rounded-full bg-amber-950/90 hover:bg-amber-900 text-amber-200 border border-amber-500/70 shadow-lg text-[10px] sm:text-xs font-serif font-bold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
+              title="Passa a Vista Doppia Confronto (A / B)"
             >
-              <Layers className="w-3 h-3 text-amber-400" />
-              <span className="hidden sm:inline">Vista Split</span>
+              <Layers className="w-3.5 h-3.5 text-amber-400" />
+              <span>Vista Doppia (A/B)</span>
             </button>
           </div>
 
@@ -374,9 +375,12 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               {/* PRIMARY CRIME SCENE IMAGE (Image B: Sabotaged Site) */}
               <img
                 ref={imgRefMain}
-                src={imageB}
+                src={assetUrl(imageB)}
                 alt="Scena del Crimine Archeologica"
                 draggable={false}
+                onError={() => {
+                  console.warn('Image B failed to load:', imageB);
+                }}
                 className="w-full h-full object-contain rounded-xl select-none pointer-events-auto block transition-all duration-300"
               />
 
@@ -387,9 +391,12 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 }`}
               >
                 <img
-                  src={imageA}
+                  src={assetUrl(imageA)}
                   alt="Archivio Originale 1928"
                   draggable={false}
+                  onError={() => {
+                    console.warn('Image A failed to load:', imageA);
+                  }}
                   className="w-full h-full object-contain rounded-xl select-none block filter sepia-[0.15] contrast-[1.05]"
                 />
                 {/* Archival Film Vignette & Watermark */}
@@ -585,9 +592,12 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               >
                 <img
                   ref={imgRefA}
-                  src={imageA}
+                  src={assetUrl(imageA)}
                   alt="Scena A"
                   draggable={false}
+                  onError={() => {
+                    console.warn('Split Image A failed:', imageA);
+                  }}
                   className="w-full h-full object-contain rounded-lg select-none pointer-events-auto block"
                 />
                 <AmbientParticles imageIndex={0} hasSteam={false} />
@@ -600,9 +610,10 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
             <div className="h-[1px] flex-1 bg-amber-500/30" />
             <button
               onClick={() => setViewMode('crime_scene')}
-              className="mx-2 px-2.5 py-0.5 rounded-full bg-amber-900/60 border border-amber-500/50 text-amber-200 text-[9px] font-serif font-bold hover:bg-amber-800 transition flex items-center gap-1 cursor-pointer"
+              className="mx-2 px-3 py-1 rounded-full bg-amber-950/90 border border-amber-500/70 text-amber-200 text-[10px] font-serif font-bold hover:bg-amber-900 transition flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
             >
-              <span>Passa a Schermo Intero AAA</span>
+              <Eye className="w-3.5 h-3.5 text-amber-400" />
+              <span>Passa a Scena Singola AAA</span>
             </button>
             <div className="h-[1px] flex-1 bg-amber-500/30" />
           </div>
@@ -629,9 +640,12 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               >
                 <img
                   ref={imgRefB}
-                  src={imageB}
+                  src={assetUrl(imageB)}
                   alt="Scena B"
                   draggable={false}
+                  onError={() => {
+                    console.warn('Split Image B failed:', imageB);
+                  }}
                   className="w-full h-full object-contain rounded-lg select-none pointer-events-auto block"
                 />
                 <AmbientParticles imageIndex={1} hasSteam={false} />
