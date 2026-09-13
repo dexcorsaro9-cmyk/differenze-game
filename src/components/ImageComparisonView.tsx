@@ -16,11 +16,16 @@ import {
   CheckCircle2,
   Info,
   Sun,
+  Sunset,
+  Flame,
+  Search,
+  Camera,
   Maximize2,
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
 import { EvidenceInspectModal } from './EvidenceInspectModal';
+import { BrassMagnifyingLoupe } from './BrassMagnifyingLoupe';
 import type { Difference, RadarQuadrant } from '../types/game';
 import type { CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
@@ -93,17 +98,116 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
   // 3D Glass-plate Photo Perspective Tilt
   const [photoTilt, setPhotoTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  // Interactive Victorian Brass Loupe (2.5x Handheld Magnifier)
+  const [isLoupeActive, setIsLoupeActive] = useState<boolean>(false);
+  const [loupePos, setLoupePos] = useState<{ x: number; y: number }>({ x: 260, y: 220 });
+
+  // 1928 Diurnal Time-of-Day Lighting Engine
+  const [atmosphereMode, setAtmosphereMode] = useState<'dawn' | 'noon' | 'dusk' | 'lantern'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('differenze_atmosphere');
+      if (saved === 'dawn' || saved === 'noon' || saved === 'dusk' || saved === 'lantern') return saved;
+    }
+    return 'dawn';
+  });
+
+  // Historical Photo Plate Film Emulsion Filters
+  const [photoFilter, setPhotoFilter] = useState<'silver' | 'cyanotype' | 'autochrome' | 'natural'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('differenze_photofilter');
+      if (saved === 'silver' || saved === 'cyanotype' || saved === 'autochrome' || saved === 'natural') return saved;
+    }
+    return 'silver';
+  });
+
+  // Lantern position (for gas lantern illumination cone in 'lantern' mode)
+  const [lanternPos, setLanternPos] = useState<{ x: number; y: number }>({ x: 300, y: 200 });
+
+  // 1928 Magnesium Powder Flash Clue Celebration
+  const [magnesiumFlash, setMagnesiumFlash] = useState<{ id: string; x: number; y: number } | null>(null);
+
   const handleMouseMoveTilt = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (scale > 1) return;
     const rect = e.currentTarget.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return;
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setPhotoTilt({ x: -y * 3.5, y: x * 3.5 });
+
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
+    setLanternPos({ x: relX, y: relY });
+
+    if (!isLoupeActive && containerRef.current) {
+      const cRect = containerRef.current.getBoundingClientRect();
+      setLoupePos({ x: e.clientX - cRect.left, y: e.clientY - cRect.top });
+    }
+
+    if (scale <= 1) {
+      const x = relX / rect.width - 0.5;
+      const y = relY / rect.height - 0.5;
+      setPhotoTilt({ x: -y * 3.5, y: x * 3.5 });
+    }
   };
 
   const handleMouseLeaveTilt = () => {
     setPhotoTilt({ x: 0, y: 0 });
+  };
+
+  const toggleLoupe = () => {
+    const next = !isLoupeActive;
+    setIsLoupeActive(next);
+    sound.playLoupeToggle(next);
+    triggerHaptic('medium');
+    if (next && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setLoupePos({ x: rect.width / 2, y: rect.height / 2 });
+    }
+  };
+
+  const cycleAtmosphere = () => {
+    const modes: ('dawn' | 'noon' | 'dusk' | 'lantern')[] = ['dawn', 'noon', 'dusk', 'lantern'];
+    const nextIdx = (modes.indexOf(atmosphereMode) + 1) % modes.length;
+    const nextMode = modes[nextIdx];
+    setAtmosphereMode(nextMode);
+    localStorage.setItem('differenze_atmosphere', nextMode);
+    sound.playAtmosphereChange();
+    triggerHaptic('light');
+  };
+
+  const cyclePhotoFilter = () => {
+    const filters: ('silver' | 'cyanotype' | 'autochrome' | 'natural')[] = ['silver', 'cyanotype', 'autochrome', 'natural'];
+    const nextIdx = (filters.indexOf(photoFilter) + 1) % filters.length;
+    const nextFilter = filters[nextIdx];
+    setPhotoFilter(nextFilter);
+    localStorage.setItem('differenze_photofilter', nextFilter);
+    sound.playPaperInspect();
+    triggerHaptic('light');
+  };
+
+  const getPhotoFilterStyle = (): string => {
+    const filters: string[] = [];
+
+    // 1. Historical Plate Emulsion Tone
+    if (photoFilter === 'cyanotype') {
+      filters.push('sepia(0.85)', 'hue-rotate(180deg)', 'saturate(2.4)', 'contrast(1.25)', 'brightness(0.92)');
+    } else if (photoFilter === 'autochrome') {
+      filters.push('sepia(0.35)', 'hue-rotate(8deg)', 'saturate(1.45)', 'contrast(1.1)', 'brightness(1.02)');
+    } else if (photoFilter === 'natural') {
+      filters.push('contrast(1.05)', 'brightness(1.0)');
+    } else {
+      // silver: Classic 1928 Silver Gelatin Bromide
+      filters.push('sepia(0.18)', 'contrast(1.12)', 'saturate(0.96)');
+    }
+
+    // 2. Diurnal Atmospheric Lighting
+    if (atmosphereMode === 'dawn') {
+      filters.push('brightness(1.06)', 'contrast(1.05)');
+    } else if (atmosphereMode === 'noon') {
+      filters.push('brightness(1.02)', 'contrast(1.14)');
+    } else if (atmosphereMode === 'dusk') {
+      filters.push('brightness(0.92)', 'sepia(0.28)', 'hue-rotate(-12deg)', 'contrast(1.12)');
+    } else if (atmosphereMode === 'lantern') {
+      filters.push('brightness(0.8)', 'contrast(1.28)');
+    }
+
+    return filters.join(' ');
   };
 
   // Pan & Zoom
@@ -363,6 +467,13 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     }
 
     if (matchedDiff) {
+      // Trigger 1928 Magnesium Powder Flash FX
+      setMagnesiumFlash({ id: String(Date.now()), x: clickXPercent, y: clickYPercent });
+      sound.playMagnesiumFlash();
+      setTimeout(() => {
+        setMagnesiumFlash(null);
+      }, 650);
+
       // Spawn floating discovery score notification
       const pop: DiscoveryPop = {
         id: `${Date.now()}_${Math.random()}`,
@@ -385,6 +496,57 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
     } else {
       addErrorFeedback(clickXPercent, clickYPercent);
       onErrorClick({ x: clickXPercent, y: clickYPercent }, imageTarget);
+    }
+  };
+
+  // Hit test through the Brass Magnifying Loupe with forensic precision
+  const handleLoupeClick = (clickPct: { x: number; y: number }) => {
+    registerInteraction();
+    const clickXPercent = clickPct.x * 100;
+    const clickYPercent = clickPct.y * 100;
+
+    let matchedDiff: Difference | null = null;
+    for (const diff of differences) {
+      if (foundDifferenceIds.includes(diff.id)) continue;
+      const tolerance = (diff.radius || 10.0) * 1.25;
+      const dx = clickXPercent - diff.x;
+      const dy = clickYPercent - diff.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist <= tolerance) {
+        matchedDiff = diff;
+        break;
+      }
+    }
+
+    if (matchedDiff) {
+      // Trigger 1928 Magnesium Powder Flash FX
+      setMagnesiumFlash({ id: String(Date.now()), x: clickXPercent, y: clickYPercent });
+      sound.playMagnesiumFlash();
+      setTimeout(() => {
+        setMagnesiumFlash(null);
+      }, 650);
+
+      const pop: DiscoveryPop = {
+        id: `${Date.now()}_${Math.random()}`,
+        x: clickXPercent,
+        y: clickYPercent,
+        text: comboStreak >= 1 ? `+Monete! (x${comboStreak + 1} Combo)` : '+Monete!',
+        name: matchedDiff.name,
+      };
+      setDiscoveryPops(prev => [...prev, pop]);
+      setTimeout(() => {
+        setDiscoveryPops(prev => prev.filter(p => p.id !== pop.id));
+      }, 1400);
+
+      onDifferenceClick(
+        matchedDiff,
+        { x: clickXPercent, y: clickYPercent },
+        isArchiveLensActive ? 0 : 1
+      );
+    } else {
+      addErrorFeedback(clickXPercent, clickYPercent);
+      onErrorClick({ x: clickXPercent, y: clickYPercent }, isArchiveLensActive ? 0 : 1);
     }
   };
 
@@ -487,8 +649,54 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
             )}
           </div>
 
-          {/* Top-Right: Quick Switcher to Split View */}
-          <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1.5">
+          {/* Top-Right: Atmosphere Diurnal Cycle + Vintage Plate Filter + Quick Switcher to Split View */}
+          <div className="absolute top-2.5 right-2.5 z-25 flex items-center gap-1.5 flex-wrap justify-end">
+            {/* Diurnal Lighting Mode Pill */}
+            <button
+              onClick={cycleAtmosphere}
+              className="px-2.5 py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-lg text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
+              title={`Ciclo Orario Spedizione: ${atmosphereMode.toUpperCase()} (Clicca per cambiare ora del giorno)`}
+            >
+              {atmosphereMode === 'dawn' && <Sun className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '24s' }} />}
+              {atmosphereMode === 'noon' && <Sun className="w-3.5 h-3.5 text-yellow-300" />}
+              {atmosphereMode === 'dusk' && <Sunset className="w-3.5 h-3.5 text-orange-400" />}
+              {atmosphereMode === 'lantern' && <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />}
+              <span className="hidden sm:inline">
+                {atmosphereMode === 'dawn' && 'Alba 1928'}
+                {atmosphereMode === 'noon' && 'Mezzogiorno'}
+                {atmosphereMode === 'dusk' && 'Crepuscolo'}
+                {atmosphereMode === 'lantern' && 'Lanterna'}
+              </span>
+              <span className="sm:hidden">
+                {atmosphereMode === 'dawn' && 'Alba'}
+                {atmosphereMode === 'noon' && 'Merid.'}
+                {atmosphereMode === 'dusk' && 'Tram.'}
+                {atmosphereMode === 'lantern' && 'Notte'}
+              </span>
+            </button>
+
+            {/* Historical Plate Filter Pill */}
+            <button
+              onClick={cyclePhotoFilter}
+              className="px-2.5 py-1 rounded-full bg-[#20140a]/90 hover:bg-[#2d1b0e] text-amber-200 border border-amber-500/60 shadow-lg text-[10px] sm:text-xs font-serif font-semibold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
+              title={`Filtro Lastra Archeologica: ${photoFilter.toUpperCase()} (Clicca per cambiare emulsione fotografica)`}
+            >
+              <Camera className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">
+                {photoFilter === 'silver' && "Bromuro '28"}
+                {photoFilter === 'cyanotype' && 'Cianotipia'}
+                {photoFilter === 'autochrome' && 'Autocromia'}
+                {photoFilter === 'natural' && 'HD Naturale'}
+              </span>
+              <span className="sm:hidden">
+                {photoFilter === 'silver' && 'Bromuro'}
+                {photoFilter === 'cyanotype' && 'Ciano'}
+                {photoFilter === 'autochrome' && 'Auto.'}
+                {photoFilter === 'natural' && 'HD'}
+              </span>
+            </button>
+
+            {/* Quick Switcher to Split View */}
             <button
               onClick={() => setViewMode(v => (v === 'crime_scene' ? 'split' : 'crime_scene'))}
               className="px-2.5 py-1 rounded-full bg-amber-950/90 hover:bg-amber-900 text-amber-200 border border-amber-500/70 shadow-lg text-[10px] sm:text-xs font-serif font-bold flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
@@ -526,8 +734,49 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                 onError={() => {
                   console.warn('Image B failed to load:', imageB);
                 }}
-                className="w-full h-full object-contain rounded-xl select-none pointer-events-auto block transition-all duration-300"
+                className="w-full h-full object-contain rounded-xl select-none pointer-events-auto block transition-all duration-500"
+                style={{ filter: getPhotoFilterStyle() }}
               />
+
+              {/* Atmospheric Diurnal Overlays */}
+              {atmosphereMode === 'lantern' && (
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-xl z-20 transition-all duration-300"
+                  style={{
+                    background: `radial-gradient(circle 240px at ${lanternPos.x}px ${lanternPos.y}px, rgba(255, 235, 170, 0.08) 0%, rgba(220, 140, 20, 0.18) 40%, rgba(10, 6, 2, 0.82) 75%, rgba(3, 2, 1, 0.94) 100%)`,
+                    boxShadow: 'inset 0 0 100px rgba(0,0,0,0.95)',
+                  }}
+                >
+                  {/* Subtle Gas Lamp Flicker Aura */}
+                  <div
+                    className="absolute w-36 h-36 rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 animate-pulse"
+                    style={{
+                      left: lanternPos.x,
+                      top: lanternPos.y,
+                      background: 'radial-gradient(circle, rgba(255, 220, 120, 0.25) 0%, transparent 70%)',
+                      animationDuration: '2s',
+                    }}
+                  />
+                </div>
+              )}
+
+              {atmosphereMode === 'dawn' && (
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-xl z-15 transition-opacity duration-500 opacity-20 mix-blend-screen"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,215,110,0.45) 0%, rgba(255,160,30,0.15) 45%, transparent 75%)',
+                  }}
+                />
+              )}
+
+              {atmosphereMode === 'dusk' && (
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-xl z-15 transition-opacity duration-500 opacity-25 mix-blend-color-burn"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(160,50,90,0.3) 0%, rgba(220,110,30,0.18) 50%, rgba(50,20,40,0.35) 100%)',
+                  }}
+                />
+              )}
 
               {/* OVERLAY: PRISTINE ARCHIVE IMAGE (Image A) with Crossfade & Vintage Vignette */}
               <div
@@ -542,7 +791,8 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   onError={() => {
                     console.warn('Image A failed to load:', imageA);
                   }}
-                  className="w-full h-full object-contain rounded-xl select-none block filter sepia-[0.15] contrast-[1.05]"
+                  className="w-full h-full object-contain rounded-xl select-none block transition-all duration-500"
+                  style={{ filter: getPhotoFilterStyle() }}
                 />
                 {/* Archival Film Vignette & Watermark */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 shadow-[inset_0_0_90px_rgba(0,0,0,0.85)] pointer-events-none" />
@@ -674,50 +924,103 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
                   </div>
                 </div>
               )}
+              {/* 1928 Magnesium Powder Flash Clue Celebration */}
+              {magnesiumFlash && (
+                <div
+                  className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-40"
+                  style={{ left: `${magnesiumFlash.x}%`, top: `${magnesiumFlash.y}%` }}
+                >
+                  <div
+                    className="w-28 h-28 rounded-full animate-ping opacity-95 pointer-events-none"
+                    style={{
+                      background:
+                        'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,240,160,0.9) 35%, rgba(245,160,20,0.4) 65%, transparent 85%)',
+                      animationDuration: '0.45s',
+                    }}
+                  />
+                  <div className="absolute inset-0 m-auto w-7 h-7 flex items-center justify-center">
+                    <Sparkles className="w-7 h-7 text-yellow-100 drop-shadow-[0_0_12px_#ffffff] animate-spin" />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* INTERACTIVE LENTE D'ARCHIVIO FLOATING TRIGGER */}
+          {/* INTERACTIVE FLOATING TOOLBAR: Lente d'Archivio + Lente d'Ingrandimento + Zoom */}
           <div className="absolute bottom-3 right-3 z-30 flex flex-col items-end gap-2">
-            <button
-              onClick={toggleArchiveLens}
-              onPointerDown={handleLensPointerDown}
-              onPointerUp={handleLensPointerUp}
-              className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
-                isArchiveLensActive
-                  ? 'bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
-                  : 'bg-gradient-to-r from-[#2c1a0e]/95 via-[#3d2513]/95 to-[#2c1a0e]/95 hover:from-[#3a2212] border-amber-500/60 text-amber-200 hover:border-amber-400'
-              }`}
-              title="Tieni premuto, clicca o premi [Spazio] per visualizzare la fotografia originale del 1928"
-            >
-              <div
-                className={`w-6 sm:w-7 h-6 sm:h-7 rounded-full flex items-center justify-center ${
-                  isArchiveLensActive ? 'bg-amber-950 text-amber-300' : 'bg-amber-500/20 text-amber-400'
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              {/* Brass Handheld Magnifying Loupe Toggle */}
+              <button
+                onClick={toggleLoupe}
+                className={`group relative flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
+                  isLoupeActive
+                    ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
+                    : 'bg-[#211409]/95 hover:bg-[#2e1c0d] border-amber-500/60 text-amber-200 hover:border-amber-400'
                 }`}
+                title="Attiva la Lente d'Ingrandimento Vittoriana in Ottone (2.5x)"
               >
-                {isArchiveLensActive ? (
-                  <EyeOff className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-pulse" />
-                ) : (
-                  <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-bounce" />
-                )}
-              </div>
-
-              <div className="flex flex-col text-left leading-none">
-                <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
-                  <span>{isArchiveLensActive ? 'Torna alla Scena' : "Lente d'Archivio"}</span>
-                  <span className="hidden sm:inline-block px-1 py-0.2 rounded bg-black/40 text-[8px] font-mono border border-amber-400/40">
-                    Spazio
-                  </span>
-                </span>
-                <span
-                  className={`text-[8px] sm:text-[9px] font-sans mt-0.5 ${
-                    isArchiveLensActive ? 'text-amber-950 font-bold' : 'text-amber-300/70'
+                <div
+                  className={`w-6 sm:w-7 h-6 sm:h-7 rounded-full flex items-center justify-center ${
+                    isLoupeActive ? 'bg-stone-900 text-amber-300' : 'bg-amber-500/20 text-amber-400'
                   }`}
                 >
-                  {isArchiveLensActive ? 'Mostra scena sabotata' : 'Vedi prima del furto'}
-                </span>
-              </div>
-            </button>
+                  <Search className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+                </div>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
+                    <span>{isLoupeActive ? 'Riponi Lente' : 'Lente 2.5×'}</span>
+                  </span>
+                  <span
+                    className={`text-[8px] sm:text-[9px] font-sans mt-0.5 ${
+                      isLoupeActive ? 'text-stone-950 font-bold' : 'text-amber-300/70'
+                    }`}
+                  >
+                    {isLoupeActive ? 'In uso sulla scena' : 'Ottica in ottone'}
+                  </span>
+                </div>
+              </button>
+
+              {/* Lente d'Archivio Toggle */}
+              <button
+                onClick={toggleArchiveLens}
+                onPointerDown={handleLensPointerDown}
+                onPointerUp={handleLensPointerUp}
+                className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border shadow-[0_8px_25px_rgba(0,0,0,0.8)] active:scale-95 transition-all duration-200 cursor-pointer select-none ${
+                  isArchiveLensActive
+                    ? 'bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-yellow-200 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.9)] ring-2 ring-amber-300'
+                    : 'bg-gradient-to-r from-[#2c1a0e]/95 via-[#3d2513]/95 to-[#2c1a0e]/95 hover:from-[#3a2212] border-amber-500/60 text-amber-200 hover:border-amber-400'
+                }`}
+                title="Tieni premuto, clicca o premi [Spazio] per visualizzare la fotografia originale del 1928"
+              >
+                <div
+                  className={`w-6 sm:w-7 h-6 sm:h-7 rounded-full flex items-center justify-center ${
+                    isArchiveLensActive ? 'bg-amber-950 text-amber-300' : 'bg-amber-500/20 text-amber-400'
+                  }`}
+                >
+                  {isArchiveLensActive ? (
+                    <EyeOff className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-pulse" />
+                  ) : (
+                    <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-bounce" />
+                  )}
+                </div>
+
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[11px] sm:text-xs font-black font-serif uppercase tracking-wider flex items-center gap-1">
+                    <span>{isArchiveLensActive ? 'Torna alla Scena' : "Lente d'Archivio"}</span>
+                    <span className="hidden sm:inline-block px-1 py-0.2 rounded bg-black/40 text-[8px] font-mono border border-amber-400/40">
+                      Spazio
+                    </span>
+                  </span>
+                  <span
+                    className={`text-[8px] sm:text-[9px] font-sans mt-0.5 ${
+                      isArchiveLensActive ? 'text-amber-950 font-bold' : 'text-amber-300/70'
+                    }`}
+                  >
+                    {isArchiveLensActive ? 'Mostra scena sabotata' : 'Vedi prima del furto'}
+                  </span>
+                </div>
+              </button>
+            </div>
 
             {/* Floating Minimal Zoom Controls */}
             <div className="flex items-center gap-1 bg-[#1a0f07]/90 backdrop-blur-md p-1 rounded-full border border-amber-500/40 shadow-xl">
@@ -971,6 +1274,23 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* Interactive Victorian Brass Magnifying Loupe (2.5x Handheld) */}
+      {isLoupeActive && viewMode === 'crime_scene' && (
+        <BrassMagnifyingLoupe
+          imageSrc={assetUrl(isArchiveLensActive ? imageA : imageB)}
+          containerRect={containerRef.current?.getBoundingClientRect() ?? null}
+          imgRect={imgRefMain.current?.getBoundingClientRect() ?? null}
+          pointerPos={loupePos}
+          onClose={() => {
+            setIsLoupeActive(false);
+            sound.playLoupeToggle(false);
+          }}
+          onLensClick={handleLoupeClick}
+          magnification={2.5}
+          filterStyle={getPhotoFilterStyle()}
+        />
+      )}
 
       {/* 1928 Vintage Specimen Evidence Inspection Dossier */}
       <EvidenceInspectModal

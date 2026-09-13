@@ -787,6 +787,137 @@ class SoundManager {
     osc.stop(now + 0.09);
   }
 
+  // Tactile Victorian brass & optical glass loupe toggle
+  public playLoupeToggle(isActive: boolean = true) {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Crystal optical glass ring
+    const glassOsc = ctx.createOscillator();
+    const glassGain = ctx.createGain();
+    glassOsc.type = 'sine';
+    const baseFreq = isActive ? 2400 : 1600;
+    glassOsc.frequency.setValueAtTime(baseFreq, now);
+    glassOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.75, now + 0.14);
+
+    glassGain.gain.setValueAtTime(0, now);
+    glassGain.gain.linearRampToValueAtTime(0.18, now + 0.008);
+    glassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    glassOsc.connect(glassGain);
+    glassGain.connect(ctx.destination);
+    glassOsc.start(now);
+    glassOsc.stop(now + 0.16);
+
+    // 2. Brass mechanical sliding bezel click
+    const brassOsc = ctx.createOscillator();
+    const brassGain = ctx.createGain();
+    brassOsc.type = 'triangle';
+    brassOsc.frequency.setValueAtTime(isActive ? 620 : 440, now);
+    brassOsc.frequency.exponentialRampToValueAtTime(220, now + 0.07);
+
+    brassGain.gain.setValueAtTime(0.12, now);
+    brassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+    brassOsc.connect(brassGain);
+    brassGain.connect(ctx.destination);
+    brassOsc.start(now);
+    brassOsc.stop(now + 0.08);
+  }
+
+  // Harmonic atmospheric transition chime
+  public playAtmosphereChange() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const notes = [440, 659.25, 880]; // A4, E5, A5 ethereal chord
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+
+      gain.gain.setValueAtTime(0, now + idx * 0.05);
+      gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.05 + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.6);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + idx * 0.05);
+      osc.stop(now + idx * 0.05 + 0.65);
+    });
+  }
+
+  // Authentic 1928 Magnesium powder ignition flash & camera shutter
+  public playMagnesiumFlash() {
+    if (!this.isEnabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // 1. Shutter mechanical double-click (slit open & close)
+    [0, 0.045].forEach(offset => {
+      const clickOsc = ctx.createOscillator();
+      const clickGain = ctx.createGain();
+      clickOsc.type = 'sawtooth';
+      clickOsc.frequency.setValueAtTime(1400, now + offset);
+      clickOsc.frequency.exponentialRampToValueAtTime(300, now + offset + 0.02);
+
+      clickGain.gain.setValueAtTime(0.2, now + offset);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.02);
+
+      clickOsc.connect(clickGain);
+      clickGain.connect(ctx.destination);
+      clickOsc.start(now + offset);
+      clickOsc.stop(now + offset + 0.025);
+    });
+
+    // 2. Magnesium powder ignition "Fzzzh-Whump"
+    const noiseLen = Math.floor(ctx.sampleRate * 0.22);
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const output = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (noiseLen * 0.35));
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuf;
+
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.setValueAtTime(3200, now);
+    noiseFilter.frequency.exponentialRampToValueAtTime(400, now + 0.22);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.28, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noiseSource.start(now);
+
+    // 3. Warm low-end concussion thump
+    const boomOsc = ctx.createOscillator();
+    const boomGain = ctx.createGain();
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(150, now);
+    boomOsc.frequency.exponentialRampToValueAtTime(35, now + 0.2);
+
+    boomGain.gain.setValueAtTime(0.3, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(ctx.destination);
+    boomOsc.start(now);
+    boomOsc.stop(now + 0.22);
+  }
+
   // =========================================================================
   // CONTINUOUS PROCEDURAL ORCHESTRAL BGM ENGINE (1928 ADVENTURE SOUNDSCAPE)
   // =========================================================================
