@@ -217,25 +217,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelThirty
       ? '/levels/stage3_lvl30_A.jpg?v=2'
       : isLevelThirtyOne
-      ? '/levels/stage4_lvl31_A.jpg'
+      ? '/levels/stage4_lvl31_A.jpg?v=2'
       : isLevelThirtyTwo
-      ? '/levels/stage4_lvl32_A.jpg'
+      ? '/levels/stage4_lvl32_A.jpg?v=2'
       : isLevelThirtyThree
-      ? '/levels/stage4_lvl33_A.jpg'
+      ? '/levels/stage4_lvl33_A.jpg?v=2'
       : isLevelThirtyFour
-      ? '/levels/stage4_lvl34_A.jpg'
+      ? '/levels/stage4_lvl34_A.jpg?v=2'
       : isLevelThirtyFive
-      ? '/levels/stage4_lvl35_A.jpg'
+      ? '/levels/stage4_lvl35_A.jpg?v=2'
       : isLevelThirtySix
-      ? '/levels/stage4_lvl36_A.jpg'
+      ? '/levels/stage4_lvl36_A.jpg?v=2'
       : isLevelThirtySeven
-      ? '/levels/stage4_lvl37_A.jpg'
+      ? '/levels/stage4_lvl37_A.jpg?v=2'
       : isLevelThirtyEight
-      ? '/levels/stage4_lvl38_A.jpg'
+      ? '/levels/stage4_lvl38_A.jpg?v=2'
       : isLevelThirtyNine
-      ? '/levels/stage4_lvl39_A.jpg'
+      ? '/levels/stage4_lvl39_A.jpg?v=2'
       : isLevelForty
-      ? '/levels/stage4_lvl40_A.jpg'
+      ? '/levels/stage4_lvl40_A.jpg?v=2'
       : isLevelFortyOne
       ? '/levels/stage5_lvl41_A.jpg'
       : isLevelFortyTwo
@@ -500,25 +500,25 @@ export function generateAll120Levels(): Level[] {
       : isLevelThirty
       ? '/levels/stage3_lvl30_B.jpg?v=2'
       : isLevelThirtyOne
-      ? '/levels/stage4_lvl31_B.jpg'
+      ? '/levels/stage4_lvl31_B.jpg?v=2'
       : isLevelThirtyTwo
-      ? '/levels/stage4_lvl32_B.jpg'
+      ? '/levels/stage4_lvl32_B.jpg?v=2'
       : isLevelThirtyThree
-      ? '/levels/stage4_lvl33_B.jpg'
+      ? '/levels/stage4_lvl33_B.jpg?v=2'
       : isLevelThirtyFour
-      ? '/levels/stage4_lvl34_B.jpg'
+      ? '/levels/stage4_lvl34_B.jpg?v=2'
       : isLevelThirtyFive
-      ? '/levels/stage4_lvl35_B.jpg'
+      ? '/levels/stage4_lvl35_B.jpg?v=2'
       : isLevelThirtySix
-      ? '/levels/stage4_lvl36_B.jpg'
+      ? '/levels/stage4_lvl36_B.jpg?v=2'
       : isLevelThirtySeven
-      ? '/levels/stage4_lvl37_B.jpg'
+      ? '/levels/stage4_lvl37_B.jpg?v=2'
       : isLevelThirtyEight
-      ? '/levels/stage4_lvl38_B.jpg'
+      ? '/levels/stage4_lvl38_B.jpg?v=2'
       : isLevelThirtyNine
-      ? '/levels/stage4_lvl39_B.jpg'
+      ? '/levels/stage4_lvl39_B.jpg?v=2'
       : isLevelForty
-      ? '/levels/stage4_lvl40_B.jpg'
+      ? '/levels/stage4_lvl40_B.jpg?v=2'
       : isLevelFortyOne
       ? '/levels/stage5_lvl41_B.jpg'
       : isLevelFortyTwo
@@ -2478,133 +2478,573 @@ export function generateAll120Levels(): Level[] {
       ];
     } else if (isLevelThirtyOne) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 10.33, y: 92.75, radius: 5.5, name: "Il Segnalibro di Seta Cremisi", loreClue: "Un nastro segnalibro di seta rosso scarlatto pende dal registro di scavo rilegato in cuoio sul bordo del tavolo." },
-        { id: `lvl${id}_d2`, x: 12.92, y: 59.15, radius: 6.0, name: "Il Filo a Piombo del Teodolite", loreClue: "Un pesante filo a piombo conico in ottone pende dal centro del treppiede da rilevamento geodetico." },
-        { id: `lvl${id}_d3`, x: 19.75, y: 40.74, radius: 5.5, name: "Il Martello da Geologo sulla Cassa", loreClue: "Un piccone da geologo con manico di frassino è posato sopra la cassa di spedizione marchiata 363." },
-        { id: `lvl${id}_d4`, x: 22.08, y: 81.25, radius: 5.5, name: "Lo Schizzo del Toro di Cnosso", loreClue: "Sulla pagina sinistra del taccuino compare un accurato rilievo a matita del Toro Sacro minoico." },
-        { id: `lvl${id}_d5`, x: 31.67, y: 79.80, radius: 5.5, name: "Le Note Archeologiche Autografe", loreClue: "Sulla pagina destra del taccuino sono annotate a inchiostro di china le quote stratigrafiche del megaron." },
-        { id: `lvl${id}_d6`, x: 41.83, y: 78.46, radius: 5.5, name: "La Lente d'Ingrandimento Tascabile", loreClue: "Una grande lente d'ingrandimento in ottone brunito sostituisce la spazzola di setole di cavallo tra gli attrezzi." },
-        { id: `lvl${id}_d7`, x: 52.67, y: 54.80, radius: 5.0, name: "Il Cartellino Inventariale del Pithos", loreClue: "Un cartellino d'inventario museale legato con spago pende dal labbro del grande vaso minoico centrale." },
-        { id: `lvl${id}_d8`, x: 62.00, y: 66.63, radius: 6.5, name: "Il Pugnale Cerimoniale nel Sarcofago", loreClue: "Un antico pugnale minoico in bronzo intarsiato riposa sul fondo del sarcofago monolitico in pietra." },
-        { id: `lvl${id}_d9`, x: 71.17, y: 28.79, radius: 5.5, name: "Le Corna Dorate nell'Affresco", loreClue: "Le possenti corna del toro nell'affresco parietale risplendono con rifiniture a foglia d'oro cerimoniale." },
-        { id: `lvl${id}_d10`, x: 88.33, y: 68.53, radius: 6.0, name: "La Matrice di Scavo KN-40", loreClue: "Sulla spalla del grande pithos a motivi di corda compare la marcatura a gesso bianco dello scavo: KN-40." },
+        {
+          id: `lvl${id}_d1`,
+          x: 62.04,
+          y: 66.63,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Pugnale Cerimoniale nel Sarcofago",
+          loreClue: "Un antico pugnale minoico in bronzo e oro riposa sul fondo del sarcofago in pietra; la Mano Oscura ha tentato di asportarlo."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 28.75,
+          y: 80.97,
+          radius: 8.5,
+          clueType: 'torn_evidence',
+          name: "Lo Schizzo del Toro di Cnosso",
+          loreClue: "Sulla pagina sinistra del taccuino di scavo compare il rilievo a matita della Taurocatarsia con le coordinate del santuario."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 41.54,
+          y: 78.29,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "La Lente d'Ingrandimento Tascabile",
+          loreClue: "La lente da campo in ottone usata per analizzare i frammenti di ceramica kamares è stata rimossa dal tavolo da disegno."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 88.42,
+          y: 68.53,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "La Matrice di Scavo KN-40",
+          loreClue: "Sulla spalla del grande pithos a motivi di corda compare la marcatura a gesso dello scavo archeologico KN-40."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 13.17,
+          y: 58.87,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "Il Filo a Piombo del Teodolite",
+          loreClue: "Un pesante filo a piombo conico in ottone del treppiede geodetico è stato reciso per falsare le quote altimetriche."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 19.88,
+          y: 40.79,
+          radius: 8.5,
+          clueType: 'forced_lock',
+          name: "Il Martello da Geologo sulla Cassa",
+          loreClue: "Un piccone da geologo con manico di frassino è posato sopra la cassa di spedizione marchiata Heraklion."
+        }
       ];
     } else if (isLevelThirtyTwo) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 12.06, radius: 4.0, name: "La Trave Lignea della Volta Sinistra", loreClue: "La grande trave in legno di cedro che sorregge il soffitto a sinistra appare piallata." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.05, radius: 4.0, name: "Il Fregio Superiore Sopra il Trono", loreClue: "Il fregio policromo a spirali d'onda sopra lo schienale del trono è scomparso dalla parete." },
-        { id: `lvl${id}_d3`, x: 79.99, y: 12.06, radius: 4.0, name: "Il Concio di Pietra della Parete Destra", loreClue: "Il blocco di calcare squadrato del paramento murario di destra risulta smussato." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 39.96, radius: 4.0, name: "Il Grifone Alato dell'Affresco Sinistro", loreClue: "La figura araldica del grifone guardiano accovacciato a sinistra svanisce nell'intonaco." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 35.05, radius: 4.0, name: "Lo Schienale Sagomato del Trono di Gesso", loreClue: "Il caratteristico profilo ondulato dello schienale in alabastro del trono appare rettilineo." },
-        { id: `lvl${id}_d6`, x: 88.01, y: 39.95, radius: 4.0, name: "Il Grifone Alato dell'Affresco Destro", loreClue: "Il piumaggio variopinto del grifone minoico sulla parete destra è stato raschiato." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 64.95, radius: 4.0, name: "Il Sedile di Gesso della Panca Sinistra", loreClue: "La panca continua in gesso per i consiglieri di Minosse a sinistra è scomparsa." },
-        { id: `lvl${id}_d8`, x: 50.01, y: 62.05, radius: 4.0, name: "La Seduta Incisa del Trono di Minosse", loreClue: "L'incavo ergonomico intagliato nel sedile del trono reale è colmato e levigato." },
-        { id: `lvl${id}_d9`, x: 82.02, y: 64.95, radius: 4.0, name: "Il Basamento Modanato della Panca Destra", loreClue: "Lo zoccolo a modanatura classica della panca cerimoniale destra è assente." },
-        { id: `lvl${id}_d10`, x: 50.01, y: 87.94, radius: 4.0, name: "Il Bacino Idraulico Lustrale in Pietra", loreClue: "Il bacino lustrale in calcare al centro della sala delle purificazioni è rimosso dal suolo." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Bacino Idraulico Lustrale",
+          loreClue: "Il bacino lustrale in pietra calcarea al centro della sala delle purificazioni reca tracce di oli rituali asportati."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 12.04,
+          y: 40.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Grifone Guardiano dell'Affresco Sinistro",
+          loreClue: "La figura araldica del grifone minoico senza ali sull'intonaco sinistro mostra incisioni segrete nel piumaggio."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Fregio Superiore a Spirali d'Onda",
+          loreClue: "Il fregio policromo a spirali marine sopra lo schienale del trono è stato scalpellato per nascondere una cavità."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 50.04,
+          y: 62.11,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Seduta Ergonomica del Trono di Gesso",
+          loreClue: "L'incavo sacro intagliato nel sedile in alabastro del re Minosse rivela un alloggiamento per il sigillo reale."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 88.04,
+          y: 40.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Grifone Solare dell'Affresco Destro",
+          loreClue: "Il grifone cerimoniale della parete destra custodisce tra gli artigli il simbolo del Labirinto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 18.08,
+          y: 65.01,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Sedile Continuo della Panca di Corte",
+          loreClue: "La panca continua in gesso per i consiglieri minoici a sinistra presenta una giuntura muraria forzata."
+        }
       ];
     } else if (isLevelThirtyThree) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 14.99, y: 14.98, radius: 4.0, name: "Il Rosone Policromo della Cornice Sinistra", loreClue: "La formella circolare a rosetta policroma sul fregio superiore sinistro è svanita." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "Il Fregio Geometrico Superiore della Sala", loreClue: "La fascia a meandro continuo che corona la composizione marina è stata rimossa." },
-        { id: `lvl${id}_d3`, x: 85.00, y: 14.96, radius: 4.0, name: "Il Rosone Policromo della Cornice Destra", loreClue: "Il motivo floreale minoico all'angolo superiore destro della sala è scomparso." },
-        { id: `lvl${id}_d4`, x: 20.00, y: 41.97, radius: 4.0, name: "Il Delfino Minore in Fase di Salto a Sinistra", loreClue: "La sagoma azzurra del giovane delfino che nuota verso sinistra è assente dal mare dipinto." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 39.97, radius: 4.0, name: "Il Grande Delfino Centrale dell'Affresco", loreClue: "Il maestoso delfino con ventre dorato al centro del megaron scompare dal fondale." },
-        { id: `lvl${id}_d6`, x: 80.00, y: 41.96, radius: 4.0, name: "Il Banco di Pesci Corallini a Destra", loreClue: "Il gruppo di piccoli pesci variopinti che nuotano a destra è stato rimosso dalla scena." },
-        { id: `lvl${id}_d7`, x: 12.00, y: 69.97, radius: 4.0, name: "La Zoccolatura in Gesso della Parete Sinistra", loreClue: "Il basamento in lastre di gesso chiaro alla base della parete sinistra appare raschiato." },
-        { id: `lvl${id}_d8`, x: 40.00, y: 69.97, radius: 4.0, name: "La Pinna Caudale del Delfino Inferiore", loreClue: "La doppia pinna caudale arcuata del secondo delfino è scomparsa dai flutti." },
-        { id: `lvl${id}_d9`, x: 68.00, y: 69.98, radius: 4.0, name: "Il Riccio di Mare Marino dell'Angolo", loreClue: "La creatura marina spinosa adagiata sul fondale roccioso dipinto è stata asportata." },
-        { id: `lvl${id}_d10`, x: 88.01, y: 75.01, radius: 4.0, name: "Il Montante di Pietra del Pozzo di Luce", loreClue: "Il pilastro monolitico che delimita il cavedio luminoso della regina è rimosso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 40.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Grande Delfino Centrale dell'Affresco",
+          loreClue: "Il maestoso delfino azzurro con ventre dorato al centro del megaron della regina indica la rotta verso Alessandria."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Fregio Geometrico a Meandro Marino",
+          loreClue: "La fascia a meandro continuo che corona la composizione marina è stata alterata per occultare una cifra dedalica."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 42.02,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Banco di Pesci Corallini a Destra",
+          loreClue: "Il gruppo di piccoli pesci variopinti che nuotano verso est rivela la corrente marina verso l'Egitto tolemaico."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 20.0,
+          y: 42.02,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Delfino Minore in Fase di Salto",
+          loreClue: "La sagoma del giovane delfino che emerge tra le onde è stata scheggiata dagli emissari della Mano Oscura."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 40.04,
+          y: 69.98,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "La Pinna Caudale del Delfino Inferiore",
+          loreClue: "La doppia pinna caudale arcuata del delfino guida tocca il rilievo di una stella nautica a otto punte."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 88.04,
+          y: 75.06,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "Il Pilastro Monolitico del Pozzo di Luce",
+          loreClue: "Il pilastro in calcare che delimita il cavedio luminoso della regina nascondeva una tavoletta in Lineare A."
+        }
       ];
     } else if (isLevelThirtyFour) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 17.99, y: 14.96, radius: 4.0, name: "I Conci Sagomati della Volta Sinistra", loreClue: "I conci in arenaria che compongono l'arco della galleria dei magazzini sono assenti." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Trave Maestra di Sostegno del Tetto", loreClue: "Il puntone in legno scuro che corre lungo l'asse centrale del soffitto è scomparso." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "Il Puntone di Legno della Campata Destra", loreClue: "La trave di rinforzo angolare della galleria occidentale è stata rimossa." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.99, radius: 4.0, name: "L'Ansa Superiore a Nastro del Primo Pithos", loreClue: "La massiccia impugnatura laterale in terracotta del primo vaso è stata scalpellata." },
-        { id: `lvl${id}_d5`, x: 38.00, y: 44.96, radius: 4.0, name: "I Cordoni a Rilievo del Secondo Pithos", loreClue: "Le costolature concentriche a imitazione di funi sul secondo pithos appaiono levigate." },
-        { id: `lvl${id}_d6`, x: 64.99, y: 44.98, radius: 4.0, name: "Il Medaglione Geometrico del Terzo Pithos", loreClue: "Il rosone a stampo impresso nell'argilla sulla pancia del terzo vaso è scomparso." },
-        { id: `lvl${id}_d7`, x: 88.00, y: 44.98, radius: 4.0, name: "L'Orlo Modanato in Terracotta del Quarto Pithos", loreClue: "Il labbro svasato e orlato del quarto grande recipiente da stoccaggio è rimosso." },
-        { id: `lvl${id}_d8`, x: 19.99, y: 78.01, radius: 4.0, name: "La Kasella Sotterranea per le Offerte", loreClue: "Il pozzetto in pietra incassato nel pavimento per liquidi sacri è colmato in calcare." },
-        { id: `lvl${id}_d9`, x: 50.00, y: 78.02, radius: 4.0, name: "La Canaletta di Drenaggio del Pavimento", loreClue: "La scanalatura idraulica scavata nei lastroni del corridoio è svanita nel suolo." },
-        { id: `lvl${id}_d10`, x: 80.00, y: 78.02, radius: 4.0, name: "Il Giunto di Malta dei Lastroni a Destra", loreClue: "La profonda commettitura tra le grandi lastre del pavimento appare sigillata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 88.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Grande Pithos Cerimoniale Destro",
+          loreClue: "Il monumentale pithos in terracotta per l'olio sacro reca un sigillo arcaico con la testa di Minotauro."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Trave di Cedro della Galleria Magazzini",
+          loreClue: "La trave maestra di cedro del Libano presenta un'intaccatura con il marchio dei carpentieri minoici."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 78.07,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Lastra del Cunicolo di Scolo a Terra",
+          loreClue: "La lastra pavimentale del canale idraulico sotterraneo è stata scalfita per accedere ai magazzini sigillati."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "Il Pithos da Riserva a Nastro Rilievato",
+          loreClue: "Il vaso gigante con decorazione a corda ritorta a sinistra conteneva tavolette d'argilla ancora fresche."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 65.04,
+          y: 45.09,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Cassa d'Argilla con Sigillo di Creta",
+          loreClue: "La cassa sigillata con argilla cruda conteneva i registri commerciali delle rotte tra Creta ed Egitto."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 38.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Pavimento a Lastre di Gesso Selenite",
+          loreClue: "Il pavimento in blocchi squadrati di selenite rifletteva la luce della torcia verso il corridoio segreto."
+        }
       ];
     } else if (isLevelThirtyFive) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 17.99, y: 12.04, radius: 4.0, name: "La Fascia a Riquadri Geometrici Sinistra", loreClue: "Il motivo a scacchiera colorata sulla cornice superiore sinistra dell'affresco è scomparso." },
-        { id: `lvl${id}_d2`, x: 49.99, y: 10.04, radius: 4.0, name: "Il Bordo Superiore Modanato della Lastra", loreClue: "La cornice sagomata in stucco dipinto che delimita la sommità della lastra è rimossa." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 12.04, radius: 4.0, name: "La Fascia a Riquadri Geometrici Destra", loreClue: "I tasselli a policromia minoica sul margine destro del pannello appaiono uniformati." },
-        { id: `lvl${id}_d4`, x: 15.01, y: 44.98, radius: 4.0, name: "L'Acrobata Donna alle Corna del Toro", loreClue: "La figura dell'atleta che afferra le imponenti corna del toro sacro è svanita nel fondo azzurro." },
-        { id: `lvl${id}_d5`, x: 48.00, y: 35.04, radius: 4.0, name: "Il Volteggiatore Sacro sul Dorso del Toro", loreClue: "L'acrobata colto a mezz'aria nel celebre volteggio sopra la groppa del toro è scomparso." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 44.97, radius: 4.0, name: "L'Acrobata alle Terga del Toro a Destra", loreClue: "La giovane figura atletica pronta a ricevere il compagno dietro al toro è assente." },
-        { id: `lvl${id}_d7`, x: 48.00, y: 55.03, radius: 4.0, name: "Le Macchie Ocari sul Fianco del Toro", loreClue: "Le caratteristiche pezzature scure sul manto rossastro del colossale toro sono state cancellate." },
-        { id: `lvl${id}_d8`, x: 15.00, y: 85.05, radius: 4.0, name: "Il Motivo a Chevron del Bordo Inferiore Sinistro", loreClue: "I fasci diagonali a zig-zag della cornice inferiore sinistra risultano piallati." },
-        { id: `lvl${id}_d9`, x: 50.01, y: 87.96, radius: 4.0, name: "La Ghirlanda Floreale Centrale Inferiore", loreClue: "I racemi decorativi con boccioli di giglio alla base della composizione sono rimossi." },
-        { id: `lvl${id}_d10`, x: 85.00, y: 85.05, radius: 4.0, name: "Il Motivo a Chevron del Bordo Inferiore Destro", loreClue: "Il pattern geometrico ritmico sull'angolo inferiore destro scompare dalla lastra." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Fregio Superiore della Processione",
+          loreClue: "La fascia floreale a gigli stilizzati che corona la processione minoica è stata manomessa."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 15.04,
+          y: 85.1,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Vaso Rituale Rython a Terra",
+          loreClue: "Il prezioso rython conico in clorite verde usato per le libagioni del santuario è stato sottratto dal pavimento."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Portatore di Vasi d'Offerta",
+          loreClue: "La figura del coppiere reale che reca il grande vaso conico reca un pendente a forma di sole radiante."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 18.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Rosone a Spirale della Cornice",
+          loreClue: "La spirale a bassorilievo dell'architrave indica l'orientamento astronomico del megaron verso il Nilo."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 85.04,
+          y: 85.1,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Base Lapidea della Parasta Destra",
+          loreClue: "La base in calcare rosa della parasta cerimoniale mostra segni di scavo clandestino recente."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 15.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "L'Affresco del Giovane con Calice",
+          loreClue: "L'elegante silhouette del giovane offerente con calice d'argento presenta una stesura di pigmento lapislazzulo autentica."
+        }
       ];
     } else if (isLevelThirtySix) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 20.00, y: 14.94, radius: 4.0, name: "Il Crinale Roccioso verso il Monte Ida a Sinistra", loreClue: "Il profilo montuoso della catena dell'Ida a sinistra svanisce nell'azzurro del cielo." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Vetta Sommersa tra le Nubi del Monte Ida", loreClue: "La cima innevata del monte sacro di Zeus all'orizzonte centrale appare velata." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 14.96, radius: 4.0, name: "Il Profilo del Contrafforte Montano a Destra", loreClue: "La sella rocciosa sul margine destro della pianura di Messara è scomparsa dal paesaggio." },
-        { id: `lvl${id}_d4`, x: 11.99, y: 44.98, radius: 4.0, name: "Il Muro Minoico in Conci di Calcare a Sinistra", loreClue: "L'elevato in pietra squadrata dell'ala settentrionale del palazzo è stato livellato." },
-        { id: `lvl${id}_d5`, x: 48.00, y: 37.95, radius: 4.0, name: "La Base Circolare della Colonna del Propylon", loreClue: "Il basamento monolitico della monumentale colonna rastremata verso il basso è scomparso." },
-        { id: `lvl${id}_d6`, x: 84.99, y: 44.98, radius: 4.0, name: "Il Parapetto in Pietra della Terrazza Orientale", loreClue: "Il muretto di contenimento affacciato sulla valle fertile a destra è stato rimosso." },
-        { id: `lvl${id}_d7`, x: 20.00, y: 69.97, radius: 4.0, name: "La Scalinata Monumentale dell'Area Teatrale", loreClue: "I gradini rituali per gli spettatori delle cerimonie religiose appaiono spianati." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 64.95, radius: 4.0, name: "Il Grande Lastrone Centrale della Corte", loreClue: "Il blocco rettangolare in calcare al centro della corte cerimoniale è assente dal suolo." },
-        { id: `lvl${id}_d9`, x: 80.00, y: 69.97, radius: 4.0, name: "La Canaletta Idraulica del Piazzale", loreClue: "Il condotto di scolo per le acque piovane scavato nella roccia è colmato da terra." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 89.96, radius: 4.0, name: "Il Giunto ad Incastro del Lastricato in Primo Piano", loreClue: "La fessura geometrica tra le pietre sagomate in primo piano appare levigata." },
+        {
+          id: `lvl${id}_d1`,
+          x: 20.04,
+          y: 70.03,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Toro Sacro al Galoppo nel Cortile",
+          loreClue: "Il possente toro nero sacrificatore nel grande affresco centrale punta le corna verso l'altare del labirinto."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "L'Acrobata Minoico in Volo Sulla Groppa",
+          loreClue: "La figura dell'atleta acrobata colto nel balzo sacro sopra il toro nasconde un amuleto con geroglifici cretesi."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 90.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Le Corna di Consacrazione Monolitiche",
+          loreClue: "Le monumentali corna in pietra calcarea sulla sommità del cortile recano incisi i cicli solari ed equinoziali."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Dama con Fregio di Lapislazzuli",
+          loreClue: "La sacerdotessa che assiste al rito della taurocatarsia stringe un nastro sacro in porpora di Tiro."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 65.01,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "L'Altare Centrale delle Offerte Incruente",
+          loreClue: "Il piano in selenite dell'altare sacrificale presenta una fessura per la raccolta dell'acqua lustrale."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Colonna Rastremata del Portico Sinistro",
+          loreClue: "La colonna rastremata in legno di cipresso dipinta di rosso minoico rivela la firma dell'architetto Dedalo."
+        }
       ];
     } else if (isLevelThirtySeven) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.96, radius: 4.0, name: "La Tenda Parasole sul Molo di Ponente", loreClue: "Il tendaggio color ocra del caffè affacciato sul bacino portuale è stato rimosso." },
-        { id: `lvl${id}_d2`, x: 50.01, y: 12.05, radius: 4.0, name: "La Cupola della Lanterna del Faro Veneziano", loreClue: "La sommità a lanterna circolare del faro ottagonale di Chania è scomparsa dal cielo." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "Il Pennone di Segnalazione sulla Fortezza", loreClue: "L'asta metallica da segnalazione navale eretta sulla fortezza Firkas è assente." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.98, radius: 4.0, name: "L'Arcata dei Cantieri Navali Veneziani (Neoria)", loreClue: "Il grande arco in pietra d'Istria dell'arsenale repubblicano è stato uniformato." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 37.94, radius: 4.0, name: "Il Fusto Ottagonale del Faro di Chania", loreClue: "Il corpo centrale in muratura lapidea della torre del faro scompare dal panorama." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 44.98, radius: 4.0, name: "Il Bastione Angolare della Fortezza Firkas", loreClue: "La scarpata difensiva in pietra del baluardo che domina l'ingresso del porto è rimossa." },
-        { id: `lvl${id}_d7`, x: 20.00, y: 69.96, radius: 4.0, name: "Il Riflesso dei Palazzi nelle Acque del Bacino", loreClue: "I riverberi cromatici dei palazzi veneziani sull'acqua del porto sono attenuati." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 64.95, radius: 4.0, name: "I Massi di Scogliera del Molo Frangiflutti", loreClue: "I blocchi calcarei a protezione della passeggiata del faro sono scomparsi nel mare." },
-        { id: `lvl${id}_d9`, x: 80.01, y: 69.97, radius: 4.0, name: "La Piccola Imbarcazione Tipica Caicco", loreClue: "Il gozzo da pesca greco ormeggiato vicino alla banchina è svanito dalle acque." },
-        { id: `lvl${id}_d10`, x: 48.00, y: 89.96, radius: 4.0, name: "La Bitta d'Ormeggio sulla Fondamenta", loreClue: "La colonna in ghisa per l'ancoraggio delle cime sulla banchina in primo piano è stata tolta." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.08,
+          y: 15.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Labrys Scolpito sul Pilastro Sinistro",
+          loreClue: "L'incisione della doppia ascia sacra sul pilastro monolitico risuona con un'apertura meccanica nella parete."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.08,
+          y: 15.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Labrys Gemello sul Pilastro Destro",
+          loreClue: "La seconda ascia sacra incisa nel calcare forma la coppia d'assi di puntamento per la meridiana sotterranea."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 85.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Bacino delle Libagioni Lustrale Destro",
+          loreClue: "La coppa monolitica scavata nel pavimento per le abluzioni prima dell'ingresso nel labirinto è stata asportata."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Canale Idraulico Sotterraneo a Sinistra",
+          loreClue: "La canaletta di drenaggio in terracotta policroma che convogliava l'acqua verso le cisterne appare deviata."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.08,
+          y: 12.17,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Chiave di Volta con Simbolo del Minotauro",
+          loreClue: "Il blocco centrale dell'arco con l'effigie taurina è stato martellato per oscurare le lettere arcaiche."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 48.04,
+          y: 90.01,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "Il Pavimento di Selenite con Griglia Geometrica",
+          loreClue: "Le lastre pavimentali lucide disegnano l'esatta pianta a meandro del labirinto sotterraneo."
+        }
       ];
     } else if (isLevelThirtyEight) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 17.99, y: 12.04, radius: 4.0, name: "La Campana di Bronzo del Campanile Sinistro", loreClue: "La campana votiva in bronzo cesellato nella fornace sinistra del campanile è assente." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 10.04, radius: 4.0, name: "Il Frontone Barocco del Campanile a Tre Fornaci", loreClue: "Il timpano curvo con coronamento a croce sulla sommità della chiesa è scomparso." },
-        { id: `lvl${id}_d3`, x: 82.02, y: 12.05, radius: 4.0, name: "La Campana di Bronzo del Campanile Destro", loreClue: "La seconda campana liturgica nell'archetto destro della facciata è stata rimossa." },
-        { id: `lvl${id}_d4`, x: 15.00, y: 37.95, radius: 4.0, name: "La Grande Voluta Rinascimentale a Sinistra", loreClue: "Il raccordo curvilineo a voluta palladiana sul lato sinistro del frontone è scalpellato." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 35.05, radius: 4.0, name: "I Trafori Geometrici del Rosone Centrale", loreClue: "La decorazione radiale in pietra traforata del rosone della chiesa appare colmata." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 37.94, radius: 4.0, name: "La Grande Voluta Rinascimentale a Destra", loreClue: "La voluta barocca simmetrica sul lato destro della trabeazione è stata asportata." },
-        { id: `lvl${id}_d7`, x: 20.00, y: 64.95, radius: 4.0, name: "Il Capitello Corinzio della Colonna Sinistra", loreClue: "Le foglie d'acanto scolpite nel marmo sulla colonna d'ingresso sinistra risultano piallate." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 62.05, radius: 4.0, name: "Il Cartiglio Scolpito sull'Architrave del Portale", loreClue: "L'epigrafe dedicatoria in greco antico sopra la porta principale è stata raschiata." },
-        { id: `lvl${id}_d9`, x: 80.00, y: 64.96, radius: 4.0, name: "Il Capitello Corinzio della Colonna Destra", loreClue: "Il capitello classico a volute della parasta destra è sostituito da collarino liscio." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.94, radius: 4.0, name: "La Lastra del Sagrato Lapideo del Monastero", loreClue: "Il grande lastrone di calcare levigato del cortile antistante il tempio è scomparso." },
+        {
+          id: `lvl${id}_d1`,
+          x: 18.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Capitello a Cuscino della Colonna Sinistra",
+          loreClue: "Il tipico capitello a toro espanso della colonna lignea sinistra contiene un vano cilindrico nascosto."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 82.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Capitello Modanato della Colonna Destra",
+          loreClue: "Il capitello dipinto di nero e oro della colonna destra reggeva una lucerna votiva in bronzo trafugata."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 80.04,
+          y: 65.01,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "La Lampada Votiva in Steatite Scolpita",
+          loreClue: "La lucerna a tre becchi in steatite verde con rilievi di conchiglie è stata rovesciata tra le macerie."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 85.04,
+          y: 38.0,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Bassorilievo Parietale del Meandro",
+          loreClue: "Il rilievo su gesso che riproduce il mito del gomitolo di Arianna è stato raschiato dagli intrusi."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "La Lastra Sepolcrale al Centro della Cripta",
+          loreClue: "La lastra pavimentale monolitica al centro della camera ipogea presenta anelli di sollevamento in bronzo."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 50.04,
+          y: 10.1,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Fregiatura a Spirali del Soffitto",
+          loreClue: "Il motivo a spirale continua sul soffitto di cedro traccia la spirale logaritmica delle costellazioni minoiche."
+        }
       ];
     } else if (isLevelThirtyNine) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 19.99, y: 14.95, radius: 4.0, name: "La Parete Calcarea a Strapiombo di Sinistra", loreClue: "Il massiccio spuntone roccioso della falesia alta oltre trecento metri appare levigato." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Fenditura di Cielo tra le Vette Rocciose", loreClue: "Lo scorcio di cielo azzurro tra le pareti quasi a contatto della gola è oscurato da roccia." },
-        { id: `lvl${id}_d3`, x: 80.00, y: 14.94, radius: 4.0, name: "Il Fregio Roccioso della Falesia Destra", loreClue: "Gli strati geologici compressi sul costone roccioso orientale svaniscono nell'ombra." },
-        { id: `lvl${id}_d4`, x: 14.99, y: 44.98, radius: 4.0, name: "Il Pino Cretese Arbaricato sulla Roccia", loreClue: "Il tenace pino mediterraneo cresciuto nella fenditura della parete è scomparso." },
-        { id: `lvl${id}_d5`, x: 50.00, y: 41.96, radius: 4.0, name: "La Gola Stretta della Porta di Ferro", loreClue: "Il passaggio più angusto del canyon largo solo tre metri è alterato nei profili lapidei." },
-        { id: `lvl${id}_d6`, x: 84.99, y: 44.99, radius: 4.0, name: "La Cengia Rocciosa Sovrastante il Sentiero", loreClue: "La mensola naturale di calcare sospesa sul greto del torrente è stata rimossa." },
-        { id: `lvl${id}_d7`, x: 20.00, y: 71.99, radius: 4.0, name: "Il Grande Masso Levigato dalla Piena", loreClue: "Il colossale macigno arrotondato dalle alluvioni invernali è assente dal greto." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 67.97, radius: 4.0, name: "La Passerella di Tronchi sopra il Torrente", loreClue: "I tronchi di cipresso che compongono il ponticello pedonale per gli escursionisti sono tolti." },
-        { id: `lvl${id}_d9`, x: 79.99, y: 72.00, radius: 4.0, name: "La Ghiaia Fluviale della Riva Destra", loreClue: "La scarpata di ciottoli bianchi lungo la riva del corso d'acqua appare spianata." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.96, radius: 4.0, name: "L'Acqua Cristallina della Pozza Montana", loreClue: "Il limpido specchio d'acqua sorgiva del torrente montano svanisce tra i sassi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "Il Portale d'Accesso al Corridoio Cieco",
+          loreClue: "L'imponente stipite in calcare squadrato all'ingresso del pozzo nasconde la serratura a perno minoica."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 88.0,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "La Scala Monumentale dei Grandi Gradini",
+          loreClue: "I gradini monolitici aperti a ventaglio conducono al livello più profondo del labirinto dedalico."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 50.04,
+          y: 68.02,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Fessura Muraria con Sigillo di Bronzo",
+          loreClue: "Una fessura orizzontale nella parete di selenite contiene una lamina metallica con iscrizioni in Lineare A."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 15.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'sabotage',
+          name: "La Nicchia della Torcia Cerimoniale Sinistra",
+          loreClue: "L'incavo nella pietra per la torcia di pece è stato annerito da una fiamma recente accesa dai sabotatori."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 20.04,
+          y: 15.01,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "Il Bassorilievo del Labirinto Dedalico",
+          loreClue: "Il diagramma a sette circuiti del labirinto inciso sul pilastro mostra il passaggio segreto verso l'uscita a mare."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 85.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Candelabro Fittile sul Parapetto",
+          loreClue: "Il candelabro a treppiede in terracotta minoica è stato frantumato durante la fuga precipitosa degli emissari."
+        }
       ];
     } else if (isLevelForty) {
       diffsForLevel = [
-        { id: `lvl${id}_d1`, x: 18.00, y: 14.95, radius: 4.0, name: "La Veduta del Golfo di Mirabello a Sinistra", loreClue: "L'insenatura marina turchese che lambisce l'istmo è velata dal profilo roccioso." },
-        { id: `lvl${id}_d2`, x: 50.00, y: 12.05, radius: 4.0, name: "La Torre di Guardia dell'Acropoli Superiore", loreClue: "La garitta di vedetta veneziana sulla cima dell'isolotto è scomparsa dal crinale." },
-        { id: `lvl${id}_d3`, x: 82.00, y: 14.96, radius: 4.0, name: "Il Promontorio Roccioso sul Lato Destro", loreClue: "La punta rocciosa protesa verso il mare aperto a destra risulta abbattuta." },
-        { id: `lvl${id}_d4`, x: 12.00, y: 44.97, radius: 4.0, name: "I Merli di Difesa del Bastione Mocenigo", loreClue: "I merli rettangolari della cortina muraria cinquecentesca sono stati scalpellati via." },
-        { id: `lvl${id}_d5`, x: 48.00, y: 39.95, radius: 4.0, name: "La Cinta Muraria dei Terrapieni Veneziani", loreClue: "Il robusto paramento in pietra calcarea del terrapieno superiore è sostituito da terra liscia." },
-        { id: `lvl${id}_d6`, x: 85.00, y: 44.98, radius: 4.0, name: "Le Cannoniere sul Fronte Mare Orientale", loreClue: "Le feritoie per i pezzi d'artiglieria affacciate sul golfo sono state murate." },
-        { id: `lvl${id}_d7`, x: 18.00, y: 69.97, radius: 4.0, name: "La Scaletta di Approdo al Molo della Fortezza", loreClue: "I gradini intagliati nella roccia per l'accesso delle galee repubblicane sono scomparsi." },
-        { id: `lvl${id}_d8`, x: 50.00, y: 64.98, radius: 4.0, name: "L'Arco Trionfale della Porta Marina di Mezzo", loreClue: "L'arco a tutto sesto del portale di Dante attraverso cui si entra nel forte è rimosso." },
-        { id: `lvl${id}_d9`, x: 82.01, y: 69.98, radius: 4.0, name: "La Scogliera a Bioradica sotto i Bastioni", loreClue: "I massi frastagliati lambiti dalla risacca sotto le mura orientale sono spianati." },
-        { id: `lvl${id}_d10`, x: 50.00, y: 87.95, radius: 4.0, name: "Le Acque Turchesi del Canale di Spinalonga", loreClue: "Il moto ondoso e i riflessi smeraldo dell'acqua in primo piano appaiono uniformi e opachi." },
+        {
+          id: `lvl${id}_d1`,
+          x: 82.04,
+          y: 15.01,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "IL QUARTO SIGILLO: Il Labrys Minoico d'Oro",
+          loreClue: "RELIQUIA SUPREMA DI TAPPA 4: La monumentale doppia ascia d'oro massiccio di Minosse! Al centro è incastonata la coordinata solare per Alessandria d'Egitto."
+        },
+        {
+          id: `lvl${id}_d2`,
+          x: 50.04,
+          y: 12.11,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "La Stele Dedalica con la Mappa del Mediterraneo",
+          loreClue: "La stele di gesso reca incisa la rotta marittima dal porto di Kommos fino al faro di Alessandria."
+        },
+        {
+          id: `lvl${id}_d3`,
+          x: 12.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "L'Altare d'Ossidiana del Santuario Segreto",
+          loreClue: "L'altare monolitico in ossidiana lucida riflette il raggio solare dell'equinozio verso il golfo di Creta."
+        },
+        {
+          id: `lvl${id}_d4`,
+          x: 18.04,
+          y: 70.03,
+          radius: 8.0,
+          clueType: 'torn_evidence',
+          name: "Il Disco di Festo in Argilla Cruda",
+          loreClue: "Il celebre disco d'argilla con caratteri geroglifici impressi a spirale è stato estratto dal suo scrigno."
+        },
+        {
+          id: `lvl${id}_d5`,
+          x: 85.04,
+          y: 45.03,
+          radius: 8.0,
+          clueType: 'dark_seal',
+          name: "La Cornice a Doppia Spirale della Volta",
+          loreClue: "La decorazione ad onde dorate che circonda la volta santuario indica il punto di congiunzione dei paralleli."
+        },
+        {
+          id: `lvl${id}_d6`,
+          x: 48.04,
+          y: 40.01,
+          radius: 8.0,
+          clueType: 'stolen_relic',
+          name: "Il Vaso da Libagione in Cristallo di Rocca",
+          loreClue: "Il prezioso rhyton a testa di toro in cristallo di rocca purissimo contiene l'essenza per consacrare la rotta."
+        }
       ];
     } else if (isStageFour) {
       diffsForLevel = [
