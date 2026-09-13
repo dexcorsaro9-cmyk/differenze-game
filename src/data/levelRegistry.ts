@@ -159,7 +159,7 @@ export function generateAll120Levels(): Level[] {
 
     // Realistic masterwork photographs for all levels in Stages 1 to 12
     const imageA = isLevelTwo
-      ? '/stage2_crypt_A.jpg?v=5'
+      ? '/stage2_crypt_A.jpg?v=6'
       : isLevelThree
       ? '/levels/stage1_lvl3_A.jpg'
       : isLevelFour
@@ -442,7 +442,7 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/stage2_crypt_B.jpg?v=5'
+      ? '/stage2_crypt_B.jpg?v=6'
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg'
       : isLevelFour
@@ -788,8 +788,8 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 75.24,
-          y: 52.80,
+          x: 75.34,
+          y: 52.69,
           radius: 9.0,
           clueType: 'stolen_relic',
           name: "Il Teschio nella Nicchia di Pietra",
@@ -797,8 +797,8 @@ export function generateAll120Levels(): Level[] {
         },
         {
           id: `lvl${id}_d2`,
-          x: 61.73,
-          y: 27.67,
+          x: 61.63,
+          y: 27.48,
           radius: 8.5,
           clueType: 'dark_seal',
           name: "L'Iscrizione Latina 'SECRETA' sull'Arco",
@@ -806,8 +806,8 @@ export function generateAll120Levels(): Level[] {
         },
         {
           id: `lvl${id}_d3`,
-          x: 18.23,
-          y: 40.79,
+          x: 18.01,
+          y: 41.23,
           radius: 9.5,
           clueType: 'sabotage',
           name: "La Torcia a Gabbia della Colonna",
@@ -815,17 +815,17 @@ export function generateAll120Levels(): Level[] {
         },
         {
           id: `lvl${id}_d4`,
-          x: 71.39,
-          y: 82.24,
+          x: 71.56,
+          y: 81.78,
           radius: 8.5,
           clueType: 'stolen_relic',
           name: "Le Boccette Alchemiche sul Tavolo",
-          loreClue: "Due preziose fiale di reagenti e tinture alchemiche con tappo in sughero sono state rubate dal ripiano in pietra accanto al calice."
+          loreClue: "Tre preziose fiale di reagenti e tinture alchemiche con tappo in sughero sono state rubate dal ripiano in pietra accanto al calice."
         },
         {
           id: `lvl${id}_d5`,
-          x: 51.59,
-          y: 84.90,
+          x: 50.67,
+          y: 84.02,
           radius: 8.5,
           clueType: 'torn_evidence',
           name: "Il Fermaglio in Cuoio del Tomo Medievale",
@@ -833,12 +833,12 @@ export function generateAll120Levels(): Level[] {
         },
         {
           id: `lvl${id}_d6`,
-          x: 59.02,
-          y: 87.36,
-          radius: 7.5,
-          clueType: 'torn_evidence',
-          name: "Il Legaccio della Mappa Arrotolata",
-          loreClue: "La fascetta in cuoio brunito che sigillava il rotolo cartografico in primo piano è stata asportata, lasciando la pergamena srotolata."
+          x: 61.87,
+          y: 70.57,
+          radius: 12.0,
+          clueType: 'stolen_relic',
+          name: "Il Calice Sacro in Pietra",
+          loreClue: "L'antico calice cerimoniale in pietra arenaria che troneggiava al centro del tavolo è stato asportato per i suoi simboli esoterici."
         },
       ];
     } else if (isLevelThree) {
