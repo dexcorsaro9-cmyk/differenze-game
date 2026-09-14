@@ -98,7 +98,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[#080503]/98 text-stone-100 select-none animate-in fade-in duration-300 backdrop-blur-xl">
       {/* Top Archaeological Museum Header */}
-      <div className="h-16 px-4 sm:px-6 bg-gradient-to-r from-[#1c1007] via-[#2d1a0d] to-[#1c1007] border-b-2 border-amber-600/60 flex items-center justify-between shadow-2xl relative z-20">
+      <div className="pt-7 sm:pt-6 pb-3 px-4 sm:px-6 min-h-[4.5rem] bg-gradient-to-r from-[#1c1007] via-[#2d1a0d] to-[#1c1007] border-b-2 border-amber-600/60 flex items-center justify-between shadow-2xl relative z-20">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-400/50 shadow-[0_0_15px_rgba(245,158,11,0.25)]">
             <Landmark className="w-5 h-5" />

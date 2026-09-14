@@ -220,18 +220,8 @@ export const App: React.FC = () => {
   });
 
   const [isSplashVisible, setIsSplashVisible] = useState<boolean>(() => {
-    if (
-      initialView === 'avatar' ||
-      initialView === 'wardrobe' ||
-      initialView === 'game' ||
-      initialView === 'prologue' ||
-      initialView === 'tutorial' ||
-      initialView === 'map' ||
-      initialView === 'finale' ||
-      initialView === 'museum'
-    )
-      return false;
-    return true;
+    if (initialView === 'splash') return true;
+    return false;
   });
   const [isAvatarCreatorOpen, setIsAvatarCreatorOpen] = useState<boolean>(() => initialView === 'avatar');
   const [isWardrobeOpen, setIsWardrobeOpen] = useState<boolean>(() => initialView === 'wardrobe');
@@ -1397,11 +1387,12 @@ export const App: React.FC = () => {
         <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
       )}
 
-      {/* 1928 Studio Logo Reveal on Pitch Black Screen - Positioned at z-[100] on top of Splash Screen */}
+      {/* 1928 Studio Logo Reveal on Pitch Black Screen - Positioned at z-[100] */}
       {isCompanyIntroVisible && (
         <CompanyLogoIntro
           onComplete={() => setIsCompanyIntroVisible(false)}
-          companyName="DEX CORSARO STUDIOS"
+          onStartExit={() => setIsSplashVisible(true)}
+          companyName="SANTON LABS"
           subtitle="PRESENTA"
         />
       )}
@@ -1414,23 +1405,25 @@ export const App: React.FC = () => {
       />
 
       {/* Explorer Wardrobe & Coin Upgrades Modal */}
-      <WardrobeModal
-        isOpen={isWardrobeOpen}
-        onClose={() => setIsWardrobeOpen(false)}
-        profile={explorerProfile}
-        coins={coins}
-        currentLevelId={currentLevel.id}
-        discoveredRelicCount={discoveredRelicIds.length}
-        onUpdateProfile={p => setExplorerProfile(p)}
-        onSpendCoins={amount => {
-          if (coins >= amount) {
-            setCoins(c => c - amount);
-            return true;
-          }
-          return false;
-        }}
-        onOpenAvatarCreator={() => setIsAvatarCreatorOpen(true)}
-      />
+      {isWardrobeOpen && (
+        <WardrobeModal
+          isOpen={isWardrobeOpen}
+          onClose={() => setIsWardrobeOpen(false)}
+          profile={explorerProfile}
+          coins={coins}
+          currentLevelId={currentLevel.id}
+          discoveredRelicCount={discoveredRelicIds.length}
+          onUpdateProfile={p => setExplorerProfile(p)}
+          onSpendCoins={amount => {
+            if (coins >= amount) {
+              setCoins(c => c - amount);
+              return true;
+            }
+            return false;
+          }}
+          onOpenAvatarCreator={() => setIsAvatarCreatorOpen(true)}
+        />
+      )}
 
       {/* Cinematic Prologue Cutscene (Google Veo Video / In-Engine Motion Graphics) */}
       <PrologueCutsceneModal

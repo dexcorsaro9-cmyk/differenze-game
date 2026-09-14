@@ -193,10 +193,10 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 pb-2 pt-8 sm:px-4 sm:pb-4 sm:pt-10 bg-black/85 backdrop-blur-md animate-fade-in select-none">
       {/* Outer Passport Leather Booklet */}
       <div
-        className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.95)] border-4 border-[#5a1c24]"
+        className="relative w-full max-w-2xl max-h-[85vh] sm:max-h-[88vh] flex flex-col rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.95)] border-4 border-[#5a1c24]"
         style={{
           background: 'linear-gradient(135deg, #3d1218 0%, #240a0e 50%, #44141c 100%)',
           boxShadow: 'inset 0 2px 6px rgba(255,255,255,0.2), 0 20px 50px rgba(0,0,0,0.9)',

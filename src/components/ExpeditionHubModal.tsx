@@ -106,8 +106,8 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-md select-none animate-fadeIn">
-      <div className="relative w-full max-w-lg max-h-[92vh] flex flex-col rounded-3xl bg-gradient-to-b from-[#21150c] via-[#160d06] to-[#0a0502] border-2 border-amber-500/70 shadow-[0_20px_60px_rgba(0,0,0,0.95)] text-stone-200 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-9 sm:px-5 sm:pb-5 sm:pt-12 bg-black/90 backdrop-blur-md select-none animate-fadeIn">
+      <div className="relative w-full max-w-lg max-h-[85vh] sm:max-h-[88vh] flex flex-col rounded-3xl bg-gradient-to-b from-[#21150c] via-[#160d06] to-[#0a0502] border-2 border-amber-500/70 shadow-[0_20px_60px_rgba(0,0,0,0.95)] text-stone-200 overflow-hidden">
         
         {/* Top Header / Explorer Passport */}
         <div className="px-4 sm:px-5 py-3.5 bg-gradient-to-r from-amber-950/80 via-[#26150a] to-amber-950/80 border-b border-amber-600/50 flex items-center justify-between shrink-0">

@@ -28,8 +28,8 @@ export const JournalModal: React.FC<JournalModalProps> = ({
   const isCompleted = completedLevelIds.includes(selectedLevel.id);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl h-[85vh] bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border border-amber-500/40 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95)] flex flex-col text-white overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-8 sm:px-6 sm:pb-6 sm:pt-10 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-3xl h-[80vh] sm:h-[82vh] bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border border-amber-500/40 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95)] flex flex-col text-white overflow-hidden">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-950/60">
           <div className="flex items-center gap-3">

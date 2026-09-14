@@ -841,7 +841,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
       <div className="w-full max-w-[440px] h-full bg-gradient-to-b from-[#180f08] via-[#100804] to-[#080402] border-x border-amber-600/40 flex flex-col justify-between overflow-hidden relative shadow-2xl">
         
         {/* Top Header: Mappamondo Tab Title & Controls */}
-        <div className="safe-pt px-4 py-2.5 bg-gradient-to-r from-[#241509] via-[#351e0e] to-[#241509] border-b-2 border-amber-600/60 flex items-center justify-between shadow-xl shrink-0">
+        <div className="safe-pt pt-6 pb-2.5 px-4 bg-gradient-to-r from-[#241509] via-[#351e0e] to-[#241509] border-b-2 border-amber-600/60 flex items-center justify-between shadow-xl shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-400/50 shadow-[0_0_12px_rgba(245,158,11,0.3)]">
               <Globe className="w-5 h-5 animate-pulse" />

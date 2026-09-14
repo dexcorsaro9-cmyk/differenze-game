@@ -48,9 +48,9 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md overflow-hidden animate-fadeIn select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-8 sm:px-5 sm:pb-5 sm:pt-10 bg-black/85 backdrop-blur-md overflow-hidden animate-fadeIn select-none">
       {/* Antique Ledger Container */}
-      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-gradient-to-b from-[#1b1008] via-[#120a05] to-[#0a0502] border-2 border-amber-500/70 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_30px_rgba(245,158,11,0.25)] text-stone-200 overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[85vh] sm:max-h-[88vh] flex flex-col rounded-3xl bg-gradient-to-b from-[#1b1008] via-[#120a05] to-[#0a0502] border-2 border-amber-500/70 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_30px_rgba(245,158,11,0.25)] text-stone-200 overflow-hidden">
         
         {/* Vintage Archival Top Banner */}
         <div className="relative px-5 py-3.5 bg-gradient-to-r from-amber-950/80 via-[#26150a] to-amber-950/80 border-b border-amber-600/50 flex items-center justify-between shrink-0">

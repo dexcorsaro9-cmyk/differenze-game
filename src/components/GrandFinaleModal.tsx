@@ -115,8 +115,8 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   const activeEndingData = selectedEnding ? SAGA_ENDINGS[selectedEnding] : null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-xl animate-fade-in select-none">
-      <div className="relative w-full max-w-2xl bg-gradient-to-b from-[#2a1708] via-[#1a0e04] to-[#0c0602] border-2 border-amber-400/80 rounded-3xl shadow-[0_0_60px_rgba(245,158,11,0.5)] text-white overflow-hidden flex flex-col max-h-[94vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-8 sm:px-4 sm:pb-4 sm:pt-10 bg-black/90 backdrop-blur-xl animate-fade-in select-none">
+      <div className="relative w-full max-w-2xl bg-gradient-to-b from-[#2a1708] via-[#1a0e04] to-[#0c0602] border-2 border-amber-400/80 rounded-3xl shadow-[0_0_60px_rgba(245,158,11,0.5)] text-white overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[88vh]">
         
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-amber-500/25 rounded-full blur-3xl pointer-events-none" />
 

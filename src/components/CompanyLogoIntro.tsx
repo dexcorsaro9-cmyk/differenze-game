@@ -3,6 +3,7 @@ import { sound } from '../utils/audio';
 
 interface CompanyLogoIntroProps {
   onComplete: () => void;
+  onStartExit?: () => void;
   companyName?: string;
   subtitle?: string;
   logoUrl?: string;
@@ -10,6 +11,7 @@ interface CompanyLogoIntroProps {
 
 export const CompanyLogoIntro: React.FC<CompanyLogoIntroProps> = ({
   onComplete,
+  onStartExit,
   companyName = 'SANTON LABS S.R.L.',
   subtitle = 'PRESENTA',
   logoUrl,
@@ -20,10 +22,11 @@ export const CompanyLogoIntro: React.FC<CompanyLogoIntroProps> = ({
   const finishIntro = useCallback(() => {
     if (phase === 'exiting') return;
     setPhase('exiting');
+    if (onStartExit) onStartExit();
     setTimeout(() => {
       onComplete();
     }, 450);
-  }, [phase, onComplete]);
+  }, [phase, onComplete, onStartExit]);
 
   // Handle first user gesture to unlock audio context and play sting
   const handleInteraction = useCallback(() => {

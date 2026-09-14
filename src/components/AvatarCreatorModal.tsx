@@ -55,8 +55,8 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
-      <div className="relative w-full max-w-md bg-stone-900/95 border-2 border-amber-500/60 rounded-3xl shadow-[0_0_50px_rgba(217,119,6,0.3)] overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-8 sm:pt-10 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
+      <div className="relative w-full max-w-md bg-stone-900/95 border-2 border-amber-500/60 rounded-3xl shadow-[0_0_50px_rgba(217,119,6,0.3)] overflow-hidden flex flex-col max-h-[85vh]">
         
         {/* Ancient Stone Header */}
         <div className="relative px-5 pt-4 pb-3 border-b border-amber-900/50 bg-gradient-to-b from-stone-800 to-stone-900 text-center">

@@ -83,8 +83,6 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   // Modal for Close-Up Item Lore & 3D Inspection
   const [inspectItem, setInspectItem] = useState<WardrobeOutfit | WardrobeAccessory | null>(null);
 
-  if (!isOpen) return null;
-
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
 
   const safeUnlockedOutfitIds = useMemo(() => {
@@ -492,9 +490,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   const ALL_SLOTS = [...LEFT_SLOTS, ...RIGHT_SLOTS];
   const activeSlotMeta = ALL_SLOTS.find(s => s.id === selectedSlot) || LEFT_SLOTS[0];
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
-      <div className="relative w-full max-w-6xl bg-stone-950 border-2 border-amber-500/70 rounded-3xl shadow-[0_0_60px_rgba(217,119,6,0.35)] overflow-hidden flex flex-col h-[94vh] max-h-[860px]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 pb-2 pt-8 sm:px-4 sm:pb-4 sm:pt-10 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
+      <div className="relative w-full max-w-6xl bg-stone-950 border-2 border-amber-500/70 rounded-3xl shadow-[0_0_60px_rgba(217,119,6,0.35)] overflow-hidden flex flex-col h-[86vh] max-h-[820px]">
         
         {/* Ancient Header */}
         <div className="relative px-3 sm:px-5 py-2.5 border-b border-amber-900/60 bg-gradient-to-r from-[#1b120c] via-[#2a1a10] to-[#1b120c] flex items-center justify-between shrink-0 shadow-lg">

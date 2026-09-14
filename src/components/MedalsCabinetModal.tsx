@@ -95,9 +95,9 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 pb-2 pt-8 sm:px-4 sm:pb-4 sm:pt-10 bg-black/85 backdrop-blur-md animate-fade-in select-none">
       {/* Victorian Walnut Wood & Brass Cabinet Frame */}
-      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-[#1c120a] border-4 border-amber-600/70 shadow-[0_0_80px_rgba(0,0,0,0.95)] overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[85vh] sm:max-h-[88vh] flex flex-col rounded-3xl bg-[#1c120a] border-4 border-amber-600/70 shadow-[0_0_80px_rgba(0,0,0,0.95)] overflow-hidden">
         
         {/* Brass corner brackets */}
         <div className="brass-corner-bracket brass-corner-tl" />
