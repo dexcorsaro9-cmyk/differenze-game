@@ -107,7 +107,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
         <div className="px-4 py-2.5 bg-[#ebe0cb] border-b border-[#d8c8aa] flex items-center justify-between text-stone-700">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded bg-amber-900/10 border border-amber-900/20 text-[10px] font-mono font-bold tracking-widest text-amber-950 uppercase">
-              SPECIMEN #0{index + 1} / 0{total}
+              SPECIMEN #{String(index).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
             <span className="text-[10px] font-sans font-medium text-stone-600">
               CAP. {chapterNumber}

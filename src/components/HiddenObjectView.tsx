@@ -223,6 +223,23 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     triggerHaptic('light');
   }, []);
 
+  // Focus and zoom smoothly on a specific clue from the specimen dossier
+  const handleFocusClueScene = useCallback((xPercent: number, yPercent: number) => {
+    const targetScale = 2.4;
+    const targetPanX = (50 - xPercent) * 3.0;
+    const targetPanY = (50 - yPercent) * 3.0;
+    const maxOffset = (targetScale - 1) * 280;
+    setScale(targetScale);
+    setPan({
+      x: Math.max(-maxOffset, Math.min(maxOffset, targetPanX)),
+      y: Math.max(-maxOffset, Math.min(maxOffset, targetPanY)),
+    });
+    setMagnesiumFlash({ id: String(Date.now()), x: xPercent, y: yPercent });
+    setTimeout(() => {
+      setMagnesiumFlash(null);
+    }, 1200);
+  }, []);
+
   // --- 1928 BRASS FIELD MAGNIFIER POSITION TRACKING ---
   const updateMagnifierPosition = useCallback((clientX: number, clientY: number) => {
     const imgElement = imgRef.current;
@@ -939,6 +956,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           difference={inspectingDiff}
           isOpen={true}
           onClose={() => setInspectingDiff(null)}
+          onFocusScene={handleFocusClueScene}
           index={differences.findIndex(d => d.id === inspectingDiff.id) + 1}
           total={differences.length}
           chapterNumber={chapterNumber}

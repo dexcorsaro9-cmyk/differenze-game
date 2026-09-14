@@ -43,6 +43,7 @@ import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
 import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
 import { CONSULAR_VISAS, type ConsularVisa } from './data/passportData';
+import { assetUrl } from './utils/assetUrl';
 import {
   ALL_OUTFITS,
   ALL_ACCESSORIES,
@@ -669,6 +670,15 @@ export const App: React.FC = () => {
     };
   }, [isTimeFrozen, freezeSecondsLeft]);
 
+  // Intelligent Preloading: preloads next level's master photograph in background for zero-lag transitions
+  useEffect(() => {
+    const nextLevel = levels.find(l => l.id === currentLevelId + 1);
+    if (nextLevel && nextLevel.imageA) {
+      const img = new Image();
+      img.src = assetUrl(nextLevel.imageA);
+    }
+  }, [currentLevelId, levels]);
+
   // Reset state on level switch
   const loadLevel = useCallback((levelId: number) => {
     setCurrentLevelId(levelId);
@@ -1134,21 +1144,29 @@ export const App: React.FC = () => {
   // Splash & Avatar Handlers
   const handleSplashStart = useCallback(() => {
     setIsSplashVisible(false);
+    if (settings.soundEnabled && isBgmPlaying) {
+      sound.setBGMEnabled(true);
+      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+    }
     if (!hasCompletedAvatarSetup) {
       setIsAvatarCreatorOpen(true);
     } else {
       setIsTimerRunning(true);
     }
-  }, [hasCompletedAvatarSetup]);
+  }, [hasCompletedAvatarSetup, settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, currentLevel.chapterNumber]);
 
   const handleQuickPlay = useCallback(() => {
     setIsSplashVisible(false);
+    if (settings.soundEnabled && isBgmPlaying) {
+      sound.setBGMEnabled(true);
+      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+    }
     setHasCompletedAvatarSetup(true);
     setIsAvatarCreatorOpen(false);
     setIsPrologueOpen(false);
     setIsTutorialOpen(false);
     setIsTimerRunning(true);
-  }, []);
+  }, [settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, currentLevel.chapterNumber]);
 
   const handleConfirmAvatarProfile = useCallback((profile: ExplorerProfile) => {
     setExplorerProfile(profile);
