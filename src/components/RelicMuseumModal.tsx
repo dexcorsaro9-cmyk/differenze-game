@@ -178,40 +178,40 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           <button
             onClick={handlePrev}
             aria-label="Reperto Precedente"
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-2xl bg-stone-900/80 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_25px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-xl bg-stone-900/85 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_20px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
           >
-            <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
+            <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
           </button>
 
           <button
             onClick={handleNext}
             aria-label="Reperto Successivo"
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-2xl bg-stone-900/80 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_25px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-xl bg-stone-900/85 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_20px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
           >
-            <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
+            <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
           </button>
 
-          {/* THE MASTER ARCHIVAL VITRINE (LA TECA D'ECCELLENZA) */}
+          {/* THE MASTER ARCHIVAL VITRINE (LA TECA D'ECCELLENZA) - Compact & Elegant */}
           <div 
-            className="relative flex flex-col items-center justify-center transition-transform duration-100 ease-out origin-center"
+            className="relative flex flex-col items-center justify-center transition-transform duration-100 ease-out origin-center my-auto"
             style={{
               transform: `perspective(1100px) rotateY(${tiltY + Math.sin(rotationAngle * Math.PI / 180) * 8}deg) rotateX(${tiltX}deg)`,
               transformStyle: 'preserve-3d',
             }}
           >
-            {/* Vitrine Outer Structure */}
-            <div className="relative w-64 xs:w-72 sm:w-80 md:w-96 rounded-3xl p-1 bg-gradient-to-b from-[#6b421a] via-[#3a200d] to-[#1a0d05] border-2 border-amber-500/70 shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.25)] overflow-hidden">
+            {/* Vitrine Outer Structure - Balanced Compact Size */}
+            <div className="relative w-52 xs:w-56 sm:w-64 md:w-72 rounded-2xl p-1 bg-gradient-to-b from-[#6b421a] via-[#3a200d] to-[#1a0d05] border-2 border-amber-500/70 shadow-[0_15px_40px_rgba(0,0,0,0.95),0_0_25px_rgba(245,158,11,0.2)] overflow-hidden">
               
               {/* Vitrine Glass Chamber */}
-              <div className="relative w-full h-64 xs:h-72 sm:h-80 rounded-2xl bg-gradient-to-b from-[#180f08]/90 via-[#0d0704]/95 to-[#050201] overflow-hidden flex flex-col items-center justify-center border border-amber-400/30">
+              <div className="relative w-full h-44 xs:h-48 sm:h-52 rounded-xl bg-gradient-to-b from-[#180f08]/90 via-[#0d0704]/95 to-[#050201] overflow-hidden flex flex-col items-center justify-center border border-amber-400/30 p-2">
                 
                 {/* Caustic Glass Highlights */}
-                <div className="absolute top-0 left-6 w-12 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 pointer-events-none" />
-                <div className="absolute top-0 right-10 w-6 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 pointer-events-none" />
+                <div className="absolute top-0 left-6 w-10 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 pointer-events-none" />
+                <div className="absolute top-0 right-8 w-5 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 pointer-events-none" />
                 
                 {/* Backlight Halo behind the Relic */}
                 <div 
-                  className="absolute w-48 h-48 rounded-full pointer-events-none opacity-60"
+                  className="absolute w-36 h-36 rounded-full pointer-events-none opacity-50"
                   style={{
                     background: isSelectedDiscovered
                       ? 'radial-gradient(circle, rgba(251, 191, 36, 0.45) 0%, rgba(217, 119, 6, 0.15) 50%, transparent 75%)'
@@ -220,77 +220,77 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 />
 
                 {isSelectedDiscovered ? (
-                  /* THE DISCOVERED RELIC SPECIMEN */
+                  /* THE DISCOVERED RELIC SPECIMEN - 100% VISIBLE WITH OBJECT-CONTAIN */
                   <div className="relative z-10 flex flex-col items-center">
                     {/* The Specimen with Fine Gilded Framing */}
-                    <div className="relative w-44 h-44 xs:w-48 xs:h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-amber-400/90 shadow-[0_15px_35px_rgba(0,0,0,0.9),0_0_25px_rgba(245,158,11,0.35)] group bg-[#160d07]">
+                    <div className="relative w-32 h-32 xs:w-36 xs:h-36 sm:w-40 sm:h-40 rounded-xl overflow-hidden border border-amber-400/80 shadow-[0_10px_25px_rgba(0,0,0,0.9),0_0_15px_rgba(245,158,11,0.25)] group bg-[#120a05] flex items-center justify-center p-1.5">
                       <img
                         src={assetUrl(selectedRelic.image)}
                         alt={selectedRelic.name}
-                        className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-contain select-none pointer-events-none transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
                       />
                       
                       {/* Specular Glare & Corner Ornaments */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none" />
-                      <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-amber-300 pointer-events-none" />
-                      <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-amber-300 pointer-events-none" />
-                      <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-amber-300 pointer-events-none" />
-                      <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-amber-300 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/15 pointer-events-none" />
+                      <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-amber-300 pointer-events-none" />
+                      <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-amber-300 pointer-events-none" />
+                      <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-amber-300 pointer-events-none" />
+                      <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-amber-300 pointer-events-none" />
                     </div>
 
                     {/* Stepped Crimson Velvet Plinth */}
-                    <div className="w-52 xs:w-56 sm:w-64 h-5 mt-1.5 rounded-t-lg bg-gradient-to-r from-[#4c0519] via-[#881337] to-[#4c0519] border-t-2 border-x-2 border-amber-500/80 shadow-lg flex items-center justify-center">
+                    <div className="w-36 xs:w-40 sm:w-44 h-3 mt-1 rounded-t bg-gradient-to-r from-[#4c0519] via-[#881337] to-[#4c0519] border-t border-x border-amber-500/80 shadow-md flex items-center justify-center">
                       <div className="w-full h-0.5 bg-amber-400/50" />
                     </div>
                   </div>
                 ) : (
                   /* SEALED UNDISCOVERED RELIC */
-                  <div className="relative z-10 flex flex-col items-center justify-center text-center p-6">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-stone-900 via-stone-950 to-black border-2 border-stone-700/80 flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.9)] relative overflow-hidden">
+                  <div className="relative z-10 flex flex-col items-center justify-center text-center p-3">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-stone-900 via-stone-950 to-black border-2 border-stone-700/80 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.9)] relative overflow-hidden">
                       <div className="absolute inset-0 bg-radial-vignette opacity-70" />
-                      <Lock className="w-10 h-10 text-amber-600/70 animate-pulse" />
+                      <Lock className="w-7 h-7 sm:w-8 sm:h-8 text-amber-600/70 animate-pulse" />
                     </div>
                     
-                    <span className="mt-4 px-3.5 py-1 rounded-full bg-stone-900/90 border border-amber-600/40 text-[10px] sm:text-[11px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center gap-1.5 shadow">
-                      <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
-                      Reperto Non Ancora Dissotterrato
+                    <span className="mt-2.5 px-2.5 py-0.5 rounded-full bg-stone-900/90 border border-amber-600/40 text-[9px] sm:text-[10px] font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-1 shadow">
+                      <ShieldAlert className="w-3 h-3 text-amber-500" />
+                      Non Dissotterrato
                     </span>
-                    <p className="mt-2 text-[11px] text-stone-400 max-w-[200px] leading-tight font-serif italic">
-                      Livello {selectedRelic.hiddenLevelId} • Esplora la scena archeologica per ritrovarlo
+                    <p className="mt-1 text-[10px] text-stone-400 max-w-[170px] leading-tight font-serif italic">
+                      Livello {selectedRelic.hiddenLevelId} • Esplora la scena per trovarlo
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* INTEGRATED CAST BRASS MUSEUM PLAQUE */}
-              <div className="w-full p-2.5 sm:p-3 bg-gradient-to-b from-[#241308] via-[#1a0d05] to-[#120803] border-t-2 border-amber-600/80 rounded-b-2xl flex flex-col items-center text-center relative">
+              {/* INTEGRATED CAST BRASS MUSEUM PLAQUE - Compact */}
+              <div className="w-full p-2 sm:p-2.5 bg-gradient-to-b from-[#241308] via-[#1a0d05] to-[#120803] border-t border-amber-600/80 rounded-b-xl flex flex-col items-center text-center relative">
                 {/* Brass Screws at Corners */}
-                <div className="absolute top-1.5 left-2 w-2 h-2 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
-                <div className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
-                <div className="absolute bottom-1.5 left-2 w-2 h-2 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
-                <div className="absolute bottom-1.5 right-2 w-2 h-2 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
+                <div className="absolute top-1 left-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
+                <div className="absolute top-1 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
+                <div className="absolute bottom-1 left-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
+                <div className="absolute bottom-1 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/80 border border-amber-200 shadow-sm" />
 
                 {/* Plaque Inner Cartouche */}
-                <div className="w-full px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-900/40 via-amber-600/20 to-amber-900/40 border border-amber-500/50 shadow-inner">
-                  <h3 className="text-xs sm:text-sm font-black tracking-wider uppercase text-amber-200 font-serif line-clamp-1">
+                <div className="w-full px-2 py-1 rounded-md bg-gradient-to-r from-amber-900/40 via-amber-600/20 to-amber-900/40 border border-amber-500/40 shadow-inner">
+                  <h3 className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-amber-200 font-serif line-clamp-1">
                     {isSelectedDiscovered ? selectedRelic.name : `TECA N. ${selectedIndex + 1} • REPERTO SEPOLTO`}
                   </h3>
-                  <p className="text-[10px] text-amber-400/80 font-serif italic line-clamp-1 mt-0.5">
-                    {isSelectedDiscovered ? selectedRelic.subtitle : `Celato nelle profondità del Settore ${selectedRelic.hiddenLevelId}`}
+                  <p className="text-[9px] text-amber-400/80 font-serif italic line-clamp-1 mt-0.5">
+                    {isSelectedDiscovered ? selectedRelic.subtitle : `Celato nel Settore ${selectedRelic.hiddenLevelId}`}
                   </p>
                 </div>
 
-                <div className="mt-1 flex items-center justify-between w-full px-2 text-[9px] font-mono text-amber-300/70">
-                  <span>CATALOGO BELLINI #{selectedIndex + 1}</span>
+                <div className="mt-0.5 flex items-center justify-between w-full px-1.5 text-[8px] font-mono text-amber-300/70">
+                  <span>CATALOGO #{selectedIndex + 1}</span>
                   <span>{isSelectedDiscovered ? selectedRelic.era.split(' (')[0] : 'SCONOSCIUTO'}</span>
                 </div>
               </div>
             </div>
 
             {/* Interaction Hint */}
-            <div className="mt-3 pointer-events-none bg-stone-900/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-amber-500/40 text-[10px] text-amber-200/90 flex items-center gap-1.5 shadow-lg">
-              <Sparkles className="w-3 h-3 text-amber-400 animate-spin-slow" />
-              <span>Trascina con mouse o touch per ruotare ed esaminare la teca</span>
+            <div className="mt-2 pointer-events-none bg-stone-900/90 backdrop-blur-md px-3 py-0.5 rounded-full border border-amber-500/40 text-[9px] text-amber-200/90 flex items-center gap-1 shadow-md">
+              <Sparkles className="w-2.5 h-2.5 text-amber-400 animate-spin-slow" />
+              <span>Trascina per ruotare ed esaminare</span>
             </div>
           </div>
         </div>

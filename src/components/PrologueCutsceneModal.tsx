@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
-import { Compass, Sparkles, ArrowRight } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
@@ -109,7 +108,10 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
   const activeScene = scenes[currentScene];
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black overflow-hidden select-none animate-fadeIn">
+    <div
+      onClick={handleNext}
+      className="fixed inset-0 z-60 flex items-center justify-center bg-black overflow-hidden select-none animate-fadeIn cursor-pointer"
+    >
       {/* Background Media: Check for MP4 video, otherwise fallback to high-end Ken Burns motion graphic */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {!hasVideoError ? (
@@ -144,88 +146,20 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
       {/* Cinematic Frame Border */}
       <div className="absolute inset-0 border-y-8 sm:border-y-12 border-black pointer-events-none z-10" />
 
-      {/* Top Controls: ALWAYS visible with high z-index so user can skip at any time */}
-      <div className="absolute top-4 inset-x-4 z-30 flex items-center justify-between safe-pt pointer-events-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 border border-amber-500/50 backdrop-blur-md text-amber-300 text-[11px] font-bold uppercase tracking-widest font-serif shadow-lg">
-          <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
-          <span>Prologo Spedizione</span>
-        </div>
-
+      {/* Single Small Skip Button in Upper Right */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 safe-pt pointer-events-auto">
         <button
           type="button"
-          onClick={handleFinish}
-          className="px-3.5 py-1.5 rounded-full bg-amber-950/90 border border-amber-400/80 hover:bg-amber-900 text-amber-200 text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition cursor-pointer shadow-xl flex items-center gap-1.5"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleFinish();
+          }}
+          className="px-3 py-1 rounded-full bg-black/60 hover:bg-black/85 border border-amber-500/40 hover:border-amber-400 text-amber-200 hover:text-white text-xs font-bold font-serif uppercase tracking-wider backdrop-blur-md active:scale-95 transition-all cursor-pointer shadow-lg flex items-center gap-1"
         >
-          <span>Salta Prologo</span>
-          <span className="text-amber-400">✕</span>
+          <span>Salta</span>
+          <span className="text-amber-400 text-[10px]">➔</span>
         </button>
       </div>
-
-      {/* Bottom Subtitle / Narrative Box: ONLY SHOWN IN PROCEDURAL FALLBACK MODE (hasVideoError) */}
-      {hasVideoError && (
-        <div className="absolute bottom-6 inset-x-3 max-w-md mx-auto z-20 space-y-3">
-        {/* Explorer Voice Card */}
-        <div className="bg-stone-950/90 border-2 border-amber-500/50 rounded-3xl p-4 shadow-[0_0_40px_rgba(0,0,0,0.9)] backdrop-blur-md space-y-2.5 animate-slideUp">
-          
-          {/* Explorer Header */}
-          <div className="flex items-center justify-between border-b border-amber-950/80 pb-2">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-full border-2 border-amber-400/80 overflow-hidden shadow-md shrink-0 bg-stone-900">
-                <img
-                  src={assetUrl(explorer.portrait)}
-                  alt={explorer.name}
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-              <div>
-                <div className="text-[10px] uppercase font-bold text-amber-400 tracking-wider font-serif flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-amber-300" />
-                  {activeScene.caption}
-                </div>
-                <h3 className="text-sm font-black text-amber-100 font-serif leading-none mt-0.5">
-                  {profile.playerName} · <span className="text-xs text-amber-300/80 font-medium">{explorer.title}</span>
-                </h3>
-              </div>
-            </div>
-
-            {/* Scene step indicator */}
-            <div className="flex items-center gap-1">
-              {scenes.map((_, idx) => (
-                <div
-                  key={idx}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    idx === currentScene
-                      ? 'bg-amber-400 scale-125 shadow-[0_0_8px_#f59e0b]'
-                      : 'bg-stone-700'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Dialogue Text */}
-          <p className="text-xs sm:text-sm text-stone-200 leading-relaxed font-serif italic drop-shadow min-h-[50px]">
-            "{activeScene.text}"
-          </p>
-
-          {/* Action Row */}
-          <div className="pt-1 flex items-center justify-between">
-            <div className="text-[10px] text-stone-400 font-mono">
-              Scena {currentScene + 1} di {scenes.length}
-            </div>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              className="py-2 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-stone-950 text-xs font-black font-serif uppercase tracking-wider shadow-lg flex items-center gap-1.5 active:scale-95 transition cursor-pointer"
-            >
-              <span>{currentScene === scenes.length - 1 ? 'Inizia Tutorial' : 'Continua'}</span>
-              <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
-            </button>
-          </div>
-        </div>
-      </div>
-      )}
     </div>
   );
 };
