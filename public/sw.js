@@ -1,7 +1,7 @@
 // =========================================================================
 // PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE)
 // =========================================================================
-const CACHE_VERSION = 'paititi-expedition-v1.4';
+const CACHE_VERSION = 'paititi-expedition-v2.0';
 const CACHE_NAME = `paititi-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `paititi-runtime-${CACHE_VERSION}`;
 
