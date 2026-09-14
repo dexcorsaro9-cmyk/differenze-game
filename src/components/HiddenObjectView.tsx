@@ -350,18 +350,23 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }
     lastTapRef.current = { time: now, x: e.clientX, y: e.clientY };
 
-    // Check hit against the 8 clues
+    // Check hit against all unfound clues:
+    // Finds the closest unfound clue whose tolerance contains the tap point.
+    // Nearest-neighbor matching guarantees that tapping directly on an object will ALWAYS
+    // select that object, and adjacent objects will never steal or block clicks from each other!
     let matchedDiff: Difference | null = null;
+    let minDistance = Infinity;
+
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
-      const tolerance = diff.radius || 9.0;
+      const tolerance = Math.min(diff.radius || 5.5, 6.5);
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
+      const dist = Math.hypot(dx, dy);
 
-      if (dist <= tolerance) {
+      if (dist <= tolerance && dist < minDistance) {
+        minDistance = dist;
         matchedDiff = diff;
-        break;
       }
     }
 
@@ -473,7 +478,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         <AmbientParticles imageIndex={0} chapterNumber={chapterNumber} />
 
         <div
-          className="relative max-w-full max-h-full aspect-[4/3] flex items-center justify-center cursor-crosshair rounded-lg overflow-hidden shadow-2xl border border-amber-900/40 bg-stone-900"
+          className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center cursor-crosshair rounded-lg overflow-hidden shadow-2xl border border-amber-900/40 bg-stone-900"
           style={{
             transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
             transition: isDraggingRef.current ? 'none' : 'transform 0.15s ease-out',
@@ -485,7 +490,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             ref={imgRef}
             src={assetUrl(imageA)}
             alt="Scena di Ricerca Storica"
-            className="w-full h-full object-contain pointer-events-none select-none transition-[filter] duration-300"
+            className="w-full h-full object-cover pointer-events-none select-none transition-[filter] duration-300"
             style={{
               filter: getPhotoFilterStyle(),
             }}
@@ -497,29 +502,25 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             <div className="absolute inset-0 pointer-events-none border-4 border-cyan-400/50 shadow-[inset_0_0_30px_rgba(34,211,238,0.35)] z-25 animate-pulse" />
           )}
 
-          {/* Discovered Clues: Golden Wax Seals & Rings */}
+          {/* Discovered Clues: Golden Wax Seals & Rings (POINTER-EVENTS-NONE to never block nearby objects!) */}
           {differences.map(diff => {
             const isFound = foundDifferenceIds.includes(diff.id);
             if (!isFound) return null;
+            const ringRadius = Math.min(diff.radius || 5.5, 6.5);
             return (
               <div
                 key={`found_${diff.id}`}
-                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group"
+                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
                 style={{
                   left: `${diff.x}%`,
                   top: `${diff.y}%`,
-                  width: `${(diff.radius || 9) * 2}%`,
-                  height: `${(diff.radius || 9) * 2}%`,
+                  width: `${ringRadius * 2}%`,
+                  height: `${ringRadius * 2}%`,
                 }}
-                onClick={e => {
-                  e.stopPropagation();
-                  setInspectingDiff(diff);
-                }}
-                title={`Esamina ${diff.name}`}
               >
                 {/* Vintage Brass/Emerald Discovery Ring with Wax Seal */}
-                <div className="w-full h-full rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-pulse flex items-center justify-center group-hover:bg-amber-500/35 transition-all">
-                  <div className="bg-stone-950/90 border border-amber-400/90 rounded-full p-1 shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-full h-full rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-pulse flex items-center justify-center">
+                  <div className="bg-stone-950/90 border border-amber-400/90 rounded-full p-1 shadow-lg">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   </div>
                 </div>
