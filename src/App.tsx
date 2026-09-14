@@ -1057,6 +1057,8 @@ export const App: React.FC = () => {
     setIsTimerRunning(true);
   }, [loadLevel]);
 
+  const isStartupActive = isCompanyIntroVisible || isSplashVisible;
+
   return (
     <div className="w-full h-screen h-[100dvh] flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
       {/* Background Ambience on Desktop (Vintage Explorer Vignette) */}
@@ -1067,8 +1069,13 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* The Responsive Game Viewport Container (Phone shell on mobile, wide cinema canvas on desktop/tablet) */}
-      <div className="w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-all duration-300">
+      {/* The Responsive Game Viewport Container (Hidden completely during intro & splash screen) */}
+      <div 
+        className={`w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-opacity duration-500 ${
+          isStartupActive ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
+        }`}
+        aria-hidden={isStartupActive}
+      >
         {/* Offline Network Status Toast */}
         <OfflineStatusToast isOffline={isOffline} />
 
@@ -1385,18 +1392,18 @@ export const App: React.FC = () => {
         isInstalled={isInstalled}
       />
 
-      {/* 1928 Studio Logo Reveal on Pitch Black Screen */}
+      {/* AAA Splash Screen with "Tocca per iniziare" - Pre-mounted underneath Intro for seamless crossfade */}
+      {isSplashVisible && (
+        <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
+      )}
+
+      {/* 1928 Studio Logo Reveal on Pitch Black Screen - Positioned at z-[100] on top of Splash Screen */}
       {isCompanyIntroVisible && (
         <CompanyLogoIntro
           onComplete={() => setIsCompanyIntroVisible(false)}
           companyName="DEX CORSARO STUDIOS"
           subtitle="PRESENTA"
         />
-      )}
-
-      {/* AAA Splash Screen with "Tocca per iniziare" */}
-      {!isCompanyIntroVisible && isSplashVisible && (
-        <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
       )}
 
       {/* Explorer Avatar Creation & Selection Modal */}

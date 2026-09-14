@@ -50,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart, onQuickPlay
     setIsFadingOut(true);
     setTimeout(() => {
       onStart();
-    }, 200);
+    }, 400);
   };
 
   const handleQuickPlay = () => {
@@ -64,7 +64,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart, onQuickPlay
       } else {
         onStart();
       }
-    }, 150);
+    }, 350);
   };
 
   const currentMsgIndex = Math.min(
@@ -74,12 +74,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart, onQuickPlay
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-between p-4 sm:p-6 bg-stone-950 overflow-hidden select-none transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[90] flex flex-col items-center justify-between p-4 sm:p-6 bg-[#070402] overflow-hidden select-none transition-opacity duration-400 ${
         isFadingOut ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100'
       }`}
     >
       {/* Background AAA Splash Art with slow Ken Burns effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none bg-[#070402]">
         <img
           src={assetUrl('/splash_screen.jpg')}
           alt="Paititi Splash Art"
