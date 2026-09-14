@@ -14,6 +14,7 @@ import {
   ChevronDown,
   ChevronUp,
   HelpCircle,
+  Search,
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
@@ -44,6 +45,7 @@ interface HiddenObjectViewProps {
   comboStreak?: number;
   shieldBlockedNotice?: boolean;
   chapterNumber?: number;
+  levelId?: number;
 }
 
 interface ErrorRipple {
@@ -75,6 +77,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   comboStreak = 0,
   shieldBlockedNotice = false,
   chapterNumber = 1,
+  levelId,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -104,9 +107,16 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   // Clue inspector modal
   const [inspectingDiff, setInspectingDiff] = useState<Difference | null>(null);
 
-  // Selected riddle highlight in bottom tray
+  // Selected riddle highlight in bottom tray & scroll refs
   const [selectedRiddleIndex, setSelectedRiddleIndex] = useState<number>(0);
   const [isGridExpanded, setIsGridExpanded] = useState<boolean>(false);
+  const ribbonRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // 1928 Brass Field Magnifier (Lente d'Ottone) state
+  const [isMagnifierActive, setIsMagnifierActive] = useState<boolean>(false);
+  const [magnifierPos, setMagnifierPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [isMagnifierHovering, setIsMagnifierHovering] = useState<boolean>(false);
 
   // Diurnal Lighting Atmosphere
   const [atmosphereMode, setAtmosphereMode] = useState<'dawn' | 'noon' | 'dusk' | 'lantern'>(() => {
@@ -126,16 +136,35 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     return 'silver';
   });
 
-  // Reset viewport when image changes
+  // Reset viewport and ALWAYS start from riddle 0 with ribbon scrolled to left when image or levelId changes
   useEffect(() => {
     setScale(1);
     setPan({ x: 0, y: 0 });
     setSelectedRiddleIndex(0);
     setIsGridExpanded(false);
-  }, [imageA]);
+    if (ribbonRef.current) {
+      ribbonRef.current.scrollLeft = 0;
+    }
+  }, [imageA, levelId]);
+
+  // Smoothly scroll the selected riddle card into view whenever selectedRiddleIndex changes
+  useEffect(() => {
+    const cardEl = cardRefs.current[selectedRiddleIndex];
+    if (cardEl && ribbonRef.current) {
+      cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, [selectedRiddleIndex]);
 
   // Automatically advance selected riddle to the first uncompleted one
+  // CRITICAL: At the start of a level (0 found), rigidly guarantee starting on riddle #1 (index 0) with ribbon at 0!
   useEffect(() => {
+    if (foundDifferenceIds.length === 0) {
+      setSelectedRiddleIndex(0);
+      if (ribbonRef.current) {
+        ribbonRef.current.scrollLeft = 0;
+      }
+      return;
+    }
     const firstUnfoundIdx = differences.findIndex(d => !foundDifferenceIds.includes(d.id));
     if (firstUnfoundIdx !== -1) {
       setSelectedRiddleIndex(firstUnfoundIdx);
@@ -194,6 +223,17 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     triggerHaptic('light');
   }, []);
 
+  // --- 1928 BRASS FIELD MAGNIFIER POSITION TRACKING ---
+  const updateMagnifierPosition = useCallback((clientX: number, clientY: number) => {
+    const imgElement = imgRef.current;
+    if (!imgElement) return;
+    const rect = imgElement.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    const xPct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    const yPct = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+    setMagnifierPos({ x: Number(xPct.toFixed(2)), y: Number(yPct.toFixed(2)) });
+  }, []);
+
   // --- NATIVE MULTI-TOUCH PINCH-TO-ZOOM ENGINE ---
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length === 2) {
@@ -214,10 +254,19 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       singleTouchStartRef.current = { x: t.clientX, y: t.clientY, time: Date.now() };
       touchStartPanRef.current = { ...pan };
       isDraggingRef.current = false;
+      if (isMagnifierActive) {
+        setIsMagnifierHovering(true);
+        updateMagnifierPosition(t.clientX, t.clientY);
+      }
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isMagnifierActive && e.touches.length === 1) {
+      const t = e.touches[0];
+      setIsMagnifierHovering(true);
+      updateMagnifierPosition(t.clientX, t.clientY);
+    }
     if (e.touches.length === 2 && touchStartDistRef.current !== null) {
       // Pinch gesture
       e.preventDefault();
@@ -284,6 +333,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (isMagnifierActive) {
+      updateMagnifierPosition(e.clientX, e.clientY);
+    }
     if (mouseDragStartRef.current && scale > 1) {
       isDraggingRef.current = true;
       const newX = e.clientX - mouseDragStartRef.current.x;
@@ -449,6 +501,31 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         )}
 
         <div className="flex items-center gap-1 bg-stone-900/85 backdrop-blur-md px-2 py-1 rounded-full border border-amber-500/30 shadow-xl">
+          {/* 1928 Brass Field Magnifier (Lente d'Ottone) Toggle */}
+          <button
+            onClick={() => {
+              setIsMagnifierActive(prev => {
+                const next = !prev;
+                if (next) {
+                  setIsMagnifierHovering(true);
+                  sound.playPaperInspect();
+                  triggerHaptic('medium');
+                } else {
+                  sound.playTap();
+                }
+                return next;
+              });
+            }}
+            className={`p-1 rounded-full transition-all duration-200 ${
+              isMagnifierActive
+                ? 'bg-amber-500 text-stone-950 font-bold shadow-[0_0_12px_rgba(245,158,11,0.8)] ring-1 ring-amber-200 scale-105'
+                : 'text-amber-300/80 hover:text-amber-200 hover:bg-stone-800'
+            }`}
+            title={isMagnifierActive ? "Disattiva Lente d'Ottone" : "Attiva Lente d'Ottone 1928 (Ingranditore di Campo 2.4x)"}
+          >
+            <Search className="w-3.5 h-3.5" />
+          </button>
+
           {/* Diurnal Atmosphere Toggle */}
           <button
             onClick={cycleAtmosphere}
@@ -484,7 +561,63 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             transition: isDraggingRef.current ? 'none' : 'transform 0.15s ease-out',
           }}
           onClick={handleStageClick}
+          onMouseEnter={() => isMagnifierActive && setIsMagnifierHovering(true)}
+          onMouseLeave={() => setIsMagnifierHovering(false)}
         >
+          {/* --- 1928 BRASS FIELD MAGNIFIER (LENTE D'OTTONE) --- */}
+          {isMagnifierActive && (
+            <div
+              className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-35 transition-opacity duration-150"
+              style={{
+                left: `${magnifierPos.x}%`,
+                top: `${magnifierPos.y}%`,
+                opacity: isMagnifierHovering ? 1 : 0.4,
+              }}
+            >
+              {/* Outer Vintage Brass Bezel with Rivets & Metallic Gradient */}
+              <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full p-2 bg-gradient-to-br from-amber-200 via-amber-700 to-amber-950 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(217,119,6,0.6)] border-2 border-amber-300">
+                {/* Inner Mechanical Brass Rim */}
+                <div className="w-full h-full rounded-full p-1 bg-stone-900 border border-amber-500/80 overflow-hidden relative shadow-inner">
+                  {/* Magnified Image Viewport: 2.4x magnification centered on magnifierPos */}
+                  <div className="w-full h-full rounded-full overflow-hidden relative bg-stone-950">
+                    <img
+                      src={assetUrl(imageA)}
+                      alt="Ingrandimento Ottico"
+                      className="absolute max-w-none pointer-events-none select-none"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transformOrigin: `${magnifierPos.x}% ${magnifierPos.y}%`,
+                        transform: 'scale(2.4)',
+                        filter: getPhotoFilterStyle(),
+                      }}
+                    />
+
+                    {/* Surveyor 1928 Crosshairs Reticle */}
+                    <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-amber-400/40 -translate-y-1/2 pointer-events-none" />
+                    <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-amber-400/40 -translate-x-1/2 pointer-events-none" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-amber-400/50 pointer-events-none shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
+
+                    {/* Curved Convex Glass Glare Reflections */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-amber-100/30 pointer-events-none" />
+                    <div className="absolute -inset-1 rounded-full shadow-[inset_0_4px_12px_rgba(255,255,255,0.45),inset_0_-6px_16px_rgba(0,0,0,0.8)] pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Brass Screws / Rivets */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-amber-200 border border-stone-800 shadow" />
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-amber-200 border border-stone-800 shadow" />
+                <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-amber-200 border border-stone-800 shadow" />
+                <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-amber-200 border border-stone-800 shadow" />
+
+                {/* Vintage Brass Badge */}
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-stone-950 border border-amber-400 text-amber-300 font-mono text-[9px] font-black tracking-widest uppercase shadow-lg whitespace-nowrap">
+                  2.4× Lente 1928
+                </div>
+              </div>
+            </div>
+          )}
           {/* Pristine Master Photograph (Single high-definition 1928 archival plate) */}
           <img
             ref={imgRef}
@@ -747,13 +880,19 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           </div>
         ) : (
           /* COMPACT HORIZONTAL SNAP SCROLL RIBBON (8 Cards) */
-          <div className="max-w-4xl mx-auto flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar snap-x">
+          <div
+            ref={ribbonRef}
+            className="max-w-4xl mx-auto flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar snap-x scroll-smooth"
+          >
             {differences.map((item, idx) => {
               const isFound = foundDifferenceIds.includes(item.id);
               const isSelected = selectedRiddleIndex === idx;
               return (
                 <div
                   key={item.id}
+                  ref={el => {
+                    cardRefs.current[idx] = el;
+                  }}
                   onClick={() => {
                     setSelectedRiddleIndex(idx);
                     if (isFound) {

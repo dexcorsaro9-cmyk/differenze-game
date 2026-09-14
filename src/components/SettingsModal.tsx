@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Volume2, VolumeX, Smartphone, Sparkles, Layout, RotateCcw, Download } from 'lucide-react';
+import { X, Volume2, VolumeX, Smartphone, Sparkles, Music, RotateCcw, Download } from 'lucide-react';
 import type { GameSettings } from '../types/game';
 
 interface SettingsModalProps {
@@ -12,6 +12,10 @@ interface SettingsModalProps {
   isInstalled?: boolean;
   onOpenInstall?: () => void;
   isOffline?: boolean;
+  isBgmPlaying?: boolean;
+  onToggleBgm?: () => void;
+  bgmTheme?: 'auto' | 'exploration' | 'excavation' | 'sacred_temple';
+  onChangeBgmTheme?: (theme: 'auto' | 'exploration' | 'excavation' | 'sacred_temple') => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -24,6 +28,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   isInstalled = false,
   onOpenInstall,
   isOffline = false,
+  isBgmPlaying = false,
+  onToggleBgm,
+  bgmTheme = 'auto',
+  onChangeBgmTheme,
 }) => {
   if (!isOpen) return null;
 
@@ -119,31 +127,63 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </button>
           </div>
 
-          {/* Layout Mode Selector */}
-          <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
-            <div className="flex items-center gap-3 mb-2.5">
-              <Layout className="w-5 h-5 text-indigo-400" />
-              <div>
-                <h5 className="text-sm font-bold text-white">Disposizione Immagini</h5>
-                <p className="text-xs text-slate-400">Come visualizzare le due scene</p>
+          {/* BGM Orchestral Music Toggle & Themes */}
+          <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Music className={`w-5 h-5 ${isBgmPlaying ? 'text-amber-400' : 'text-slate-500'}`} />
+                <div>
+                  <h5 className="text-sm font-bold text-white">Musica d'Epoca (Orchestrale)</h5>
+                  <p className="text-xs text-slate-400">Sinfonia procedurale d'atmosfera 1928</p>
+                </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              {(['auto', 'vertical', 'horizontal'] as const).map(mode => (
+              {onToggleBgm && (
                 <button
-                  key={mode}
-                  onClick={() => onUpdateSettings({ layoutMode: mode })}
-                  className={`py-2 px-3 rounded-xl text-xs font-semibold capitalize border transition-all ${
-                    settings.layoutMode === mode
-                      ? 'bg-indigo-600 border-indigo-400 text-white shadow'
-                      : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
+                  type="button"
+                  onClick={onToggleBgm}
+                  className={`w-12 h-7 rounded-full transition-colors relative p-1 cursor-pointer ${
+                    isBgmPlaying ? 'bg-amber-500' : 'bg-slate-700'
                   }`}
                 >
-                  {mode === 'auto' ? 'Auto' : mode === 'vertical' ? 'Verticale' : 'Affiancate'}
+                  <div
+                    className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                      isBgmPlaying ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
                 </button>
-              ))}
+              )}
             </div>
+
+            {/* BGM Theme Selector */}
+            {isBgmPlaying && onChangeBgmTheme && (
+              <div className="pt-2 border-t border-slate-700/60">
+                <div className="text-[11px] text-amber-300 font-serif font-bold mb-1.5">
+                  Tema Orchestrale della Spedizione:
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  {[
+                    { id: 'auto', label: 'Auto (Cap.)' },
+                    { id: 'exploration', label: '🌿 Giungla' },
+                    { id: 'excavation', label: '⛏️ Cripte' },
+                    { id: 'sacred_temple', label: '🏛️ Paititi' },
+                  ].map(item => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => onChangeBgmTheme(item.id as any)}
+                      className={`py-1.5 px-2 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${
+                        bgmTheme === item.id
+                          ? 'bg-amber-500 border-amber-300 text-stone-950 shadow-[0_0_10px_rgba(245,158,11,0.5)]'
+                          : 'bg-slate-900 border-slate-700 text-stone-300 hover:text-white'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* PWA & Offline Mode Section */}

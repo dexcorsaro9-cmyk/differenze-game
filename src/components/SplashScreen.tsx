@@ -78,19 +78,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
       {/* Top breathing space to comfortably lower the title */}
       <div className="h-4 sm:h-10 shrink-0 pointer-events-none" />
 
-      {/* Center Title Logo - Lowered & Grand */}
-      <div className="relative z-10 text-center space-y-2.5 max-w-sm sm:max-w-md my-auto animate-fadeIn">
-        <div className="inline-flex items-center justify-center p-2.5 mb-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-300 backdrop-blur-md shadow-[0_0_25px_rgba(245,158,11,0.3)]">
-          <Compass className="w-5 h-5 text-amber-400 animate-spin-slow" />
+      {/* Center Plaque - Complements the glorious baked-in art title */}
+      <div className="relative z-10 text-center space-y-2 max-w-sm sm:max-w-md my-auto animate-fadeIn mt-28 sm:mt-36">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-950/75 border border-amber-500/40 text-amber-300 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.85)]">
+          <Compass className="w-4 h-4 text-amber-400 animate-spin-slow" />
+          <span className="text-xs sm:text-sm font-serif italic text-amber-200 tracking-widest uppercase font-semibold">
+            1928 • Indagini &amp; Oggetti Nascosti
+          </span>
         </div>
-
-        <h1 className="text-3xl sm:text-5xl font-black font-serif tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-yellow-600 drop-shadow-[0_4px_24px_rgba(245,158,11,0.6)] uppercase">
-          I Misteri di Paititi
-        </h1>
-        <div className="h-0.5 w-48 mx-auto bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_12px_rgba(245,158,11,0.8)]" />
-        <p className="text-xs sm:text-sm font-serif italic text-amber-200/90 tracking-widest drop-shadow uppercase font-semibold">
-          1928 • Indagini &amp; Oggetti Nascosti
-        </p>
       </div>
 
       {/* Bottom Section: Progress Bar or Prominent "INIZIA LA SPEDIZIONE" Button */}

@@ -374,6 +374,29 @@ export const App: React.FC = () => {
     return {};
   });
 
+  // Level Stars: Real 1, 2, or 3 stars per level (up to 360 stars total)
+  const [levelStars, setLevelStars] = useState<Record<number, number>>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.levelStars && typeof parsed.levelStars === 'object') {
+          return parsed.levelStars;
+        }
+        if (Array.isArray(parsed.completedLevelIds)) {
+          const fallback: Record<number, number> = {};
+          parsed.completedLevelIds.forEach((id: number) => {
+            fallback[id] = 3;
+          });
+          return fallback;
+        }
+      } catch {
+        return {};
+      }
+    }
+    return {};
+  });
+
   const [lastWinRecordInfo, setLastWinRecordInfo] = useState<{ isRecord: boolean; bestTime: number }>({
     isRecord: false,
     bestTime: 0,
@@ -411,9 +434,10 @@ export const App: React.FC = () => {
         completedLevelIds,
         discoveredClues,
         bestTimes,
+        levelStars,
       })
     );
-  }, [currentLevelId, completedLevelIds, discoveredClues, bestTimes]);
+  }, [currentLevelId, completedLevelIds, discoveredClues, bestTimes, levelStars]);
 
   // Save economy & inventory
   useEffect(() => {
@@ -549,17 +573,27 @@ export const App: React.FC = () => {
   // Stages 1-4: 'exploration' (Jungle & Expedition Camp)
   // Stages 5-8: 'excavation' (High Andes & Crypts)
   // Stages 9-12: 'sacred_temple' (Tempio del Sole & Sancta Sanctorum di Paititi)
+  const [customBgmTheme, setCustomBgmTheme] = useState<'auto' | 'exploration' | 'excavation' | 'sacred_temple'>('auto');
+
   const getStageBgmTheme = (chapNum: number): 'exploration' | 'excavation' | 'sacred_temple' => {
     if (chapNum >= 9) return 'sacred_temple';
     if (chapNum >= 5) return 'excavation';
     return 'exploration';
   };
 
+  const getActiveBgmTheme = useCallback(
+    (chapNum: number): 'exploration' | 'excavation' | 'sacred_temple' => {
+      if (customBgmTheme !== 'auto') return customBgmTheme;
+      return getStageBgmTheme(chapNum);
+    },
+    [customBgmTheme]
+  );
+
   // Auto-ignite procedural orchestral BGM on first user interaction (compliant with mobile autoplay policies)
   useEffect(() => {
     const handleFirstGesture = () => {
       if (sound.getBGMEnabled()) {
-        sound.startBGM(getStageBgmTheme(currentLevel.chapterNumber));
+        sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
         setIsBgmPlaying(true);
       }
       window.removeEventListener('pointerdown', handleFirstGesture);
@@ -572,17 +606,34 @@ export const App: React.FC = () => {
       window.removeEventListener('pointerdown', handleFirstGesture);
       window.removeEventListener('keydown', handleFirstGesture);
     };
-  }, [currentLevel.chapterNumber]);
+  }, [currentLevel.chapterNumber, getActiveBgmTheme]);
 
-  // Adjust theme dynamically when switching chapters
+  // Adjust theme dynamically when switching chapters or manual theme
   useEffect(() => {
-    sound.setBGMTheme(getStageBgmTheme(currentLevel.chapterNumber));
-  }, [currentLevel.chapterNumber]);
+    sound.setBGMTheme(getActiveBgmTheme(currentLevel.chapterNumber));
+  }, [currentLevel.chapterNumber, getActiveBgmTheme]);
 
   const handleToggleBgm = useCallback(() => {
     const newState = sound.toggleBGM();
     setIsBgmPlaying(newState);
-  }, []);
+    if (newState && !sound.getBGMPlaying()) {
+      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+    }
+  }, [getActiveBgmTheme, currentLevel.chapterNumber]);
+
+  const handleChangeBgmTheme = useCallback(
+    (theme: 'auto' | 'exploration' | 'excavation' | 'sacred_temple') => {
+      setCustomBgmTheme(theme);
+      const effective = theme === 'auto' ? getStageBgmTheme(currentLevel.chapterNumber) : theme;
+      sound.setBGMTheme(effective);
+      if (!isBgmPlaying) {
+        sound.setBGMEnabled(true);
+        sound.startBGM(effective);
+        setIsBgmPlaying(true);
+      }
+    },
+    [currentLevel.chapterNumber, isBgmPlaying]
+  );
 
   const handleCoinBurstComplete = useCallback((burstId: string) => {
     setCoinBursts(prev => prev.filter(b => b.id !== burstId));
@@ -722,7 +773,12 @@ export const App: React.FC = () => {
         // <= 105s (1:45) = 3 stars -> +100 coins
         // <= 210s (3:30) = 2 stars -> +60 coins
         // > 210s = 1 star -> +30 coins
-        const starBonus = timeElapsed <= 105 ? 100 : timeElapsed <= 210 ? 60 : 30;
+        const earnedStars = timeElapsed <= 105 ? 3 : timeElapsed <= 210 ? 2 : 1;
+        setLevelStars(prev => ({
+          ...prev,
+          [currentLevel.id]: Math.max(prev[currentLevel.id] || 0, earnedStars),
+        }));
+        const starBonus = earnedStars === 3 ? 100 : earnedStars === 2 ? 60 : 30;
         const isMilestone = currentLevel.id % 10 === 0;
         const milestoneBonus = isMilestone ? 300 : 0;
         let totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
@@ -1195,6 +1251,8 @@ export const App: React.FC = () => {
 
         {/* Primary Gameplay Viewport: Archeologia Investigativa Hidden Object View (8 Clues) */}
         <HiddenObjectView
+          key={`hidden_obj_lvl_${currentLevel.id}`}
+          levelId={currentLevel.id}
           imageA={currentLevel.imageA}
           differences={currentLevel.differences}
           foundDifferenceIds={foundDifferenceIds}
@@ -1328,6 +1386,8 @@ export const App: React.FC = () => {
         levels={levels}
         currentLevelId={currentLevel.id}
         completedLevelIds={completedLevelIds}
+        levelStars={levelStars}
+        bestTimes={bestTimes}
         onSelectLevel={id => loadLevel(id)}
       />
 
@@ -1357,6 +1417,10 @@ export const App: React.FC = () => {
         onOpenInstall={() => setIsInstallModalOpen(true)}
         isInstalled={isInstalled}
         isOffline={isOffline}
+        isBgmPlaying={isBgmPlaying}
+        onToggleBgm={handleToggleBgm}
+        bgmTheme={customBgmTheme}
+        onChangeBgmTheme={handleChangeBgmTheme}
         onResetProgress={() => {
           localStorage.removeItem(STORAGE_KEY_PROGRESS);
           localStorage.removeItem(STORAGE_KEY_ECONOMY);
@@ -1369,6 +1433,8 @@ export const App: React.FC = () => {
           setCompletedLevelIds([]);
           setDiscoveredClues([]);
           setDiscoveredRelicIds([]);
+          setBestTimes({});
+          setLevelStars({});
           setCoins(150);
           setInventory({
             freeze_time: 2,

@@ -1361,6 +1361,10 @@ class SoundManager {
     return next;
   }
 
+  public getBGMPlaying(): boolean {
+    return this.isBgmPlaying;
+  }
+
   // Generate procedural continuous 78 RPM shellac surface noise with sporadic micro-dust pops
   private startCrackle() {
     const ctx = this.getContext();

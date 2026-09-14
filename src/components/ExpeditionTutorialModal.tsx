@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
 import {
   Compass,
-  Sparkles,
+  Star,
   Globe,
   Shield,
   ArrowRight,
@@ -53,8 +53,8 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
   const steps = [
     {
       id: 'differences',
-      title: 'Obiettivo: Decifra gli 8 Indovinelli',
-      subtitle: 'Consulta il Taccuino del Professore e tocca i reperti nella scena con pinch-to-zoom',
+      title: 'Obiettivo: Decifra gli 8 Indovinelli Archeologici',
+      subtitle: 'Esplora la scena storica, consulta gli indizi del Professore e tocca i reperti',
       badge: 'FONDAMENTI DI GIOCO',
       icon: Eye,
       renderIllustration: () => (
@@ -62,98 +62,96 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           <div className="flex items-center justify-between text-[11px] font-serif text-amber-300">
             <span className="font-bold flex items-center gap-1.5">
               <MousePointerClick className="w-4 h-4 text-amber-400 animate-bounce" />
-              Decifra l'indizio e tocca il reperto:
+              Scena del 1928 • Prova pratica:
             </span>
             <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px] border border-emerald-500/40">
-              8 INDOVINELLI PER LIVELLO
+              8 REPERTI PER LIVELLO
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5">
-            {/* Mockup Scene A */}
-            <div className="relative bg-gradient-to-b from-[#2d1e11] to-[#1a1008] border border-amber-600/60 rounded-xl p-2.5 flex flex-col items-center justify-center min-h-[110px] shadow-md">
-              <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 font-serif mb-2">
-                Tavola A • Archivio Originale
-              </span>
-              <div className="relative w-full h-14 bg-stone-900/80 rounded-lg border border-amber-900/60 flex items-center justify-center gap-3">
-                <span className="text-2xl filter drop-shadow">🏛️</span>
-                <span className="text-2xl filter drop-shadow">📜</span>
-                <div className="relative flex items-center justify-center">
-                  <span className="text-2xl filter drop-shadow">🏆</span>
-                  <span className="text-[8px] font-bold text-amber-300 absolute -bottom-3 font-mono">Presente</span>
+          {/* Single Atmospheric Scene Preview */}
+          <div
+            onClick={handleTestDifferenceClick}
+            className={`relative bg-gradient-to-b from-[#2d1e11] via-[#1a1008] to-[#0d0703] border-2 rounded-2xl p-3 flex flex-col items-center justify-center min-h-[140px] cursor-pointer transition-all active:scale-[0.98] select-none ${
+              hasPracticedDifference
+                ? 'border-emerald-400 shadow-[0_0_25px_rgba(16,185,129,0.35)]'
+                : 'border-amber-400/80 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]'
+            }`}
+          >
+            {/* Ambient desk vignette */}
+            <div className="relative w-full h-24 bg-stone-950/80 rounded-xl border border-amber-900/60 flex items-center justify-center gap-6 px-4 overflow-hidden">
+              <div className="flex flex-col items-center opacity-70">
+                <span className="text-3xl filter drop-shadow">📜</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">Manoscritto</span>
+              </div>
+
+              <div className="flex flex-col items-center opacity-70">
+                <span className="text-3xl filter drop-shadow">🕯️</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">Lanterna</span>
+              </div>
+
+              {/* Target Relic: Professor Bellini's Astrolabe */}
+              <div className="relative flex flex-col items-center">
+                <div className={`p-2 rounded-full transition-all ${
+                  hasPracticedDifference
+                    ? 'ring-4 ring-emerald-400 bg-emerald-500/20 shadow-[0_0_20px_#10b981]'
+                    : 'ring-2 ring-dashed ring-amber-400 animate-pulse bg-amber-500/10'
+                }`}>
+                  <span className="text-3xl filter drop-shadow">🧭</span>
                 </div>
+                <span className={`text-[8px] font-bold font-mono mt-0.5 ${hasPracticedDifference ? 'text-emerald-300' : 'text-amber-300 animate-bounce'}`}>
+                  {hasPracticedDifference ? '✓ Sigillato!' : 'Tocca il Reperto!'}
+                </span>
+
+                {/* Wax Seal Stamp FX */}
+                {hasPracticedDifference && (
+                  <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center font-black text-xs shadow-lg border border-white animate-stamp-slam">
+                    ✓
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col items-center opacity-70">
+                <span className="text-3xl filter drop-shadow">⚱️</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">Anfora</span>
               </div>
             </div>
 
-            {/* Mockup Scene B (Interactive Practice!) */}
-            <div
-              onClick={handleTestDifferenceClick}
-              className={`relative bg-gradient-to-b from-[#2d1e11] to-[#1a1008] border-2 rounded-xl p-2.5 flex flex-col items-center justify-center min-h-[110px] cursor-pointer transition-all active:scale-95 select-none ${
-                hasPracticedDifference
-                  ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
-                  : 'border-amber-400/80 hover:border-yellow-300 hover:shadow-[0_0_15px_rgba(245,158,11,0.4)]'
-              }`}
-            >
-              <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 font-serif mb-2 flex items-center gap-1">
-                Tavola B • Scena Sabotata
-                {!hasPracticedDifference && <span className="text-[9px] text-amber-400 animate-pulse">(Tocca qui!)</span>}
-              </span>
-
-              <div className="relative w-full h-14 bg-stone-900/80 rounded-lg border border-amber-900/60 flex items-center justify-center gap-3">
-                <span className="text-2xl filter drop-shadow">🏛️</span>
-                <span className="text-2xl filter drop-shadow">📜</span>
-                
-                {/* Difference spot */}
-                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border-2 border-dashed border-amber-400/70 hover:bg-amber-500/20 transition-all">
-                  {hasPracticedDifference ? (
-                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center font-black text-sm shadow-[0_0_12px_#10b981] animate-stamp-slam">
-                      ✓
-                    </div>
-                  ) : (
-                    <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
-                  )}
-                  <span className="text-[8px] font-bold text-rose-300 absolute -bottom-3 font-mono">
-                    {hasPracticedDifference ? 'Trovato!' : 'Mancante'}
-                  </span>
-                </div>
-              </div>
+            <div className="mt-2 text-[10.5px] font-serif text-amber-200/90 text-center">
+              {hasPracticedDifference ? (
+                <span className="text-emerald-300 font-bold flex items-center justify-center gap-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  Flash di magnesio attivato: Reperto registrato nel Taccuino!
+                </span>
+              ) : (
+                <span>
+                  💡 <strong>Indovinello di Bellini:</strong> <em>"Guida i marinai d'oltremare con anelli d'ottone e meridiane celesti..."</em>
+                </span>
+              )}
             </div>
           </div>
 
-          <div className={`p-2.5 rounded-xl border text-center transition-all ${
-            hasPracticedDifference
-              ? 'bg-emerald-950/60 border-emerald-500/60 text-emerald-200 text-xs font-bold'
-              : 'bg-amber-950/50 border-amber-500/30 text-amber-200/90 text-xs'
-          }`}>
-            {hasPracticedDifference ? (
-              <span className="flex items-center justify-center gap-1.5 text-emerald-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                Eccellente! Hai scovato l'anomalia. Puoi toccarla liberamente su Tavola A o Tavola B!
-              </span>
-            ) : (
-              <span>
-                💡 <strong>Regola d'Oro:</strong> Confronta i dettagli tra le due immagini. Trova le <strong>6 prove</strong> della Mano Oscura per decifrare il sito!
-              </span>
-            )}
+          <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/20 text-center text-xs text-amber-200/80">
+            Ogni livello contiene una grande fotografia storica ad altissima risoluzione con <strong>8 reperti nascosti</strong>.
           </div>
         </div>
       ),
       message:
-        "Ogni livello mette a confronto due splendide tavole fotografiche. Gli agenti della Mano Oscura hanno sottratto o manomesso esattamente 6 oggetti storici. Tocca con sicurezza l'oggetto anomalo per registrarlo nel tuo taccuino!",
-      tip: "Tocca sia sull'immagine superiore che su quella inferiore: entrambe rispondono al tocco con precisione.",
+        "Non ci sono due immagini affiancate: esplori una scena archeologica a tutto schermo! Gli agenti della Mano Oscura hanno sottratto o manomesso 8 reperti storici. Leggi gli 8 indovinelli del Professor Bellini nella barra inferiore per dedurre cosa cercare.",
+      tip: "Tocca con precisione il reperto indicato: un flash di magnesio lo incornicerà con un sigillo d'ottone e ceralacca!",
     },
     {
       id: 'zoom_and_pan',
-      title: 'Zoom ad Alta Definizione & Navigazione',
-      subtitle: 'Pizzica con due dita o usa la rotella per esplorare a 4x',
-      badge: 'CONTROLLI & MOVIMENTO',
+      title: "Zoom 4x, Lente d'Ottone & Atmosfere",
+      subtitle: "Pizzica con due dita, usa la nuova Lente da Campo e adatta l'illuminazione",
+      badge: 'ESPLORAZIONE AVANZATA',
       icon: ZoomIn,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-amber-300 font-serif flex items-center gap-1.5">
               <ZoomIn className="w-4 h-4 text-amber-400" />
-              Livello d'Ingrandimento: {practiceZoom}x
+              Ingrandimento: {practiceZoom}x
             </span>
             <div className="flex items-center gap-1.5">
               {[1, 2, 4].map(lvl => (
@@ -187,11 +185,11 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl">🧭</span>
-                <span className="text-[8px] text-amber-400 font-mono">Bussola Reale</span>
+                <span className="text-[8px] text-amber-400 font-mono">Astrolabio</span>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl">🗝️</span>
-                <span className="text-[8px] text-amber-400 font-mono">Sigillo Segreto</span>
+                <span className="text-[8px] text-amber-400 font-mono">Sigillo Templare</span>
               </div>
             </div>
 
@@ -202,44 +200,51 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             </div>
           </div>
 
-          <div className="text-center text-xs text-amber-200/90 font-medium">
-            🔍 Su smartphone o tablet, <strong>pizzica con due dita</strong>. Su computer, usa la <strong>rotella del mouse</strong> o i pulsanti a schermo!
+          <div className="grid grid-cols-2 gap-2 text-[10.5px] font-serif text-amber-200/90 text-left">
+            <div className="p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
+              <strong className="text-amber-300 block mb-0.5">🔍 Lente d'Ottone 1928</strong>
+              Attiva la lente d'ingrandimento mobile dalla barra in alto per ispezionare dettagli microscopici!
+            </div>
+            <div className="p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
+              <strong className="text-amber-300 block mb-0.5">💡 Filtri & Luce Solare</strong>
+              Cambia la luce del giorno (Alba, Mezzogiorno, Crepuscolo, Lanterna) e la lastra fotografica.
+            </div>
           </div>
         </div>
       ),
       message:
-        "I dettagli archeologici sono ricchi e minuziosi. Ingrandisci senza timore: puoi navigare liberamente all'interno dell'immagine per esaminare iscrizioni, fessure nelle tombe e indizi minuscoli.",
-      tip: "Quando sei ingrandito a 2x o 4x, trascina con un dito o con il mouse per spostare l'inquadratura.",
+        "I reperti storici sono fusi organicamente nell'arredamento d'epoca. Usa il pinch-to-zoom a due dita (o la rotella su computer) per ingrandire fino a 4x, oppure attiva la Lente d'Ottone per scrutare angoli bui e carteggi.",
+      tip: "Quando sei ingrandito, trascina liberamente per spostare la visuale. Tocca il badge 'Ripristina' per tornare alla panoramica intera.",
     },
     {
       id: 'powerups',
-      title: 'I 4 Strumenti di Soccorso Tattico',
-      subtitle: 'Aiuti istantanei nella barra inferiore quando sei in difficoltà',
-      badge: 'STRUMENTI DA CAMPO',
+      title: 'I 4 Strumenti Tattici di Soccorso',
+      subtitle: 'Aiuti istantanei nella cintura inferiore quando sei in difficoltà',
+      badge: 'EQUIPAGGIAMENTO DA CAMPO',
       icon: Zap,
       renderIllustration: () => {
         const toolDetails: Record<string, { title: string; desc: string; color: string; icon: React.ReactNode }> = {
           freeze: {
             title: 'Congela Tempo (20s)',
-            desc: 'Ferma il cronometro per 20 secondi. Perfetto per conquistare le 3 Stelle d\'Oro senza fretta!',
+            desc: 'Blocca il cronometro per 20 secondi. Perfetto per conquistare le 3 Stelle d\'Oro senza fretta!',
             color: 'text-cyan-300 border-cyan-500/60 bg-cyan-950/50',
             icon: <Snowflake className="w-5 h-5 text-cyan-400" />
           },
           radar: {
             title: 'Bussola Radar',
-            desc: 'Scannerizza la scena e illumina il quadrante esatto in cui si nasconde una differenza non trovata.',
+            desc: 'Scannerizza la scena e illumina il quadrante esatto in cui si nasconde un reperto ancora non individuato.',
             color: 'text-amber-300 border-amber-500/60 bg-amber-950/50',
             icon: <Compass className="w-5 h-5 text-amber-400" />
           },
           hint: {
-            title: 'Lente d\'Ingrandimento',
-            desc: 'Rivelazione chirurgica: un mirino luminoso ti indica subito la posizione esatta di una prova nascosta.',
+            title: 'Lente Rivelatrice',
+            desc: 'Rivelazione chirurgica: una bussola dorata concentrica lampeggia direttamente sopra il reperto cercato.',
             color: 'text-yellow-300 border-yellow-500/60 bg-yellow-950/50',
             icon: <Search className="w-5 h-5 text-yellow-400" />
           },
           shield: {
             title: 'Scudo del Guardiano',
-            desc: 'Protezione totale: il tuo prossimo tocco errato non ti farà perdere cuori né penalizzerà il tempo!',
+            desc: 'Protezione totale: il tuo prossimo tocco a vuoto non ti farà perdere cuori né penalizzerà il tuo punteggio!',
             color: 'text-indigo-300 border-indigo-500/60 bg-indigo-950/50',
             icon: <Shield className="w-5 h-5 text-indigo-400" />
           },
@@ -295,7 +300,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 }`}
               >
                 <Search className="w-5 h-5 text-yellow-300" />
-                <span className="text-[9px] font-black uppercase text-yellow-200">Lente</span>
+                <span className="text-[9px] font-black uppercase text-yellow-200">Indizio</span>
               </button>
 
               <button
@@ -333,27 +338,78 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
         );
       },
       message:
-        "Se una prova si rivela particolarmente sfuggente, non esitare a ricorrere alla tua cintura degli attrezzi. Guadagni monete d'oro a ogni livello decifrato e puoi rifornirti nell'Emporio quando vuoi!",
+        "Se un reperto si rivela particolarmente sfuggente, non esitare a ricorrere alla tua cintura degli attrezzi. Guadagni monete d'oro a ogni livello decifrato e puoi rifornirti nell'Emporio quando vuoi!",
       tip: "Tocca i 4 strumenti nella barra inferiore durante il gioco per attivarli istantaneamente.",
     },
     {
-      id: 'saga_expedition',
-      title: 'La Spedizione a 12 Tappe (120 Livelli)',
-      subtitle: 'Da Oxford al Gran Finale di Paititi con Reliquie Supreme',
-      badge: 'PROGRESSIONE E FINALE',
-      icon: Globe,
+      id: 'milestone_dilemmas',
+      title: 'Bivi di Spedizione & i 3 Grandi Finali',
+      subtitle: 'Ogni 10 livelli affronti un bivio tattico che orienta il finale a Paititi',
+      badge: 'NARRAZIONE E SCELTE',
+      icon: Compass,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner text-left">
           <div className="flex items-center gap-2.5 pb-2 border-b border-amber-900/60">
             <div className="w-10 h-10 rounded-full bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center shrink-0 shadow">
-              <Globe className="w-5 h-5 text-amber-300 animate-spin-slow" />
+              <Compass className="w-5 h-5 text-amber-300 animate-spin-slow" />
             </div>
             <div>
               <h4 className="text-xs font-black text-amber-100 font-serif uppercase tracking-wider">
-                12 Capitoli Mondiali • 120 Livelli
+                11 Bivi Tattici Milestone (Livelli 10, 20... 110)
               </h4>
               <p className="text-[10px] text-amber-400/80 font-mono">
-                Oxford → Parigi → Venezia → Creta → Alessandria → Luxor → Siwa → Petra → Iguazù → Nazca → Machu Picchu → Paititi
+                Scelte decisive del 1928 con ricompense immediate in Oro e Strumenti
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 text-center text-xs">
+            <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-500/40 space-y-1">
+              <span className="text-lg">🏛️</span>
+              <div className="text-amber-300 font-bold text-[10px]">Accademia</div>
+              <p className="text-[9px] text-stone-300 leading-tight">Scienza, musei e verità archeologica</p>
+            </div>
+
+            <div className="p-2 rounded-xl bg-indigo-950/60 border border-indigo-500/40 space-y-1">
+              <span className="text-lg">🗝️</span>
+              <div className="text-indigo-300 font-bold text-[10px]">Custode</div>
+              <p className="text-[9px] text-stone-300 leading-tight">Archivio segreto e protezione dei sigilli</p>
+            </div>
+
+            <div className="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 space-y-1">
+              <span className="text-lg">🌿</span>
+              <div className="text-emerald-300 font-bold text-[10px]">Natura</div>
+              <p className="text-[9px] text-stone-300 leading-tight">Armonia ancestrale e rispetto della giungla</p>
+            </div>
+          </div>
+
+          <div className="p-2 rounded-xl bg-black/50 border border-amber-500/30 text-[10.5px] text-amber-200/90 font-serif text-center">
+            ⭐ Al <strong>Livello 120</strong>, le tue scelte riveleranno la tua <strong>Affinità</strong> verso uno dei 3 Grandi Finali di Paititi!
+          </div>
+        </div>
+      ),
+      message:
+        "Alla fine di ogni capitolo, il pulsante del livello si trasforma in 'Bivio di Spedizione'. Risolvi le crisi storiche (incursioni notturne, fughe tra i ghiacci, trattative con le guide locali) per ricevere monete e rifornimenti, plasmando il destino della spedizione.",
+      tip: "Nessuna scelta taglia via livelli: giocherai sempre tutti i 120 siti archeologici godendoti l'intera avventura!",
+    },
+    {
+      id: 'stars_and_relics',
+      title: 'Sistema a 3 Stelle & Collezioni Reali',
+      subtitle: "360 Stelle d'Oro, 12 Reliquie Supreme e Visti Consolari",
+      badge: 'COLLEZIONISMO & REPLAY',
+      icon: Award,
+      renderIllustration: () => (
+        <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner text-left">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-amber-900/60">
+            <div className="w-10 h-10 rounded-full bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center shrink-0 shadow">
+              <Award className="w-5 h-5 text-yellow-400" />
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-amber-100 font-serif uppercase tracking-wider">
+                Progressione della Reale Società Geografica
+              </h4>
+              <p className="text-[10px] text-amber-400/80 font-mono">
+                360 Stelle d'Oro • 12 Reliquie • 12 Visti di Spedizione
               </p>
             </div>
           </div>
@@ -361,29 +417,29 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-600/40 space-y-1">
               <div className="flex items-center gap-1.5 text-amber-300 font-bold text-[11px]">
-                <Award className="w-3.5 h-3.5 text-yellow-400" />
-                <span>12 Reliquie Supreme</span>
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <span>3 Stelle per Livello</span>
               </div>
               <p className="text-[10px] text-stone-300 leading-tight">
-                Ogni 10 livelli completi uno stage, sblocchi una reliquia leggendaria per il tuo Museo 3D e ricevi il telegramma storico!
+                Trova gli 8 reperti in meno di 1m 45s e senza errori per conquistare 3 stelle d'oro e bonus monete massimi!
               </p>
             </div>
 
             <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-600/40 space-y-1">
               <div className="flex items-center gap-1.5 text-amber-300 font-bold text-[11px]">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>I 3 Grandi Finali</span>
+                <Globe className="w-3.5 h-3.5 text-amber-400" />
+                <span>Mappamondo & Hub</span>
               </div>
               <p className="text-[10px] text-stone-300 leading-tight">
-                Al Livello 120 nel cuore di Paititi sarai tu a scegliere il destino della città d'oro tra i 3 bivi della lore!
+                Apri il Campo Base per ammirare il Mappamondo 3D, personalizzare il Guardaroba dell'esploratore e riscuotere le taglie!
               </p>
             </div>
           </div>
         </div>
       ),
       message:
-        "Tutto è collegato: il diario di Padre Lopez, le lettere del Professor Bellini e l'inseguimento della Mano Oscura. Consulta il Mappamondo e il Diario di Bordo dal Campo Base per seguire ogni svolta della trama!",
-      tip: "Tocca 'Campo Base' in alto a destra in qualsiasi momento per accedere a Mappa, Museo, Emporio e Guardaroba.",
+        "Tutto è pronto per la tua epopea del 1928! Consulta il Taccuino, segui le tracce del Professor Bellini e sventa i piani della Mano Oscura attraverso Europa, Medio Oriente e le Ande fino alla leggendaria città d'oro!",
+      tip: "Tocca 'Campo Base' in alto a destra durante il gioco per accedere a Mappamondo, Guardaroba, Emporio e Medaglie.",
     },
   ];
 
