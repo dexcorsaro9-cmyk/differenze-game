@@ -15,9 +15,21 @@ export function registerExpeditionServiceWorker(callbacks: SWRegistrationCallbac
     const baseUrl = import.meta.env.BASE_URL || '/';
     const swUrl = `${baseUrl.replace(/\/$/, '')}/sw.js`;
 
+    // Auto-reload on controller change when a new service worker version activates
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
     navigator.serviceWorker
       .register(swUrl, { scope: baseUrl })
       .then((registration) => {
+        // Immediately check server for latest service worker version
+        registration.update().catch(() => {});
+
         // Check if worker is installed and ready for offline use
         if (registration.active && !navigator.serviceWorker.controller) {
           callbacks.onOfflineReady?.();
