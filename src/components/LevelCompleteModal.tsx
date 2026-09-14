@@ -13,6 +13,7 @@ import {
   Shield,
   Zap,
   Award,
+  Compass,
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import { sound } from '../utils/audio';
@@ -27,6 +28,7 @@ interface LevelCompleteModalProps {
   onReplay: () => void;
   onOpenJournal: () => void;
   onOpenGrandFinale?: () => void;
+  onOpenDilemma?: () => void;
   isRelicFound?: boolean;
   bestTime?: number;
   isNewRecord?: boolean;
@@ -41,6 +43,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
   onReplay,
   onOpenJournal,
   onOpenGrandFinale,
+  onOpenDilemma,
   isRelicFound = false,
   bestTime,
   isNewRecord = false,
@@ -328,6 +331,16 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
             >
               <Trophy className="w-4 h-4 text-slate-950 fill-slate-950" />
               <span>SVELA IL FINALE DELLA SAGA!</span>
+            </button>
+          ) : level.id % 10 === 0 && level.id < 120 && onOpenDilemma ? (
+            <button
+              type="button"
+              onClick={onOpenDilemma}
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 hover:from-amber-400 text-stone-950 font-black text-sm shadow-[0_0_25px_rgba(245,158,11,0.65)] flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer animate-pulse"
+            >
+              <Compass className="w-4 h-4 text-stone-950 animate-spin" style={{ animationDuration: '12s' }} />
+              <span>BIVIO DI SPEDIZIONE</span>
+              <ArrowRight className="w-4 h-4 text-stone-950" />
             </button>
           ) : (
             <button

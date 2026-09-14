@@ -28,6 +28,8 @@ const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then
 const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
 const ExpeditionPassportModal = lazy(() => import('./components/ExpeditionPassportModal').then(m => ({ default: m.ExpeditionPassportModal })));
 const PWAInstallModal = lazy(() => import('./components/PWAInstallModal').then(m => ({ default: m.PWAInstallModal })));
+const ExpeditionDilemmaModal = lazy(() => import('./components/ExpeditionDilemmaModal').then(m => ({ default: m.ExpeditionDilemmaModal })));
+import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
 import { OfflineStatusToast } from './components/OfflineStatusToast';
 import { usePWA } from './hooks/usePWA';
 import {
@@ -65,6 +67,7 @@ export const App: React.FC = () => {
   const STORAGE_KEY_SEEN_BRIEFINGS = 'differenze_seen_briefings_v1';
   const STORAGE_KEY_MEDALS = 'differenze_medals_v1';
   const STORAGE_KEY_CLAIMED_MEDALS = 'differenze_claimed_medals_v1';
+  const STORAGE_KEY_EXPEDITION_CHOICES = 'differenze_expedition_choices_v1';
 
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
   const initialView = urlParams?.get('view');
@@ -213,7 +216,8 @@ export const App: React.FC = () => {
       initialView === 'install' ||
       initialView === 'passport' ||
       initialView === 'medals' ||
-      initialView === 'museum'
+      initialView === 'museum' ||
+      initialView === 'dilemma'
     )
       return false;
     return true;
@@ -232,6 +236,7 @@ export const App: React.FC = () => {
   const [isMedalsCabinetOpen, setIsMedalsCabinetOpen] = useState<boolean>(() => initialView === 'medals');
   const [isPassportOpen, setIsPassportOpen] = useState<boolean>(() => initialView === 'passport');
   const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(() => initialView === 'install');
+  const [isDilemmaOpen, setIsDilemmaOpen] = useState<boolean>(() => initialView === 'dilemma');
 
   // Progressive Web App & Offline capability hook
   const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
@@ -522,7 +527,8 @@ export const App: React.FC = () => {
     isDailyModalOpen ||
     isMedalsCabinetOpen ||
     isPassportOpen ||
-    isInstallModalOpen;
+    isInstallModalOpen ||
+    isDilemmaOpen;
 
   // Timer Tick (Frozen when freeze power-up is running or modal open)
   useEffect(() => {
@@ -980,7 +986,7 @@ export const App: React.FC = () => {
   }, [currentLevel.id, loadLevel]);
 
   // Next Level Handler: Triggers Stage Lore Briefing whenever entering a new Stage (every 10 levels)!
-  const handleNextLevel = () => {
+  const handleNextLevel = useCallback(() => {
     const currentIndex = levels.findIndex(l => l.id === currentLevelId);
     if (currentIndex < levels.length - 1) {
       const nextLevel = levels[currentIndex + 1];
@@ -998,7 +1004,76 @@ export const App: React.FC = () => {
       setIsTimerRunning(false);
       setIsGrandFinaleOpen(true);
     }
-  };
+  }, [levels, currentLevelId, currentLevel.chapterNumber, loadLevel]);
+
+  // Milestone Expedition Tactical Dilemma Handler (Levels 10, 20, 30... 110)
+  const handleResolveDilemmaChoice = useCallback(
+    (choice: DilemmaChoice) => {
+      // 1. Record expedition conduct choice & alignment
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPEDITION_CHOICES) || '{}');
+        saved[currentLevel.chapterNumber] = {
+          choiceId: choice.id,
+          alignment: choice.alignment,
+          timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEY_EXPEDITION_CHOICES, JSON.stringify(saved));
+      } catch (e) {
+        console.error('Failed to save expedition dilemma choice', e);
+      }
+
+      // 2. Award tactical reward perk
+      if (choice.rewardType === 'coins') {
+        const amt = choice.rewardValue || 250;
+        setCoins(c => {
+          const next = c + amt;
+          localStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins: next }));
+          return next;
+        });
+      } else if (choice.rewardType === 'shield') {
+        const amt = choice.rewardValue || 1;
+        setInventory(inv => {
+          const next = { ...inv, error_shield: inv.error_shield + amt };
+          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
+          return next;
+        });
+      } else if (choice.rewardType === 'hint') {
+        const amt = choice.rewardValue || 2;
+        setInventory(inv => {
+          const next = { ...inv, hint: inv.hint + amt };
+          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
+          return next;
+        });
+      } else if (choice.rewardType === 'freeze') {
+        const amt = choice.rewardValue || 1;
+        setInventory(inv => {
+          const next = { ...inv, freeze_time: inv.freeze_time + amt };
+          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
+          return next;
+        });
+      } else if (choice.rewardType === 'compass') {
+        const amt = choice.rewardValue || 1;
+        setInventory(inv => {
+          const next = { ...inv, compass_radar: inv.compass_radar + amt };
+          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
+          return next;
+        });
+      } else {
+        // Fallback or lore reward: grant bonus gold
+        const amt = choice.rewardValue || 150;
+        setCoins(c => {
+          const next = c + amt;
+          localStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins: next }));
+          return next;
+        });
+      }
+
+      // 3. Close dilemma and advance to next stage/level
+      setIsDilemmaOpen(false);
+      handleNextLevel();
+    },
+    [currentLevel.chapterNumber, handleNextLevel]
+  );
 
   // Splash & Avatar Handlers
   const handleSplashStart = useCallback(() => {
@@ -1183,6 +1258,11 @@ export const App: React.FC = () => {
             setIsTimerRunning(false);
             setIsGrandFinaleOpen(true);
           }}
+          onOpenDilemma={() => {
+            setIsLevelCompleteOpen(false);
+            setIsTimerRunning(false);
+            setIsDilemmaOpen(true);
+          }}
           isRelicFound={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : false}
           bestTime={lastWinRecordInfo.bestTime}
           isNewRecord={lastWinRecordInfo.isRecord}
@@ -1285,6 +1365,7 @@ export const App: React.FC = () => {
           localStorage.removeItem(STORAGE_KEY_AVATAR);
           localStorage.removeItem(STORAGE_KEY_TUTORIAL);
           localStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
+          localStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
           setCompletedLevelIds([]);
           setDiscoveredClues([]);
           setDiscoveredRelicIds([]);
@@ -1463,6 +1544,17 @@ export const App: React.FC = () => {
             onClose={() => setIsDailyModalOpen(false)}
             onStartDailyLevel={handleStartDailyLevel}
             coins={coins}
+          />
+        </Suspense>
+      )}
+
+      {/* Milestone Expedition Tactical Dilemma Modal (Levels 10, 20, 30... 110) */}
+      {isDilemmaOpen && EXPEDITION_DILEMMAS[currentLevel.chapterNumber] && (
+        <Suspense fallback={null}>
+          <ExpeditionDilemmaModal
+            isOpen={isDilemmaOpen}
+            dilemma={EXPEDITION_DILEMMAS[currentLevel.chapterNumber]}
+            onResolveChoice={handleResolveDilemmaChoice}
           />
         </Suspense>
       )}

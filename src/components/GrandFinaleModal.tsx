@@ -114,6 +114,29 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
 
   const activeEndingData = selectedEnding ? SAGA_ENDINGS[selectedEnding] : null;
 
+  // Calculate player's expedition alignment from their milestone dilemma choices
+  const dilemmaStats = (() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('differenze_expedition_choices_v1') || '{}');
+      const counts = { academy: 0, secret_archive: 0, sacred_jungle: 0 };
+      Object.values(saved).forEach((val: any) => {
+        if (val && val.alignment && counts[val.alignment as keyof typeof counts] !== undefined) {
+          counts[val.alignment as keyof typeof counts]++;
+        }
+      });
+      const total = counts.academy + counts.secret_archive + counts.sacred_jungle;
+      let dominant: EndingType = 'academy';
+      if (counts.secret_archive > counts.academy && counts.secret_archive >= counts.sacred_jungle) {
+        dominant = 'secret_archive';
+      } else if (counts.sacred_jungle > counts.academy && counts.sacred_jungle > counts.secret_archive) {
+        dominant = 'sacred_jungle';
+      }
+      return { counts, total, dominant };
+    } catch {
+      return { counts: { academy: 0, secret_archive: 0, sacred_jungle: 0 }, total: 0, dominant: 'academy' as EndingType };
+    }
+  })();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-3 pb-3 pt-8 sm:px-4 sm:pb-4 sm:pt-10 bg-black/90 backdrop-blur-xl animate-fade-in select-none">
       <div className="relative w-full max-w-2xl bg-gradient-to-b from-[#2a1708] via-[#1a0e04] to-[#0c0602] border-2 border-amber-400/80 rounded-3xl shadow-[0_0_60px_rgba(245,158,11,0.5)] text-white overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[88vh]">
@@ -214,27 +237,50 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
                 <h3 className="text-base sm:text-lg font-black text-amber-100 font-serif mt-1">
                   Quale sarà la sorte di Paititi e dei 12 Sigilli?
                 </h3>
-                <p className="text-xs text-amber-300/70">
+                <p className="text-xs text-amber-300/70 mb-2">
                   Tocca una delle tre scelte per determinare il finale della tua epopea:
                 </p>
+
+                {dilemmaStats.total > 0 && (
+                  <div className="mb-1 px-3 py-1.5 rounded-xl bg-black/50 border border-amber-500/30 text-[10.5px] text-amber-200/90 flex flex-wrap items-center justify-center gap-2">
+                    <span className="font-bold text-amber-300">Condotta nei Bivi:</span>
+                    <span className="px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-500/30 text-amber-300">
+                      🏛️ {dilemmaStats.counts.academy} Accademia
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-500/30 text-indigo-300">
+                      🗝️ {dilemmaStats.counts.secret_archive} Custode
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
+                      🌿 {dilemmaStats.counts.sacred_jungle} Natura
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {(Object.keys(SAGA_ENDINGS) as EndingType[]).map(key => {
                   const item = SAGA_ENDINGS[key];
+                  const isAffinity = dilemmaStats.total > 0 && dilemmaStats.dominant === key;
                   return (
                     <button
                       key={key}
                       type="button"
                       onClick={() => handleChooseEnding(key)}
-                      className={`p-3.5 rounded-2xl border-2 flex flex-col text-left justify-between gap-2 transition-all cursor-pointer active:scale-95 group select-none ${item.accentBg} ${item.borderColor} hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]`}
+                      className={`p-3.5 rounded-2xl border-2 flex flex-col text-left justify-between gap-2 transition-all cursor-pointer active:scale-95 group select-none ${item.accentBg} ${item.borderColor} hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] ${isAffinity ? 'ring-2 ring-amber-400 ring-offset-2 ring-offset-black' : ''}`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-1.5">
                           <span className="text-2xl">{item.icon}</span>
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-amber-300 uppercase">
-                            {item.badge}
-                          </span>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-amber-300 uppercase">
+                              {item.badge}
+                            </span>
+                            {isAffinity && (
+                              <span className="text-[8px] font-black px-1.5 py-0.2 rounded bg-amber-400 text-stone-950 uppercase tracking-tighter animate-pulse">
+                                ★ Affinità
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <h4 className="text-sm font-black text-amber-100 font-serif leading-tight group-hover:text-yellow-300">
                           {item.title}
