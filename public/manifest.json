@@ -1,7 +1,7 @@
 {
-  "name": "Il Taccuino di Paititi - Spedizione 1928",
+  "name": "I Misteri di Paititi 1928: Indagini & Oggetti Nascosti",
   "short_name": "Paititi 1928",
-  "description": "Trova le Differenze nella mitica spedizione del 1928: 120 livelli, passaporto consolare con timbri, reperti 3D e misteri andini.",
+  "description": "Decifra gli enigmi e trova i reperti perduti nella mitica spedizione del 1928: 120 livelli, taccuino di spedizione con sigilli, passaporto consolare e misteri andini.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

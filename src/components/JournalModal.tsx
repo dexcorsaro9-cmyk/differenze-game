@@ -191,7 +191,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               </div>
             ) : (
               <div className="border border-dashed border-amber-900/40 bg-black/30 rounded-2xl p-5 text-center text-stone-400 text-xs sm:text-sm">
-                🔒 Completa tutte e 10 le differenze di questa tavola per decifrare la nota segreta del Professor Bellini.
+                🔒 Decifra tutti gli 8 indovinelli di questa tavola per rivelare la nota segreta del Professor Bellini.
               </div>
             )}
           </div>

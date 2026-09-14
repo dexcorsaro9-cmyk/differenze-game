@@ -161,7 +161,7 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
               L'Occhio Supremo di Quetzalcoatl & L'Oro di Paititi
             </h3>
             <p className="text-xs sm:text-sm text-amber-100/90 max-w-xl mx-auto mt-2 leading-relaxed">
-              Il santuario nascosto nel cuore delle Ande peruviane si aprirà solo a chi completerà tutte le 12 tappe con 5 differenze ciascuna. La gloria eterna ti attende alla fine del taccuino!
+              Il santuario nascosto nel cuore delle Ande peruviane si aprirà solo a chi completerà tutte le 12 tappe decifrando gli 8 indovinelli di ciascuna tavola. La gloria eterna ti attende alla fine del taccuino!
             </p>
           </div>
         </div>

@@ -53,8 +53,8 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
   const steps = [
     {
       id: 'differences',
-      title: 'Obiettivo: Trova le 6 Anomalie',
-      subtitle: 'Confronta la Tavola A con la Tavola B e tocca le discrepanze',
+      title: 'Obiettivo: Decifra gli 8 Indovinelli',
+      subtitle: 'Consulta il Taccuino del Professore e tocca i reperti nella scena con pinch-to-zoom',
       badge: 'FONDAMENTI DI GIOCO',
       icon: Eye,
       renderIllustration: () => (
@@ -62,10 +62,10 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           <div className="flex items-center justify-between text-[11px] font-serif text-amber-300">
             <span className="font-bold flex items-center gap-1.5">
               <MousePointerClick className="w-4 h-4 text-amber-400 animate-bounce" />
-              Tocca la reliquia mancante sulla Tavola B:
+              Decifra l'indizio e tocca il reperto:
             </span>
             <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px] border border-emerald-500/40">
-              6 DIFFERENZE PER LIVELLO
+              8 INDOVINELLI PER LIVELLO
             </span>
           </div>
 

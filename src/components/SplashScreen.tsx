@@ -84,12 +84,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
           <Compass className="w-5 h-5 text-amber-400 animate-spin-slow" />
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-black font-serif tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-yellow-600 drop-shadow-[0_4px_24px_rgba(245,158,11,0.6)] uppercase">
-          Paititi
+        <h1 className="text-3xl sm:text-5xl font-black font-serif tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-yellow-600 drop-shadow-[0_4px_24px_rgba(245,158,11,0.6)] uppercase">
+          I Misteri di Paititi
         </h1>
-        <div className="h-0.5 w-44 mx-auto bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_12px_rgba(245,158,11,0.8)]" />
-        <p className="text-xs sm:text-base font-serif italic text-amber-200/90 tracking-widest drop-shadow">
-          Il Segreto della Città Perduta
+        <div className="h-0.5 w-48 mx-auto bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_12px_rgba(245,158,11,0.8)]" />
+        <p className="text-xs sm:text-sm font-serif italic text-amber-200/90 tracking-widest drop-shadow uppercase font-semibold">
+          1928 • Indagini &amp; Oggetti Nascosti
         </p>
       </div>
 

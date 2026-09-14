@@ -80,10 +80,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
             </div>
             <div>
               <div className="text-base font-black text-amber-200 font-serif leading-tight">
-                Il Taccuino di Paititi 1928
+                I Misteri di Paititi 1928
               </div>
               <p className="text-xs text-stone-400 font-serif mt-0.5">
-                Avventura Archeologica a Schermo Intero
+                Indagini &amp; Oggetti Nascosti • Schermo Intero
               </p>
               <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-[9px] font-mono text-amber-300 font-bold">
                 <Sparkles className="w-2.5 h-2.5" />

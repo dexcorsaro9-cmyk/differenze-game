@@ -1330,7 +1330,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             <div className="px-3.5 py-2 border-t border-stone-800 bg-stone-950/90 text-[10px] text-stone-400 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-1.5">
                 <Shield className="w-3 h-3 text-amber-400 shrink-0" />
-                <span className="truncate">Tutti i bonus sono cumulativi e attivi nelle differenze.</span>
+                <span className="truncate">Tutti i bonus sono cumulativi e attivi nelle indagini.</span>
               </div>
               <span className="text-amber-400 font-bold shrink-0">{profile.playerName}</span>
             </div>
