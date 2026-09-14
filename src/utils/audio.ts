@@ -15,14 +15,28 @@ class SoundManager {
         this.ctx = new AudioCtx();
       }
     }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    if (this.ctx && this.ctx.state === 'suspended' && this.isEnabled) {
+      this.ctx.resume().catch(() => {});
     }
     return this.ctx;
   }
 
   public setEnabled(enabled: boolean) {
     this.isEnabled = enabled;
+    if (!enabled) {
+      this.pauseBGM();
+      this.stopCrackle();
+      if (this.ctx && this.ctx.state === 'running') {
+        this.ctx.suspend().catch(() => {});
+      }
+    } else {
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+      if (this.bgmEnabled) {
+        this.startBGM(this.currentTheme);
+      }
+    }
   }
 
   // Melodic bell/chime for finding a difference
@@ -1257,10 +1271,9 @@ class SoundManager {
     return this.isVintageCrackleEnabled;
   }
 
-  // Start continuous orchestral atmospheric music loop
   public startBGM(theme: 'exploration' | 'excavation' | 'sacred_temple' | 'royal_waltz' = 'exploration') {
     this.currentTheme = theme;
-    if (!this.bgmEnabled) return;
+    if (!this.bgmEnabled || !this.isEnabled) return;
 
     const ctx = this.getContext();
     if (!ctx) return;
@@ -1351,7 +1364,7 @@ class SoundManager {
   // Generate procedural continuous 78 RPM shellac surface noise with sporadic micro-dust pops
   private startCrackle() {
     const ctx = this.getContext();
-    if (!ctx || this.crackleSourceNode) return;
+    if (!ctx || this.crackleSourceNode || !this.isEnabled) return;
 
     try {
       const sampleRate = ctx.sampleRate;

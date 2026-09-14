@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { X, Sparkles, Coins, Landmark, BookOpen, Award } from 'lucide-react';
+import { X, Sparkles, Coins, Landmark, BookOpen } from 'lucide-react';
 import type { CollectibleRelic } from '../data/collectiblesData';
+import { assetUrl } from '../utils/assetUrl';
 
 interface RelicFoundModalProps {
   relic: CollectibleRelic | null;
@@ -76,11 +77,18 @@ export const RelicFoundModal: React.FC<RelicFoundModalProps> = ({
 
         {/* Big Glowing Relic Display */}
         <div className="relative my-4 flex items-center justify-center">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br from-amber-300 via-amber-600 to-amber-900 border-2 border-amber-300/80 flex items-center justify-center shadow-[0_0_35px_rgba(251,191,36,0.8)] transform hover:scale-105 transition-transform animate-relic-shimmer">
-            <Award className="w-14 h-14 text-amber-950 stroke-[1.8] drop-shadow-md" />
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-[0_0_35px_rgba(251,191,36,0.6)] transform hover:scale-105 transition-transform bg-[#120a05]">
+            <img 
+              src={assetUrl(relic.image)} 
+              alt={relic.name}
+              className="w-full h-full object-cover select-none pointer-events-none"
+            />
+            {/* Specular sheen */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none" />
+            <div className="absolute inset-0 border border-amber-300/40 rounded-2xl pointer-events-none" />
           </div>
 
-          <div className="absolute -bottom-2 px-3 py-0.5 rounded-full bg-slate-950/90 border border-amber-400/80 text-[11px] font-extrabold text-amber-300 tracking-wider uppercase shadow">
+          <div className="absolute -bottom-2.5 px-3 py-0.5 rounded-full bg-slate-950/95 border border-amber-400 text-[11px] font-extrabold text-amber-300 tracking-wider uppercase shadow-lg">
             {relic.rarity}
           </div>
         </div>

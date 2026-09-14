@@ -67,6 +67,7 @@ export const App: React.FC = () => {
   const STORAGE_KEY_CLAIMED_MEDALS = 'differenze_claimed_medals_v1';
 
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const initialView = urlParams?.get('view');
 
   // Levels & Current Level
   const [levels] = useState(ALL_120_LEVELS);
@@ -152,7 +153,7 @@ export const App: React.FC = () => {
   });
   const [activeFoundRelic, setActiveFoundRelic] = useState<CollectibleRelic | null>(null);
   const [isRelicFoundModalOpen, setIsRelicFoundModalOpen] = useState<boolean>(false);
-  const [isRelicMuseumOpen, setIsRelicMuseumOpen] = useState<boolean>(false);
+  const [isRelicMuseumOpen, setIsRelicMuseumOpen] = useState<boolean>(() => initialView === 'museum');
   const [hasUnreadRelics, setHasUnreadRelics] = useState<boolean>(false);
 
   // Check if current level has a secret collectible relic
@@ -196,8 +197,6 @@ export const App: React.FC = () => {
     return !!localStorage.getItem(STORAGE_KEY_AVATAR);
   });
 
-  const initialView = urlParams?.get('view');
-
   const [hasCompletedTutorial, setHasCompletedTutorial] = useState<boolean>(() => {
     return localStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
   });
@@ -213,7 +212,8 @@ export const App: React.FC = () => {
       initialView === 'finale' ||
       initialView === 'install' ||
       initialView === 'passport' ||
-      initialView === 'medals'
+      initialView === 'medals' ||
+      initialView === 'museum'
     )
       return false;
     return true;
@@ -227,7 +227,8 @@ export const App: React.FC = () => {
       initialView === 'prologue' ||
       initialView === 'tutorial' ||
       initialView === 'map' ||
-      initialView === 'finale'
+      initialView === 'finale' ||
+      initialView === 'museum'
     )
       return false;
     return true;

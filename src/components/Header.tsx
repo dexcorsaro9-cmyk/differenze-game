@@ -18,6 +18,8 @@ import {
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS } from '../data/avatarData';
+import { sound } from '../utils/audio';
+import { triggerHaptic } from '../utils/haptics';
 
 interface HeaderProps {
   currentLevel: Level;
@@ -84,21 +86,78 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
 
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(() => {
+    if (typeof document === 'undefined') return false;
+    const doc = document as any;
+    return Boolean(
+      doc.fullscreenElement ||
+      doc.webkitFullscreenElement ||
+      doc.mozFullScreenElement ||
+      doc.msFullscreenElement
+    );
+  });
 
   useEffect(() => {
     const handleFsChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
+      const doc = document as any;
+      setIsFullscreen(
+        Boolean(
+          doc.fullscreenElement ||
+          doc.webkitFullscreenElement ||
+          doc.mozFullScreenElement ||
+          doc.msFullscreenElement
+        )
+      );
     };
+
     document.addEventListener('fullscreenchange', handleFsChange);
-    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+    document.addEventListener('webkitfullscreenchange', handleFsChange);
+    document.addEventListener('mozfullscreenchange', handleFsChange);
+    document.addEventListener('MSFullscreenChange', handleFsChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFsChange);
+      document.removeEventListener('webkitfullscreenchange', handleFsChange);
+      document.removeEventListener('mozfullscreenchange', handleFsChange);
+      document.removeEventListener('MSFullscreenChange', handleFsChange);
+    };
   }, []);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.().catch(() => {});
+    sound.playTap();
+    triggerHaptic('light');
+    const doc = document as any;
+    const docEl = document.documentElement as any;
+
+    const isFs = Boolean(
+      doc.fullscreenElement ||
+      doc.webkitFullscreenElement ||
+      doc.mozFullScreenElement ||
+      doc.msFullscreenElement
+    );
+
+    if (!isFs) {
+      const req =
+        docEl.requestFullscreen ||
+        docEl.webkitRequestFullscreen ||
+        docEl.mozRequestFullScreen ||
+        docEl.msRequestFullscreen;
+
+      if (req) {
+        req.call(docEl).catch(() => {});
+      } else if (onOpenInstall) {
+        onOpenInstall();
+      }
     } else {
-      document.exitFullscreen?.().catch(() => {});
+      const exit =
+        doc.exitFullscreen ||
+        doc.webkitExitFullscreen ||
+        doc.mozCancelFullScreen ||
+        doc.msExitFullscreen;
+
+      if (exit) {
+        exit.call(doc).catch(() => {});
+      }
     }
   };
 
@@ -196,7 +255,10 @@ export const Header: React.FC<HeaderProps> = ({
           {onToggleSound && (
             <button
               type="button"
-              onClick={onToggleSound}
+              onClick={() => {
+                triggerHaptic('light');
+                onToggleSound();
+              }}
               className={`p-1 sm:p-1.5 rounded-full border transition cursor-pointer active:scale-95 ${
                 soundEnabled
                   ? 'bg-amber-950/60 border-amber-500/40 text-amber-300 hover:text-white'

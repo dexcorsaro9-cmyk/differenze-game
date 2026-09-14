@@ -1,4 +1,4 @@
-﻿export interface CollectibleRelic {
+export interface CollectibleRelic {
   id: string;
   name: string;
   subtitle: string;
@@ -11,6 +11,7 @@
   hintClue: string;
   hiddenLevelId: number;
   coords: { x: number; y: number }; // Percentage position in image
+  image: string;
 }
 
 export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
@@ -27,6 +28,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Cercare nello studio del Professor Bellini a Oxford, tra i tomi antichi della scrivania in mogano.",
     hiddenLevelId: 1,
     coords: { x: 89.2, y: 77.8 },
+    image: '/relics/chachapoya_idol.jpg',
   },
   {
     id: 'relic_egyptian_scarab',
@@ -41,6 +43,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Celato tra le ombre dei capitelli dorici del quarto settore di scavo.",
     hiddenLevelId: 4,
     coords: { x: 18.5, y: 32.5 },
+    image: '/relics/egyptian_scarab.jpg',
   },
   {
     id: 'relic_coronado_cross',
@@ -55,6 +58,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nascosta nell'ottavo settore, dove il sentiero lambisce la vecchia cisterna.",
     hiddenLevelId: 8,
     coords: { x: 72.0, y: 84.0 },
+    image: '/relics/coronado_cross.jpg',
   },
   {
     id: 'relic_jade_mask',
@@ -69,6 +73,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Riposta nel cuore del Tempio delle Iscrizioni al decimo traguardo della spedizione.",
     hiddenLevelId: 10,
     coords: { x: 31.5, y: 68.2 },
+    image: '/relics/jade_mask.jpg',
   },
   {
     id: 'relic_crystal_skull',
@@ -83,6 +88,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Brilla con bagliore spettrale nel quindicesimo settore tra i rampicanti della piramide.",
     hiddenLevelId: 15,
     coords: { x: 84.0, y: 22.0 },
+    image: '/relics/crystal_skull.jpg',
   },
   {
     id: 'relic_tanis_medallion',
@@ -97,6 +103,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Riposa presso il piedistallo della sala delle cerimonie al ventesimo settore.",
     hiddenLevelId: 20,
     coords: { x: 48.2, y: 88.0 },
+    image: '/relics/tanis_medallion.jpg',
   },
   {
     id: 'relic_moche_dagger',
@@ -111,6 +118,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Incastonato nel venticinquesimo settore, vicino al basamento di terracotta.",
     hiddenLevelId: 25,
     coords: { x: 14.5, y: 74.0 },
+    image: '/relics/moche_dagger.jpg',
   },
   {
     id: 'relic_babylonian_cylinder',
@@ -125,6 +133,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Cercare nel trentesimo settore tra le macerie dell'archivio delle tavolette.",
     hiddenLevelId: 30,
     coords: { x: 63.5, y: 35.0 },
+    image: '/relics/babylonian_cylinder.jpg',
   },
   {
     id: 'relic_zheng_he_compass',
@@ -139,6 +148,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nascosta nel trentaseiesimo settore, protetta dal vano di legno di canfora.",
     hiddenLevelId: 36,
     coords: { x: 24.0, y: 44.0 },
+    image: '/relics/zheng_he_compass.jpg',
   },
   {
     id: 'relic_obsidian_ankh',
@@ -153,6 +163,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Celato nel quarantaduesimo settore, dove la sabbia lambisce la falsa porta.",
     hiddenLevelId: 42,
     coords: { x: 79.5, y: 56.0 },
+    image: '/relics/obsidian_ankh.jpg',
   },
   {
     id: 'relic_paititi_sun_disk',
@@ -167,6 +178,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Custodito al cinquantesimo settore, alle soglie del tempio d'oro amazzonico.",
     hiddenLevelId: 50,
     coords: { x: 52.0, y: 25.0 },
+    image: '/relics/sun_disk.jpg',
   },
   {
     id: 'relic_solomon_chalice',
@@ -181,6 +193,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Disposto nella nicchia nascosta del cinquantottesimo settore.",
     hiddenLevelId: 58,
     coords: { x: 38.0, y: 82.0 },
+    image: '/relics/solomon_chalice.jpg',
   },
   {
     id: 'relic_shiva_eye',
@@ -195,6 +208,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nel sessantaseiesimo settore, alla base della colonna scolpita.",
     hiddenLevelId: 66,
     coords: { x: 81.0, y: 41.0 },
+    image: '/relics/shiva_eye.jpg',
   },
   {
     id: 'relic_mycenae_mask',
@@ -209,6 +223,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Cercare nel settantacinquesimo settore tra i blocchi ciclopici della cinta muraria.",
     hiddenLevelId: 75,
     coords: { x: 19.0, y: 62.0 },
+    image: '/relics/mycenae_mask.jpg',
   },
   {
     id: 'relic_petra_lamp',
@@ -223,6 +238,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nell'ottantaduesimo settore, dietro la grata scolpita nell'arenaria rosa.",
     hiddenLevelId: 82,
     coords: { x: 67.0, y: 76.0 },
+    image: '/relics/petra_lamp.jpg',
   },
   {
     id: 'relic_templar_seal',
@@ -237,6 +253,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nel novantesimo settore, vicino all'altare dei maestri scalpellini.",
     hiddenLevelId: 90,
     coords: { x: 43.0, y: 19.0 },
+    image: '/relics/templar_seal.jpg',
   },
   {
     id: 'relic_tiwanaku_stele',
@@ -251,6 +268,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nel novantottesimo settore, incastonato sul basamento megalitico.",
     hiddenLevelId: 98,
     coords: { x: 85.0, y: 85.0 },
+    image: '/relics/tiwanaku_stele.jpg',
   },
   {
     id: 'relic_amber_claw',
@@ -265,6 +283,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nel centoseiesimo settore, sepolto tra le radici della quercia millenaria.",
     hiddenLevelId: 106,
     coords: { x: 27.0, y: 36.0 },
+    image: '/relics/amber_claw.jpg',
   },
   {
     id: 'relic_atlantis_prism',
@@ -279,6 +298,7 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Nel centoquattordicesimo settore, incassato nella colonna scanalata sommersa.",
     hiddenLevelId: 114,
     coords: { x: 74.0, y: 64.0 },
+    image: '/relics/atlantis_prism.jpg',
   },
   {
     id: 'relic_inca_crown',
@@ -293,5 +313,6 @@ export const ALL_COLLECTIBLE_RELICS: CollectibleRelic[] = [
     hintClue: "Il tesoro supremo dell'epilogo al centoventesimo e ultimo livello della spedizione.",
     hiddenLevelId: 120,
     coords: { x: 50.0, y: 48.0 },
+    image: '/relics/inca_crown.jpg',
   },
 ];
