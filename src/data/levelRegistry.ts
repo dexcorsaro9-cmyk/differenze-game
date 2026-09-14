@@ -442,9 +442,9 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/stage2_crypt_B.jpg?v=8'
+      ? '/stage2_crypt_B.jpg?v=9'
       : isLevelThree
-      ? '/levels/stage1_lvl3_B.jpg?v=2'
+      ? '/levels/stage1_lvl3_B.jpg?v=3'
       : isLevelFour
       ? '/levels/stage1_lvl4_B.jpg?v=2'
       : isLevelFive
@@ -788,111 +788,111 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 74.83,
-          y: 52.58,
-          radius: 8.5,
+          x: 74.49,
+          y: 52.55,
+          radius: 10.0,
           clueType: 'stolen_relic',
           name: "Il Teschio nella Nicchia di Pietra",
-          loreClue: "L'antico teschio umano custodito nella nicchia di pietra è stato asportato: i profanatori cercavano il codice segreto inciso sull'osso occipitale."
+          loreClue: "L'antico teschio umano custodito nella nicchia di pietra è stato asportato, rivelando la nuda muratura millenaria della cripta."
         },
         {
           id: `lvl${id}_d2`,
-          x: 61.38,
-          y: 72.60,
-          radius: 11.5,
+          x: 69.50,
+          y: 82.50,
+          radius: 13.0,
           clueType: 'stolen_relic',
-          name: "Il Calice Sacro in Pietra",
-          loreClue: "L'antico calice cerimoniale in pietra arenaria che troneggiava al centro del tavolo è stato asportato per i suoi simboli esoterici."
+          name: "L'Astrolabio d'Ottone e la Chiave Forgiata",
+          loreClue: "Il calice e le ampolle alchemiche sono stati sostituiti con un astrolabio astronomico e un'antica chiave in ferro battuto."
         },
         {
           id: `lvl${id}_d3`,
-          x: 87.11,
-          y: 70.39,
+          x: 87.18,
+          y: 71.13,
           radius: 12.5,
           clueType: 'sabotage',
-          name: "Il Piccone da Scavo sul Muro",
-          loreClue: "Il pesante piccone da scavo archeologico appoggiato alla parete di pietra è stato sottratto per forzare le cripte inferiori."
+          name: "Il Piccone da Scavo sulla Parete",
+          loreClue: "Il pesante piccone da scavo appoggiato alla parete calcarea è stato rimosso senza lasciare tracce."
         },
         {
           id: `lvl${id}_d4`,
-          x: 36.36,
-          y: 71.19,
-          radius: 9.5,
+          x: 36.00,
+          y: 72.88,
+          radius: 10.0,
           clueType: 'sabotage',
           name: "La Fiamma della Lanterna a Olio",
-          loreClue: "La fiamma viva all'interno della lanterna d'ottone è stata soffocata con violenza per far piombare la sala nell'oscurità."
+          loreClue: "La lanterna d'ottone è stata spenta con cura: il vetro è freddo e privo di fiamma."
         },
         {
           id: `lvl${id}_d5`,
-          x: 27.89,
-          y: 78.07,
-          radius: 9.5,
-          clueType: 'stolen_relic',
-          name: "Il Secondo Rotolo di Pergamena",
-          loreClue: "Il secondo rotolo di pergamena miniata sul ripiano in pietra è stato sfilato via dal legaccio di cuoio e trafugato."
+          x: 60.21,
+          y: 44.68,
+          radius: 10.0,
+          clueType: 'sabotage',
+          name: "La Torcia a Muro presso la Nicchia",
+          loreClue: "Il braciere in ferro battuto ancorato a fianco della nicchia è stato estinto, lasciando solo cenere fredda."
         },
         {
           id: `lvl${id}_d6`,
-          x: 67.95,
-          y: 80.32,
-          radius: 9.0,
-          clueType: 'stolen_relic',
-          name: "Le Boccette Alchemiche sul Tavolo",
-          loreClue: "Le fiale di reagenti e tinture alchemiche con tappo in sughero sono state trafugate dal piano di pietra accanto al tomo."
+          x: 20.11,
+          y: 35.45,
+          radius: 10.0,
+          clueType: 'sabotage',
+          name: "La Torcia del Pilastro Sinistro",
+          loreClue: "La fiamma della torcia sul massiccio pilastro sinistro è spenta, celando la catacomba nelle ombre."
         },
       ];
     } else if (isLevelThree) {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 41.89,
-          y: 25.47,
-          radius: 9.5,
+          x: 41.98,
+          y: 25.44,
+          radius: 11.0,
           clueType: 'sabotage',
           name: "La Lampadina a Filamento dal Soffitto",
           loreClue: "La lampada a sospensione sopra il banco di lavoro è stata spenta per impedire l'osservazione delle luminescenze chimiche sulla pergamena."
         },
         {
           id: `lvl${id}_d2`,
-          x: 60.77,
-          y: 64.90,
-          radius: 11.5,
+          x: 60.46,
+          y: 70.84,
+          radius: 12.0,
           clueType: 'stolen_relic',
-          name: "Il Mortaio e i Campioni dell'Archeometra",
-          loreClue: "Il mortaio in porcellana bianca e le provette dei campioni di cinabro peruviano sono stati asportati dal banco sotto gli occhi dello studioso."
+          name: "Il Registro delle Formule Alchemiche",
+          loreClue: "Il mortaio in ceramica è stato asportato e sostituito da un corposo registro di formule antiche rilegato in pelle scura."
         },
         {
           id: `lvl${id}_d3`,
-          x: 38.42,
-          y: 73.66,
-          radius: 10.0,
+          x: 53.23,
+          y: 83.27,
+          radius: 12.5,
           clueType: 'stolen_relic',
-          name: "Il Grande Rastrello Portaprovette",
-          loreClue: "Il massiccio rastrello in quercia con le provette graduate dei reagenti alchemici è stato trafugato dal banco in primo piano per distruggere le prove."
+          name: "Il Calibro in Ottone e la Lente",
+          loreClue: "Il portaprovette frontale è stato rimosso: al suo posto giacciono un calibro di precisione in ottone e una lente ottica."
         },
         {
           id: `lvl${id}_d4`,
-          x: 82.73,
-          y: 47.20,
-          radius: 9.0,
+          x: 82.75,
+          y: 48.15,
+          radius: 9.5,
           clueType: 'stolen_relic',
           name: "La Serie di Pesi Milligrammetrici d'Ottone",
           loreClue: "La serie di cilindri micrometrici in ottone della bilancia analitica è stata sottratta: serviva a dosare le polveri alchemiche con precisione assoluta."
         },
         {
           id: `lvl${id}_d5`,
-          x: 22.19,
-          y: 56.46,
-          radius: 7.5,
+          x: 28.14,
+          y: 64.84,
+          radius: 9.0,
           clueType: 'sabotage',
           name: "La Fiamma del Becco Bunsen sotto il Matraccio",
           loreClue: "Il rubinetto del gas del becco Bunsen è stato chiuso con violenza: la fiamma che riscaldava il solvente sotto il matraccio è stata spenta."
         },
         {
           id: `lvl${id}_d6`,
-          x: 12.56,
-          y: 36.30,
-          radius: 9.0,
+          x: 10.53,
+          y: 40.77,
+          radius: 9.5,
           clueType: 'stolen_relic',
           name: "Il Flacone di Reagente 'Alum' sullo Scaffale",
           loreClue: "Il prezioso barattolo di allume di rocca è stato svuotato e trafugato: è il mordenzante chimico fondamentale per far reagire l'inchiostro simpatico della mappa."
