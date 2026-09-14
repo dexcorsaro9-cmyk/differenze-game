@@ -442,7 +442,7 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/stage2_crypt_B.jpg?v=9'
+      ? '/stage2_crypt_B.jpg?v=10'
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg?v=3'
       : isLevelFour
@@ -788,57 +788,57 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 74.49,
-          y: 52.55,
-          radius: 10.0,
+          x: 67.68,
+          y: 56.78,
+          radius: 8.0,
           clueType: 'stolen_relic',
-          name: "Il Teschio nella Nicchia di Pietra",
-          loreClue: "L'antico teschio umano custodito nella nicchia di pietra è stato asportato, rivelando la nuda muratura millenaria della cripta."
+          name: "Il Medaglione d'Oro dei Templari",
+          loreClue: "Un antico medaglione aureo templare con croce incisa è stato adagiato sulla mensola in pietra della nicchia accanto al teschio."
         },
         {
           id: `lvl${id}_d2`,
-          x: 69.50,
-          y: 82.50,
-          radius: 13.0,
-          clueType: 'stolen_relic',
-          name: "L'Astrolabio d'Ottone e la Chiave Forgiata",
-          loreClue: "Il calice e le ampolle alchemiche sono stati sostituiti con un astrolabio astronomico e un'antica chiave in ferro battuto."
+          x: 24.85,
+          y: 78.26,
+          radius: 8.5,
+          clueType: 'sabotage',
+          name: "I Nastri di Seta Cremisi sui Rotoli",
+          loreClue: "Le consunte fascette in cuoio dei rotoli di pergamena sono state sostituite con raffinati nastri in seta cerimoniale rosso scarlatto."
         },
         {
           id: `lvl${id}_d3`,
-          x: 87.18,
-          y: 71.13,
-          radius: 12.5,
-          clueType: 'sabotage',
-          name: "Il Piccone da Scavo sulla Parete",
-          loreClue: "Il pesante piccone da scavo appoggiato alla parete calcarea è stato rimosso senza lasciare tracce."
+          x: 51.01,
+          y: 87.37,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "I Fregi e il Fermaglio Dorato del Grimorio",
+          loreClue: "Il fermaglio in cuoio e i bordi delle pagine del grimorio esoterico brillano ora di oro zecchino finemente cesellato."
         },
         {
           id: `lvl${id}_d4`,
-          x: 36.00,
-          y: 72.88,
-          radius: 10.0,
-          clueType: 'sabotage',
-          name: "La Fiamma della Lanterna a Olio",
-          loreClue: "La lanterna d'ottone è stata spenta con cura: il vetro è freddo e privo di fiamma."
+          x: 65.83,
+          y: 80.63,
+          radius: 7.5,
+          clueType: 'dark_seal',
+          name: "L'Elisir Alchemico Blu Cobalto",
+          loreClue: "Il solvente ambrato nell'ampolla sferica in vetro ha reagito, tramutandosi in un elisir luminescente blu cobalto."
         },
         {
           id: `lvl${id}_d5`,
-          x: 60.21,
-          y: 44.68,
-          radius: 10.0,
-          clueType: 'sabotage',
-          name: "La Torcia a Muro presso la Nicchia",
-          loreClue: "Il braciere in ferro battuto ancorato a fianco della nicchia è stato estinto, lasciando solo cenere fredda."
+          x: 57.87,
+          y: 92.12,
+          radius: 7.5,
+          clueType: 'dark_seal',
+          name: "Il Sigillo di Ceralacca della Mano Oscura",
+          loreClue: "Un massiccio sigillo circolare in ceralacca vermiglia impresso con la croce occulta 'SECRETA TEMPLI' è stato apposto sulla mappa."
         },
         {
           id: `lvl${id}_d6`,
-          x: 20.11,
-          y: 35.45,
-          radius: 10.0,
-          clueType: 'sabotage',
-          name: "La Torcia del Pilastro Sinistro",
-          loreClue: "La fiamma della torcia sul massiccio pilastro sinistro è spenta, celando la catacomba nelle ombre."
+          x: 81.40,
+          y: 93.16,
+          radius: 9.5,
+          clueType: 'stolen_relic',
+          name: "La Chiave Gotica Forgiata in Ferro",
+          loreClue: "Una pesante chiave medievale forgiata a mano con impugnatura traforata gotica è comparsa adagiata sul piano in pietra."
         },
       ];
     } else if (isLevelThree) {
