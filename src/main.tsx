@@ -21,6 +21,14 @@ function setupDynamicViewport() {
 
 setupDynamicViewport();
 
+// Prevent iOS Safari page-level pinch zoom & gesture artifacts
+// so only the in-game photo stage scales via its custom touch handlers
+if (typeof document !== 'undefined') {
+  document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

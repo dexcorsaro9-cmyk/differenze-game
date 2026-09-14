@@ -213,9 +213,18 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Center: Dynamic Combo / Streak Pill (Active when combo >= 2) */}
         {comboStreak >= 2 && (
-          <div className="flex items-center gap-1 px-2 sm:px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-600 via-yellow-500 to-orange-600 text-stone-950 font-black text-[10px] sm:text-[11px] shadow-[0_0_15px_rgba(245,158,11,0.8)] border border-yellow-200 animate-pulse shrink-0">
-            <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-stone-950 text-stone-950 animate-bounce" />
+          <div
+            className={`flex items-center gap-1 px-2.5 sm:px-3 py-0.5 rounded-full text-stone-950 font-black text-[10px] sm:text-[11px] shrink-0 transition-all ${
+              comboStreak >= 3
+                ? 'bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 shadow-[0_0_22px_rgba(251,191,36,0.95)] border-2 border-yellow-100 ring-2 ring-amber-500/60 animate-pulse'
+                : 'bg-gradient-to-r from-amber-600 via-yellow-500 to-orange-600 shadow-[0_0_12px_rgba(245,158,11,0.7)] border border-yellow-200'
+            }`}
+          >
+            <Flame className={`w-3 h-3 sm:w-3.5 sm:h-3.5 fill-stone-950 text-stone-950 ${comboStreak >= 3 ? 'animate-bounce text-orange-800' : ''}`} />
             <span className="tracking-tight">COMBO x{comboStreak}!</span>
+            {comboStreak >= 3 && (
+              <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 ml-0.5" />
+            )}
           </div>
         )}
 

@@ -1,6 +1,23 @@
-import React from 'react';
-import { X, Volume2, VolumeX, Smartphone, Sparkles, Music, RotateCcw, Download } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { X, Volume2, VolumeX, Smartphone, Sparkles, Music, RotateCcw, Download, Upload, Archive, Check } from 'lucide-react';
 import type { GameSettings } from '../types/game';
+
+const BACKUP_STORAGE_KEYS = [
+  'differenze_progress_v1',
+  'differenze_level_stars_v1',
+  'differenze_best_times_v1',
+  'differenze_economy_v1',
+  'differenze_inventory_v1',
+  'differenze_relics_v1',
+  'differenze_medals_v1',
+  'differenze_claimed_medals_v1',
+  'differenze_claimed_visas_v1',
+  'differenze_avatar_v1',
+  'differenze_expedition_choices_v1',
+  'differenze_tutorial_v1',
+  'differenze_seen_briefings_v1',
+  'differenze_settings_v1',
+];
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -33,11 +50,95 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   bgmTheme = 'auto',
   onChangeBgmTheme,
 }) => {
+  const [backupStatus, setBackupStatus] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   if (!isOpen) return null;
+
+  const handleExportBackup = () => {
+    try {
+      const data: Record<string, any> = {
+        game: 'Paititi_1928',
+        version: '2.0',
+        exportedAt: new Date().toISOString(),
+        keys: {},
+      };
+
+      BACKUP_STORAGE_KEYS.forEach(key => {
+        const val = localStorage.getItem(key);
+        if (val !== null) {
+          try {
+            data.keys[key] = JSON.parse(val);
+          } catch {
+            data.keys[key] = val;
+          }
+        }
+      });
+
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const nowStr = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `paititi_1928_backup_${nowStr}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonStr).catch(() => {});
+      }
+
+      setBackupStatus('Salvataggio scaricato (.json) e copiato!');
+      setTimeout(() => setBackupStatus(null), 3500);
+    } catch {
+      setBackupStatus('Errore esportazione backup.');
+      setTimeout(() => setBackupStatus(null), 3000);
+    }
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const text = event.target?.result as string;
+        const parsed = JSON.parse(text);
+
+        const keysToRestore = parsed.keys || parsed;
+        if (!keysToRestore || (!keysToRestore.differenze_progress_v1 && !keysToRestore.differenze_economy_v1)) {
+          alert('File di backup non valido per Paititi 1928.');
+          return;
+        }
+
+        let count = 0;
+        BACKUP_STORAGE_KEYS.forEach(key => {
+          if (keysToRestore[key] !== undefined) {
+            const val = typeof keysToRestore[key] === 'string'
+              ? keysToRestore[key]
+              : JSON.stringify(keysToRestore[key]);
+            localStorage.setItem(key, val);
+            count++;
+          }
+        });
+
+        alert(`Salvataggio ripristinato con successo (${count} sezioni ripristinate). La pagina verrà ricaricata.`);
+        window.location.reload();
+      } catch {
+        alert('Impossibile importare: file corrotto o non in formato JSON.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pb-4 pt-10 sm:pt-12 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border border-slate-700/80 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9)] text-white">
+      <div className="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border border-slate-700/80 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9)] text-white max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <h3 className="text-xl font-extrabold text-white">
             Impostazioni
@@ -213,6 +314,58 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <Download className="w-3.5 h-3.5" />
                 {isInstalled ? '✓ Gioco Installato a Schermo Intero' : 'Installa Gioco su Schermo Home / Desktop'}
               </button>
+            )}
+          </div>
+
+          {/* Backup & Ripristino Salvataggi */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-stone-900/90 via-amber-950/30 to-stone-900/90 border border-amber-600/40 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Archive className="w-4 h-4 text-amber-400" />
+                <h5 className="text-xs font-bold text-amber-100 font-serif">Archivio & Backup Salvataggi</h5>
+              </div>
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-950 border border-amber-500/40 text-amber-300 font-mono font-bold">
+                JSON v2.0
+              </span>
+            </div>
+
+            <p className="text-[11px] text-stone-300 font-sans leading-relaxed">
+              Esporta la tua spedizione (capitoli, stelle, reperti, monete ed equipaggiamento) o ripristinala su un altro dispositivo mobile.
+            </p>
+
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={handleExportBackup}
+                className="py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400 text-amber-200 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-95"
+              >
+                <Download className="w-3.5 h-3.5 text-amber-300" />
+                <span>Esporta Backup</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-95"
+              >
+                <Upload className="w-3.5 h-3.5 text-stone-300" />
+                <span>Importa Backup</span>
+              </button>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json,application/json"
+                className="hidden"
+                onChange={handleImportBackup}
+              />
+            </div>
+
+            {backupStatus && (
+              <div className="flex items-center gap-1.5 text-[11px] text-emerald-300 bg-emerald-950/60 border border-emerald-500/40 rounded-lg px-2.5 py-1.5 animate-fade-in font-medium">
+                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>{backupStatus}</span>
+              </div>
             )}
           </div>
         </div>

@@ -749,7 +749,13 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 top: `${pop.y}%`,
               }}
             >
-              <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-stone-950 font-black text-xs px-3.5 py-1 rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.9)] border border-amber-200 flex items-center gap-1.5">
+              <div
+                className={`flex items-center gap-1.5 px-3.5 py-1 rounded-full text-stone-950 font-black text-xs transition-all ${
+                  comboStreak >= 3
+                    ? 'bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 shadow-[0_0_25px_rgba(251,191,36,0.95)] border-2 border-yellow-100 ring-2 ring-amber-500/60 scale-110'
+                    : 'bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 shadow-[0_4px_20px_rgba(245,158,11,0.9)] border border-amber-200'
+                }`}
+              >
                 <Sparkles className="w-3.5 h-3.5 fill-stone-950" />
                 <span>{pop.text}</span>
               </div>

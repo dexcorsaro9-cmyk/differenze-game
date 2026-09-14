@@ -81,7 +81,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       t3 = setTimeout(() => {
         setRevealedStars(3);
         sound.playStarSound(3);
-        triggerHaptic('success');
+        triggerHaptic('three_stars');
       }, 1200);
     }
 

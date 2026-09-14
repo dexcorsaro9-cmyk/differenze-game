@@ -21,6 +21,12 @@ class SoundManager {
     return this.ctx;
   }
 
+  public resumeAudioContext() {
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
+    }
+  }
+
   public setEnabled(enabled: boolean) {
     this.isEnabled = enabled;
     if (!enabled) {

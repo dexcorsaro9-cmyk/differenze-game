@@ -54,7 +54,7 @@ import {
 import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
-import { Shield, Award } from 'lucide-react';
+import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Persistence keys
@@ -238,6 +238,7 @@ export const App: React.FC = () => {
   const [isPassportOpen, setIsPassportOpen] = useState<boolean>(() => initialView === 'passport');
   const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(() => initialView === 'install');
   const [isDilemmaOpen, setIsDilemmaOpen] = useState<boolean>(() => initialView === 'dilemma');
+  const [isBackgroundPaused, setIsBackgroundPaused] = useState<boolean>(false);
 
   // Progressive Web App & Offline capability hook
   const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
@@ -534,6 +535,7 @@ export const App: React.FC = () => {
 
   // Computed flag: Check if any modal or blocking overlay is open
   const isAnyModalOpen =
+    isBackgroundPaused ||
     isCompanyIntroVisible ||
     isSplashVisible ||
     isAvatarCreatorOpen ||
@@ -636,6 +638,36 @@ export const App: React.FC = () => {
     [currentLevel.chapterNumber, isBgmPlaying]
   );
 
+  // Intelligent Background Pause (Mobile Lifecycle):
+  // When switching apps, incoming call, or screen locked, pause game timer & BGM.
+  // On return, show vintage expedition paused banner rather than surprising the player.
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (!isSplashVisible && !isCompanyIntroVisible && !isLevelCompleteOpen && !isGameOverOpen) {
+          setIsBackgroundPaused(true);
+          sound.pauseBGM();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isSplashVisible, isCompanyIntroVisible, isLevelCompleteOpen, isGameOverOpen]);
+
+  const handleResumeFromBackground = useCallback(() => {
+    sound.resumeAudioContext();
+    if (sound.getBGMEnabled()) {
+      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+      setIsBgmPlaying(true);
+    }
+    sound.playNeedleDrop();
+    triggerHaptic('tap', settings.vibrationEnabled);
+    setIsBackgroundPaused(false);
+  }, [getActiveBgmTheme, currentLevel.chapterNumber, settings.vibrationEnabled]);
+
   const handleCoinBurstComplete = useCallback((burstId: string) => {
     setCoinBursts(prev => prev.filter(b => b.id !== burstId));
   }, []);
@@ -720,7 +752,7 @@ export const App: React.FC = () => {
 
       // Ascending Sound & Haptics
       sound.playComboSuccess(nextStreak);
-      triggerHaptic('success', settings.vibrationEnabled);
+      triggerHaptic(nextStreak >= 3 ? 'combo' : 'clue_found', settings.vibrationEnabled);
 
       // Trigger flying coin particles directly from the screen click coordinate!
       if (screenPos) {
@@ -919,7 +951,7 @@ export const App: React.FC = () => {
         setIsTimeFrozen(true);
         setFreezeSecondsLeft(20 + freezeBonusSeconds);
         sound.playFreeze();
-        triggerHaptic('medium', settings.vibrationEnabled);
+        triggerHaptic('powerup_used', settings.vibrationEnabled);
       } else if (type === 'compass_radar') {
         if (inventory.compass_radar <= 0) return;
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
@@ -936,7 +968,7 @@ export const App: React.FC = () => {
           targetDiffId: unfound.id,
         });
         sound.playCompass();
-        triggerHaptic('medium', settings.vibrationEnabled);
+        triggerHaptic('powerup_used', settings.vibrationEnabled);
         setTimeout(() => {
           setActiveRadar(null);
         }, 8000);
@@ -946,7 +978,7 @@ export const App: React.FC = () => {
         if (!unfound) return;
         setInventory(inv => ({ ...inv, hint: inv.hint - 1 }));
         sound.playHint();
-        triggerHaptic('medium', settings.vibrationEnabled);
+        triggerHaptic('powerup_used', settings.vibrationEnabled);
         setActiveHint(unfound);
         setTimeout(() => {
           setActiveHint(null);
@@ -956,7 +988,7 @@ export const App: React.FC = () => {
         setInventory(inv => ({ ...inv, error_shield: inv.error_shield - 1 }));
         setIsShieldActive(true);
         sound.playShield();
-        triggerHaptic('medium', settings.vibrationEnabled);
+        triggerHaptic('powerup_used', settings.vibrationEnabled);
       }
     },
     [
@@ -1730,6 +1762,37 @@ export const App: React.FC = () => {
             <div className="text-[10px] text-stone-400 font-serif truncate">
               {unlockedToastMedal.description}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 1928 Expedition Vintage Background Pause Modal */}
+      {isBackgroundPaused && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="relative max-w-sm w-full bg-gradient-to-b from-[#2a1a0c] via-[#1a0f06] to-[#120803] border-2 border-amber-600/80 rounded-3xl p-6 text-center shadow-[0_25px_60px_rgba(0,0,0,0.95)]">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+              <Compass className="w-8 h-8 text-amber-300 animate-spin-slow" />
+            </div>
+
+            <span className="text-[10px] font-mono tracking-widest text-amber-400/90 uppercase font-bold">
+              Spedizione Fawcett • Anno 1928
+            </span>
+            <h3 className="text-xl font-serif font-black text-amber-100 mt-1 mb-2 tracking-wide">
+              Spedizione in Sospeso
+            </h3>
+
+            <p className="text-xs text-stone-300 font-sans leading-relaxed mb-6">
+              L'esplorazione è stata congelata durante il passaggio in background. Il cronometro e l'orchestra riprenderanno appena sei pronto.
+            </p>
+
+            <button
+              type="button"
+              onClick={handleResumeFromBackground}
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-stone-950 font-black text-sm tracking-wider uppercase border border-amber-300 shadow-[0_4px_25px_rgba(245,158,11,0.6)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-stone-950" />
+              Riprendi Spedizione
+            </button>
           </div>
         </div>
       )}
