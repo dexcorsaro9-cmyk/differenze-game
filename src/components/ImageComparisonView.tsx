@@ -608,7 +608,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className={`relative w-full flex-1 min-h-0 bg-[#070402] overflow-hidden flex flex-col items-center justify-between p-1 sm:p-2 select-none transition-all duration-75 ${
+      className={`relative w-full flex-1 min-h-0 bg-[#070402] overflow-hidden flex flex-col items-center justify-between p-0.5 sm:p-2 select-none transition-all duration-75 ${
         isShaking ? 'animate-screen-shake ring-2 ring-red-500/60' : ''
       }`}
       style={{ cursor: scale > 1 ? (isDraggingRef.current ? 'grabbing' : 'grab') : 'crosshair' }}
@@ -703,7 +703,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
           >
             {/* Aspect Ratio Bounded Stage with 3D Tactile Photo Tilt */}
             <div
-              className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center shrink-0 cursor-crosshair group transition-transform duration-150 ease-out"
+              className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center min-h-0 min-w-0 cursor-crosshair group transition-transform duration-150 ease-out"
               style={{
                 transform: scale === 1 ? `perspective(1000px) rotateX(${photoTilt.x}deg) rotateY(${photoTilt.y}deg)` : undefined,
               }}
@@ -1064,7 +1064,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
             >
               <div
-                className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center shrink-0 cursor-crosshair"
+                className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center min-h-0 min-w-0 cursor-crosshair"
                 onClick={e => handleStageClick(e, 0)}
               >
                 <img
@@ -1112,7 +1112,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
               style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
             >
               <div
-                className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center shrink-0 cursor-crosshair"
+                className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center min-h-0 min-w-0 cursor-crosshair"
                 onClick={e => handleStageClick(e, 1)}
               >
                 <img
@@ -1132,37 +1132,7 @@ export const ImageComparisonView: React.FC<ImageComparisonViewProps> = ({
         </div>
       )}
 
-      {/* MOBILE COMPACT EVIDENCE STRIP (sm:hidden, saves 60px of vertical space) */}
-      <div className="w-full shrink-0 flex sm:hidden items-center justify-between px-2 py-0.5 bg-gradient-to-r from-[#170e07]/90 via-[#24160a]/90 to-[#170e07]/90 rounded-lg border border-amber-600/40 shadow-sm mt-0.5 text-[10px]">
-        <div className="flex items-center gap-1.5 font-serif text-amber-300 font-bold">
-          <span>Prove:</span>
-          <span className="text-amber-100 font-mono bg-amber-500/20 px-1.5 py-0.2 rounded border border-amber-500/30">
-            {foundDifferenceIds.length}/{differences.length}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 max-w-[65%]">
-          {differences.map((diff, index) => {
-            const isFound = foundDifferenceIds.includes(diff.id);
-            return (
-              <button
-                key={diff.id}
-                type="button"
-                onClick={() => {
-                  if (isFound) setInspectingDiff(diff);
-                }}
-                className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-mono transition-all ${
-                  isFound
-                    ? 'bg-amber-400 text-stone-950 font-bold shadow-sm ring-1 ring-amber-200 cursor-pointer active:scale-95'
-                    : 'bg-stone-900 border border-stone-700 text-stone-500'
-                }`}
-                title={isFound ? `${diff.name} (Tocca per ispezionare)` : `Prova #${index + 1}`}
-              >
-                {isFound ? '✓' : index + 1}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+
 
       {/* DESKTOP / TABLET RICH PARCHMENT TRAY (hidden sm:flex) */}
       <div className="hidden sm:flex w-full shrink-0 bg-gradient-to-r from-[#170e07] via-[#24160a] to-[#170e07] rounded-xl border border-amber-600/50 p-1.5 shadow-xl mt-1 flex-col gap-1">

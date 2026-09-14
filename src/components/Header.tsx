@@ -172,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="w-full leather-belt safe-pt px-2 sm:px-4 py-1 sm:py-2 select-none z-30 flex flex-col gap-1 sm:gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
+    <header className="w-full leather-belt safe-pt px-2 sm:px-4 py-0.5 sm:py-2 select-none z-30 flex flex-col gap-0.5 sm:gap-1.5 shadow-2xl border-b-2 border-amber-600/70 shrink-0">
       {/* ROW 1: Level Badge, Sound Toggle, Combo Streak & Campo Base QG Button */}
       <div className="flex items-center justify-between w-full gap-1.5 sm:gap-2">
         {/* Left: Level Pill with Explorer Avatar (Opens Passport) */}

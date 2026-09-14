@@ -1060,7 +1060,7 @@ export const App: React.FC = () => {
   const isStartupActive = isCompanyIntroVisible || isSplashVisible;
 
   return (
-    <div className="w-full h-screen h-[100dvh] flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
+    <div className="w-full h-full flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
       {/* Background Ambience on Desktop (Vintage Explorer Vignette) */}
       <div 
         className="absolute inset-0 opacity-25 pointer-events-none hidden md:block"
@@ -1071,7 +1071,7 @@ export const App: React.FC = () => {
 
       {/* The Responsive Game Viewport Container (Hidden completely during intro & splash screen) */}
       <div 
-        className={`w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full h-[100dvh] flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-opacity duration-500 ${
+        className={`w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-opacity duration-500 ${
           isStartupActive ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
         }`}
         aria-hidden={isStartupActive}
