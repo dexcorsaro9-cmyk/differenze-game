@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  ZoomIn,
-  ZoomOut,
   RotateCcw,
   Sparkles,
-  Search,
   CheckCircle2,
-  Info,
   Sun,
   Sunset,
   Flame,
@@ -14,11 +10,14 @@ import {
   MapPin,
   Shield,
   Layers,
+  Scroll,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
 } from 'lucide-react';
 import { AmbientParticles } from './AmbientParticles';
 import { HiddenArtifactSpot } from './HiddenArtifactSpot';
 import { EvidenceInspectModal } from './EvidenceInspectModal';
-import { BrassMagnifyingLoupe } from './BrassMagnifyingLoupe';
 import type { Difference, RadarQuadrant } from '../types/game';
 import type { CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
@@ -77,25 +76,26 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   shieldBlockedNotice = false,
   chapterNumber = 1,
 }) => {
-  // Container & Image refs
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // Pan & Zoom
+  // Pan & Zoom state
   const [scale, setScale] = useState<number>(1);
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Touch gesture & drag refs
-  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  // Native Multi-Touch Pinch-to-Zoom tracking
+  const touchStartDistRef = useRef<number | null>(null);
+  const touchStartScaleRef = useRef<number>(1);
+  const touchStartPanRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const touchStartCenterRef = useRef<{ x: number; y: number } | null>(null);
+  const singleTouchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const isDraggingRef = useRef<boolean>(false);
   const lastTapRef = useRef<{ time: number; x: number; y: number } | null>(null);
 
-  // Loupe state
-  const [isLoupeActive, setIsLoupeActive] = useState<boolean>(false);
-  const [loupePos, setLoupePos] = useState<{ x: number; y: number }>({ x: 260, y: 220 });
+  // Mouse pan drag state for desktop
+  const mouseDragStartRef = useRef<{ x: number; y: number } | null>(null);
 
-  // Visual effects
+  // Visual effects state
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
   const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
@@ -104,7 +104,11 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   // Clue inspector modal
   const [inspectingDiff, setInspectingDiff] = useState<Difference | null>(null);
 
-  // 1928 Diurnal Atmosphere Mode
+  // Selected riddle highlight in bottom tray
+  const [selectedRiddleIndex, setSelectedRiddleIndex] = useState<number>(0);
+  const [isGridExpanded, setIsGridExpanded] = useState<boolean>(false);
+
+  // Diurnal Lighting Atmosphere
   const [atmosphereMode, setAtmosphereMode] = useState<'dawn' | 'noon' | 'dusk' | 'lantern'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('differenze_atmosphere');
@@ -113,7 +117,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     return 'dawn';
   });
 
-  // Historical Photo Plate Film Emulsion Filters
+  // Photo Plate Emulsion Filter
   const [photoFilter, setPhotoFilter] = useState<'silver' | 'cyanotype' | 'autochrome' | 'natural'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('differenze_photofilter');
@@ -122,12 +126,21 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     return 'silver';
   });
 
-  // Reset zoom on level change
+  // Reset viewport when image changes
   useEffect(() => {
     setScale(1);
     setPan({ x: 0, y: 0 });
-    setIsLoupeActive(false);
+    setSelectedRiddleIndex(0);
+    setIsGridExpanded(false);
   }, [imageA]);
+
+  // Automatically advance selected riddle to the first uncompleted one
+  useEffect(() => {
+    const firstUnfoundIdx = differences.findIndex(d => !foundDifferenceIds.includes(d.id));
+    if (firstUnfoundIdx !== -1) {
+      setSelectedRiddleIndex(firstUnfoundIdx);
+    }
+  }, [foundDifferenceIds, differences]);
 
   const cycleAtmosphere = () => {
     const modes: ('dawn' | 'noon' | 'dusk' | 'lantern')[] = ['dawn', 'noon', 'dusk', 'lantern'];
@@ -147,17 +160,6 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     localStorage.setItem('differenze_photofilter', nextFilter);
     sound.playPaperInspect();
     triggerHaptic('light');
-  };
-
-  const toggleLoupe = () => {
-    const next = !isLoupeActive;
-    setIsLoupeActive(next);
-    sound.playLoupeToggle(next);
-    triggerHaptic('medium');
-    if (next && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setLoupePos({ x: rect.width / 2, y: rect.height / 2 });
-    }
   };
 
   const getPhotoFilterStyle = (): string => {
@@ -185,77 +187,117 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     return filters.join(' ');
   };
 
-  // Zoom handlers
-  const handleZoomIn = () => {
-    setScale(s => Math.min(3.5, Number((s + 0.4).toFixed(1))));
-    sound.playTap();
-    triggerHaptic('light');
-  };
-
-  const handleZoomOut = () => {
-    setScale(s => {
-      const next = Math.max(1, Number((s - 0.4).toFixed(1)));
-      if (next === 1) setPan({ x: 0, y: 0 });
-      return next;
-    });
-    sound.playTap();
-    triggerHaptic('light');
-  };
-
-  const handleResetZoom = () => {
+  const handleResetZoom = useCallback(() => {
     setScale(1);
     setPan({ x: 0, y: 0 });
     sound.playTap();
-    triggerHaptic('medium');
+    triggerHaptic('light');
+  }, []);
+
+  // --- NATIVE MULTI-TOUCH PINCH-TO-ZOOM ENGINE ---
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 2) {
+      // 2 fingers: start pinch-to-zoom
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      touchStartDistRef.current = dist;
+      touchStartScaleRef.current = scale;
+      touchStartPanRef.current = { ...pan };
+      touchStartCenterRef.current = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+      isDraggingRef.current = false;
+    } else if (e.touches.length === 1) {
+      const t = e.touches[0];
+      singleTouchStartRef.current = { x: t.clientX, y: t.clientY, time: Date.now() };
+      touchStartPanRef.current = { ...pan };
+      isDraggingRef.current = false;
+    }
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 2 && touchStartDistRef.current !== null) {
+      // Pinch gesture
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const newDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      const ratio = newDist / touchStartDistRef.current;
+      const newScale = Math.min(4.0, Math.max(1.0, touchStartScaleRef.current * ratio));
+
+      setScale(newScale);
+      if (newScale <= 1.05) {
+        setPan({ x: 0, y: 0 });
+      } else {
+        const maxOffset = (newScale - 1) * 280;
+        setPan(prev => ({
+          x: Math.max(-maxOffset, Math.min(maxOffset, prev.x)),
+          y: Math.max(-maxOffset, Math.min(maxOffset, prev.y)),
+        }));
+      }
+      isDraggingRef.current = true;
+    } else if (e.touches.length === 1 && singleTouchStartRef.current && scale > 1) {
+      // Pan gesture when zoomed
+      const t = e.touches[0];
+      const dx = t.clientX - singleTouchStartRef.current.x;
+      const dy = t.clientY - singleTouchStartRef.current.y;
+      if (Math.hypot(dx, dy) > 8) {
+        isDraggingRef.current = true;
+      }
+      if (isDraggingRef.current) {
+        e.preventDefault();
+        const maxOffset = (scale - 1) * 280;
+        setPan({
+          x: Math.max(-maxOffset, Math.min(maxOffset, touchStartPanRef.current.x + dx)),
+          y: Math.max(-maxOffset, Math.min(maxOffset, touchStartPanRef.current.y + dy)),
+        });
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartDistRef.current = null;
+    touchStartCenterRef.current = null;
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 50);
+  };
+
+  // --- DESKTOP MOUSE ZOOM & PAN ---
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.2 : 0.2;
+    const delta = e.deltaY > 0 ? -0.25 : 0.25;
     setScale(s => {
-      const next = Math.min(3.5, Math.max(1, Number((s + delta).toFixed(2))));
-      if (next === 1) setPan({ x: 0, y: 0 });
+      const next = Math.min(4.0, Math.max(1.0, Number((s + delta).toFixed(2))));
+      if (next <= 1.05) setPan({ x: 0, y: 0 });
       return next;
     });
   };
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    pointerStartRef.current = { x: e.clientX, y: e.clientY };
-    isDraggingRef.current = false;
+  const handleMouseDown = (e: React.MouseEvent) => {
     if (scale > 1) {
-      setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+      mouseDragStartRef.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
+      isDraggingRef.current = false;
     }
   };
 
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (pointerStartRef.current) {
-      const dist = Math.hypot(
-        e.clientX - pointerStartRef.current.x,
-        e.clientY - pointerStartRef.current.y
-      );
-      if (dist > 8) {
-        isDraggingRef.current = true;
-      }
-    }
-
-    if (isDraggingRef.current && scale > 1) {
-      const newX = e.clientX - dragStart.x;
-      const newY = e.clientY - dragStart.y;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (mouseDragStartRef.current && scale > 1) {
+      isDraggingRef.current = true;
+      const newX = e.clientX - mouseDragStartRef.current.x;
+      const newY = e.clientY - mouseDragStartRef.current.y;
       const maxOffset = (scale - 1) * 280;
       setPan({
         x: Math.max(-maxOffset, Math.min(maxOffset, newX)),
         y: Math.max(-maxOffset, Math.min(maxOffset, newY)),
       });
     }
-
-    if (isLoupeActive && containerRef.current) {
-      const cRect = containerRef.current.getBoundingClientRect();
-      setLoupePos({ x: e.clientX - cRect.left, y: e.clientY - cRect.top });
-    }
   };
 
-  const handlePointerUp = () => {
-    pointerStartRef.current = null;
+  const handleMouseUp = () => {
+    mouseDragStartRef.current = null;
     setTimeout(() => {
       isDraggingRef.current = false;
     }, 50);
@@ -276,7 +318,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }, 600);
   };
 
-  // Tap Detection on the Photograph
+  // Tap Detection on the Scene
   const handleStageClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isDraggingRef.current) return;
     const imgElement = imgRef.current;
@@ -286,33 +328,33 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
     const clickYPercent = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Double tap to zoom
+    // Double-tap to zoom in (2.5x) or zoom out back to 1.0x
     const now = Date.now();
     if (
       lastTapRef.current &&
       now - lastTapRef.current.time < 350 &&
-      Math.hypot(e.clientX - lastTapRef.current.x, e.clientY - lastTapRef.current.y) < 30
+      Math.hypot(e.clientX - lastTapRef.current.x, e.clientY - lastTapRef.current.y) < 35
     ) {
       lastTapRef.current = null;
-      if (scale > 1) {
+      if (scale > 1.1) {
         handleResetZoom();
       } else {
-        const targetX = (50 - clickXPercent) * 2.8;
-        const targetY = (50 - clickYPercent) * 2.8;
-        setScale(2.2);
+        const targetX = (50 - clickXPercent) * 3.0;
+        const targetY = (50 - clickYPercent) * 3.0;
+        setScale(2.5);
         setPan({ x: targetX, y: targetY });
+        sound.playTap();
+        triggerHaptic('medium');
       }
-      sound.playTap();
-      triggerHaptic('light');
       return;
     }
     lastTapRef.current = { time: now, x: e.clientX, y: e.clientY };
 
-    // Check hit against differences
+    // Check hit against the 8 clues
     let matchedDiff: Difference | null = null;
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
-      const tolerance = diff.radius || 10.0;
+      const tolerance = diff.radius || 9.0;
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -336,13 +378,13 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         id: `${Date.now()}_${Math.random()}`,
         x: clickXPercent,
         y: clickYPercent,
-        text: comboStreak >= 1 ? `+Monete! (x${comboStreak + 1} Combo)` : '+Monete!',
+        text: comboStreak >= 1 ? `Indizio Decifrato! (x${comboStreak + 1})` : 'Indizio Decifrato!',
         name: matchedDiff.name,
       };
       setDiscoveryPops(prev => [...prev, pop]);
       setTimeout(() => {
         setDiscoveryPops(prev => prev.filter(p => p.id !== pop.id));
-      }, 1400);
+      }, 1600);
 
       onDifferenceClick(
         matchedDiff,
@@ -356,38 +398,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }
   };
 
-  const handleLoupeLensClick = useCallback(
-    (clickPercentage: { x: number; y: number }) => {
-      let matchedDiff: Difference | null = null;
-      for (const diff of differences) {
-        if (foundDifferenceIds.includes(diff.id)) continue;
-        const tolerance = diff.radius || 10.0;
-        const dx = clickPercentage.x - diff.x;
-        const dy = clickPercentage.y - diff.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist <= tolerance) {
-          matchedDiff = diff;
-          break;
-        }
-      }
-
-      if (matchedDiff) {
-        setMagnesiumFlash({ id: String(Date.now()), x: clickPercentage.x, y: clickPercentage.y });
-        sound.playMagnesiumFlash();
-        setTimeout(() => setMagnesiumFlash(null), 650);
-
-        onDifferenceClick(matchedDiff, clickPercentage, 0);
-      } else {
-        addErrorFeedback(clickPercentage.x, clickPercentage.y);
-        onErrorClick(clickPercentage, 0);
-      }
-    },
-    [differences, foundDifferenceIds, onDifferenceClick, onErrorClick]
-  );
-
   const foundCount = differences.filter(d => foundDifferenceIds.includes(d.id)).length;
   const totalCount = differences.length;
+  const activeRiddleDiff = differences[selectedRiddleIndex] || differences[0];
+  const isActiveRiddleFound = activeRiddleDiff ? foundDifferenceIds.includes(activeRiddleDiff.id) : false;
 
   return (
     <div
@@ -396,15 +410,18 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         isShaking ? 'animate-[shake_0.35s_ease-in-out]' : ''
       }`}
       onWheel={handleWheel}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       style={{ touchAction: scale > 1 ? 'none' : 'pan-y' }}
     >
       {/* Floating Shield Blocked Notice */}
       {shieldBlockedNotice && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-indigo-950/95 border border-indigo-400 text-indigo-200 px-3.5 py-2 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-bounce">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-indigo-950/95 border border-indigo-400 text-indigo-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-bounce">
           <Shield className="w-4 h-4 text-indigo-300 shrink-0" />
           <span className="text-xs font-bold">
             Scudo del Guardiano: Errore parato senza perdere vite!
@@ -412,75 +429,47 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         </div>
       )}
 
-      {/* Floating Top-Right Tool Controls (Loupe, Zoom, Atmosphere, Filter) */}
-      <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 bg-stone-900/80 backdrop-blur-md px-2 py-1.5 rounded-full border border-amber-500/30 shadow-xl">
-        {/* Brass Loupe Toggle */}
-        <button
-          onClick={toggleLoupe}
-          className={`p-1.5 rounded-full transition-all ${
-            isLoupeActive
-              ? 'bg-amber-500 text-stone-950 font-bold shadow-[0_0_12px_rgba(245,158,11,0.6)]'
-              : 'text-amber-300/80 hover:text-amber-200 hover:bg-stone-800'
-          }`}
-          title="Lente d'Ingrandimento Vittoriana"
-        >
-          <Search className="w-4 h-4" />
-        </button>
-
-        {/* Diurnal Atmosphere Toggle */}
-        <button
-          onClick={cycleAtmosphere}
-          className="p-1.5 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
-          title={`Atmosfera: ${atmosphereMode}`}
-        >
-          {atmosphereMode === 'dawn' && <Sun className="w-4 h-4 text-amber-400" />}
-          {atmosphereMode === 'noon' && <Sun className="w-4 h-4 text-yellow-300" />}
-          {atmosphereMode === 'dusk' && <Sunset className="w-4 h-4 text-orange-400" />}
-          {atmosphereMode === 'lantern' && <Flame className="w-4 h-4 text-amber-500" />}
-        </button>
-
-        {/* Photo Plate Emulsion Filter Toggle */}
-        <button
-          onClick={cyclePhotoFilter}
-          className="p-1.5 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
-          title={`Filtro Lastra Fotografica: ${photoFilter}`}
-        >
-          <Layers className="w-4 h-4" />
-        </button>
-
-        <div className="w-[1px] h-4 bg-amber-500/30 mx-0.5" />
-
-        {/* Zoom Controls */}
-        <button
-          onClick={handleZoomIn}
-          disabled={scale >= 3.5}
-          className="p-1.5 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 disabled:opacity-40 transition-colors"
-          title="Ingrandisci Scena"
-        >
-          <ZoomIn className="w-4 h-4" />
-        </button>
-        <button
-          onClick={handleZoomOut}
-          disabled={scale <= 1}
-          className="p-1.5 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 disabled:opacity-40 transition-colors"
-          title="Riduci Ingrandimento"
-        >
-          <ZoomOut className="w-4 h-4" />
-        </button>
-        {scale > 1 && (
+      {/* Floating Controls: Diurnal Atmosphere, Photo Filters & Zoom Reset Badge */}
+      <div className="absolute top-2.5 right-2.5 z-30 flex items-center gap-1.5">
+        {/* Floating Zoom Reset Badge (Appears when user pinches/zooms in) */}
+        {scale > 1.1 && (
           <button
             onClick={handleResetZoom}
-            className="p-1.5 rounded-full bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 transition-colors"
-            title="Reimposta Vista"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-stone-950 font-black text-[11px] shadow-[0_0_15px_rgba(245,158,11,0.8)] border border-amber-200 transition-transform active:scale-95 animate-fade-in"
+            title="Tocca per ripristinare la visuale intera"
           >
             <RotateCcw className="w-3.5 h-3.5" />
+            <span>{scale.toFixed(1)}x • Ripristina</span>
           </button>
         )}
+
+        <div className="flex items-center gap-1 bg-stone-900/85 backdrop-blur-md px-2 py-1 rounded-full border border-amber-500/30 shadow-xl">
+          {/* Diurnal Atmosphere Toggle */}
+          <button
+            onClick={cycleAtmosphere}
+            className="p-1 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
+            title={`Atmosfera Luce: ${atmosphereMode}`}
+          >
+            {atmosphereMode === 'dawn' && <Sun className="w-3.5 h-3.5 text-amber-400" />}
+            {atmosphereMode === 'noon' && <Sun className="w-3.5 h-3.5 text-yellow-300" />}
+            {atmosphereMode === 'dusk' && <Sunset className="w-3.5 h-3.5 text-orange-400" />}
+            {atmosphereMode === 'lantern' && <Flame className="w-3.5 h-3.5 text-amber-500" />}
+          </button>
+
+          {/* Photo Plate Emulsion Filter */}
+          <button
+            onClick={cyclePhotoFilter}
+            className="p-1 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
+            title={`Filtro Lastra Fotografica: ${photoFilter}`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Main Single Master Photograph Viewport */}
-      <div className="relative flex-1 w-full overflow-hidden flex items-center justify-center p-1 sm:p-2">
-        {/* Subtle Ambient Particles */}
+      <div className="relative flex-1 w-full overflow-hidden flex items-center justify-center p-1">
+        {/* Subtle Ambient Historical Dust/Spore Particles */}
         <AmbientParticles imageIndex={0} chapterNumber={chapterNumber} />
 
         <div
@@ -491,7 +480,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           }}
           onClick={handleStageClick}
         >
-          {/* Pristine Master Photograph */}
+          {/* Pristine Master Photograph (Single high-definition 1928 archival plate) */}
           <img
             ref={imgRef}
             src={assetUrl(imageA)}
@@ -508,7 +497,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             <div className="absolute inset-0 pointer-events-none border-4 border-cyan-400/50 shadow-[inset_0_0_30px_rgba(34,211,238,0.35)] z-25 animate-pulse" />
           )}
 
-          {/* Golden Rings & Badges for Discovered Objects */}
+          {/* Discovered Clues: Golden Wax Seals & Rings */}
           {differences.map(diff => {
             const isFound = foundDifferenceIds.includes(diff.id);
             if (!isFound) return null;
@@ -519,8 +508,8 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 style={{
                   left: `${diff.x}%`,
                   top: `${diff.y}%`,
-                  width: `${(diff.radius || 10) * 2}%`,
-                  height: `${(diff.radius || 10) * 2}%`,
+                  width: `${(diff.radius || 9) * 2}%`,
+                  height: `${(diff.radius || 9) * 2}%`,
                 }}
                 onClick={e => {
                   e.stopPropagation();
@@ -528,9 +517,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 }}
                 title={`Esamina ${diff.name}`}
               >
-                {/* Vintage Brass/Emerald Discovery Ring */}
+                {/* Vintage Brass/Emerald Discovery Ring with Wax Seal */}
                 <div className="w-full h-full rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-pulse flex items-center justify-center group-hover:bg-amber-500/35 transition-all">
-                  <div className="bg-stone-900/90 border border-amber-400/80 rounded-full p-1 shadow-md group-hover:scale-110 transition-transform">
+                  <div className="bg-stone-950/90 border border-amber-400/90 rounded-full p-1 shadow-lg group-hover:scale-110 transition-transform">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   </div>
                 </div>
@@ -538,7 +527,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             );
           })}
 
-          {/* Active Hint Golden Pulsing Beacon */}
+          {/* Active Hint Golden Compass Beacon */}
           {activeHint && !foundDifferenceIds.includes(activeHint.id) && (
             <div
               className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
@@ -583,7 +572,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             />
           )}
 
-          {/* 1928 Magnesium Powder Flash Effect */}
+          {/* 1928 Magnesium Powder Flash Explosion FX */}
           {magnesiumFlash && (
             <div
               className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30"
@@ -592,7 +581,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 top: `${magnesiumFlash.y}%`,
               }}
             >
-              <div className="w-32 h-32 rounded-full bg-amber-100/90 blur-md animate-ping" />
+              <div className="w-32 h-32 rounded-full bg-amber-100/95 blur-md animate-ping" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <Sparkles className="w-12 h-12 text-amber-200 animate-spin" />
               </div>
@@ -609,10 +598,11 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 top: `${pop.y}%`,
               }}
             >
-              <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-stone-950 font-black text-xs px-3 py-1 rounded-full shadow-[0_4px_15px_rgba(245,158,11,0.8)] border border-amber-200">
-                {pop.text}
+              <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-stone-950 font-black text-xs px-3.5 py-1 rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.9)] border border-amber-200 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 fill-stone-950" />
+                <span>{pop.text}</span>
               </div>
-              <div className="mt-0.5 bg-stone-900/90 text-amber-200 text-[11px] font-semibold px-2 py-0.5 rounded shadow border border-amber-500/30">
+              <div className="mt-0.5 bg-stone-950/95 text-amber-200 text-[11px] font-serif font-bold px-2.5 py-0.5 rounded shadow border border-amber-500/40">
                 {pop.name}
               </div>
             </div>
@@ -632,107 +622,178 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             </div>
           ))}
         </div>
-
-        {/* Victorian Brass Magnifying Loupe */}
-        {isLoupeActive && containerRef.current && (
-          <BrassMagnifyingLoupe
-            imageSrc={assetUrl(imageA)}
-            containerRect={containerRef.current.getBoundingClientRect()}
-            imgRect={imgRef.current?.getBoundingClientRect() ?? null}
-            pointerPos={loupePos}
-            onClose={() => setIsLoupeActive(false)}
-            onLensClick={handleLoupeLensClick}
-            filterStyle={getPhotoFilterStyle()}
-            magnification={2.8}
-            lensSize={200}
-          />
-        )}
       </div>
 
-      {/* Investigator's Bottom Target Tray (Vassoio Oggetti da Cercare) */}
-      <div className="relative z-20 w-full bg-gradient-to-t from-stone-950 via-stone-900 to-stone-900/95 border-t-2 border-amber-700/50 shadow-[0_-8px_25px_rgba(0,0,0,0.8)] px-2 sm:px-4 py-2 sm:py-3">
-        {/* Bar Header: Investigation Objective and Progress */}
+      {/* --- IL TACCUINO DEL PROFESSOR BELLINI (8 INDOVINELLI INVESTIGATIVI) --- */}
+      <div className="relative z-20 w-full bg-gradient-to-t from-stone-950 via-[#140d07] to-stone-900/95 border-t-2 border-amber-700/60 shadow-[0_-10px_30px_rgba(0,0,0,0.9)] px-2 sm:px-4 pt-2 pb-2">
+        {/* Header: Title, Solved counter and Grid Expand toggle */}
         <div className="flex items-center justify-between max-w-4xl mx-auto mb-1.5 text-xs">
-          <div className="flex items-center gap-1.5 text-amber-300 font-semibold tracking-wide">
-            <Search className="w-3.5 h-3.5 text-amber-400" />
-            <span className="uppercase text-[11px] tracking-wider">Oggetti da Scoprire</span>
+          <div className="flex items-center gap-1.5 text-amber-300 font-serif font-bold tracking-wide">
+            <Scroll className="w-3.5 h-3.5 text-amber-400" />
+            <span className="uppercase text-[11px] tracking-wider font-sans">Taccuino di Spedizione (8 Indovinelli)</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <span className="text-stone-400 text-[11px]">
-              Completamento indagine:
-            </span>
-            <span className="text-amber-300 font-mono font-bold bg-stone-950 px-2 py-0.5 rounded border border-amber-600/40 shadow-inner">
-              {foundCount} / {totalCount}
-            </span>
+            <div className="flex items-center gap-1 text-[11px]">
+              <span className="text-stone-400 hidden sm:inline">Decifrati:</span>
+              <span className="text-amber-300 font-mono font-bold bg-stone-950 px-2 py-0.5 rounded border border-amber-600/40 shadow-inner">
+                {foundCount} / {totalCount}
+              </span>
+            </div>
+
+            {/* Toggle expanded 8-card grid */}
+            <button
+              onClick={() => setIsGridExpanded(prev => !prev)}
+              className="flex items-center gap-0.5 text-[10px] text-amber-300/80 hover:text-amber-200 bg-stone-900/90 px-2 py-0.5 rounded border border-amber-700/40 transition cursor-pointer"
+              title={isGridExpanded ? 'Comprimi Taccuino' : 'Espandi tutti gli 8 Indovinelli'}
+            >
+              <span>{isGridExpanded ? 'Comprimi' : 'Tutti gli 8'}</span>
+              {isGridExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
+            </button>
           </div>
         </div>
 
-        {/* Horizontal Grid / Tray of Target Objects */}
-        <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-1.5 sm:gap-2">
-          {differences.map((item, idx) => {
-            const isFound = foundDifferenceIds.includes(item.id);
-            return (
-              <div
-                key={item.id}
-                onClick={() => {
-                  if (isFound) {
-                    setInspectingDiff(item);
-                  } else {
-                    sound.playTap();
-                    triggerHaptic('light');
-                  }
-                }}
-                className={`relative flex items-center gap-2 p-1.5 sm:p-2 rounded-lg border transition-all select-none cursor-pointer ${
-                  isFound
-                    ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200/90 shadow-[inset_0_1px_4px_rgba(16,185,129,0.2)]'
-                    : 'bg-stone-950/80 border-amber-900/40 text-stone-300 hover:border-amber-500/50 hover:bg-stone-800/80 shadow-md'
-                }`}
-                title={isFound ? `Visualizza indizio per ${item.name}` : item.name}
-              >
-                {/* Status Icon Indicator */}
+        {/* ACTIVE RIDDLE SPOTLIGHT BANNER: Shows the selected riddle with crisp readable typography */}
+        {activeRiddleDiff && (
+          <div
+            onClick={() => {
+              if (isActiveRiddleFound) {
+                setInspectingDiff(activeRiddleDiff);
+              }
+            }}
+            className={`max-w-4xl mx-auto mb-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+              isActiveRiddleFound
+                ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200 shadow-[inset_0_1px_4px_rgba(16,185,129,0.2)]'
+                : 'bg-amber-950/30 border-amber-500/40 text-amber-100 shadow-md'
+            }`}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold flex items-center justify-center border border-amber-500/40">
+                  {selectedRiddleIndex + 1}
+                </span>
+                <span className="text-[10px] uppercase tracking-wider font-bold text-amber-400">
+                  {isActiveRiddleFound ? 'Indizio Decifrato:' : 'Indovinello Attivo:'}
+                </span>
+              </div>
+
+              <div className="text-[9px] text-stone-400 flex items-center gap-1">
+                <span>Pinch con due dita per zoomare sulla foto</span>
+              </div>
+            </div>
+
+            <p className="text-[11px] sm:text-xs font-serif italic text-amber-200/95 mt-0.5 line-clamp-2 leading-snug">
+              {isActiveRiddleFound ? (
+                <span>
+                  <strong className="text-emerald-300 not-italic font-sans mr-1">{activeRiddleDiff.name}:</strong>
+                  {activeRiddleDiff.loreClue}
+                </span>
+              ) : (
+                <span>"{activeRiddleDiff.riddle || activeRiddleDiff.loreClue}"</span>
+              )}
+            </p>
+          </div>
+        )}
+
+        {/* 8 RIDDLE CARDS CONTAINER */}
+        {isGridExpanded ? (
+          /* EXPANDED 4x2 GRID VIEW */
+          <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-1.5 max-h-48 overflow-y-auto pr-0.5 custom-scrollbar">
+            {differences.map((item, idx) => {
+              const isFound = foundDifferenceIds.includes(item.id);
+              const isSelected = selectedRiddleIndex === idx;
+              return (
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 border ${
+                  key={item.id}
+                  onClick={() => {
+                    setSelectedRiddleIndex(idx);
+                    if (isFound) {
+                      setInspectingDiff(item);
+                    } else {
+                      sound.playTap();
+                      triggerHaptic('light');
+                    }
+                  }}
+                  className={`p-2 rounded-lg border transition-all cursor-pointer relative flex flex-col justify-between ${
                     isFound
-                      ? 'bg-emerald-900/70 border-emerald-400 text-emerald-300'
-                      : 'bg-stone-900 border-amber-700/50 text-amber-400/80'
+                      ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200'
+                      : isSelected
+                      ? 'bg-amber-950/60 border-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.3)] text-amber-100'
+                      : 'bg-stone-950/80 border-amber-900/40 text-stone-300 hover:border-amber-600/50'
                   }`}
                 >
-                  {isFound ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" />
-                  ) : (
-                    <span className="text-[10px] font-mono font-bold">{idx + 1}</span>
-                  )}
-                </div>
-
-                {/* Target Name */}
-                <div className="flex-1 min-w-0">
-                  <div
-                    className={`text-[11px] sm:text-xs font-medium truncate ${
-                      isFound ? 'line-through text-emerald-300/70' : 'text-stone-200'
-                    }`}
-                  >
-                    {item.name}
-                  </div>
-                  <div className="text-[9px] text-stone-500 uppercase tracking-wider flex items-center gap-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-mono font-bold text-amber-400">#{idx + 1}</span>
                     {isFound ? (
-                      <span className="text-emerald-400 font-semibold">Trovato</span>
+                      <span className="text-[8px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">
+                        DECIFRATO
+                      </span>
                     ) : (
-                      <span>Cerca nella scena</span>
+                      <span className="text-[8px] text-stone-500 font-mono">DA TROVARE</span>
+                    )}
+                  </div>
+
+                  <div className="text-[10px] sm:text-[11px] font-serif leading-tight line-clamp-2">
+                    {isFound ? (
+                      <span className="text-emerald-300 font-sans font-bold">{item.name}</span>
+                    ) : (
+                      <span className="italic text-amber-200/90">"{item.riddle || item.loreClue}"</span>
                     )}
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* COMPACT HORIZONTAL SNAP SCROLL RIBBON (8 Cards) */
+          <div className="max-w-4xl mx-auto flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar snap-x">
+            {differences.map((item, idx) => {
+              const isFound = foundDifferenceIds.includes(item.id);
+              const isSelected = selectedRiddleIndex === idx;
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    setSelectedRiddleIndex(idx);
+                    if (isFound) {
+                      setInspectingDiff(item);
+                    } else {
+                      sound.playTap();
+                      triggerHaptic('light');
+                    }
+                  }}
+                  className={`snap-start shrink-0 w-[110px] sm:w-[135px] p-1.5 rounded-lg border transition-all cursor-pointer relative ${
+                    isFound
+                      ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200 shadow-[inset_0_1px_4px_rgba(16,185,129,0.2)]'
+                      : isSelected
+                      ? 'bg-amber-950/60 border-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.3)] text-amber-100'
+                      : 'bg-stone-950/80 border-amber-900/40 text-stone-300 hover:border-amber-600/50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="text-[9px] font-mono font-bold text-amber-400">#{idx + 1}</span>
+                    {isFound ? (
+                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    ) : (
+                      <HelpCircle className="w-3 h-3 text-amber-500/50" />
+                    )}
+                  </div>
 
-                {/* Inspect Info Button for Found Items */}
-                {isFound && (
-                  <Info className="w-3.5 h-3.5 text-emerald-400/70 shrink-0" />
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  <div className="text-[9px] sm:text-[10px] font-serif leading-tight truncate">
+                    {isFound ? (
+                      <span className="text-emerald-300 font-sans font-bold">{item.name}</span>
+                    ) : (
+                      <span className="italic text-amber-200/90 truncate block">"{item.riddle || item.name}"</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Clue Inspector Modal */}
+      {/* Clue Dossier / Historical Lore Inspect Modal */}
       {inspectingDiff && (
         <EvidenceInspectModal
           difference={inspectingDiff}
