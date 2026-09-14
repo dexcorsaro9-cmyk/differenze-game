@@ -731,114 +731,114 @@ export function generateAll120Levels(): Level[] {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 76.47,
-          y: 22.49,
-          radius: 12.0,
+          x: 75.4,
+          y: 22.0,
+          radius: 13.0,
           clueType: 'torn_evidence',
           name: "Mappa del Mondo del 1512",
-          loreClue: "La grande carta nautica a doppio emisfero è stata strappata via dalla boiserie: la Mano Oscura ha reciso i fili di rame per cancellare la rotta atlantica."
+          loreClue: "La grande carta nautica a doppio emisfero del 1512 appesa alla boiserie in mogano."
         },
         {
           id: `lvl${id}_d2`,
-          x: 30.77,
-          y: 37.40,
-          radius: 11.0,
+          x: 34.3,
+          y: 37.6,
+          radius: 9.0,
           clueType: 'stolen_relic',
-          name: "Reliquia Solare nella Campana di Vetro",
-          loreClue: "La campana di cristallo è stata spaccata e l'antico ostensorio d'oro con l'Idolo Solare è stato strappato dal piedistallo."
+          name: "Reliquia Solare nella Campana",
+          loreClue: "L'antico ostensorio d'oro con l'Idolo Solare di Paititi custodito sotto la campana di vetro."
         },
         {
           id: `lvl${id}_d3`,
-          x: 72.57,
-          y: 45.52,
+          x: 86.0,
+          y: 44.3,
           radius: 10.0,
           clueType: 'sabotage',
           name: "Lampada da Banchiere Smeraldo",
-          loreClue: "La lampada da tavolo in ottone e vetro smeraldo è stata divelta per gettare lo studio nell'oscurità."
+          loreClue: "La celebre lampada in ottone brunito con paralume in spesso vetro verde smeraldo."
         },
         {
           id: `lvl${id}_d4`,
-          x: 65.67,
-          y: 57.04,
-          radius: 10.0,
+          x: 75.2,
+          y: 49.7,
+          radius: 8.0,
           clueType: 'dark_seal',
-          name: "Calamaio e Macchia d'Inchiostro",
-          loreClue: "Il calamaio in peltro è stato rovesciato di proposito per nascondere con una pozza d'inchiostro nero i passaggi chiave del manoscritto."
+          name: "Calamaio con Piuma d'Oca",
+          loreClue: "Il calamaio d'argento cesellato con la piuma d'oca utilizzata per tracciare le rotte oceaniche."
         },
         {
           id: `lvl${id}_d5`,
-          x: 27.42,
-          y: 84.84,
-          radius: 11.0,
+          x: 29.2,
+          y: 84.3,
+          radius: 13.0,
           clueType: 'sabotage',
-          name: "Cuscino di Velluto e Cocci di Vetro",
-          loreClue: "Il cuscino in velluto bordeaux è cosparso di frammenti di vetro affilati: il sigillo cerimoniale in oro che vi poggiava è stato asportato."
+          name: "Cuscino di Velluto Bordeaux",
+          loreClue: "Il comodo cuscino in sontuoso velluto bordeaux adagiato sulla poltrona di lettura del professore."
         },
         {
           id: `lvl${id}_d6`,
-          x: 58.33,
-          y: 76.23,
-          radius: 8.0,
+          x: 62.7,
+          y: 75.6,
+          radius: 14.0,
           clueType: 'stolen_relic',
-          name: "Chiave d'Oro nella Serratura del Cassetto",
-          loreClue: "La chiave d'ottone che custodiva il cassetto segreto delle mappe di Paititi è stata trafugata, lasciando la toppa della serratura spalancata."
+          name: "Mappe nel Cassetto Segreto",
+          loreClue: "I preziosi rotoli cartografici che sporgono dal cassetto segreto intagliato dello scrittoio."
         },
       ];
     } else if (isLevelTwo) {
       diffsForLevel = [
         {
           id: `lvl${id}_d1`,
-          x: 67.68,
-          y: 56.78,
-          radius: 8.0,
+          x: 74.8,
+          y: 52.5,
+          radius: 9.0,
           clueType: 'stolen_relic',
-          name: "Il Medaglione d'Oro dei Templari",
-          loreClue: "Un antico medaglione aureo templare con croce incisa è stato adagiato sulla mensola in pietra della nicchia accanto al teschio."
+          name: "Il Teschio nella Nicchia Gotica",
+          loreClue: "Un antico teschio custodito nella nicchia ogivale in pietra della cripta medievale."
         },
         {
           id: `lvl${id}_d2`,
-          x: 24.85,
-          y: 78.26,
-          radius: 8.5,
+          x: 87.2,
+          y: 71.0,
+          radius: 11.5,
           clueType: 'sabotage',
-          name: "I Nastri di Seta Cremisi sui Rotoli",
-          loreClue: "Le consunte fascette in cuoio dei rotoli di pergamena sono state sostituite con raffinati nastri in seta cerimoniale rosso scarlatto."
+          name: "Il Piccone da Scavo sulla Parete",
+          loreClue: "Il pesante piccone in ferro forgiato utilizzato dagli archeologi per farsi strada nei cunicoli."
         },
         {
           id: `lvl${id}_d3`,
-          x: 51.01,
-          y: 87.37,
-          radius: 8.5,
-          clueType: 'stolen_relic',
-          name: "I Fregi e il Fermaglio Dorato del Grimorio",
-          loreClue: "Il fermaglio in cuoio e i bordi delle pagine del grimorio esoterico brillano ora di oro zecchino finemente cesellato."
+          x: 36.2,
+          y: 67.0,
+          radius: 9.5,
+          clueType: 'sabotage',
+          name: "La Lanterna ad Olio in Ottone",
+          loreClue: "Una lanterna ad olio in ottone massiccio con fiammella accesa sul bancone di pietra."
         },
         {
           id: `lvl${id}_d4`,
-          x: 65.83,
-          y: 80.63,
-          radius: 7.5,
-          clueType: 'dark_seal',
-          name: "L'Elisir Alchemico Blu Cobalto",
-          loreClue: "Il solvente ambrato nell'ampolla sferica in vetro ha reagito, tramutandosi in un elisir luminescente blu cobalto."
+          x: 59.5,
+          y: 72.5,
+          radius: 8.5,
+          clueType: 'stolen_relic',
+          name: "Il Calice Cerimoniale in Pietra",
+          loreClue: "Un calice cerimoniale in pietra scura decorato con incisioni rituali templari."
         },
         {
           id: `lvl${id}_d5`,
-          x: 57.87,
-          y: 92.12,
-          radius: 7.5,
-          clueType: 'dark_seal',
-          name: "Il Sigillo di Ceralacca della Mano Oscura",
-          loreClue: "Un massiccio sigillo circolare in ceralacca vermiglia impresso con la croce occulta 'SECRETA TEMPLI' è stato apposto sulla mappa."
+          x: 25.0,
+          y: 78.0,
+          radius: 9.5,
+          clueType: 'torn_evidence',
+          name: "I Rotoli di Pergamena Antica",
+          loreClue: "Antichi rotoli di pergamena arrotolati, recanti formule di trasmutazione e mappe di cripte."
         },
         {
           id: `lvl${id}_d6`,
-          x: 81.40,
-          y: 93.16,
-          radius: 9.5,
-          clueType: 'stolen_relic',
-          name: "La Chiave Gotica Forgiata in Ferro",
-          loreClue: "Una pesante chiave medievale forgiata a mano con impugnatura traforata gotica è comparsa adagiata sul piano in pietra."
+          x: 42.0,
+          y: 81.0,
+          radius: 12.0,
+          clueType: 'dark_seal',
+          name: "Il Grande Grimorio Aperto",
+          loreClue: "Il monumentale tomo rilegato in pelle aperto sull'altare con simboli e sigilli ermetici."
         },
       ];
     } else if (isLevelThree) {

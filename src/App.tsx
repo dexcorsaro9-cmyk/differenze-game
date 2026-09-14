@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
 import { Header } from './components/Header';
 import { ImageComparisonView } from './components/ImageComparisonView';
+import { HiddenObjectView } from './components/HiddenObjectView';
 import { PowerUpBar } from './components/PowerUpBar';
 import { ShopModal } from './components/ShopModal';
 import { RelicFoundModal } from './components/RelicFoundModal';
@@ -1118,25 +1119,44 @@ export const App: React.FC = () => {
           }
         />
 
-        {/* Synchronized Viewport Area: Image A on Top, Image B on Bottom (Preloads immediately) */}
-        <ImageComparisonView
-          imageA={currentLevel.imageA}
-          imageB={currentLevel.imageB}
-          differences={currentLevel.differences}
-          foundDifferenceIds={foundDifferenceIds}
-          activeHint={activeHint}
-          activeRadar={activeRadar}
-          isTimeFrozen={isTimeFrozen}
-          hiddenRelic={currentLevelHiddenRelic}
-          isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
-          onDiscoverRelic={handleDiscoverRelic}
-          onDifferenceClick={handleDifferenceClick}
-          onErrorClick={handleErrorClick}
-          layoutMode={settings.layoutMode}
-          comboStreak={comboStreak}
-          shieldBlockedNotice={shieldBlockedNotice}
-          chapterNumber={currentLevel.chapterNumber}
-        />
+        {/* Gameplay Viewport Area: HiddenObjectView for Level 1 & 2 (Pilot), ImageComparisonView for others */}
+        {currentLevel.id <= 2 ? (
+          <HiddenObjectView
+            imageA={currentLevel.imageA}
+            differences={currentLevel.differences}
+            foundDifferenceIds={foundDifferenceIds}
+            activeHint={activeHint}
+            activeRadar={activeRadar}
+            isTimeFrozen={isTimeFrozen}
+            hiddenRelic={currentLevelHiddenRelic}
+            isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
+            onDiscoverRelic={handleDiscoverRelic}
+            onDifferenceClick={handleDifferenceClick}
+            onErrorClick={handleErrorClick}
+            comboStreak={comboStreak}
+            shieldBlockedNotice={shieldBlockedNotice}
+            chapterNumber={currentLevel.chapterNumber}
+          />
+        ) : (
+          <ImageComparisonView
+            imageA={currentLevel.imageA}
+            imageB={currentLevel.imageB}
+            differences={currentLevel.differences}
+            foundDifferenceIds={foundDifferenceIds}
+            activeHint={activeHint}
+            activeRadar={activeRadar}
+            isTimeFrozen={isTimeFrozen}
+            hiddenRelic={currentLevelHiddenRelic}
+            isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
+            onDiscoverRelic={handleDiscoverRelic}
+            onDifferenceClick={handleDifferenceClick}
+            onErrorClick={handleErrorClick}
+            layoutMode={settings.layoutMode}
+            comboStreak={comboStreak}
+            shieldBlockedNotice={shieldBlockedNotice}
+            chapterNumber={currentLevel.chapterNumber}
+          />
+        )}
 
         {/* Floating Shield Blocked Notice */}
         {shieldBlockedNotice && (
