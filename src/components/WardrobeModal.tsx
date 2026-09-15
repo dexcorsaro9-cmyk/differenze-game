@@ -605,7 +605,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             }`}
           >
             {/* Top: Character Live Showcase on Pedestal */}
-            <div className="h-[250px] sm:h-[300px] shrink-0 p-1">
+            <div className="h-[340px] sm:h-[400px] shrink-0 p-1">
               <AvatarShowcase
                 profile={profile}
                 previewOutfitId={previewOutfitId}
@@ -837,7 +837,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                 </div>
 
                 {/* Center: The Full-Body Hero Character Showcase on Pedestal */}
-                <div className="flex-1 min-h-0 relative flex items-center justify-center">
+                <div className="flex-1 min-h-[460px] sm:min-h-[520px] h-full relative flex items-center justify-center">
                   <AvatarShowcase
                     profile={profile}
                     previewOutfitId={previewOutfitId}
@@ -860,7 +860,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         if (found) setInspectItem(found);
                       }
                     }}
-                    showControls={false}
+                    showControls={true}
                   />
                 </div>
 

@@ -50,6 +50,7 @@ export interface ExplorerCharacter {
   specialization: string;
   bio: string;
   image: string; // FULL BODY RENDER ON STONE PEDESTAL
+  backImage: string; // FULL BODY REAR 3D VIEW ON STONE PEDESTAL
   portrait: string; // CLOSE-UP HEADSHOT
   accentColor: string;
   badgeBg: string;
@@ -82,6 +83,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     specialization: 'Decifrazione Lingue Perdute & Risonanza Architettonica',
     bio: 'Formatasi all\'Università di Coimbra e pioniera delle spedizioni andine. Decifra iscrizioni pre-incaiche registrando frequenze di risonanza tra le rovine di Paititi.',
     image: assetUrl('/avatars/female_samira.jpg'),
+    backImage: assetUrl('/avatars/female_samira_back.jpg'),
     portrait: assetUrl('/avatars/female_samira.jpg'),
     accentColor: 'from-emerald-600 to-teal-800',
     badgeBg: 'bg-emerald-950/80 border-emerald-500/50',
@@ -97,6 +99,7 @@ export const EXPLORERS: Record<'samira' | 'mateo', ExplorerCharacter> = {
     specialization: 'Cartografia Geodetica & Speleologia delle Terre Alte',
     bio: 'Maestro cartografo specializzato nelle forre delle valli andine. Triangola le antiche mappe indigene con la geomorfologia reale scoprendo percorsi creduti scomparsi.',
     image: assetUrl('/avatars/male_mateo.jpg'),
+    backImage: assetUrl('/avatars/male_mateo_back.jpg'),
     portrait: assetUrl('/avatars/male_mateo.jpg'),
     accentColor: 'from-amber-600 to-amber-900',
     badgeBg: 'bg-amber-950/80 border-amber-500/50',
