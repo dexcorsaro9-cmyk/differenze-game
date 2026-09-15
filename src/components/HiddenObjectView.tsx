@@ -483,24 +483,23 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         { x: clientX, y: clientY }
       );
     } else {
-      // Tap missed: check if user double-tapped on empty space to zoom
+      // Tap missed: check if user double-tapped on empty space to zoom in
       const now = Date.now();
+      // Double tap only triggers zoom in from base view (scale <= 1.1).
+      // Accidental double taps while zoomed in NEVER zoom out! (Zoom out is handled via the Ripristina button or pinch)
       if (
+        scale <= 1.1 &&
         lastTapRef.current &&
         now - lastTapRef.current.time < 350 &&
         Math.hypot(clientX - lastTapRef.current.x, clientY - lastTapRef.current.y) < 35
       ) {
         lastTapRef.current = null;
-        if (scale > 1.1) {
-          handleResetZoom();
-        } else {
-          const targetX = (50 - clickXPercent) * 3.0;
-          const targetY = (50 - clickYPercent) * 3.0;
-          setScale(2.5);
-          setPan({ x: targetX, y: targetY });
-          sound.playTap();
-          triggerHaptic('medium');
-        }
+        const targetX = (50 - clickXPercent) * 3.0;
+        const targetY = (50 - clickYPercent) * 3.0;
+        setScale(2.5);
+        setPan({ x: targetX, y: targetY });
+        sound.playTap();
+        triggerHaptic('medium');
         return;
       }
       lastTapRef.current = { time: now, x: clientX, y: clientY };
