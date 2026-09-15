@@ -829,24 +829,27 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       {/* --- IL TACCUINO DEL PROFESSOR BELLINI (8 INDOVINELLI INVESTIGATIVI) --- */}
       <div className="relative z-20 w-full bg-gradient-to-t from-stone-950 via-[#140d07] to-stone-900/95 border-t-2 border-amber-700/60 shadow-[0_-10px_30px_rgba(0,0,0,0.9)] px-2 sm:px-4 pt-2 pb-2">
         {/* Header: Title, Solved counter and Grid Expand toggle */}
-        <div className="flex items-center justify-between max-w-4xl mx-auto mb-1.5 text-xs">
-          <div className="flex items-center gap-1.5 text-amber-300 font-serif font-bold tracking-wide">
-            <Scroll className="w-3.5 h-3.5 text-amber-400" />
-            <span className="uppercase text-[11px] tracking-wider font-sans">Taccuino di Spedizione (8 Indovinelli)</span>
+        <div className="flex items-center justify-between max-w-4xl mx-auto mb-1.5 text-xs flex-nowrap gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 text-amber-300 font-serif font-bold tracking-wide min-w-0 shrink overflow-hidden">
+            <Scroll className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span className="uppercase text-[10px] sm:text-[11px] tracking-wider font-sans whitespace-nowrap truncate">
+              <span className="hidden sm:inline">Taccuino di Spedizione</span>
+              <span className="sm:hidden">Taccuino</span> (8 Indovinelli)
+            </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-[11px]">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap">
+            <div className="flex items-center gap-1 text-[11px] whitespace-nowrap shrink-0">
               <span className="text-stone-400 hidden sm:inline">Decifrati:</span>
-              <span className="text-amber-300 font-mono font-bold bg-stone-950 px-2 py-0.5 rounded border border-amber-600/40 shadow-inner">
-                {foundCount} / {totalCount}
+              <span className="text-amber-300 font-mono font-bold bg-stone-950 px-2 py-0.5 rounded border border-amber-600/40 shadow-inner whitespace-nowrap shrink-0">
+                {foundCount}&nbsp;/&nbsp;{totalCount}
               </span>
             </div>
 
             {/* Toggle expanded 8-card grid */}
             <button
               onClick={() => setIsGridExpanded(prev => !prev)}
-              className="flex items-center gap-0.5 text-[10px] text-amber-300/80 hover:text-amber-200 bg-stone-900/90 px-2 py-0.5 rounded border border-amber-700/40 transition cursor-pointer"
+              className="flex items-center gap-0.5 text-[10px] text-amber-300/80 hover:text-amber-200 bg-stone-900/90 px-1.5 sm:px-2 py-0.5 rounded border border-amber-700/40 transition cursor-pointer shrink-0 whitespace-nowrap"
               title={isGridExpanded ? 'Comprimi Taccuino' : 'Espandi tutti gli 8 Indovinelli'}
             >
               <span>{isGridExpanded ? 'Comprimi' : 'Tutti gli 8'}</span>
