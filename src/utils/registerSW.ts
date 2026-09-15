@@ -42,7 +42,8 @@ export function registerExpeditionServiceWorker(callbacks: SWRegistrationCallbac
           installingWorker.addEventListener('statechange', () => {
             if (installingWorker.state === 'installed') {
               if (navigator.serviceWorker.controller) {
-                // New update available
+                // Auto-activate immediately so users always run latest code without manual cache clearing
+                installingWorker.postMessage({ type: 'SKIP_WAITING' });
                 callbacks.onNeedRefresh?.();
                 callbacks.onUpdateAvailable?.();
               } else {
@@ -51,6 +52,13 @@ export function registerExpeditionServiceWorker(callbacks: SWRegistrationCallbac
               }
             }
           });
+        });
+
+        // Re-check for updates whenever user returns to the game tab/app
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            registration.update().catch(() => {});
+          }
         });
       })
       .catch((error) => {

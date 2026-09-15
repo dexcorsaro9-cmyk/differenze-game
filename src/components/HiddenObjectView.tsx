@@ -97,6 +97,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
   // Mouse pan drag state for desktop
   const mouseDragStartRef = useRef<{ x: number; y: number } | null>(null);
+  const lastTouchProcessedRef = useRef<number>(0);
 
   // Visual effects state
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
@@ -323,9 +324,27 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartDistRef.current = null;
     touchStartCenterRef.current = null;
+
+    // Check for clean mobile tap gesture (< 18px movement, < 400ms duration)
+    if (
+      singleTouchStartRef.current &&
+      !isDraggingRef.current &&
+      Date.now() - singleTouchStartRef.current.time < 400
+    ) {
+      const t = e.changedTouches[0];
+      if (t) {
+        const dx = t.clientX - singleTouchStartRef.current.x;
+        const dy = t.clientY - singleTouchStartRef.current.y;
+        if (Math.hypot(dx, dy) < 18) {
+          lastTouchProcessedRef.current = Date.now();
+          processStageTap(t.clientX, t.clientY);
+        }
+      }
+    }
+
     setTimeout(() => {
       isDraggingRef.current = false;
     }, 50);
@@ -387,48 +406,35 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }, 600);
   };
 
-  // Tap Detection on the Scene
-  const handleStageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isDraggingRef.current) return;
+  // Unified Tap & Click Processing Engine
+  const processStageTap = (clientX: number, clientY: number) => {
     const imgElement = imgRef.current;
     if (!imgElement) return;
 
     const rect = imgElement.getBoundingClientRect();
-    const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
-    const clickYPercent = ((e.clientY - rect.top) / rect.height) * 100;
-
-    // Double-tap to zoom in (2.5x) or zoom out back to 1.0x
-    const now = Date.now();
+    // Verify tap lands within or near the photograph viewport
     if (
-      lastTapRef.current &&
-      now - lastTapRef.current.time < 350 &&
-      Math.hypot(e.clientX - lastTapRef.current.x, e.clientY - lastTapRef.current.y) < 35
+      clientX < rect.left - 25 ||
+      clientX > rect.right + 25 ||
+      clientY < rect.top - 25 ||
+      clientY > rect.bottom + 25
     ) {
-      lastTapRef.current = null;
-      if (scale > 1.1) {
-        handleResetZoom();
-      } else {
-        const targetX = (50 - clickXPercent) * 3.0;
-        const targetY = (50 - clickYPercent) * 3.0;
-        setScale(2.5);
-        setPan({ x: targetX, y: targetY });
-        sound.playTap();
-        triggerHaptic('medium');
-      }
       return;
     }
-    lastTapRef.current = { time: now, x: e.clientX, y: e.clientY };
+
+    const clickXPercent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    const clickYPercent = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
 
     // Check hit against all unfound clues:
     // Finds the closest unfound clue whose tolerance contains the tap point.
-    // Nearest-neighbor matching guarantees that tapping directly on an object will ALWAYS
-    // select that object, and adjacent objects will never steal or block clicks from each other!
     let matchedDiff: Difference | null = null;
     let minDistance = Infinity;
 
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
-      const tolerance = Math.min(diff.radius || 5.5, 6.5);
+      const isHintTarget = activeHint && activeHint.id === diff.id;
+      // Generous hit tolerance: 16% for active hint, 9.5% minimum for natural finger touches
+      const tolerance = isHintTarget ? 16.0 : Math.max(diff.radius || 9.5, 9.5);
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
       const dist = Math.hypot(dx, dy);
@@ -440,6 +446,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }
 
     if (matchedDiff) {
+      // Object found! Reset lastTapRef so it never triggers zoom
+      lastTapRef.current = null;
+
       // 1928 Magnesium Flash Celebration
       setMagnesiumFlash({ id: String(Date.now()), x: clickXPercent, y: clickYPercent });
       sound.playMagnesiumFlash();
@@ -460,16 +469,53 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         setDiscoveryPops(prev => prev.filter(p => p.id !== pop.id));
       }, 1600);
 
+      // Automatically advance bottom tray selected card to next unfound clue
+      const currentFound = [...foundDifferenceIds, matchedDiff.id];
+      const nextUnfoundIdx = differences.findIndex(d => !currentFound.includes(d.id));
+      if (nextUnfoundIdx !== -1) {
+        setSelectedRiddleIndex(nextUnfoundIdx);
+      }
+
       onDifferenceClick(
         matchedDiff,
         { x: clickXPercent, y: clickYPercent },
         0,
-        { x: e.clientX, y: e.clientY }
+        { x: clientX, y: clientY }
       );
     } else {
+      // Tap missed: check if user double-tapped on empty space to zoom
+      const now = Date.now();
+      if (
+        lastTapRef.current &&
+        now - lastTapRef.current.time < 350 &&
+        Math.hypot(clientX - lastTapRef.current.x, clientY - lastTapRef.current.y) < 35
+      ) {
+        lastTapRef.current = null;
+        if (scale > 1.1) {
+          handleResetZoom();
+        } else {
+          const targetX = (50 - clickXPercent) * 3.0;
+          const targetY = (50 - clickYPercent) * 3.0;
+          setScale(2.5);
+          setPan({ x: targetX, y: targetY });
+          sound.playTap();
+          triggerHaptic('medium');
+        }
+        return;
+      }
+      lastTapRef.current = { time: now, x: clientX, y: clientY };
+
       addErrorFeedback(clickXPercent, clickYPercent);
       onErrorClick({ x: clickXPercent, y: clickYPercent }, 0);
     }
+  };
+
+  // Mouse Click on the Scene (Desktop)
+  const handleStageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // If this tap was already handled by touch, prevent synthetic mouse click duplicate
+    if (Date.now() - lastTouchProcessedRef.current < 450) return;
+    if (isDraggingRef.current) return;
+    processStageTap(e.clientX, e.clientY);
   };
 
   const foundCount = differences.filter(d => foundDifferenceIds.includes(d.id)).length;
@@ -656,7 +702,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           {differences.map(diff => {
             const isFound = foundDifferenceIds.includes(diff.id);
             if (!isFound) return null;
-            const ringRadius = Math.min(diff.radius || 5.5, 6.5);
+            const ringRadius = Math.max(diff.radius || 8.5, 8.5);
             return (
               <div
                 key={`found_${diff.id}`}

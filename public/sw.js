@@ -1,7 +1,7 @@
 // =========================================================================
-// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE)
+// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE v5.0)
 // =========================================================================
-const CACHE_VERSION = 'paititi-expedition-v2.0';
+const CACHE_VERSION = 'paititi-expedition-v5.0';
 const CACHE_NAME = `paititi-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `paititi-runtime-${CACHE_VERSION}`;
 
@@ -18,25 +18,25 @@ const PRECACHE_ASSETS = [
   './app_icon.jpg'
 ];
 
-// Install Event: Pre-cache the application shell
+// Install Event: Pre-cache shell and force activation without waiting
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Add all pre-cached assets with error tolerance for individual assets
       return Promise.allSettled(
         PRECACHE_ASSETS.map((url) =>
-          fetch(url)
+          fetch(url, { cache: 'no-cache' })
             .then((response) => {
-              if (response.ok) return cache.put(url, response);
+              if (response && response.ok) return cache.put(url, response);
             })
             .catch(() => {})
         )
       );
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
-// Activate Event: Clean up outdated caches and claim clients immediately
+// Activate Event: Aggressively purge all outdated caches and claim clients
 self.addEventListener('activate', (event) => {
   const currentCaches = [CACHE_NAME, RUNTIME_CACHE];
   event.waitUntil(
@@ -52,17 +52,17 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event: Intelligent Offline Strategy
+// Fetch Event: Network-First for HTML/Scripts/Styles to avoid stale code lock; Cache-First for Heavy Media
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET requests and cross-origin requests that are not assets
+  // Skip non-GET requests and non-http(s) protocols
   if (request.method !== 'GET') return;
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
-  // 1. Navigation Requests (HTML pages): Network-First with Cache Fallback
-  if (request.mode === 'navigate') {
+  // 1. Navigation Requests (HTML entry points): Network-First
+  if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request)
         .then((networkResponse) => {
@@ -81,10 +81,35 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Static Assets (Scripts, Styles, Fonts, Images, Audio): Cache-First with Stale-While-Revalidate
+  // 2. Application Code & Metadata (JS bundles, CSS, Manifest, JSON): Network-First
+  const isCodeOrData =
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.css') ||
+    url.pathname.endsWith('.json') ||
+    request.destination === 'script' ||
+    request.destination === 'style';
+
+  if (isCodeOrData) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const responseClone = networkResponse.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, responseClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // 3. Static Media Assets (Images, Audio, WebFonts): Cache-First with Network Revalidation
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      const fetchPromise = fetch(request)
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(request)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.ok && networkResponse.status === 200) {
             const responseClone = networkResponse.clone();
@@ -92,23 +117,22 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => {
-          // Silent fallback when completely offline
-          return null;
-        });
-
-      // Return cached version immediately if available, otherwise wait for network
-      return cachedResponse || fetchPromise;
+        .catch(() => null);
     })
   );
 });
 
-// Message Event: Allow web app to control service worker lifecycle
+// Lifecycle and Diagnostic Messages
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+  if (event.data && event.data.type === 'CLEAR_CACHE') {
+    caches.keys().then((names) => {
+      return Promise.all(names.map((name) => caches.delete(name)));
+    });
+  }
   if (event.data && event.data.type === 'GET_VERSION') {
-    event.ports[0].postMessage({ version: CACHE_VERSION });
+    event.ports[0]?.postMessage({ version: CACHE_VERSION });
   }
 });

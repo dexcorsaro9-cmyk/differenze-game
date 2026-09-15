@@ -15,11 +15,30 @@ function setupDynamicViewport() {
   window.addEventListener('orientationchange', syncHeight);
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', syncHeight);
-    window.visualViewport.addEventListener('scroll', syncHeight);
   }
 }
 
 setupDynamicViewport();
+
+// Purge obsolete PWA and runtime caches from older versions
+const CURRENT_APP_BUILD = '5.0.0';
+try {
+  const storedBuild = localStorage.getItem('paititi_app_build');
+  if (storedBuild !== CURRENT_APP_BUILD) {
+    localStorage.setItem('paititi_app_build', CURRENT_APP_BUILD);
+    if (typeof window !== 'undefined' && 'caches' in window) {
+      caches.keys().then((names) => {
+        names.forEach((name) => {
+          if (!name.includes('v5.0')) {
+            caches.delete(name);
+          }
+        });
+      });
+    }
+  }
+} catch {
+  // Ignore storage errors in restricted webview/iframe environments
+}
 
 // Prevent iOS Safari page-level pinch zoom & gesture artifacts
 // so only the in-game photo stage scales via its custom touch handlers
