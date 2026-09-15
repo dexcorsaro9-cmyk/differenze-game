@@ -120,6 +120,14 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
     return () => clearInterval(interval);
   }, [isAutoSpin]);
 
+  // Smoothly turn character to rear view (180°) when selecting back equipment slot
+  useEffect(() => {
+    if (selectedSlot === 'back') {
+      setIsAutoSpin(false);
+      setRotation(180);
+    }
+  }, [selectedSlot]);
+
   // Touch & Mouse Drag Handlers for 3D Turntable
   const handlePointerDown = (clientX: number) => {
     setIsDragging(true);
@@ -197,15 +205,33 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   return (
     <div
       ref={containerRef}
-      onMouseDown={(e) => handlePointerDown(e.clientX)}
-      onMouseMove={(e) => handlePointerMove(e.clientX)}
-      onMouseUp={handlePointerUp}
-      onMouseLeave={handlePointerUp}
-      onTouchStart={(e) => handlePointerDown(e.touches[0].clientX)}
-      onTouchMove={(e) => handlePointerMove(e.touches[0].clientX)}
-      onTouchEnd={handlePointerUp}
-      className="relative w-full h-full min-h-[300px] sm:min-h-[380px] md:min-h-[480px] flex items-center justify-center bg-gradient-to-b from-[#22130a] via-[#100602] to-[#1a0c05] rounded-3xl border-2 border-amber-500/60 overflow-hidden select-none shadow-[inset_0_0_90px_rgba(0,0,0,0.95)] cursor-grab active:cursor-grabbing"
-      style={{ perspective: '1200px' }}
+      onPointerDown={(e) => {
+        try {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {}
+        handlePointerDown(e.clientX);
+      }}
+      onPointerMove={(e) => {
+        handlePointerMove(e.clientX);
+      }}
+      onPointerUp={(e) => {
+        try {
+          if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+          }
+        } catch {}
+        handlePointerUp();
+      }}
+      onPointerCancel={(e) => {
+        try {
+          if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+          }
+        } catch {}
+        handlePointerUp();
+      }}
+      className="relative w-full h-full min-h-[300px] sm:min-h-[380px] md:min-h-[480px] flex items-center justify-center bg-gradient-to-b from-[#22130a] via-[#100602] to-[#1a0c05] rounded-3xl border-2 border-amber-500/60 overflow-hidden select-none shadow-[inset_0_0_90px_rgba(0,0,0,0.95)] cursor-grab active:cursor-grabbing touch-none"
+      style={{ perspective: '1200px', touchAction: 'none' }}
     >
       {/* Dynamic 3D Atmosphere Lighting */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -515,6 +541,26 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                   <div className="w-12 h-3 bg-amber-900/80 rounded-full border border-amber-600/50 shadow-sm" />
                 </div>
               )}
+
+              {/* Rear Legs Indicator */}
+              {displayLegs && displayLegs.id !== 'legs_cargo_khaki' && (
+                <div className="absolute top-[62%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
+                  <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
+                    <Shield className="w-2.5 h-2.5 text-amber-400" />
+                    <span className="truncate max-w-[80px]">{displayLegs.name.split(' ')[0]}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Rear Boots Indicator */}
+              {displayBoots && displayBoots.id !== 'boots_leather_hiker' && (
+                <div className="absolute top-[82%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
+                  <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
+                    <Footprints className="w-2.5 h-2.5 text-amber-400" />
+                    <span className="truncate max-w-[80px]">{displayBoots.name.split(' ')[0]}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* ============================================================== */}
@@ -633,6 +679,83 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
                   title="Piedi / Stivali da Marcia"
+                >
+                  <Footprints className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            {/* ============================================================== */}
+            {/* REAR INTERACTIVE BODY TARGET NODES (CLICK REAR BODY PART)      */}
+            {/* ============================================================== */}
+            {showSlotNodes && isFacingBack && (
+              <div className="hidden md:contents pointer-events-auto">
+                {/* Rear Node 1: TESTA POSTERIORE */}
+                <button
+                  type="button"
+                  onClick={(e) => handleNodeClick(e, 'headgear')}
+                  className={`absolute top-[9%] left-[50%] -translate-x-1/2 z-30 p-1.5 rounded-full transition-all cursor-pointer ${
+                    selectedSlot === 'headgear'
+                      ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
+                      : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
+                  }`}
+                  title="Testa / Copricapo Posteriore"
+                >
+                  <Crown className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Rear Node 2: SCHIENA / ZAINO (CENTRO PIENO) */}
+                <button
+                  type="button"
+                  onClick={(e) => handleNodeClick(e, 'back')}
+                  className={`absolute top-[30%] left-[50%] -translate-x-1/2 z-30 p-2 rounded-full transition-all cursor-pointer ${
+                    selectedSlot === 'back'
+                      ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
+                      : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border-2 border-amber-500 shadow-lg'
+                  }`}
+                  title="Schiena / Zaino & Equipaggiamento da Spalla"
+                >
+                  <Backpack className="w-4 h-4" />
+                </button>
+
+                {/* Rear Node 3: BUSTO POSTERIORE / MANTELLO */}
+                <button
+                  type="button"
+                  onClick={(e) => handleNodeClick(e, 'torso')}
+                  className={`absolute top-[48%] left-[50%] -translate-x-1/2 z-30 p-1.5 rounded-full transition-all cursor-pointer ${
+                    selectedSlot === 'torso'
+                      ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
+                      : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
+                  }`}
+                  title="Busto Posteriore / Mantello"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Rear Node 4: GAMBE POSTERIORI */}
+                <button
+                  type="button"
+                  onClick={(e) => handleNodeClick(e, 'legs')}
+                  className={`absolute top-[64%] left-[50%] -translate-x-1/2 z-30 p-1.5 rounded-full transition-all cursor-pointer ${
+                    selectedSlot === 'legs'
+                      ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
+                      : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
+                  }`}
+                  title="Gambe Posteriori / Tasche Tattiche"
+                >
+                  <Shield className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Rear Node 5: TACCHI / STIVALI POSTERIORI */}
+                <button
+                  type="button"
+                  onClick={(e) => handleNodeClick(e, 'boots')}
+                  className={`absolute top-[82%] left-[50%] -translate-x-1/2 z-30 p-1.5 rounded-full transition-all cursor-pointer ${
+                    selectedSlot === 'boots'
+                      ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
+                      : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
+                  }`}
+                  title="Piedi Posteriori / Stivali da Marcia"
                 >
                   <Footprints className="w-3.5 h-3.5" />
                 </button>

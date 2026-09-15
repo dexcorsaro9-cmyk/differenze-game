@@ -21,7 +21,7 @@ function setupDynamicViewport() {
 setupDynamicViewport();
 
 // Purge obsolete PWA and runtime caches from older versions
-const CURRENT_APP_BUILD = '5.0.0';
+const CURRENT_APP_BUILD = '5.1.0';
 try {
   const storedBuild = localStorage.getItem('paititi_app_build');
   if (storedBuild !== CURRENT_APP_BUILD) {
@@ -29,7 +29,7 @@ try {
     if (typeof window !== 'undefined' && 'caches' in window) {
       caches.keys().then((names) => {
         names.forEach((name) => {
-          if (!name.includes('v5.0')) {
+          if (!name.includes('v5.1')) {
             caches.delete(name);
           }
         });

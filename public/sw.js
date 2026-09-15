@@ -1,7 +1,7 @@
 // =========================================================================
-// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE v5.0)
+// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE v5.1)
 // =========================================================================
-const CACHE_VERSION = 'paititi-expedition-v5.0';
+const CACHE_VERSION = 'paititi-expedition-v5.1';
 const CACHE_NAME = `paititi-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `paititi-runtime-${CACHE_VERSION}`;
 
@@ -15,7 +15,11 @@ const PRECACHE_ASSETS = [
   './icon-512.png',
   './apple-touch-icon.png',
   './splash_screen.jpg',
-  './app_icon.jpg'
+  './app_icon.jpg',
+  './avatars/female_samira.jpg',
+  './avatars/female_samira_back.jpg',
+  './avatars/male_mateo.jpg',
+  './avatars/male_mateo_back.jpg'
 ];
 
 // Install Event: Pre-cache shell and force activation without waiting

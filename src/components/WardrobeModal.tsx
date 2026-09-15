@@ -532,6 +532,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             <button
               type="button"
               onClick={() => {
+                sound.playTap();
+                triggerHaptic('light');
                 onClose();
                 onOpenAvatarCreator();
               }}
@@ -544,7 +546,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             {/* Close Button */}
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                sound.playTap();
+                onClose();
+              }}
               className="p-1.5 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white border border-stone-700 transition cursor-pointer"
             >
               <X className="w-4 h-4" />
@@ -557,6 +562,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           <button
             type="button"
             onClick={() => {
+              sound.playTap();
+              triggerHaptic('light');
               setMobileTab('outfits');
               setSelectedSlot('torso');
             }}
@@ -571,7 +578,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setMobileTab('paperdoll')}
+            onClick={() => {
+              sound.playTap();
+              triggerHaptic('light');
+              setMobileTab('paperdoll');
+            }}
             className={`flex-1 py-1.5 px-2 rounded-xl transition text-center cursor-pointer flex items-center justify-center gap-1 ${
               mobileTab === 'paperdoll'
                 ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md'
@@ -583,7 +594,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setMobileTab('drawer')}
+            onClick={() => {
+              sound.playTap();
+              triggerHaptic('light');
+              setMobileTab('drawer');
+            }}
             className={`flex-1 py-1.5 px-2 rounded-xl transition text-center cursor-pointer flex items-center justify-center gap-1 ${
               mobileTab === 'drawer'
                 ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black shadow-md'
