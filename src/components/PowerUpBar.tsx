@@ -1,6 +1,7 @@
 import React from 'react';
 import { Snowflake, Compass, Search, Shield, Plus, ShoppingBag } from 'lucide-react';
 import type { PowerUpInventory, PowerUpType } from '../types/game';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface PowerUpBarProps {
   inventory: PowerUpInventory;
@@ -23,10 +24,12 @@ export const PowerUpBar: React.FC<PowerUpBarProps> = ({
   onQuickBuy,
   onOpenShop,
 }) => {
+  const { t } = useTranslation();
+
   const POWER_UP_CONFIG = [
     {
       type: 'freeze_time' as PowerUpType,
-      name: 'Congela',
+      name: t.powerUps.freezeTime,
       price: 60,
       count: inventory.freeze_time,
       icon: Snowflake,
@@ -37,7 +40,7 @@ export const PowerUpBar: React.FC<PowerUpBarProps> = ({
     },
     {
       type: 'compass_radar' as PowerUpType,
-      name: 'Radar',
+      name: t.powerUps.compassRadar,
       price: 40,
       count: inventory.compass_radar,
       icon: Compass,
@@ -48,7 +51,7 @@ export const PowerUpBar: React.FC<PowerUpBarProps> = ({
     },
     {
       type: 'hint' as PowerUpType,
-      name: 'Indizio',
+      name: t.powerUps.hint,
       price: 50,
       count: inventory.hint,
       icon: Search,
@@ -59,7 +62,7 @@ export const PowerUpBar: React.FC<PowerUpBarProps> = ({
     },
     {
       type: 'error_shield' as PowerUpType,
-      name: 'Scudo',
+      name: t.powerUps.errorShield,
       price: 45,
       count: inventory.error_shield,
       icon: Shield,

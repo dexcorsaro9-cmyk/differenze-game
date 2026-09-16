@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { X, Volume2, VolumeX, Smartphone, Sparkles, Music, RotateCcw, Download, Upload, Archive, Check } from 'lucide-react';
+import { X, Volume2, VolumeX, Smartphone, Sparkles, Music, RotateCcw, Download, Upload, Archive, Check, Globe } from 'lucide-react';
 import type { GameSettings } from '../types/game';
+import { useTranslation } from '../i18n/LanguageContext';
 
 const BACKUP_STORAGE_KEYS = [
   'differenze_progress_v1',
@@ -50,6 +51,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   bgmTheme = 'auto',
   onChangeBgmTheme,
 }) => {
+  const { language, setLanguage, t } = useTranslation();
   const [backupStatus, setBackupStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -140,8 +142,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pb-4 pt-10 sm:pt-12 bg-black/80 backdrop-blur-md animate-fade-in">
       <div className="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border border-slate-700/80 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9)] text-white max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-          <h3 className="text-xl font-extrabold text-white">
-            Impostazioni
+          <h3 className="text-xl font-extrabold text-white font-serif">
+            {t.settings.title}
           </h3>
           <button
             onClick={onClose}
@@ -152,6 +154,38 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         <div className="py-5 space-y-4">
+          {/* Language Selector (IT / EN / ES) */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-stone-900/70 to-amber-950/40 border border-amber-600/50 space-y-2.5">
+            <div className="flex items-center gap-3">
+              <Globe className="w-5 h-5 text-amber-400 shrink-0" />
+              <div>
+                <h5 className="text-sm font-bold text-white font-serif">{t.settings.language}</h5>
+                <p className="text-xs text-amber-200/70">{t.settings.languageHelp}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 pt-1">
+              {[
+                { id: 'it', label: 'Italiano', flag: '🇮🇹' },
+                { id: 'en', label: 'English', flag: '🇬🇧' },
+                { id: 'es', label: 'Español', flag: '🇪🇸' },
+              ].map(lang => (
+                <button
+                  key={lang.id}
+                  type="button"
+                  onClick={() => setLanguage(lang.id as any)}
+                  className={`py-2 px-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                    language === lang.id
+                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 border-amber-300 text-stone-950 shadow-[0_0_12px_rgba(245,158,11,0.6)] font-black'
+                      : 'bg-slate-900/80 border-slate-700 text-stone-300 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  <span className="text-base leading-none">{lang.flag}</span>
+                  <span>{lang.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
           {/* Sound Toggle */}
           <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
             <div className="flex items-center gap-3">
@@ -161,7 +195,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <VolumeX className="w-5 h-5 text-slate-500" />
               )}
               <div>
-                <h5 className="text-sm font-bold text-white">Effetti Sonori</h5>
+                <h5 className="text-sm font-bold text-white">{t.settings.soundEffects}</h5>
                 <p className="text-xs text-slate-400">Rintocchi armonici e feedback audio</p>
               </div>
             </div>
@@ -185,8 +219,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center gap-3">
               <Smartphone className={`w-5 h-5 ${settings.vibrationEnabled ? 'text-amber-400' : 'text-slate-500'}`} />
               <div>
-                <h5 className="text-sm font-bold text-white">Feedback Aptico</h5>
-                <p className="text-xs text-slate-400">Vibrazioni al tocco (dispositivi supportati)</p>
+                <h5 className="text-sm font-bold text-white">{t.settings.vibration}</h5>
+                <p className="text-xs text-slate-400">Feedback aptico al tocco</p>
               </div>
             </div>
 
@@ -209,8 +243,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center gap-3">
               <Sparkles className={`w-5 h-5 ${settings.zenMode ? 'text-teal-400' : 'text-slate-500'}`} />
               <div>
-                <h5 className="text-sm font-bold text-white">Modalità Zen</h5>
-                <p className="text-xs text-slate-400">Vite infinite, senza penalità di game over</p>
+                <h5 className="text-sm font-bold text-white">{t.settings.zenMode}</h5>
+                <p className="text-xs text-slate-400">{t.settings.zenModeHelp}</p>
               </div>
             </div>
 
@@ -322,7 +356,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Archive className="w-4 h-4 text-amber-400" />
-                <h5 className="text-xs font-bold text-amber-100 font-serif">Archivio & Backup Salvataggi</h5>
+                <h5 className="text-xs font-bold text-amber-100 font-serif">{t.settings.backupSection}</h5>
               </div>
               <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-950 border border-amber-500/40 text-amber-300 font-mono font-bold">
                 JSON v2.0
@@ -340,7 +374,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400 text-amber-200 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-95"
               >
                 <Download className="w-3.5 h-3.5 text-amber-300" />
-                <span>Esporta Backup</span>
+                <span>{t.settings.exportBackup}</span>
               </button>
 
               <button
@@ -349,7 +383,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-95"
               >
                 <Upload className="w-3.5 h-3.5 text-stone-300" />
-                <span>Importa Backup</span>
+                <span>{t.settings.importBackup}</span>
               </button>
 
               <input
@@ -387,7 +421,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           <button
             onClick={() => {
-              if (confirm('Vuoi davvero azzerare i tuoi progressi e ricominciare la storia?')) {
+              if (confirm(t.settings.resetConfirm)) {
                 onResetProgress();
                 onClose();
               }
@@ -395,7 +429,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             className="w-full py-2.5 rounded-xl text-rose-400 hover:bg-rose-950/40 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            Azzera Progressi della Storia
+            {t.settings.resetProgress}
           </button>
         </div>
       </div>

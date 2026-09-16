@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { HiddenObjectView } from './components/HiddenObjectView';
 import { PowerUpBar } from './components/PowerUpBar';
@@ -20,8 +20,7 @@ import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
 import { ExpeditionHubModal } from './components/ExpeditionHubModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
-import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
-
+import { FlyingCoinParticles } from './components/FlyingCoinParticles';
 import { MappamondoModal } from './components/MappamondoModal';
 import { DailyExpeditionModal } from './components/DailyExpeditionModal';
 import { GrandFinaleModal } from './components/GrandFinaleModal';
@@ -32,19 +31,15 @@ import { ExpeditionDilemmaModal } from './components/ExpeditionDilemmaModal';
 import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
 import { OfflineStatusToast } from './components/OfflineStatusToast';
 import { usePWA } from './hooks/usePWA';
-import {
-  hasPendingDaily,
-  completeDailyExpedition,
-  isTodayCompleted,
-  getLevelIdForDate,
-  getTodayDateString,
-} from './utils/dailyChallenge';
+import { useEconomy } from './hooks/useEconomy';
+import { useGameSession } from './hooks/useGameSession';
+import { useModalManager } from './hooks/useModalManager';
+import { useTranslation } from './i18n/LanguageContext';
+import { hasPendingDaily } from './utils/dailyChallenge';
 import { safeStorage } from './utils/storage';
-import { ALL_120_LEVELS } from './data/levelRegistry';
-import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
-import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
-import { CONSULAR_VISAS, type ConsularVisa } from './data/passportData';
-import { assetUrl } from './utils/assetUrl';
+import { ALL_COLLECTIBLE_RELICS } from './data/collectiblesData';
+import { ALL_ACHIEVEMENTS } from './data/achievementsData';
+import { CONSULAR_VISAS } from './data/passportData';
 import {
   ALL_OUTFITS,
   ALL_ACCESSORIES,
@@ -52,143 +47,22 @@ import {
   normalizeExplorerProfile,
   type ExplorerProfile,
 } from './data/avatarData';
-import type { Difference, GameSettings, PowerUpInventory, PowerUpType, RadarQuadrant, ShopItem } from './types/game';
+import type { GameSettings } from './types/game';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
+  const { t } = useTranslation();
+
   // Persistence keys
-  const STORAGE_KEY_PROGRESS = 'differenze_progress_v1';
   const STORAGE_KEY_SETTINGS = 'differenze_settings_v1';
-  const STORAGE_KEY_ECONOMY = 'differenze_economy_v1';
-  const STORAGE_KEY_INVENTORY = 'differenze_inventory_v1';
-  const STORAGE_KEY_RELICS = 'differenze_relics_v1';
   const STORAGE_KEY_AVATAR = 'differenze_avatar_v1';
   const STORAGE_KEY_TUTORIAL = 'differenze_tutorial_v1';
   const STORAGE_KEY_SEEN_BRIEFINGS = 'differenze_seen_briefings_v1';
-  const STORAGE_KEY_MEDALS = 'differenze_medals_v1';
-  const STORAGE_KEY_CLAIMED_MEDALS = 'differenze_claimed_medals_v1';
   const STORAGE_KEY_EXPEDITION_CHOICES = 'differenze_expedition_choices_v1';
 
-  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-  const initialView = urlParams?.get('view');
-
-  // Levels & Current Level
-  const [levels] = useState(ALL_120_LEVELS);
-  const [currentLevelId, setCurrentLevelId] = useState<number>(() => {
-    const queryLvl = urlParams?.get('level');
-    if (queryLvl) {
-      const parsedLvl = parseInt(queryLvl, 10);
-      if (!isNaN(parsedLvl) && parsedLvl >= 1 && parsedLvl <= 120) return parsedLvl;
-    }
-    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.currentLevelId || 1;
-      } catch {
-        return 1;
-      }
-    }
-    return 1;
-  });
-
-  const currentLevel = levels.find(l => l.id === currentLevelId) || levels[0];
-
-  // Gameplay State
-  const [foundDifferenceIds, setFoundDifferenceIds] = useState<string[]>([]);
-  const [lives, setLives] = useState<number>(3);
-  const [errorsCount, setErrorsCount] = useState<number>(0);
-  const [timeElapsed, setTimeElapsed] = useState<number>(0);
-  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
-  const usedAssistanceThisLevelRef = useRef<boolean>(false);
-
-  // Power-Ups & Economy State
-  const [coins, setCoins] = useState<number>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_ECONOMY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return typeof parsed.coins === 'number' ? parsed.coins : 150;
-      } catch {
-        return 150;
-      }
-    }
-    return 150;
-  });
-
-  const [inventory, setInventory] = useState<PowerUpInventory>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_INVENTORY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // Fallback default
-      }
-    }
-    return {
-      freeze_time: 2,
-      compass_radar: 2,
-      hint: 3,
-      error_shield: 1,
-    };
-  });
-
-  const [isTimeFrozen, setIsTimeFrozen] = useState<boolean>(false);
-  const [freezeSecondsLeft, setFreezeSecondsLeft] = useState<number>(0);
-  const [isShieldActive, setIsShieldActive] = useState<boolean>(false);
-  const [activeHint, setActiveHint] = useState<Difference | null>(null);
-  const [activeRadar, setActiveRadar] = useState<RadarQuadrant | null>(null);
-  const [shieldBlockedNotice, setShieldBlockedNotice] = useState<boolean>(false);
-  const [levelCoinsEarned, setLevelCoinsEarned] = useState<number>(0);
-  const [comboStreak, setComboStreak] = useState<number>(0);
-  const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Collectible Relics State
-  const [discoveredRelicIds, setDiscoveredRelicIds] = useState<string[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_RELICS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return [];
-      }
-    }
-    return [];
-  });
-  const [activeFoundRelic, setActiveFoundRelic] = useState<CollectibleRelic | null>(null);
-  const [isRelicFoundModalOpen, setIsRelicFoundModalOpen] = useState<boolean>(false);
-  const [isRelicMuseumOpen, setIsRelicMuseumOpen] = useState<boolean>(() => initialView === 'museum');
-  const [hasUnreadRelics, setHasUnreadRelics] = useState<boolean>(false);
-
-  // Check if current level has a secret collectible relic
-  const currentLevelHiddenRelic = ALL_COLLECTIBLE_RELICS.find(r => r.hiddenLevelId === currentLevel.id) || null;
-
-  // Lore & Modals State
-  const [activeClueToast, setActiveClueToast] = useState<Difference | null>(null);
-  const [isLevelCompleteOpen, setIsLevelCompleteOpen] = useState<boolean>(false);
-  const [isGameOverOpen, setIsGameOverOpen] = useState<boolean>(false);
-  const [isJournalOpen, setIsJournalOpen] = useState<boolean>(false);
-  const [isLevelSelectOpen, setIsLevelSelectOpen] = useState<boolean>(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-  const [hasNewStageUnlocked, setHasNewStageUnlocked] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
-  const [hasUnreadJournal, setHasUnreadJournal] = useState<boolean>(false);
-
-  // Continuous Procedural Orchestral BGM State
-  const [isBgmPlaying, setIsBgmPlaying] = useState<boolean>(() => sound.getBGMEnabled());
-
-  // Flying Coins Particle Bursts & Counter Bounce
-  const [coinBursts, setCoinBursts] = useState<CoinBurstEvent[]>([]);
-  const [isCoinBouncing, setIsCoinBouncing] = useState<boolean>(false);
-
-  // Daily Challenge State & Modal
-  const [isDailyModalOpen, setIsDailyModalOpen] = useState<boolean>(false);
-  const [isDailyActive, setIsDailyActive] = useState<boolean>(false);
-  const [hasUnreadDaily, setHasUnreadDaily] = useState<boolean>(() => hasPendingDaily());
-
-  // Explorer Avatar & Wardrobe State
+  // Explorer Avatar & Wardrobe Profile State
   const [explorerProfile, setExplorerProfile] = useState<ExplorerProfile>(() => {
     const saved = safeStorage.getItem(STORAGE_KEY_AVATAR);
     if (saved) {
@@ -207,76 +81,6 @@ export const App: React.FC = () => {
     return safeStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
   });
 
-  const [isCompanyIntroVisible, setIsCompanyIntroVisible] = useState<boolean>(() => {
-    if (
-      initialView === 'avatar' ||
-      initialView === 'wardrobe' ||
-      initialView === 'game' ||
-      initialView === 'prologue' ||
-      initialView === 'tutorial' ||
-      initialView === 'map' ||
-      initialView === 'finale' ||
-      initialView === 'install' ||
-      initialView === 'passport' ||
-      initialView === 'medals' ||
-      initialView === 'museum' ||
-      initialView === 'dilemma'
-    )
-      return false;
-    return true;
-  });
-
-  const [isSplashVisible, setIsSplashVisible] = useState<boolean>(() => {
-    if (initialView === 'splash') return true;
-    return false;
-  });
-  const [isAvatarCreatorOpen, setIsAvatarCreatorOpen] = useState<boolean>(() => initialView === 'avatar');
-  const [isWardrobeOpen, setIsWardrobeOpen] = useState<boolean>(() => initialView === 'wardrobe');
-  const [isPrologueOpen, setIsPrologueOpen] = useState<boolean>(() => initialView === 'prologue');
-  const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(() => initialView === 'tutorial');
-  const [isTreasureMapOpen, setIsTreasureMapOpen] = useState<boolean>(() => initialView === 'map');
-  const [isGrandFinaleOpen, setIsGrandFinaleOpen] = useState<boolean>(() => initialView === 'finale');
-  const [isMedalsCabinetOpen, setIsMedalsCabinetOpen] = useState<boolean>(() => initialView === 'medals');
-  const [isPassportOpen, setIsPassportOpen] = useState<boolean>(() => initialView === 'passport');
-  const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(() => initialView === 'install');
-  const [isDilemmaOpen, setIsDilemmaOpen] = useState<boolean>(() => initialView === 'dilemma');
-  const [isBackgroundPaused, setIsBackgroundPaused] = useState<boolean>(false);
-
-  // Progressive Web App & Offline capability hook
-  const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
-  const [unlockedMedalIds, setUnlockedMedalIds] = useState<string[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_MEDALS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-    return [];
-  });
-  const [claimedMedalIds, setClaimedMedalIds] = useState<string[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_CLAIMED_MEDALS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-    return [];
-  });
-  const [claimedVisaIds, setClaimedVisaIds] = useState<string[]>(() => {
-    const saved = safeStorage.getItem('differenze_claimed_visas_v1');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-    return [];
-  });
-  const [unlockedToastMedal, setUnlockedToastMedal] = useState<Achievement | null>(null);
-  const [isExpeditionHubOpen, setIsExpeditionHubOpen] = useState<boolean>(false);
-  const [activeStageBriefing, setActiveStageBriefing] = useState<number | null>(() => {
-    if (initialView === 'briefing') return 1;
-    return null;
-  });
   const [seenStageBriefings, setSeenStageBriefings] = useState<number[]>(() => {
     const saved = safeStorage.getItem(STORAGE_KEY_SEEN_BRIEFINGS);
     if (saved) {
@@ -287,7 +91,36 @@ export const App: React.FC = () => {
     return [];
   });
 
-  // Active Explorer Perks Calculation across all 8 RPG Equipment Slots!
+  // Active Notification Flags
+  const [hasUnreadDaily, setHasUnreadDaily] = useState<boolean>(() => hasPendingDaily());
+  const [hasUnreadRelics, setHasUnreadRelics] = useState<boolean>(false);
+  const [hasNewStageUnlocked, setHasNewStageUnlocked] = useState<boolean>(false);
+  const [hasUnreadJournal, setHasUnreadJournal] = useState<boolean>(false);
+  const [isDailyActive, setIsDailyActive] = useState<boolean>(false);
+
+  // Settings State
+  const [settings, setSettings] = useState<GameSettings>(() => {
+    const saved = safeStorage.getItem(STORAGE_KEY_SETTINGS);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return {
+      soundEnabled: true,
+      vibrationEnabled: true,
+      zenMode: false,
+      layoutMode: 'vertical',
+    };
+  });
+
+  // Modal Manager Hook
+  const modals = useModalManager();
+
+  // Economy Hook
+  const economy = useEconomy(() => modals.setIsShopOpen(true));
+
+  // Active Explorer Perks Calculation across all 8 RPG Equipment Slots
   const activeOutfit = ALL_OUTFITS.find(o => o.id === explorerProfile.equippedOutfitId);
   const activeHeadgear = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedHeadgearId);
   const activeTool = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedToolId);
@@ -337,274 +170,46 @@ export const App: React.FC = () => {
 
   const hasPassiveFreeShield = equippedPerks.some(p => p.type === 'free_shield');
 
-  // Persistent Progress: Completed Level IDs & Discovered Difference Clues
-  const [completedLevelIds, setCompletedLevelIds] = useState<number[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.completedLevelIds || [];
-      } catch {
-        return [];
-      }
-    }
-    return [];
+  // Game Session Hook
+  const game = useGameSession({
+    inventory: economy.inventory,
+    setInventory: economy.setInventory,
+    onEarnCoins: amount => economy.setCoins(c => c + amount),
+    onUnlockMedal: economy.unlockMedal,
+    onTriggerCoinBurst: economy.triggerCoinBurst,
+    coinBonusPercent,
+    freezeBonusSeconds,
+    radarBonusPercent,
+    hasPassiveFreeShield,
+    vibrationEnabled: settings.vibrationEnabled,
+    zenMode: settings.zenMode,
+    isAnyModalOpen: modals.isAnyModalOpen,
+    onOpenLevelComplete: () => modals.setIsLevelCompleteOpen(true),
+    onOpenGameOver: () => modals.setIsGameOverOpen(true),
+    isDailyActive,
+    setIsDailyActive,
+    setHasUnreadDaily,
+    setHasNewStageUnlocked,
+    setHasUnreadJournal,
+    setHasUnreadRelics,
   });
 
-  const [discoveredClues, setDiscoveredClues] = useState<string[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.discoveredClues || [];
-      } catch {
-        return [];
-      }
-    }
-    return [];
-  });
+  // Continuous Procedural Orchestral BGM State
+  const [isBgmPlaying, setIsBgmPlaying] = useState<boolean>(() => sound.getBGMEnabled());
+  const [customBgmTheme, setCustomBgmTheme] = useState<'auto' | 'exploration' | 'excavation' | 'sacred_temple'>('auto');
 
-  // Speedrun Records: Best completion times per level
-  const [bestTimes, setBestTimes] = useState<Record<number, number>>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.bestTimes || {};
-      } catch {
-        return {};
-      }
-    }
-    return {};
-  });
+  // PWA & Offline capability hook
+  const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
 
-  // Level Stars: Real 1, 2, or 3 stars per level (up to 360 stars total)
-  const [levelStars, setLevelStars] = useState<Record<number, number>>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.levelStars && typeof parsed.levelStars === 'object') {
-          return parsed.levelStars;
-        }
-        if (Array.isArray(parsed.completedLevelIds)) {
-          const fallback: Record<number, number> = {};
-          parsed.completedLevelIds.forEach((id: number) => {
-            fallback[id] = 3;
-          });
-          return fallback;
-        }
-      } catch {
-        return {};
-      }
-    }
-    return {};
-  });
-
-  const [lastWinRecordInfo, setLastWinRecordInfo] = useState<{ isRecord: boolean; bestTime: number }>({
-    isRecord: false,
-    bestTime: 0,
-  });
-
-  // Settings
-  const [settings, setSettings] = useState<GameSettings>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_SETTINGS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // Fallback default
-      }
-    }
-    return {
-      soundEnabled: true,
-      vibrationEnabled: true,
-      zenMode: false,
-      layoutMode: 'vertical',
-    };
-  });
-
-  // Sync settings with audio manager
+  // Sync settings with audio manager & storage
   useEffect(() => {
     sound.setEnabled(settings.soundEnabled);
-  }, [settings.soundEnabled]);
-
-  // Save progress
-  useEffect(() => {
-    safeStorage.setItem(
-      STORAGE_KEY_PROGRESS,
-      JSON.stringify({
-        currentLevelId,
-        completedLevelIds,
-        discoveredClues,
-        bestTimes,
-        levelStars,
-      })
-    );
-  }, [currentLevelId, completedLevelIds, discoveredClues, bestTimes, levelStars]);
-
-  // Save economy & inventory
-  useEffect(() => {
-    safeStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins }));
-  }, [coins]);
-
-  useEffect(() => {
-    safeStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(inventory));
-  }, [inventory]);
-
-  // Save relics
-  useEffect(() => {
-    safeStorage.setItem(STORAGE_KEY_RELICS, JSON.stringify(discoveredRelicIds));
-  }, [discoveredRelicIds]);
-
-  // Save settings
-  useEffect(() => {
     safeStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
   }, [settings]);
 
-  // Save explorer avatar profile
   useEffect(() => {
     safeStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(explorerProfile));
   }, [explorerProfile]);
-
-  // Save expedition medals & claimed bounties
-  useEffect(() => {
-    safeStorage.setItem(STORAGE_KEY_MEDALS, JSON.stringify(unlockedMedalIds));
-  }, [unlockedMedalIds]);
-
-  useEffect(() => {
-    safeStorage.setItem(STORAGE_KEY_CLAIMED_MEDALS, JSON.stringify(claimedMedalIds));
-  }, [claimedMedalIds]);
-
-  // Unlock Medal helper with celebratory sound, haptics & floating toast
-  const unlockMedal = useCallback((medalId: string) => {
-    setUnlockedMedalIds(prev => {
-      if (prev.includes(medalId)) return prev;
-      const medal = ALL_ACHIEVEMENTS.find((m: Achievement) => m.id === medalId);
-      if (medal) {
-        sound.playAchievementUnlock();
-        triggerHaptic('success');
-        setUnlockedToastMedal(medal);
-        setTimeout(() => {
-          setUnlockedToastMedal((curr: Achievement | null) => (curr?.id === medalId ? null : curr));
-        }, 4200);
-      }
-      return [...prev, medalId];
-    });
-  }, []);
-
-  const handleClaimMedalBounty = (medalId: string) => {
-    const medal = ALL_ACHIEVEMENTS.find((m: Achievement) => m.id === medalId);
-    if (!medal || claimedMedalIds.includes(medalId)) return;
-    setClaimedMedalIds(prev => [...prev, medalId]);
-    setCoins(c => c + medal.coinReward);
-    sound.playCoinBurst();
-    triggerHaptic('success');
-  };
-
-  // Save claimed passport visa bounties
-  useEffect(() => {
-    safeStorage.setItem('differenze_claimed_visas_v1', JSON.stringify(claimedVisaIds));
-  }, [claimedVisaIds]);
-
-  const handleClaimVisaBounty = (visa: ConsularVisa) => {
-    if (claimedVisaIds.includes(visa.id)) return;
-    setClaimedVisaIds(prev => [...prev, visa.id]);
-    setCoins(c => c + visa.bounty);
-    sound.playCoinBurst();
-    triggerHaptic('success');
-  };
-
-  // Check Passive & Milestones Expedition Medals
-  useEffect(() => {
-    if (primaryActiveSet) {
-      unlockMedal('full_set_synergy');
-    }
-    if (coins >= 1000) {
-      unlockMedal('wealthy_explorer');
-    }
-    if (discoveredClues.length >= 20) {
-      unlockMedal('lore_master');
-    }
-    if (discoveredRelicIds.length >= 3) {
-      unlockMedal('relic_hunter');
-    }
-    if (currentLevel.chapterNumber >= 5 || completedLevelIds.some(id => id >= 41)) {
-      unlockMedal('andes_climber');
-    }
-    if (currentLevel.chapterNumber >= 9 || completedLevelIds.some(id => id >= 81)) {
-      unlockMedal('sun_priest');
-    }
-    if (completedLevelIds.length >= 120) {
-      unlockMedal('grand_archaeologist');
-    }
-  }, [
-    coins,
-    primaryActiveSet,
-    discoveredClues.length,
-    discoveredRelicIds.length,
-    currentLevel.chapterNumber,
-    completedLevelIds,
-    unlockMedal,
-  ]);
-
-  // Check Cartographer Medal when consulting the 3D Globe / Map
-  useEffect(() => {
-    if (isTreasureMapOpen) {
-      const completedStagesCount = completedLevelIds.filter(id => id % 10 === 0).length;
-      if (completedStagesCount >= 10 || completedLevelIds.length >= 100) {
-        unlockMedal('cartographer');
-      }
-    }
-  }, [isTreasureMapOpen, completedLevelIds, unlockMedal]);
-
-  // Computed flag: Check if any modal or blocking overlay is open
-  const isAnyModalOpen =
-    isBackgroundPaused ||
-    isCompanyIntroVisible ||
-    isSplashVisible ||
-    isAvatarCreatorOpen ||
-    isWardrobeOpen ||
-    isPrologueOpen ||
-    isTutorialOpen ||
-    isExpeditionHubOpen ||
-    isGrandFinaleOpen ||
-    activeStageBriefing !== null ||
-    isLevelCompleteOpen ||
-    isGameOverOpen ||
-    isJournalOpen ||
-    isLevelSelectOpen ||
-    isSettingsOpen ||
-    isTreasureMapOpen ||
-    isShopOpen ||
-    isRelicMuseumOpen ||
-    isRelicFoundModalOpen ||
-    isDailyModalOpen ||
-    isMedalsCabinetOpen ||
-    isPassportOpen ||
-    isInstallModalOpen ||
-    isDilemmaOpen;
-
-  // Timer Tick (Frozen when freeze power-up is running or modal open)
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | undefined;
-    const isPaused = !isTimerRunning || isTimeFrozen || isAnyModalOpen;
-
-    if (!isPaused) {
-      interval = setInterval(() => {
-        setTimeElapsed(t => t + 1);
-      }, 1000);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isTimerRunning, isTimeFrozen, isAnyModalOpen]);
-
-  // Dynamic 3-Theme Orchestral BGM Selector:
-  // Stages 1-4: 'exploration' (Jungle & Expedition Camp)
-  // Stages 5-8: 'excavation' (High Andes & Crypts)
-  // Stages 9-12: 'sacred_temple' (Tempio del Sole & Sancta Sanctorum di Paititi)
-  const [customBgmTheme, setCustomBgmTheme] = useState<'auto' | 'exploration' | 'excavation' | 'sacred_temple'>('auto');
 
   const getStageBgmTheme = (chapNum: number): 'exploration' | 'excavation' | 'sacred_temple' => {
     if (chapNum >= 9) return 'sacred_temple';
@@ -620,11 +225,11 @@ export const App: React.FC = () => {
     [customBgmTheme]
   );
 
-  // Auto-ignite procedural orchestral BGM on first user interaction (compliant with mobile autoplay policies)
+  // Auto-ignite procedural orchestral BGM on first user interaction
   useEffect(() => {
     const handleFirstGesture = () => {
       if (sound.getBGMEnabled()) {
-        sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+        sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
         setIsBgmPlaying(true);
       }
       window.removeEventListener('pointerdown', handleFirstGesture);
@@ -637,25 +242,25 @@ export const App: React.FC = () => {
       window.removeEventListener('pointerdown', handleFirstGesture);
       window.removeEventListener('keydown', handleFirstGesture);
     };
-  }, [currentLevel.chapterNumber, getActiveBgmTheme]);
+  }, [game.currentLevel.chapterNumber, getActiveBgmTheme]);
 
   // Adjust theme dynamically when switching chapters or manual theme
   useEffect(() => {
-    sound.setBGMTheme(getActiveBgmTheme(currentLevel.chapterNumber));
-  }, [currentLevel.chapterNumber, getActiveBgmTheme]);
+    sound.setBGMTheme(getActiveBgmTheme(game.currentLevel.chapterNumber));
+  }, [game.currentLevel.chapterNumber, getActiveBgmTheme]);
 
   const handleToggleBgm = useCallback(() => {
     const newState = sound.toggleBGM();
     setIsBgmPlaying(newState);
     if (newState && !sound.getBGMPlaying()) {
-      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+      sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
     }
-  }, [getActiveBgmTheme, currentLevel.chapterNumber]);
+  }, [getActiveBgmTheme, game.currentLevel.chapterNumber]);
 
   const handleChangeBgmTheme = useCallback(
     (theme: 'auto' | 'exploration' | 'excavation' | 'sacred_temple') => {
       setCustomBgmTheme(theme);
-      const effective = theme === 'auto' ? getStageBgmTheme(currentLevel.chapterNumber) : theme;
+      const effective = theme === 'auto' ? getStageBgmTheme(game.currentLevel.chapterNumber) : theme;
       sound.setBGMTheme(effective);
       if (!isBgmPlaying) {
         sound.setBGMEnabled(true);
@@ -663,17 +268,15 @@ export const App: React.FC = () => {
         setIsBgmPlaying(true);
       }
     },
-    [currentLevel.chapterNumber, isBgmPlaying]
+    [game.currentLevel.chapterNumber, isBgmPlaying]
   );
 
-  // Intelligent Background Pause (Mobile Lifecycle):
-  // When switching apps, incoming call, or screen locked, pause game timer & BGM.
-  // On return, show vintage expedition paused banner rather than surprising the player.
+  // Intelligent Background Pause (Mobile Lifecycle)
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        if (!isSplashVisible && !isCompanyIntroVisible && !isLevelCompleteOpen && !isGameOverOpen) {
-          setIsBackgroundPaused(true);
+        if (!modals.isSplashVisible && !modals.isCompanyIntroVisible && !modals.isLevelCompleteOpen && !modals.isGameOverOpen) {
+          modals.setIsBackgroundPaused(true);
           sound.pauseBGM();
         }
       }
@@ -683,465 +286,122 @@ export const App: React.FC = () => {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isSplashVisible, isCompanyIntroVisible, isLevelCompleteOpen, isGameOverOpen]);
+  }, [modals]);
 
   const handleResumeFromBackground = useCallback(() => {
     sound.resumeAudioContext();
     if (sound.getBGMEnabled()) {
-      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+      sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
       setIsBgmPlaying(true);
     }
     sound.playNeedleDrop();
     triggerHaptic('tap', settings.vibrationEnabled);
-    setIsBackgroundPaused(false);
-  }, [getActiveBgmTheme, currentLevel.chapterNumber, settings.vibrationEnabled]);
+    modals.setIsBackgroundPaused(false);
+  }, [getActiveBgmTheme, game.currentLevel.chapterNumber, settings.vibrationEnabled, modals]);
 
-  const handleCoinBurstComplete = useCallback((burstId: string) => {
-    setCoinBursts(prev => prev.filter(b => b.id !== burstId));
-  }, []);
-
-  const handleCoinLanded = useCallback(() => {
-    setIsCoinBouncing(true);
-    setTimeout(() => setIsCoinBouncing(false), 450);
-  }, []);
-
-  const handleStartDailyLevel = useCallback((levelId: number) => {
-    setIsDailyActive(true);
-    setIsDailyModalOpen(false);
-    loadLevel(levelId);
-  }, []);
-
-  // Freeze Time Countdown Tick (20 seconds duration)
+  // Check Passive & Milestones Expedition Medals
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | undefined;
-    if (isTimeFrozen && freezeSecondsLeft > 0) {
-      interval = setInterval(() => {
-        setFreezeSecondsLeft(sec => {
-          if (sec <= 1) {
-            setIsTimeFrozen(false);
-            return 0;
-          }
-          return sec - 1;
-        });
-      }, 1000);
+    if (primaryActiveSet) {
+      economy.unlockMedal('full_set_synergy');
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isTimeFrozen, freezeSecondsLeft]);
+    if (economy.coins >= 1000) {
+      economy.unlockMedal('wealthy_explorer');
+    }
+    if (game.discoveredClues.length >= 20) {
+      economy.unlockMedal('lore_master');
+    }
+    if (game.discoveredRelicIds.length >= 3) {
+      economy.unlockMedal('relic_hunter');
+    }
+    if (game.currentLevel.chapterNumber >= 5 || game.completedLevelIds.some(id => id >= 41)) {
+      economy.unlockMedal('andes_climber');
+    }
+    if (game.currentLevel.chapterNumber >= 9 || game.completedLevelIds.some(id => id >= 81)) {
+      economy.unlockMedal('sun_priest');
+    }
+    if (game.completedLevelIds.length >= 120) {
+      economy.unlockMedal('grand_archaeologist');
+    }
+  }, [
+    economy.coins,
+    primaryActiveSet,
+    game.discoveredClues.length,
+    game.discoveredRelicIds.length,
+    game.currentLevel.chapterNumber,
+    game.completedLevelIds,
+    economy.unlockMedal,
+  ]);
 
-  // Intelligent Preloading: preloads next level's master photograph in background for zero-lag transitions
+  // Check Cartographer Medal when consulting the 3D Globe / Map
   useEffect(() => {
-    const nextLevel = levels.find(l => l.id === currentLevelId + 1);
-    if (nextLevel && nextLevel.imageA) {
-      const img = new Image();
-      img.src = assetUrl(nextLevel.imageA);
+    if (modals.isTreasureMapOpen) {
+      const completedStagesCount = game.completedLevelIds.filter(id => id % 10 === 0).length;
+      if (completedStagesCount >= 10 || game.completedLevelIds.length >= 100) {
+        economy.unlockMedal('cartographer');
+      }
     }
-  }, [currentLevelId, levels]);
-
-  // Reset state on level switch
-  const loadLevel = useCallback((levelId: number) => {
-    setCurrentLevelId(levelId);
-    setFoundDifferenceIds([]);
-    setLives(3);
-    setErrorsCount(0);
-    setTimeElapsed(0);
-    setIsTimeFrozen(false);
-    setFreezeSecondsLeft(0);
-    setIsShieldActive(hasPassiveFreeShield);
-    setActiveHint(null);
-    setActiveRadar(null);
-    setActiveClueToast(null);
-    setLevelCoinsEarned(0);
-    setComboStreak(0);
-    usedAssistanceThisLevelRef.current = false;
-    if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
-    setIsLevelCompleteOpen(false);
-    setIsGameOverOpen(false);
-    setIsTimerRunning(true);
-  }, [hasPassiveFreeShield]);
-
-  // Handle Finding a Difference
-  const handleDifferenceClick = useCallback(
-    (
-      diff: Difference,
-      _clickPercentage?: { x: number; y: number },
-      _imageIndex?: 0 | 1,
-      screenPos?: { x: number; y: number }
-    ) => {
-      if (foundDifferenceIds.includes(diff.id)) return;
-
-      // Update combo streak and timer (6s window)
-      const nextStreak = comboStreak + 1;
-      setComboStreak(nextStreak);
-      if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
-      comboTimerRef.current = setTimeout(() => {
-        setComboStreak(0);
-      }, 6000);
-
-      // Ascending Sound & Haptics
-      sound.playComboSuccess(nextStreak);
-      triggerHaptic(nextStreak >= 3 ? 'combo' : 'clue_found', settings.vibrationEnabled);
-
-      // Trigger flying coin particles directly from the screen click coordinate!
-      if (screenPos) {
-        setCoinBursts(prev => [
-          ...prev,
-          {
-            id: `${Date.now()}_${Math.random()}`,
-            startX: screenPos.x,
-            startY: screenPos.y,
-            count: nextStreak >= 3 ? 12 : 8,
-          },
-        ]);
-      }
-
-      // Award coins with explorer perk bonus and dynamic combo multiplier!
-      const comboMult = nextStreak >= 4 ? 1.5 : nextStreak >= 3 ? 1.3 : nextStreak >= 2 ? 1.15 : 1.0;
-      const baseCoins = 20;
-      const earnedCoins = Math.round(baseCoins * (1 + coinBonusPercent / 100) * comboMult);
-      setCoins(c => c + earnedCoins);
-      setLevelCoinsEarned(c => c + earnedCoins);
-
-      // Add to found
-      const nextFound = [...foundDifferenceIds, diff.id];
-      setFoundDifferenceIds(nextFound);
-
-      // Add to discovered lore clues
-      if (!discoveredClues.includes(diff.id)) {
-        setDiscoveredClues(prev => [...prev, diff.id]);
-        setHasUnreadJournal(true);
-      }
-
-      // Show Lore Toast
-      setActiveClueToast(diff);
-
-      // Check Real-time Expedition Medal Unlocks
-      if (nextStreak >= 4) unlockMedal('combo_master');
-      if (discoveredClues.length + 1 >= 20) unlockMedal('lore_master');
-      if (nextFound.length >= 5 && !usedAssistanceThisLevelRef.current) unlockMedal('hawk_eye');
-
-      // Clear active hint or radar if this was the targeted diff
-      if (activeHint && activeHint.id === diff.id) {
-        setActiveHint(null);
-      }
-      if (activeRadar && activeRadar.targetDiffId === diff.id) {
-        setActiveRadar(null);
-      }
-
-      // Check for Level Completion (all 10 differences found)
-      if (nextFound.length >= currentLevel.differences.length) {
-        setIsTimerRunning(false);
-        setIsTimeFrozen(false);
-
-        // Check Victory Medals
-        if (errorsCount === 0) unlockMedal('flawless_run');
-        if (timeElapsed < 45) unlockMedal('speed_demon');
-        if (currentLevel.chapterNumber >= 5) unlockMedal('andes_climber');
-        if (currentLevel.chapterNumber >= 9) unlockMedal('sun_priest');
-        if (currentLevel.id >= 120 || completedLevelIds.length + 1 >= 120) unlockMedal('grand_archaeologist');
-        if (!usedAssistanceThisLevelRef.current) unlockMedal('hawk_eye');
-
-        // Calculate time-based 3-star speed bonus coins:
-        // <= 105s (1:45) = 3 stars -> +100 coins
-        // <= 210s (3:30) = 2 stars -> +60 coins
-        // > 210s = 1 star -> +30 coins
-        const earnedStars = timeElapsed <= 105 ? 3 : timeElapsed <= 210 ? 2 : 1;
-        setLevelStars(prev => ({
-          ...prev,
-          [currentLevel.id]: Math.max(prev[currentLevel.id] || 0, earnedStars),
-        }));
-        const starBonus = earnedStars === 3 ? 100 : earnedStars === 2 ? 60 : 30;
-        const isMilestone = currentLevel.id % 10 === 0;
-        const milestoneBonus = isMilestone ? 300 : 0;
-        let totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
-
-        // Check if level was played as Daily Challenge or matches today's daily
-        const todayStr = getTodayDateString();
-        const todayLvlId = getLevelIdForDate(todayStr);
-        if (isDailyActive || (currentLevel.id === todayLvlId && !isTodayCompleted())) {
-          const dailyResult = completeDailyExpedition();
-          totalBonus += dailyResult.bonusCoins;
-          setHasUnreadDaily(false);
-          setIsDailyActive(false);
-          sound.playDailyRewardClaim();
-        }
-
-        setCoins(c => c + totalBonus);
-        setLevelCoinsEarned(c => c + totalBonus);
-
-        // Evaluate Speedrun Record (Best Time)
-        const prevBest = bestTimes[currentLevel.id];
-        const isNewRecord = prevBest === undefined || timeElapsed < prevBest;
-        const recordedBest = isNewRecord ? timeElapsed : prevBest;
-
-        if (isNewRecord) {
-          setBestTimes(prev => ({ ...prev, [currentLevel.id]: timeElapsed }));
-        }
-        setLastWinRecordInfo({
-          isRecord: isNewRecord,
-          bestTime: recordedBest,
-        });
-
-        if (!completedLevelIds.includes(currentLevel.id)) {
-          setCompletedLevelIds(prev => [...prev, currentLevel.id]);
-          if (isMilestone) {
-            setHasNewStageUnlocked(true);
-          }
-        }
-        setTimeout(() => {
-          setIsLevelCompleteOpen(true);
-        }, 600);
-      }
-    },
-    [
-      foundDifferenceIds,
-      discoveredClues,
-      activeHint,
-      activeRadar,
-      currentLevel,
-      completedLevelIds,
-      timeElapsed,
-      settings.vibrationEnabled,
-      coinBonusPercent,
-      isDailyActive,
-      bestTimes,
-      comboStreak,
-      errorsCount,
-      unlockMedal,
-    ]
-  );
-
-  // Handle Finding a Secret Collectible Relic
-  const handleDiscoverRelic = useCallback(
-    (relic: CollectibleRelic) => {
-      if (discoveredRelicIds.includes(relic.id)) return;
-
-      setDiscoveredRelicIds(prev => {
-        const next = [...prev, relic.id];
-        if (next.length >= 3) unlockMedal('relic_hunter');
-        return next;
-      });
-      setCoins(c => c + relic.coinReward);
-      setLevelCoinsEarned(c => c + relic.coinReward);
-      sound.playRelicFound();
-      triggerHaptic('success', settings.vibrationEnabled);
-
-      setActiveFoundRelic(relic);
-      setIsRelicFoundModalOpen(true);
-      setHasUnreadRelics(true);
-    },
-    [discoveredRelicIds, settings.vibrationEnabled, unlockMedal]
-  );
-
-  const handleDismissClueToast = useCallback(() => {
-    setActiveClueToast(null);
-  }, []);
-
-  // Handle Error Click (Wrong location)
-  const handleErrorClick = useCallback(() => {
-    // Check if protective shield is active
-    if (isShieldActive) {
-      setIsShieldActive(false);
-      sound.playShieldBreak();
-      triggerHaptic('medium', settings.vibrationEnabled);
-      setShieldBlockedNotice(true);
-      setTimeout(() => setShieldBlockedNotice(false), 2500);
-      return;
-    }
-
-    // Reset combo streak on wrong tap
-    setComboStreak(0);
-    if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
-
-    sound.playError();
-    triggerHaptic('error', settings.vibrationEnabled);
-    setErrorsCount(e => e + 1);
-
-    if (!settings.zenMode) {
-      setLives(prevLives => {
-        const nextLives = prevLives - 1;
-        if (nextLives <= 0) {
-          setIsTimerRunning(false);
-          setIsGameOverOpen(true);
-          return 0;
-        }
-        return nextLives;
-      });
-    }
-  }, [isShieldActive, settings.vibrationEnabled, settings.zenMode]);
-
-  // Handle Power-Up Usage from bottom bar
-  const handleUsePowerUp = useCallback(
-    (type: PowerUpType) => {
-      if (type === 'freeze_time') {
-        if (inventory.freeze_time <= 0 || isTimeFrozen) return;
-        setInventory(inv => ({ ...inv, freeze_time: inv.freeze_time - 1 }));
-        setIsTimeFrozen(true);
-        setFreezeSecondsLeft(20 + freezeBonusSeconds);
-        sound.playFreeze();
-        triggerHaptic('powerup_used', settings.vibrationEnabled);
-      } else if (type === 'compass_radar') {
-        if (inventory.compass_radar <= 0) return;
-        usedAssistanceThisLevelRef.current = true;
-        const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
-        if (!unfound) return;
-        setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar - 1 }));
-        const quadSize = Math.min(45, Math.round(30 * (1 + radarBonusPercent / 100)));
-        const quadX = Math.max(2, Math.min(98 - quadSize, unfound.x - quadSize / 2));
-        const quadY = Math.max(2, Math.min(98 - quadSize, unfound.y - quadSize / 2));
-        setActiveRadar({
-          x: quadX,
-          y: quadY,
-          width: quadSize,
-          height: quadSize,
-          targetDiffId: unfound.id,
-        });
-        sound.playCompass();
-        triggerHaptic('powerup_used', settings.vibrationEnabled);
-        setTimeout(() => {
-          setActiveRadar(null);
-        }, 8000);
-      } else if (type === 'hint') {
-        if (inventory.hint <= 0) return;
-        usedAssistanceThisLevelRef.current = true;
-        const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
-        if (!unfound) return;
-        setInventory(inv => ({ ...inv, hint: inv.hint - 1 }));
-        sound.playHint();
-        triggerHaptic('powerup_used', settings.vibrationEnabled);
-        setActiveHint(unfound);
-        setTimeout(() => {
-          setActiveHint(null);
-        }, 6000);
-      } else if (type === 'error_shield') {
-        if (inventory.error_shield <= 0 || isShieldActive) return;
-        setInventory(inv => ({ ...inv, error_shield: inv.error_shield - 1 }));
-        setIsShieldActive(true);
-        sound.playShield();
-        triggerHaptic('powerup_used', settings.vibrationEnabled);
-      }
-    },
-    [
-      inventory,
-      isTimeFrozen,
-      isShieldActive,
-      currentLevel.differences,
-      foundDifferenceIds,
-      settings.vibrationEnabled,
-      freezeBonusSeconds,
-      radarBonusPercent,
-    ]
-  );
-
-  // Handle Quick In-Bar Purchase with Coins
-  const handleQuickBuy = useCallback(
-    (type: PowerUpType) => {
-      const PRICES: Record<PowerUpType, number> = {
-        freeze_time: 60,
-        compass_radar: 40,
-        hint: 50,
-        error_shield: 45,
-      };
-      const price = PRICES[type];
-      if (coins >= price) {
-        setCoins(c => c - price);
-        setInventory(inv => ({ ...inv, [type]: inv[type] + 1 }));
-        sound.playCoin();
-        triggerHaptic('success', settings.vibrationEnabled);
-      } else {
-        setIsShopOpen(true);
-      }
-    },
-    [coins, settings.vibrationEnabled]
-  );
-
-  // Handle Store Item Purchase
-  const handleBuyShopItem = useCallback(
-    (item: ShopItem): boolean => {
-      if (coins < item.coinPrice) return false;
-      setCoins(c => c - item.coinPrice);
-
-      if (item.type === 'bundle' && item.contents) {
-        setInventory(inv => {
-          const next = { ...inv };
-          item.contents?.forEach(entry => {
-            next[entry.type] = (next[entry.type] || 0) + entry.count;
-          });
-          return next;
-        });
-      } else if (item.powerUpType) {
-        setInventory(inv => ({
-          ...inv,
-          [item.powerUpType!]: inv[item.powerUpType!] + item.quantity,
-        }));
-      }
-      return true;
-    },
-    [coins]
-  );
-
-  // Emergency Expedition Relief
-  const handleClaimEmergencyFunds = useCallback(() => {
-    setCoins(c => c + 60);
-  }, []);
+  }, [modals.isTreasureMapOpen, game.completedLevelIds, economy.unlockMedal]);
 
   // Stage Lore Briefing Handlers
-  const handleOpenStageBriefing = useCallback((stageNumber: number) => {
-    setIsTimerRunning(false);
-    setActiveStageBriefing(stageNumber);
-  }, []);
+  const handleOpenStageBriefing = useCallback(
+    (stageNumber: number) => {
+      game.setIsTimerRunning(false);
+      modals.setActiveStageBriefing(stageNumber);
+    },
+    [game, modals]
+  );
 
   const handleCloseStageBriefing = useCallback(() => {
-    setActiveStageBriefing(null);
-    setIsTimerRunning(true);
-  }, []);
+    modals.setActiveStageBriefing(null);
+    game.setIsTimerRunning(true);
+  }, [game, modals]);
 
-  const handleStartStageFromBriefing = useCallback((stageNumber: number) => {
-    setActiveStageBriefing(null);
-    setSeenStageBriefings(prev => {
-      if (prev.includes(stageNumber)) return prev;
-      const next = [...prev, stageNumber];
-      safeStorage.setItem(STORAGE_KEY_SEEN_BRIEFINGS, JSON.stringify(next));
-      return next;
-    });
+  const handleStartStageFromBriefing = useCallback(
+    (stageNumber: number) => {
+      modals.setActiveStageBriefing(null);
+      setSeenStageBriefings(prev => {
+        if (prev.includes(stageNumber)) return prev;
+        const next = [...prev, stageNumber];
+        safeStorage.setItem(STORAGE_KEY_SEEN_BRIEFINGS, JSON.stringify(next));
+        return next;
+      });
 
-    const firstLevelInStage = (stageNumber - 1) * 10 + 1;
-    if (currentLevel.id !== firstLevelInStage) {
-      loadLevel(firstLevelInStage);
-    } else {
-      setIsTimerRunning(true);
-    }
-  }, [currentLevel.id, loadLevel]);
+      const firstLevelInStage = (stageNumber - 1) * 10 + 1;
+      if (game.currentLevel.id !== firstLevelInStage) {
+        game.loadLevel(firstLevelInStage);
+      } else {
+        game.setIsTimerRunning(true);
+      }
+    },
+    [game, modals]
+  );
 
-  // Next Level Handler: Triggers Stage Lore Briefing whenever entering a new Stage (every 10 levels)!
+  // Next Level Handler
   const handleNextLevel = useCallback(() => {
-    const currentIndex = levels.findIndex(l => l.id === currentLevelId);
-    if (currentIndex < levels.length - 1) {
-      const nextLevel = levels[currentIndex + 1];
-      const isNewStage = nextLevel.chapterNumber !== currentLevel.chapterNumber;
+    const currentIndex = game.levels.findIndex(l => l.id === game.currentLevelId);
+    if (currentIndex < game.levels.length - 1) {
+      const nextLevel = game.levels[currentIndex + 1];
+      const isNewStage = nextLevel.chapterNumber !== game.currentLevel.chapterNumber;
       if (isNewStage) {
-        setIsLevelCompleteOpen(false);
-        setIsTimerRunning(false);
-        setActiveStageBriefing(nextLevel.chapterNumber);
+        modals.setIsLevelCompleteOpen(false);
+        game.setIsTimerRunning(false);
+        modals.setActiveStageBriefing(nextLevel.chapterNumber);
         return;
       }
-      loadLevel(nextLevel.id);
+      game.loadLevel(nextLevel.id);
     } else {
-      // Level 120 completed! Reveal Grand Finale epilogue!
-      setIsLevelCompleteOpen(false);
-      setIsTimerRunning(false);
-      setIsGrandFinaleOpen(true);
+      modals.setIsLevelCompleteOpen(false);
+      game.setIsTimerRunning(false);
+      modals.setIsGrandFinaleOpen(true);
     }
-  }, [levels, currentLevelId, currentLevel.chapterNumber, loadLevel]);
+  }, [game, modals]);
 
-  // Milestone Expedition Tactical Dilemma Handler (Levels 10, 20, 30... 110)
+  // Milestone Tactical Dilemma Handler
   const handleResolveDilemmaChoice = useCallback(
     (choice: DilemmaChoice) => {
-      // 1. Record expedition conduct choice & alignment
       try {
         const saved = JSON.parse(safeStorage.getItem(STORAGE_KEY_EXPEDITION_CHOICES) || '{}');
-        saved[currentLevel.chapterNumber] = {
+        saved[game.currentLevel.chapterNumber] = {
           choiceId: choice.id,
           alignment: choice.alignment,
           timestamp: Date.now(),
@@ -1151,141 +411,155 @@ export const App: React.FC = () => {
         console.error('Failed to save expedition dilemma choice', e);
       }
 
-      // 2. Award tactical reward perk
       if (choice.rewardType === 'coins') {
-        const amt = choice.rewardValue || 250;
-        setCoins(c => c + amt);
+        economy.setCoins(c => c + (choice.rewardValue || 250));
       } else if (choice.rewardType === 'shield') {
-        const amt = choice.rewardValue || 1;
-        setInventory(inv => ({ ...inv, error_shield: inv.error_shield + amt }));
+        economy.setInventory(inv => ({ ...inv, error_shield: inv.error_shield + (choice.rewardValue || 1) }));
       } else if (choice.rewardType === 'hint') {
-        const amt = choice.rewardValue || 2;
-        setInventory(inv => ({ ...inv, hint: inv.hint + amt }));
+        economy.setInventory(inv => ({ ...inv, hint: inv.hint + (choice.rewardValue || 2) }));
       } else if (choice.rewardType === 'freeze') {
-        const amt = choice.rewardValue || 1;
-        setInventory(inv => ({ ...inv, freeze_time: inv.freeze_time + amt }));
+        economy.setInventory(inv => ({ ...inv, freeze_time: inv.freeze_time + (choice.rewardValue || 1) }));
       } else if (choice.rewardType === 'compass') {
-        const amt = choice.rewardValue || 1;
-        setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar + amt }));
+        economy.setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar + (choice.rewardValue || 1) }));
       } else {
-        // Fallback or lore reward: grant bonus gold
-        const amt = choice.rewardValue || 150;
-        setCoins(c => c + amt);
+        economy.setCoins(c => c + (choice.rewardValue || 150));
       }
 
-      // 3. Close dilemma and advance to next stage/level
-      setIsDilemmaOpen(false);
+      modals.setIsDilemmaOpen(false);
       handleNextLevel();
     },
-    [currentLevel.chapterNumber, handleNextLevel]
+    [game.currentLevel.chapterNumber, economy, modals, handleNextLevel]
   );
 
-  // Splash & Avatar Handlers
+  // Splash & Avatar Flow Handlers
   const handleSplashStart = useCallback(() => {
-    setIsSplashVisible(false);
+    modals.setIsSplashVisible(false);
     if (settings.soundEnabled && isBgmPlaying) {
       sound.setBGMEnabled(true);
-      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+      sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
     }
     if (!hasCompletedAvatarSetup) {
-      setIsAvatarCreatorOpen(true);
+      modals.setIsAvatarCreatorOpen(true);
     } else {
-      setIsTimerRunning(true);
+      game.setIsTimerRunning(true);
     }
-  }, [hasCompletedAvatarSetup, settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, currentLevel.chapterNumber]);
+  }, [hasCompletedAvatarSetup, settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, game, modals]);
 
   const handleQuickPlay = useCallback(() => {
-    setIsSplashVisible(false);
+    modals.setIsSplashVisible(false);
     if (settings.soundEnabled && isBgmPlaying) {
       sound.setBGMEnabled(true);
-      sound.startBGM(getActiveBgmTheme(currentLevel.chapterNumber));
+      sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
     }
     setHasCompletedAvatarSetup(true);
-    setIsAvatarCreatorOpen(false);
-    setIsPrologueOpen(false);
-    setIsTutorialOpen(false);
-    setIsTimerRunning(true);
-  }, [settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, currentLevel.chapterNumber]);
+    modals.setIsAvatarCreatorOpen(false);
+    modals.setIsPrologueOpen(false);
+    modals.setIsTutorialOpen(false);
+    game.setIsTimerRunning(true);
+  }, [settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, game, modals]);
 
-  const handleConfirmAvatarProfile = useCallback((profile: ExplorerProfile) => {
-    setExplorerProfile(profile);
-    setHasCompletedAvatarSetup(true);
-    safeStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(profile));
-    setIsAvatarCreatorOpen(false);
+  const handleConfirmAvatarProfile = useCallback(
+    (profile: ExplorerProfile) => {
+      setExplorerProfile(profile);
+      setHasCompletedAvatarSetup(true);
+      safeStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(profile));
+      modals.setIsAvatarCreatorOpen(false);
 
-    // Launch the cinematic prologue if tutorial has not been completed yet!
-    if (!hasCompletedTutorial) {
-      setIsPrologueOpen(true);
-    } else {
-      setIsTimerRunning(true);
-    }
-  }, [hasCompletedTutorial]);
+      if (!hasCompletedTutorial) {
+        modals.setIsPrologueOpen(true);
+      } else {
+        game.setIsTimerRunning(true);
+      }
+    },
+    [hasCompletedTutorial, modals, game]
+  );
 
   const handlePrologueComplete = useCallback(() => {
-    setIsPrologueOpen(false);
-    setIsTutorialOpen(true);
-  }, []);
+    modals.setIsPrologueOpen(false);
+    modals.setIsTutorialOpen(true);
+  }, [modals]);
 
   const handleTutorialComplete = useCallback(() => {
-    setIsTutorialOpen(false);
+    modals.setIsTutorialOpen(false);
     setHasCompletedTutorial(true);
     safeStorage.setItem(STORAGE_KEY_TUTORIAL, 'true');
-    setIsTreasureMapOpen(false);
-    loadLevel(1);
-    setIsTimerRunning(true);
-  }, [loadLevel]);
+    modals.setIsTreasureMapOpen(false);
+    game.loadLevel(1);
+    game.setIsTimerRunning(true);
+  }, [modals, game]);
 
-  const isStartupActive = isCompanyIntroVisible || isSplashVisible;
+  const handleStartDailyLevel = useCallback(
+    (levelId: number) => {
+      setIsDailyActive(true);
+      modals.setIsDailyModalOpen(false);
+      game.loadLevel(levelId);
+    },
+    [game, modals]
+  );
+
+  const handleResetAllProgress = useCallback(() => {
+    safeStorage.removeItem(STORAGE_KEY_SETTINGS);
+    safeStorage.removeItem(STORAGE_KEY_AVATAR);
+    safeStorage.removeItem(STORAGE_KEY_TUTORIAL);
+    safeStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
+    safeStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
+    economy.resetEconomy();
+    game.resetProgress();
+    setExplorerProfile(normalizeExplorerProfile(null));
+    setHasCompletedAvatarSetup(false);
+    setHasCompletedTutorial(false);
+    setSeenStageBriefings([]);
+  }, [economy, game]);
 
   return (
     <div className="w-full h-full flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
-      {/* Background Ambience on Desktop (Vintage Explorer Vignette) */}
-      <div 
+      {/* Vintage Explorer Vignette */}
+      <div
         className="absolute inset-0 opacity-25 pointer-events-none hidden md:block"
         style={{
           backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.15) 0%, transparent 75%)',
         }}
       />
 
-      {/* The Responsive Game Viewport Container (Hidden completely during intro & splash screen) */}
-      <div 
+      {/* Primary Responsive Game Viewport */}
+      <div
         className={`w-full max-w-[440px] md:max-w-4xl lg:max-w-5xl h-full flex flex-col bg-[#0f0905] relative shadow-[0_0_80px_rgba(0,0,0,0.95)] md:border-x-2 md:border-amber-900/60 overflow-hidden transition-opacity duration-500 ${
-          isStartupActive ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
+          modals.isStartupActive ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
         }`}
-        aria-hidden={isStartupActive}
+        aria-hidden={modals.isStartupActive}
       >
-        {/* Offline Network Status Toast */}
+        {/* Offline Status */}
         <OfflineStatusToast isOffline={isOffline} />
 
-        {/* Indiana Jones Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Campo Base Hub Button */}
+        {/* Mobile Header with 10 Difference Indicators, Stopwatch, Coins & Campo Base Button */}
         <Header
-          currentLevel={currentLevel}
-          foundCount={foundDifferenceIds.length}
-          totalDifferences={currentLevel.differences.length}
-          lives={lives}
+          currentLevel={game.currentLevel}
+          foundCount={game.foundDifferenceIds.length}
+          totalDifferences={game.currentLevel.differences.length}
+          lives={game.lives}
           zenMode={settings.zenMode}
-          timeElapsed={timeElapsed}
-          isTimeFrozen={isTimeFrozen}
-          freezeSecondsLeft={freezeSecondsLeft}
-          coins={coins}
-          isShieldActive={isShieldActive}
+          timeElapsed={game.timeElapsed}
+          isTimeFrozen={game.isTimeFrozen}
+          freezeSecondsLeft={game.freezeSecondsLeft}
+          coins={economy.coins}
+          isShieldActive={game.isShieldActive}
           profile={explorerProfile}
-          onOpenHub={() => setIsExpeditionHubOpen(true)}
-          onOpenPassport={() => setIsPassportOpen(true)}
-          onOpenInstall={() => setIsInstallModalOpen(true)}
+          onOpenHub={() => modals.setIsExpeditionHubOpen(true)}
+          onOpenPassport={() => modals.setIsPassportOpen(true)}
+          onOpenInstall={() => modals.setIsInstallModalOpen(true)}
           isInstalled={isInstalled}
           hasHubNotification={
             hasUnreadDaily ||
             hasUnreadRelics ||
             hasNewStageUnlocked ||
             hasUnreadJournal ||
-            !seenStageBriefings.includes(currentLevel.chapterNumber)
+            !seenStageBriefings.includes(game.currentLevel.chapterNumber)
           }
-          isCoinBouncing={isCoinBouncing}
-          onOpenShop={() => setIsShopOpen(true)}
+          isCoinBouncing={economy.isCoinBouncing}
+          onOpenShop={() => modals.setIsShopOpen(true)}
           soundEnabled={settings.soundEnabled}
           onToggleSound={() => setSettings(s => ({ ...s, soundEnabled: !s.soundEnabled }))}
-          comboStreak={comboStreak}
+          comboStreak={game.comboStreak}
           rpgPerksSummary={{
             coinBonus: coinBonusPercent,
             freezeBonus: freezeBonusSeconds,
@@ -1306,167 +580,183 @@ export const App: React.FC = () => {
           }
         />
 
-        {/* Primary Gameplay Viewport: Archeologia Investigativa Hidden Object View (8 Clues) */}
+        {/* Primary Gameplay Viewport: Archeologia Investigativa Hidden Object View */}
         <HiddenObjectView
-          key={`hidden_obj_lvl_${currentLevel.id}`}
-          levelId={currentLevel.id}
-          imageA={currentLevel.imageA}
-          differences={currentLevel.differences}
-          foundDifferenceIds={foundDifferenceIds}
-          activeHint={activeHint}
-          activeRadar={activeRadar}
-          isTimeFrozen={isTimeFrozen}
-          hiddenRelic={currentLevelHiddenRelic}
-          isRelicDiscovered={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : true}
-          onDiscoverRelic={handleDiscoverRelic}
-          onDifferenceClick={handleDifferenceClick}
-          onErrorClick={handleErrorClick}
-          comboStreak={comboStreak}
-          shieldBlockedNotice={shieldBlockedNotice}
-          chapterNumber={currentLevel.chapterNumber}
+          key={`hidden_obj_lvl_${game.currentLevel.id}`}
+          levelId={game.currentLevel.id}
+          imageA={game.currentLevel.imageA}
+          differences={game.currentLevel.differences}
+          foundDifferenceIds={game.foundDifferenceIds}
+          activeHint={game.activeHint}
+          activeRadar={game.activeRadar}
+          isTimeFrozen={game.isTimeFrozen}
+          hiddenRelic={game.currentLevelHiddenRelic}
+          isRelicDiscovered={
+            game.currentLevelHiddenRelic ? game.discoveredRelicIds.includes(game.currentLevelHiddenRelic.id) : true
+          }
+          onDiscoverRelic={game.handleDiscoverRelic}
+          onDifferenceClick={game.handleDifferenceClick}
+          onErrorClick={game.handleErrorClick}
+          comboStreak={game.comboStreak}
+          shieldBlockedNotice={game.shieldBlockedNotice}
+          chapterNumber={game.currentLevel.chapterNumber}
         />
 
         {/* Floating Shield Blocked Notice */}
-        {shieldBlockedNotice && (
+        {game.shieldBlockedNotice && (
           <div className="absolute top-24 left-1/2 -translate-x-1/2 z-40 w-[90%] bg-indigo-900/95 border border-indigo-400 text-indigo-200 px-3 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-bounce">
             <Shield className="w-3.5 h-3.5 text-indigo-300 shrink-0" />
             <span className="text-[11px] font-bold">
-              Scudo del Guardiano: Errore parato senza perdere vite!
+              {t.powerUps.shieldBlocked}
             </span>
           </div>
         )}
 
-        {/* Bottom Explorer Tool Belt (Freeze 20s, Compass Radar, Hint, Shield, Shop) */}
+        {/* Bottom Explorer Tool Belt */}
         <PowerUpBar
-          inventory={inventory}
-          coins={coins}
-          isTimeFrozen={isTimeFrozen}
-          freezeSecondsLeft={freezeSecondsLeft}
-          isShieldActive={isShieldActive}
-          onUsePowerUp={handleUsePowerUp}
-          onQuickBuy={handleQuickBuy}
-          onOpenShop={() => setIsShopOpen(true)}
+          inventory={economy.inventory}
+          coins={economy.coins}
+          isTimeFrozen={game.isTimeFrozen}
+          freezeSecondsLeft={game.freezeSecondsLeft}
+          isShieldActive={game.isShieldActive}
+          onUsePowerUp={game.handleUsePowerUp}
+          onQuickBuy={type => economy.handleQuickBuy(type, settings.vibrationEnabled)}
+          onOpenShop={() => modals.setIsShopOpen(true)}
         />
 
-        {/* Floating Lore Clue Toast (Under Header) */}
+        {/* Floating Lore Clue Toast */}
         <LoreClueToast
-          difference={activeClueToast}
-          onDismiss={handleDismissClueToast}
+          difference={game.activeClueToast}
+          onDismiss={game.handleDismissClueToast}
         />
       </div>
 
-      {/* Modals */}
-      {isLevelCompleteOpen && (
+      {/* Modals & Overlays */}
+      {modals.isLevelCompleteOpen && (
         <LevelCompleteModal
-          level={currentLevel}
-          timeElapsed={timeElapsed}
-          errorsCount={errorsCount}
-          coinsEarned={levelCoinsEarned}
+          level={game.currentLevel}
+          timeElapsed={game.timeElapsed}
+          errorsCount={game.errorsCount}
+          coinsEarned={game.levelCoinsEarned}
           onNextLevel={handleNextLevel}
-          onReplay={() => loadLevel(currentLevel.id)}
+          onReplay={() => {
+            modals.setIsLevelCompleteOpen(false);
+            game.loadLevel(game.currentLevel.id);
+          }}
           onOpenJournal={() => {
-            setIsLevelCompleteOpen(false);
-            setIsJournalOpen(true);
+            modals.setIsLevelCompleteOpen(false);
+            modals.setIsJournalOpen(true);
           }}
           onOpenGrandFinale={() => {
-            setIsLevelCompleteOpen(false);
-            setIsTimerRunning(false);
-            setIsGrandFinaleOpen(true);
+            modals.setIsLevelCompleteOpen(false);
+            game.setIsTimerRunning(false);
+            modals.setIsGrandFinaleOpen(true);
           }}
           onOpenDilemma={() => {
-            setIsLevelCompleteOpen(false);
-            setIsTimerRunning(false);
-            setIsDilemmaOpen(true);
+            modals.setIsLevelCompleteOpen(false);
+            game.setIsTimerRunning(false);
+            modals.setIsDilemmaOpen(true);
           }}
-          isRelicFound={currentLevelHiddenRelic ? discoveredRelicIds.includes(currentLevelHiddenRelic.id) : false}
-          bestTime={lastWinRecordInfo.bestTime}
-          isNewRecord={lastWinRecordInfo.isRecord}
+          isRelicFound={
+            game.currentLevelHiddenRelic ? game.discoveredRelicIds.includes(game.currentLevelHiddenRelic.id) : false
+          }
+          bestTime={game.lastWinRecordInfo.bestTime}
+          isNewRecord={game.lastWinRecordInfo.isRecord}
         />
       )}
 
-      {isGameOverOpen && (
+      {modals.isGameOverOpen && (
         <GameOverModal
-          onRetry={() => loadLevel(currentLevel.id)}
+          onRetry={() => {
+            modals.setIsGameOverOpen(false);
+            game.loadLevel(game.currentLevel.id);
+          }}
           onEnableZenMode={() => {
             setSettings(s => ({ ...s, zenMode: true }));
-            setIsGameOverOpen(false);
-            setLives(3);
-            setIsTimerRunning(true);
+            modals.setIsGameOverOpen(false);
+            game.setLives(3);
+            game.setIsTimerRunning(true);
           }}
         />
       )}
 
       <ErrorBoundary fallbackMessage="Anomalia nell'Emporio Archeologico. I tuoi fondi sono al sicuro.">
         <ShopModal
-          isOpen={isShopOpen}
-          onClose={() => setIsShopOpen(false)}
-          coins={coins}
-          inventory={inventory}
-          onBuyItem={handleBuyShopItem}
-          onClaimEmergencyFunds={handleClaimEmergencyFunds}
+          isOpen={modals.isShopOpen}
+          onClose={() => modals.setIsShopOpen(false)}
+          coins={economy.coins}
+          inventory={economy.inventory}
+          onBuyItem={economy.handleBuyShopItem}
+          onClaimEmergencyFunds={economy.handleClaimEmergencyFunds}
         />
       </ErrorBoundary>
 
-      {isRelicMuseumOpen && (
+      {modals.isRelicMuseumOpen && (
         <ErrorBoundary fallbackMessage="Anomalia temporanea nella Sala delle Reliquie. I reperti archeologici sono al sicuro.">
           <RelicMuseumModal
-            isOpen={isRelicMuseumOpen}
+            isOpen={modals.isRelicMuseumOpen}
             onClose={() => {
-              setIsRelicMuseumOpen(false);
+              modals.setIsRelicMuseumOpen(false);
               setHasUnreadRelics(false);
             }}
-            discoveredRelicIds={Array.isArray(discoveredRelicIds) ? discoveredRelicIds : []}
+            discoveredRelicIds={Array.isArray(game.discoveredRelicIds) ? game.discoveredRelicIds : []}
           />
         </ErrorBoundary>
       )}
 
       <ErrorBoundary fallbackMessage="Anomalia nella Reliquia Ritrovata.">
         <RelicFoundModal
-          isOpen={isRelicFoundModalOpen}
-          relic={activeFoundRelic}
-          onClose={() => setIsRelicFoundModalOpen(false)}
+          isOpen={game.isRelicFoundModalOpen}
+          relic={game.activeFoundRelic}
+          onClose={() => game.setIsRelicFoundModalOpen(false)}
           onOpenMuseum={() => {
-            setIsRelicFoundModalOpen(false);
-            setIsRelicMuseumOpen(true);
+            game.setIsRelicFoundModalOpen(false);
+            modals.setIsRelicMuseumOpen(true);
           }}
         />
       </ErrorBoundary>
 
       <ErrorBoundary fallbackMessage="Anomalia nel Taccuino di Spedizione. I tuoi appunti sono intatti.">
         <JournalModal
-          isOpen={isJournalOpen}
-          onClose={() => setIsJournalOpen(false)}
-          levels={levels}
-          currentLevelId={currentLevel.id}
-          completedLevelIds={completedLevelIds}
-          discoveredDifferenceIds={discoveredClues}
+          isOpen={modals.isJournalOpen}
+          onClose={() => modals.setIsJournalOpen(false)}
+          levels={game.levels}
+          currentLevelId={game.currentLevel.id}
+          completedLevelIds={game.completedLevelIds}
+          discoveredDifferenceIds={game.discoveredClues}
         />
       </ErrorBoundary>
 
       <ErrorBoundary fallbackMessage="Anomalia nel Selettore Livelli. I tuoi progressi sono intatti.">
         <LevelSelectModal
-          isOpen={isLevelSelectOpen}
-          onClose={() => setIsLevelSelectOpen(false)}
-          levels={levels}
-          currentLevelId={currentLevel.id}
-          completedLevelIds={completedLevelIds}
-          levelStars={levelStars}
-          bestTimes={bestTimes}
-          onSelectLevel={id => loadLevel(id)}
+          isOpen={modals.isLevelSelectOpen}
+          onClose={() => modals.setIsLevelSelectOpen(false)}
+          levels={game.levels}
+          currentLevelId={game.currentLevel.id}
+          completedLevelIds={game.completedLevelIds}
+          levelStars={game.levelStars}
+          bestTimes={game.bestTimes}
+          onSelectLevel={id => {
+            modals.setIsLevelSelectOpen(false);
+            game.loadLevel(id);
+          }}
         />
       </ErrorBoundary>
 
-      {isTreasureMapOpen && (
+      {modals.isTreasureMapOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nel Mappamondo 3D. Le rotte della spedizione sono intatte.">
           <MappamondoModal
-            isOpen={isTreasureMapOpen}
+            isOpen={modals.isTreasureMapOpen}
             onClose={() => {
-              setIsTreasureMapOpen(false);
+              modals.setIsTreasureMapOpen(false);
               setHasNewStageUnlocked(false);
             }}
-            currentLevelId={currentLevel.id}
-            completedLevelIds={completedLevelIds}
-            onSelectLevel={id => loadLevel(id)}
+            currentLevelId={game.currentLevel.id}
+            completedLevelIds={game.completedLevelIds}
+            onSelectLevel={id => {
+              modals.setIsTreasureMapOpen(false);
+              game.loadLevel(id);
+            }}
             onOpenStageBriefing={handleOpenStageBriefing}
             profile={explorerProfile}
           />
@@ -1475,137 +765,112 @@ export const App: React.FC = () => {
 
       <ErrorBoundary fallbackMessage="Anomalia nelle Impostazioni di Gioco.">
         <SettingsModal
-          isOpen={isSettingsOpen}
-          onClose={() => setIsSettingsOpen(false)}
+          isOpen={modals.isSettingsOpen}
+          onClose={() => modals.setIsSettingsOpen(false)}
           settings={settings}
           onUpdateSettings={newS => setSettings(s => ({ ...s, ...newS }))}
-          onOpenTutorial={() => setIsTutorialOpen(true)}
-          onOpenInstall={() => setIsInstallModalOpen(true)}
+          onOpenTutorial={() => modals.setIsTutorialOpen(true)}
+          onOpenInstall={() => modals.setIsInstallModalOpen(true)}
           isInstalled={isInstalled}
           isOffline={isOffline}
           isBgmPlaying={isBgmPlaying}
           onToggleBgm={handleToggleBgm}
           bgmTheme={customBgmTheme}
           onChangeBgmTheme={handleChangeBgmTheme}
-          onResetProgress={() => {
-            safeStorage.removeItem(STORAGE_KEY_PROGRESS);
-            safeStorage.removeItem(STORAGE_KEY_ECONOMY);
-            safeStorage.removeItem(STORAGE_KEY_INVENTORY);
-            safeStorage.removeItem(STORAGE_KEY_RELICS);
-            safeStorage.removeItem(STORAGE_KEY_AVATAR);
-            safeStorage.removeItem(STORAGE_KEY_TUTORIAL);
-            safeStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
-            safeStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
-            setCompletedLevelIds([]);
-            setDiscoveredClues([]);
-            setDiscoveredRelicIds([]);
-            setBestTimes({});
-            setLevelStars({});
-            setCoins(150);
-            setInventory({
-              freeze_time: 2,
-              compass_radar: 2,
-              hint: 3,
-              error_shield: 1,
-            });
-            setExplorerProfile(normalizeExplorerProfile(null));
-            setHasCompletedAvatarSetup(false);
-            setHasCompletedTutorial(false);
-            loadLevel(1);
-          }}
+          onResetProgress={handleResetAllProgress}
         />
       </ErrorBoundary>
 
       {/* Central Expedition Headquarters / Campo Base Modal */}
       <ErrorBoundary fallbackMessage="Anomalia nel Quartier Generale della Spedizione. I tuoi dati sono intatti.">
         <ExpeditionHubModal
-          isOpen={isExpeditionHubOpen}
-          onClose={() => setIsExpeditionHubOpen(false)}
-          currentLevel={currentLevel}
+          isOpen={modals.isExpeditionHubOpen}
+          onClose={() => modals.setIsExpeditionHubOpen(false)}
+          currentLevel={game.currentLevel}
           profile={explorerProfile}
-          coins={coins}
-          discoveredRelicCount={discoveredRelicIds.length}
+          coins={economy.coins}
+          discoveredRelicCount={game.discoveredRelicIds.length}
           totalRelics={ALL_COLLECTIBLE_RELICS.length}
           hasUnreadDaily={hasUnreadDaily}
           hasUnreadRelics={hasUnreadRelics}
           hasNewStageUnlocked={hasNewStageUnlocked}
           hasUnreadJournal={hasUnreadJournal}
-          hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
+          hasUnreadBriefing={!seenStageBriefings.includes(game.currentLevel.chapterNumber)}
           isBgmPlaying={isBgmPlaying}
           onToggleBgm={handleToggleBgm}
           onOpenTreasureMap={() => {
-            setIsExpeditionHubOpen(false);
-            setIsTreasureMapOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsTreasureMapOpen(true);
             setHasNewStageUnlocked(false);
           }}
           onOpenMuseum={() => {
-            setIsExpeditionHubOpen(false);
-            setIsRelicMuseumOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsRelicMuseumOpen(true);
             setHasUnreadRelics(false);
           }}
           onOpenWardrobe={() => {
-            setIsExpeditionHubOpen(false);
-            setIsWardrobeOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsWardrobeOpen(true);
           }}
           onOpenDaily={() => {
-            setIsExpeditionHubOpen(false);
-            setIsDailyModalOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsDailyModalOpen(true);
           }}
           onOpenJournal={() => {
-            setIsExpeditionHubOpen(false);
-            setIsJournalOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsJournalOpen(true);
             setHasUnreadJournal(false);
           }}
           onOpenStageBriefing={() => {
-            setIsExpeditionHubOpen(false);
-            handleOpenStageBriefing(currentLevel.chapterNumber);
+            modals.setIsExpeditionHubOpen(false);
+            handleOpenStageBriefing(game.currentLevel.chapterNumber);
           }}
           onOpenShop={() => {
-            setIsExpeditionHubOpen(false);
-            setIsShopOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsShopOpen(true);
           }}
           onOpenSettings={() => {
-            setIsExpeditionHubOpen(false);
-            setIsSettingsOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsSettingsOpen(true);
           }}
           onOpenLevelSelect={() => {
-            setIsExpeditionHubOpen(false);
-            setIsLevelSelectOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsLevelSelectOpen(true);
           }}
-          isLevel120Completed={completedLevelIds.includes(120)}
+          isLevel120Completed={game.completedLevelIds.includes(120)}
           onOpenGrandFinale={() => {
-            setIsExpeditionHubOpen(false);
-            setIsGrandFinaleOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsGrandFinaleOpen(true);
           }}
           onOpenMedals={() => {
-            setIsExpeditionHubOpen(false);
-            setIsMedalsCabinetOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsMedalsCabinetOpen(true);
           }}
-          unlockedMedalsCount={unlockedMedalIds.length}
+          unlockedMedalsCount={economy.unlockedMedalIds.length}
           totalMedals={ALL_ACHIEVEMENTS.length}
           onOpenPassport={() => {
-            setIsExpeditionHubOpen(false);
-            setIsPassportOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsPassportOpen(true);
           }}
-          unlockedVisasCount={CONSULAR_VISAS.filter(v => currentLevel.chapterNumber >= v.chapterNumber).length}
+          unlockedVisasCount={CONSULAR_VISAS.filter(v => game.currentLevel.chapterNumber >= v.chapterNumber).length}
           onOpenInstall={() => {
-            setIsExpeditionHubOpen(false);
-            setIsInstallModalOpen(true);
+            modals.setIsExpeditionHubOpen(false);
+            modals.setIsInstallModalOpen(true);
           }}
           isInstalled={isInstalled}
         />
       </ErrorBoundary>
 
-      {/* AAA Splash Screen with "Tocca per iniziare" - Pre-mounted underneath Intro for seamless crossfade */}
-      {isSplashVisible && (
+      {/* AAA Splash Screen */}
+      {modals.isSplashVisible && (
         <SplashScreen onStart={handleSplashStart} onQuickPlay={handleQuickPlay} />
       )}
 
-      {/* 1928 Studio Logo Reveal on Pitch Black Screen - Positioned at z-[100] */}
-      {isCompanyIntroVisible && (
+      {/* 1928 Studio Logo Reveal */}
+      {modals.isCompanyIntroVisible && (
         <CompanyLogoIntro
-          onComplete={() => setIsCompanyIntroVisible(false)}
-          onStartExit={() => setIsSplashVisible(true)}
+          onComplete={() => modals.setIsCompanyIntroVisible(false)}
+          onStartExit={() => modals.setIsSplashVisible(true)}
           companyName="SANTON LABS"
           subtitle="PRESENTA"
         />
@@ -1614,55 +879,49 @@ export const App: React.FC = () => {
       {/* Explorer Avatar Creation & Selection Modal */}
       <ErrorBoundary fallbackMessage="Anomalia nella selezione dell'Esploratore.">
         <AvatarCreatorModal
-          isOpen={isAvatarCreatorOpen}
+          isOpen={modals.isAvatarCreatorOpen}
           onConfirm={handleConfirmAvatarProfile}
           currentProfile={explorerProfile}
         />
       </ErrorBoundary>
 
-      {/* Explorer Wardrobe & Coin Upgrades Modal */}
-      {isWardrobeOpen && (
+      {/* Explorer Wardrobe & Upgrades Modal */}
+      {modals.isWardrobeOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nell'Armeria e Camerino RPG. I tuoi oggetti ed equipaggiamenti sono intatti.">
           <WardrobeModal
-            isOpen={isWardrobeOpen}
-            onClose={() => setIsWardrobeOpen(false)}
+            isOpen={modals.isWardrobeOpen}
+            onClose={() => modals.setIsWardrobeOpen(false)}
             profile={explorerProfile}
-            coins={coins}
-            currentLevelId={currentLevel.id}
-            discoveredRelicCount={Array.isArray(discoveredRelicIds) ? discoveredRelicIds.length : 0}
+            coins={economy.coins}
+            currentLevelId={game.currentLevel.id}
+            discoveredRelicCount={Array.isArray(game.discoveredRelicIds) ? game.discoveredRelicIds.length : 0}
             onUpdateProfile={p => setExplorerProfile(p)}
-            onSpendCoins={amount => {
-              if (coins >= amount) {
-                setCoins(c => c - amount);
-                return true;
-              }
-              return false;
-            }}
-            onOpenAvatarCreator={() => setIsAvatarCreatorOpen(true)}
+            onSpendCoins={economy.spendCoins}
+            onOpenAvatarCreator={() => modals.setIsAvatarCreatorOpen(true)}
           />
         </ErrorBoundary>
       )}
 
-      {/* Cinematic Prologue Cutscene (Google Veo Video / In-Engine Motion Graphics) */}
+      {/* Cinematic Prologue Cutscene */}
       <PrologueCutsceneModal
-        isOpen={isPrologueOpen}
+        isOpen={modals.isPrologueOpen}
         profile={explorerProfile}
         onComplete={handlePrologueComplete}
       />
 
-      {/* High-Level Guided Expedition Graphic Tutorial (Guided by Avatar Face & Spotlight) */}
+      {/* Guided Expedition Tutorial */}
       <ExpeditionTutorialModal
-        isOpen={isTutorialOpen && !isPrologueOpen}
+        isOpen={modals.isTutorialOpen && !modals.isPrologueOpen}
         profile={explorerProfile}
         onComplete={handleTutorialComplete}
       />
 
-      {/* Immersive 12-Stage Expedition Lore & Mission Briefing Dossier */}
-      {activeStageBriefing !== null && (
+      {/* 12-Stage Expedition Lore & Mission Briefing Dossier */}
+      {modals.activeStageBriefing !== null && (
         <ErrorBoundary fallbackMessage="Anomalia nel Dispaccio di Tappa. I tuoi progressi sono al sicuro.">
           <StageLoreBriefingModal
-            isOpen={activeStageBriefing !== null}
-            stageNumber={activeStageBriefing}
+            isOpen={modals.activeStageBriefing !== null}
+            stageNumber={modals.activeStageBriefing}
             profile={explorerProfile}
             onClose={handleCloseStageBriefing}
             onStartStage={handleStartStageFromBriefing}
@@ -1672,86 +931,86 @@ export const App: React.FC = () => {
 
       {/* AAA Flying Coins & Golden Sparks Particles */}
       <FlyingCoinParticles
-        bursts={coinBursts}
-        onBurstComplete={handleCoinBurstComplete}
-        onCoinLanded={handleCoinLanded}
+        bursts={economy.coinBursts}
+        onBurstComplete={economy.handleCoinBurstComplete}
+        onCoinLanded={economy.handleCoinLanded}
       />
 
       {/* 30-Day Expedition Daily Challenge & Streak Modal */}
-      {isDailyModalOpen && (
+      {modals.isDailyModalOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nella Spedizione Quotidiana. I tuoi timbri sono al sicuro.">
           <DailyExpeditionModal
-            isOpen={isDailyModalOpen}
-            onClose={() => setIsDailyModalOpen(false)}
+            isOpen={modals.isDailyModalOpen}
+            onClose={() => modals.setIsDailyModalOpen(false)}
             onStartDailyLevel={handleStartDailyLevel}
-            coins={coins}
+            coins={economy.coins}
           />
         </ErrorBoundary>
       )}
 
-      {/* Milestone Expedition Tactical Dilemma Modal (Levels 10, 20, 30... 110) */}
-      {isDilemmaOpen && EXPEDITION_DILEMMAS[currentLevel.chapterNumber] && (
+      {/* Milestone Expedition Tactical Dilemma Modal */}
+      {modals.isDilemmaOpen && EXPEDITION_DILEMMAS[game.currentLevel.chapterNumber] && (
         <ErrorBoundary fallbackMessage="Anomalia nel Bivio Morale della Spedizione.">
           <ExpeditionDilemmaModal
-            isOpen={isDilemmaOpen}
-            dilemma={EXPEDITION_DILEMMAS[currentLevel.chapterNumber]}
+            isOpen={modals.isDilemmaOpen}
+            dilemma={EXPEDITION_DILEMMAS[game.currentLevel.chapterNumber]}
             onResolveChoice={handleResolveDilemmaChoice}
           />
         </ErrorBoundary>
       )}
 
-      {/* Grand Finale Expedition Endings Modal (Level 120 / Campaign Complete) */}
-      {isGrandFinaleOpen && (
+      {/* Grand Finale Expedition Endings Modal */}
+      {modals.isGrandFinaleOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nel Gran Finale di Paititi. Il tuo trionfo è memorizzato.">
           <GrandFinaleModal
-            isOpen={isGrandFinaleOpen}
+            isOpen={modals.isGrandFinaleOpen}
             profile={explorerProfile}
-            onClose={() => setIsGrandFinaleOpen(false)}
+            onClose={() => modals.setIsGrandFinaleOpen(false)}
             onOpenJournal={() => {
-              setIsGrandFinaleOpen(false);
-              setIsJournalOpen(true);
+              modals.setIsGrandFinaleOpen(false);
+              modals.setIsJournalOpen(true);
             }}
             onOpenMappamondo={() => {
-              setIsGrandFinaleOpen(false);
-              setIsTreasureMapOpen(true);
+              modals.setIsGrandFinaleOpen(false);
+              modals.setIsTreasureMapOpen(true);
             }}
           />
         </ErrorBoundary>
       )}
 
-      {/* Victorian Walnut & Brass Medals Showcase (12 Royal Expedition Decorations) */}
-      {isMedalsCabinetOpen && (
+      {/* Victorian Walnut & Brass Medals Showcase */}
+      {modals.isMedalsCabinetOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nel Medagliere della Spedizione. Le tue onorificenze sono intatte.">
           <MedalsCabinetModal
-            isOpen={isMedalsCabinetOpen}
-            onClose={() => setIsMedalsCabinetOpen(false)}
-            unlockedMedalIds={unlockedMedalIds}
-            claimedMedalIds={claimedMedalIds}
-            onClaimBounty={handleClaimMedalBounty}
+            isOpen={modals.isMedalsCabinetOpen}
+            onClose={() => modals.setIsMedalsCabinetOpen(false)}
+            unlockedMedalIds={economy.unlockedMedalIds}
+            claimedMedalIds={economy.claimedMedalIds}
+            onClaimBounty={economy.handleClaimMedalBounty}
           />
         </ErrorBoundary>
       )}
 
       {/* 1928 Royal Expedition Passport & Consular Visas Modal */}
-      {isPassportOpen && (
+      {modals.isPassportOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nel Passaporto Consolare. I tuoi timbri consolari sono registrati.">
           <ExpeditionPassportModal
-            isOpen={isPassportOpen}
-            onClose={() => setIsPassportOpen(false)}
+            isOpen={modals.isPassportOpen}
+            onClose={() => modals.setIsPassportOpen(false)}
             profile={explorerProfile}
-            currentChapter={currentLevel.chapterNumber}
-            claimedVisaIds={claimedVisaIds}
-            onClaimVisaBounty={handleClaimVisaBounty}
+            currentChapter={game.currentLevel.chapterNumber}
+            claimedVisaIds={economy.claimedVisaIds}
+            onClaimVisaBounty={economy.handleClaimVisaBounty}
           />
         </ErrorBoundary>
       )}
 
       {/* PWA Full-Screen Standalone & Offline Installation Modal */}
-      {isInstallModalOpen && (
+      {modals.isInstallModalOpen && (
         <ErrorBoundary fallbackMessage="Anomalia nel modulo di installazione PWA.">
           <PWAInstallModal
-            isOpen={isInstallModalOpen}
-            onClose={() => setIsInstallModalOpen(false)}
+            isOpen={modals.isInstallModalOpen}
+            onClose={() => modals.setIsInstallModalOpen(false)}
             canInstall={canInstall}
             isInstalled={isInstalled}
             isIOS={isIOS}
@@ -1761,11 +1020,11 @@ export const App: React.FC = () => {
       )}
 
       {/* Floating Royal Medal Unlock Celebration Toast */}
-      {unlockedToastMedal && (
+      {economy.unlockedToastMedal && (
         <div
           onClick={() => {
-            setIsMedalsCabinetOpen(true);
-            setUnlockedToastMedal(null);
+            modals.setIsMedalsCabinetOpen(true);
+            economy.setUnlockedToastMedal(null);
           }}
           className="fixed top-4 left-1/2 -translate-x-1/2 z-80 w-auto max-w-sm px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#2c1d0f] via-[#1a0e06] to-[#2c1d0f] border-2 border-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.5),0_0_20px_rgba(251,191,36,0.3)] flex items-center gap-3 cursor-pointer animate-slideDown select-none hover:scale-105 transition-transform"
         >
@@ -1778,21 +1037,21 @@ export const App: React.FC = () => {
                 ONORIFICENZA SBLOCCATA!
               </span>
               <span className="text-[9px] px-1 rounded bg-amber-400/20 text-amber-300 font-mono">
-                +{unlockedToastMedal.coinReward} 🪙
+                +{economy.unlockedToastMedal.coinReward} 🪙
               </span>
             </div>
             <div className="text-xs font-bold font-serif text-amber-100 truncate">
-              {unlockedToastMedal.title}
+              {economy.unlockedToastMedal.title}
             </div>
             <div className="text-[10px] text-stone-400 font-serif truncate">
-              {unlockedToastMedal.description}
+              {economy.unlockedToastMedal.description}
             </div>
           </div>
         </div>
       )}
 
       {/* 1928 Expedition Vintage Background Pause Modal */}
-      {isBackgroundPaused && (
+      {modals.isBackgroundPaused && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
           <div className="relative max-w-sm w-full bg-gradient-to-b from-[#2a1a0c] via-[#1a0f06] to-[#120803] border-2 border-amber-600/80 rounded-3xl p-6 text-center shadow-[0_25px_60px_rgba(0,0,0,0.95)]">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.5)]">

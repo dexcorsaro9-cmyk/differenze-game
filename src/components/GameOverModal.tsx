@@ -1,5 +1,6 @@
 import React from 'react';
 import { HeartCrack, RotateCcw, Sparkles } from 'lucide-react';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface GameOverModalProps {
   onRetry: () => void;
@@ -7,6 +8,8 @@ interface GameOverModalProps {
 }
 
 export const GameOverModal: React.FC<GameOverModalProps> = ({ onRetry, onEnableZenMode }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
       <div className="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-slate-900 to-red-950/40 border border-red-900/60 rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.9)] text-center text-white">
@@ -15,10 +18,10 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({ onRetry, onEnableZ
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-          Frattura Temporale!
+          {t.gameOver.title}
         </h2>
         <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
-          Troppi errori hanno corrotto irrimediabilmente questo frammento di memoria. Nexus ha preso il sopravvento.
+          {t.gameOver.description}
         </p>
 
         <div className="mt-8 flex flex-col gap-3">
@@ -27,7 +30,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({ onRetry, onEnableZ
             className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-sm shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <RotateCcw className="w-4 h-4" />
-            <span>Riprova il Capitolo (3 Vite)</span>
+            <span>{t.gameOver.retry}</span>
           </button>
 
           <button
@@ -35,7 +38,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({ onRetry, onEnableZ
             className="w-full py-3.5 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/30 font-semibold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <Sparkles className="w-4 h-4 text-teal-400" />
-            <span>Passa a Modalità Zen (Vite Infinite)</span>
+            <span>{t.gameOver.switchToZen}</span>
           </button>
         </div>
       </div>

@@ -18,6 +18,7 @@ import {
 import type { Level } from '../types/game';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface LevelCompleteModalProps {
   level: Level;
@@ -48,6 +49,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
   bestTime,
   isNewRecord = false,
 }) => {
+  const { t } = useTranslation();
   const [isStamped, setIsStamped] = useState(false);
   const [revealedStars, setRevealedStars] = useState<number>(0);
   const [displayCoins, setDisplayCoins] = useState<number>(0);
@@ -165,7 +167,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
                 </span>
                 <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-rose-100 my-0.5 drop-shadow" />
                 <span className="text-[7px] font-black uppercase tracking-widest text-rose-200/90 font-serif leading-none">
-                  VERIFICATO
+                  {t.levelComplete.verifiedStamp}
                 </span>
               </div>
             </div>
@@ -174,14 +176,14 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
         {/* Header Ribbon */}
         <span className="inline-block px-4 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs sm:text-sm font-bold tracking-wide uppercase mb-2 font-serif shadow-sm">
-          {level.id === 120 ? '🏆 Mistero Supremo di Paititi Risolto!' : 'Sito Archeologico Decifrato!'}
+          {level.id === 120 ? t.levelComplete.finaleTitle : t.levelComplete.title}
         </span>
 
         <h2 className="text-xl sm:text-2xl font-black text-amber-100 font-serif tracking-tight">
           {level.title}
         </h2>
         <p className="text-xs text-amber-200/70 mt-0.5 font-medium">
-          Capitolo {level.chapterNumber} • {level.era}
+          {t.header.chapter} {level.chapterNumber} • {level.era}
         </p>
 
         {/* 3 Sequential Stars Animation */}
@@ -228,7 +230,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
           {isNewRecord && (
             <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 text-[10px] font-black shadow-[0_0_12px_rgba(245,158,11,0.8)] border border-yellow-200 animate-bounce">
               <Trophy className="w-3 h-3 fill-stone-950 text-stone-950" />
-              <span>Nuovo Record di Spedizione!</span>
+              <span>{t.levelComplete.newSpeedRecord}</span>
             </div>
           )}
           {errorsCount === 0 && (
@@ -255,7 +257,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         <div className="flex items-center justify-center gap-2 py-2 px-4 bg-gradient-to-r from-amber-500/20 via-yellow-500/30 to-amber-500/20 border border-amber-500/60 rounded-2xl max-w-xs mx-auto mb-3 shadow-lg">
           <Coins className="w-5 h-5 text-amber-400 fill-amber-400 animate-pulse" />
           <span className="text-base font-black text-amber-200 font-mono tracking-tight">
-            +{displayCoins} Monete d'Oro
+            +{displayCoins} {t.common.coins}
           </span>
           <Sparkles className="w-4 h-4 text-amber-300" />
         </div>
@@ -265,11 +267,11 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
           <div className="flex items-center justify-center gap-5 w-full">
             <div className="flex items-center gap-1.5 text-stone-300">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Tempo: <strong className="text-amber-200 font-mono">{formatTime(timeElapsed)}</strong></span>
+              <span>{t.levelComplete.timeElapsed}: <strong className="text-amber-200 font-mono">{formatTime(timeElapsed)}</strong></span>
             </div>
             <div className="text-stone-600">•</div>
             <div className="text-stone-300">
-              Errori: <strong className={errorsCount === 0 ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>{errorsCount}</strong>
+              {t.levelComplete.errorsMade}: <strong className={errorsCount === 0 ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>{errorsCount}</strong>
             </div>
           </div>
 
@@ -277,7 +279,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
             <div className="flex items-center justify-between w-full pt-1.5 border-t border-amber-900/40 text-[11px]">
               <div className="flex items-center gap-1 text-amber-400/90 font-medium">
                 <Trophy className="w-3 h-3 text-yellow-400" />
-                <span>Miglior Tempo:</span>
+                <span>{t.levelComplete.bestRecord}:</span>
                 <span className="font-mono font-bold text-amber-200">{formatTime(bestTime)}</span>
               </div>
               {isNewRecord && (
@@ -317,7 +319,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
             className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-stone-300 font-bold text-xs border border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Rigioca</span>
+            <span>{t.levelComplete.replayLevel}</span>
           </button>
 
           <button
@@ -326,7 +328,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
             className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-amber-950/60 hover:bg-amber-900/80 text-amber-200 border border-amber-600/40 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            <span>Leggi Diario</span>
+            <span>{t.levelComplete.inspectJournal}</span>
           </button>
 
           {level.id === 120 && onOpenGrandFinale ? (
@@ -336,7 +338,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
               className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-sm shadow-[0_0_25px_rgba(251,191,36,0.65)] flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer animate-pulse"
             >
               <Trophy className="w-4 h-4 text-slate-950 fill-slate-950" />
-              <span>SVELA IL FINALE DELLA SAGA!</span>
+              <span>{t.levelComplete.openFinale}</span>
             </button>
           ) : level.id % 10 === 0 && level.id < 120 && onOpenDilemma ? (
             <button
@@ -345,7 +347,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
               className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 hover:from-amber-400 text-stone-950 font-black text-sm shadow-[0_0_25px_rgba(245,158,11,0.65)] flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer animate-pulse"
             >
               <Compass className="w-4 h-4 text-stone-950 animate-spin" style={{ animationDuration: '12s' }} />
-              <span>BIVIO DI SPEDIZIONE</span>
+              <span>{t.levelComplete.openDilemma}</span>
               <ArrowRight className="w-4 h-4 text-stone-950" />
             </button>
           ) : (
@@ -354,7 +356,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
               onClick={onNextLevel}
               className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 text-stone-950 font-black text-sm shadow-[0_4px_15px_rgba(245,158,11,0.4)] flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer"
             >
-              <span>Prossima Tappa</span>
+              <span>{t.levelComplete.nextLevel}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}

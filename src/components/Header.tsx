@@ -18,6 +18,7 @@ import {
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
+import { useTranslation } from '../i18n/LanguageContext';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -84,6 +85,7 @@ export const Header: React.FC<HeaderProps> = ({
   rpgPerksSummary,
   activeSetBonus,
 }) => {
+  const { t } = useTranslation();
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile.equippedOutfitId);
   const activePortrait = activeOutfit?.image || currentExplorer.portrait;
@@ -201,10 +203,10 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex flex-col leading-none truncate">
             <div className="flex items-center gap-1 sm:gap-1.5">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-amber-300 font-serif">
-                LIV. {currentLevel.id}
+                {t.common.level} {currentLevel.id}
               </span>
               <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-200 border border-amber-500/30 font-bold">
-                Tappa {currentLevel.chapterNumber}
+                {t.common.stage} {currentLevel.chapterNumber}
               </span>
             </div>
             <span className="text-[9px] sm:text-[10px] text-amber-200/80 font-medium truncate mt-0.5 max-w-[105px] sm:max-w-[220px]">
@@ -304,10 +306,10 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onOpenHub}
             className="relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-500 text-stone-950 font-black text-[11px] sm:text-xs font-serif uppercase tracking-wider shadow-[0_2px_12px_rgba(245,158,11,0.4)] border border-yellow-300 active:scale-95 transition cursor-pointer"
-            title="Apri Quartier Generale di Spedizione (Mappamondo, Armeria RPG, Museo, Sfide)"
+            title={t.header.openHub}
           >
             <Compass className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-stone-950 animate-spin-slow" />
-            <span className="hidden sm:inline">Campo Base</span>
+            <span className="hidden sm:inline">{t.header.openHub}</span>
             <span className="sm:hidden">QG</span>
             {hasHubNotification && (
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full border-2 border-stone-950 animate-pulse flex items-center justify-center">
@@ -324,7 +326,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
           {zenMode ? (
             <div className="flex items-center gap-1 text-teal-400 text-[11px] sm:text-xs font-bold px-1">
-              <span>Zen</span>
+              <span>{t.header.zenMode}</span>
               <span className="text-xs sm:text-sm">∞</span>
             </div>
           ) : (

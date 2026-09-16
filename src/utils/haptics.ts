@@ -1,3 +1,5 @@
+import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
+
 export type HapticType =
   | 'tap'
   | 'light'
@@ -10,9 +12,39 @@ export type HapticType =
   | 'powerup_used'
   | 'relic_discovered';
 
-// Native mobile haptic feedback helper
+// Native mobile haptic feedback helper (Capacitor + Browser Vibration API)
 export const triggerHaptic = (type: HapticType, enabled: boolean = true) => {
-  if (!enabled || typeof window === 'undefined' || !('vibrate' in navigator)) return;
+  if (!enabled || typeof window === 'undefined') return;
+
+  // Try Capacitor native mobile haptics first
+  try {
+    switch (type) {
+      case 'tap':
+      case 'light':
+        Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
+        return;
+      case 'medium':
+      case 'clue_found':
+      case 'powerup_used':
+        Haptics.impact({ style: ImpactStyle.Medium }).catch(() => {});
+        return;
+      case 'combo':
+      case 'three_stars':
+      case 'relic_discovered':
+        Haptics.impact({ style: ImpactStyle.Heavy }).catch(() => {});
+        return;
+      case 'success':
+        Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+        return;
+      case 'error':
+        Haptics.notification({ type: NotificationType.Error }).catch(() => {});
+        return;
+    }
+  } catch {
+    // Fallback to browser navigator.vibrate
+  }
+
+  if (!('vibrate' in navigator)) return;
 
   try {
     switch (type) {

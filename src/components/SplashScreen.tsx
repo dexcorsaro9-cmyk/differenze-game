@@ -3,6 +3,7 @@ import { Compass, Sparkles } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface SplashScreenProps {
   onStart: () => void;
@@ -10,6 +11,7 @@ interface SplashScreenProps {
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
+  const { t } = useTranslation();
   const [progress, setProgress] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
@@ -83,12 +85,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-950/75 border border-amber-500/40 text-amber-300 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.85)]">
           <Compass className="w-4 h-4 text-amber-400 animate-spin-slow" />
           <span className="text-xs sm:text-sm font-serif italic text-amber-200 tracking-widest uppercase font-semibold">
-            1928 • Indagini &amp; Oggetti Nascosti
+            {t.splash.subtitle}
           </span>
         </div>
       </div>
 
-      {/* Bottom Section: Progress Bar or Prominent "INIZIA LA SPEDIZIONE" Button */}
+      {/* Bottom Section: Progress Bar or Prominent Button */}
       <div className="relative z-10 w-full max-w-sm flex flex-col items-center shrink-0">
         {!isReady ? (
           <div className="w-full max-w-xs space-y-2.5">
@@ -104,7 +106,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
               />
             </div>
             <div className="text-center text-[10px] text-amber-400/80 font-mono animate-pulse">
-              Tocca per entrare subito »
+              {t.splash.quickPlay} »
             </div>
           </div>
         ) : (
@@ -120,11 +122,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
             >
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-stone-950" />
-                <span>INIZIA LA SPEDIZIONE</span>
+                <span>{t.splash.startExpedition}</span>
                 <Sparkles className="w-4 h-4 text-stone-950" />
               </div>
               <span className="text-[10px] text-stone-900/90 font-mono tracking-wider normal-case font-bold">
-                Tocca per esplorare il tempio
+                {t.splash.quickPlay}
               </span>
             </button>
           </div>
