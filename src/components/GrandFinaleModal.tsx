@@ -11,7 +11,7 @@ import {
   ChevronRight,
   Award
 } from 'lucide-react';
-import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -96,7 +96,9 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
 
   if (!isOpen) return null;
 
-  const explorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const explorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
+  const explorerPortrait = activeOutfit?.image || explorer.portrait;
 
   const handleChooseEnding = (ending: EndingType) => {
     setSelectedEnding(ending);
@@ -105,11 +107,15 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
     sound.playVictory();
     triggerHaptic('success');
 
-    confetti({
-      particleCount: 120,
-      spread: 100,
-      origin: { y: 0.6 },
-    });
+    try {
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 },
+      });
+    } catch {
+      // Graceful fallback if canvas/confetti is unavailable
+    }
   };
 
   const activeEndingData = selectedEnding ? SAGA_ENDINGS[selectedEnding] : null;
@@ -147,7 +153,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow-lg bg-stone-950 shrink-0">
               <img
-                src={explorer.portrait}
+                src={explorerPortrait}
                 alt={explorer.name}
                 className="w-full h-full object-cover object-top scale-105"
               />

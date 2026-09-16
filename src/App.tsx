@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Header } from './components/Header';
 import { HiddenObjectView } from './components/HiddenObjectView';
 import { PowerUpBar } from './components/PowerUpBar';
@@ -22,14 +22,13 @@ import { ExpeditionHubModal } from './components/ExpeditionHubModal';
 import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
 import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoinParticles';
 
-// Code-Split Heavy Modals with React.lazy to reduce initial JS chunk size and optimize TTI
-const MappamondoModal = lazy(() => import('./components/MappamondoModal').then(m => ({ default: m.MappamondoModal })));
-const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModal').then(m => ({ default: m.DailyExpeditionModal })));
-const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
-const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
-const ExpeditionPassportModal = lazy(() => import('./components/ExpeditionPassportModal').then(m => ({ default: m.ExpeditionPassportModal })));
-const PWAInstallModal = lazy(() => import('./components/PWAInstallModal').then(m => ({ default: m.PWAInstallModal })));
-const ExpeditionDilemmaModal = lazy(() => import('./components/ExpeditionDilemmaModal').then(m => ({ default: m.ExpeditionDilemmaModal })));
+import { MappamondoModal } from './components/MappamondoModal';
+import { DailyExpeditionModal } from './components/DailyExpeditionModal';
+import { GrandFinaleModal } from './components/GrandFinaleModal';
+import { MedalsCabinetModal } from './components/MedalsCabinetModal';
+import { ExpeditionPassportModal } from './components/ExpeditionPassportModal';
+import { PWAInstallModal } from './components/PWAInstallModal';
+import { ExpeditionDilemmaModal } from './components/ExpeditionDilemmaModal';
 import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
 import { OfflineStatusToast } from './components/OfflineStatusToast';
 import { usePWA } from './hooks/usePWA';
@@ -543,6 +542,9 @@ export const App: React.FC = () => {
     isWardrobeOpen ||
     isPrologueOpen ||
     isTutorialOpen ||
+    isExpeditionHubOpen ||
+    isGrandFinaleOpen ||
+    activeStageBriefing !== null ||
     isLevelCompleteOpen ||
     isGameOverOpen ||
     isJournalOpen ||
@@ -1390,14 +1392,16 @@ export const App: React.FC = () => {
         />
       )}
 
-      <ShopModal
-        isOpen={isShopOpen}
-        onClose={() => setIsShopOpen(false)}
-        coins={coins}
-        inventory={inventory}
-        onBuyItem={handleBuyShopItem}
-        onClaimEmergencyFunds={handleClaimEmergencyFunds}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nell'Emporio Archeologico. I tuoi fondi sono al sicuro.">
+        <ShopModal
+          isOpen={isShopOpen}
+          onClose={() => setIsShopOpen(false)}
+          coins={coins}
+          inventory={inventory}
+          onBuyItem={handleBuyShopItem}
+          onClaimEmergencyFunds={handleClaimEmergencyFunds}
+        />
+      </ErrorBoundary>
 
       {isRelicMuseumOpen && (
         <ErrorBoundary fallbackMessage="Anomalia temporanea nella Sala delle Reliquie. I reperti archeologici sono al sicuro.">
@@ -1412,38 +1416,44 @@ export const App: React.FC = () => {
         </ErrorBoundary>
       )}
 
-      <RelicFoundModal
-        isOpen={isRelicFoundModalOpen}
-        relic={activeFoundRelic}
-        onClose={() => setIsRelicFoundModalOpen(false)}
-        onOpenMuseum={() => {
-          setIsRelicFoundModalOpen(false);
-          setIsRelicMuseumOpen(true);
-        }}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nella Reliquia Ritrovata.">
+        <RelicFoundModal
+          isOpen={isRelicFoundModalOpen}
+          relic={activeFoundRelic}
+          onClose={() => setIsRelicFoundModalOpen(false)}
+          onOpenMuseum={() => {
+            setIsRelicFoundModalOpen(false);
+            setIsRelicMuseumOpen(true);
+          }}
+        />
+      </ErrorBoundary>
 
-      <JournalModal
-        isOpen={isJournalOpen}
-        onClose={() => setIsJournalOpen(false)}
-        levels={levels}
-        currentLevelId={currentLevel.id}
-        completedLevelIds={completedLevelIds}
-        discoveredDifferenceIds={discoveredClues}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nel Taccuino di Spedizione. I tuoi appunti sono intatti.">
+        <JournalModal
+          isOpen={isJournalOpen}
+          onClose={() => setIsJournalOpen(false)}
+          levels={levels}
+          currentLevelId={currentLevel.id}
+          completedLevelIds={completedLevelIds}
+          discoveredDifferenceIds={discoveredClues}
+        />
+      </ErrorBoundary>
 
-      <LevelSelectModal
-        isOpen={isLevelSelectOpen}
-        onClose={() => setIsLevelSelectOpen(false)}
-        levels={levels}
-        currentLevelId={currentLevel.id}
-        completedLevelIds={completedLevelIds}
-        levelStars={levelStars}
-        bestTimes={bestTimes}
-        onSelectLevel={id => loadLevel(id)}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nel Selettore Livelli. I tuoi progressi sono intatti.">
+        <LevelSelectModal
+          isOpen={isLevelSelectOpen}
+          onClose={() => setIsLevelSelectOpen(false)}
+          levels={levels}
+          currentLevelId={currentLevel.id}
+          completedLevelIds={completedLevelIds}
+          levelStars={levelStars}
+          bestTimes={bestTimes}
+          onSelectLevel={id => loadLevel(id)}
+        />
+      </ErrorBoundary>
 
       {isTreasureMapOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel Mappamondo 3D. Le rotte della spedizione sono intatte.">
           <MappamondoModal
             isOpen={isTreasureMapOpen}
             onClose={() => {
@@ -1456,127 +1466,131 @@ export const App: React.FC = () => {
             onOpenStageBriefing={handleOpenStageBriefing}
             profile={explorerProfile}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        settings={settings}
-        onUpdateSettings={newS => setSettings(s => ({ ...s, ...newS }))}
-        onOpenTutorial={() => setIsTutorialOpen(true)}
-        onOpenInstall={() => setIsInstallModalOpen(true)}
-        isInstalled={isInstalled}
-        isOffline={isOffline}
-        isBgmPlaying={isBgmPlaying}
-        onToggleBgm={handleToggleBgm}
-        bgmTheme={customBgmTheme}
-        onChangeBgmTheme={handleChangeBgmTheme}
-        onResetProgress={() => {
-          localStorage.removeItem(STORAGE_KEY_PROGRESS);
-          localStorage.removeItem(STORAGE_KEY_ECONOMY);
-          localStorage.removeItem(STORAGE_KEY_INVENTORY);
-          localStorage.removeItem(STORAGE_KEY_RELICS);
-          localStorage.removeItem(STORAGE_KEY_AVATAR);
-          localStorage.removeItem(STORAGE_KEY_TUTORIAL);
-          localStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
-          localStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
-          setCompletedLevelIds([]);
-          setDiscoveredClues([]);
-          setDiscoveredRelicIds([]);
-          setBestTimes({});
-          setLevelStars({});
-          setCoins(150);
-          setInventory({
-            freeze_time: 2,
-            compass_radar: 2,
-            hint: 3,
-            error_shield: 1,
-          });
-          setExplorerProfile(normalizeExplorerProfile(null));
-          setHasCompletedAvatarSetup(false);
-          setHasCompletedTutorial(false);
-          loadLevel(1);
-        }}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nelle Impostazioni di Gioco.">
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          settings={settings}
+          onUpdateSettings={newS => setSettings(s => ({ ...s, ...newS }))}
+          onOpenTutorial={() => setIsTutorialOpen(true)}
+          onOpenInstall={() => setIsInstallModalOpen(true)}
+          isInstalled={isInstalled}
+          isOffline={isOffline}
+          isBgmPlaying={isBgmPlaying}
+          onToggleBgm={handleToggleBgm}
+          bgmTheme={customBgmTheme}
+          onChangeBgmTheme={handleChangeBgmTheme}
+          onResetProgress={() => {
+            localStorage.removeItem(STORAGE_KEY_PROGRESS);
+            localStorage.removeItem(STORAGE_KEY_ECONOMY);
+            localStorage.removeItem(STORAGE_KEY_INVENTORY);
+            localStorage.removeItem(STORAGE_KEY_RELICS);
+            localStorage.removeItem(STORAGE_KEY_AVATAR);
+            localStorage.removeItem(STORAGE_KEY_TUTORIAL);
+            localStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
+            localStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
+            setCompletedLevelIds([]);
+            setDiscoveredClues([]);
+            setDiscoveredRelicIds([]);
+            setBestTimes({});
+            setLevelStars({});
+            setCoins(150);
+            setInventory({
+              freeze_time: 2,
+              compass_radar: 2,
+              hint: 3,
+              error_shield: 1,
+            });
+            setExplorerProfile(normalizeExplorerProfile(null));
+            setHasCompletedAvatarSetup(false);
+            setHasCompletedTutorial(false);
+            loadLevel(1);
+          }}
+        />
+      </ErrorBoundary>
 
       {/* Central Expedition Headquarters / Campo Base Modal */}
-      <ExpeditionHubModal
-        isOpen={isExpeditionHubOpen}
-        onClose={() => setIsExpeditionHubOpen(false)}
-        currentLevel={currentLevel}
-        profile={explorerProfile}
-        coins={coins}
-        discoveredRelicCount={discoveredRelicIds.length}
-        totalRelics={ALL_COLLECTIBLE_RELICS.length}
-        hasUnreadDaily={hasUnreadDaily}
-        hasUnreadRelics={hasUnreadRelics}
-        hasNewStageUnlocked={hasNewStageUnlocked}
-        hasUnreadJournal={hasUnreadJournal}
-        hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
-        isBgmPlaying={isBgmPlaying}
-        onToggleBgm={handleToggleBgm}
-        onOpenTreasureMap={() => {
-          setIsExpeditionHubOpen(false);
-          setIsTreasureMapOpen(true);
-          setHasNewStageUnlocked(false);
-        }}
-        onOpenMuseum={() => {
-          setIsExpeditionHubOpen(false);
-          setIsRelicMuseumOpen(true);
-          setHasUnreadRelics(false);
-        }}
-        onOpenWardrobe={() => {
-          setIsExpeditionHubOpen(false);
-          setIsWardrobeOpen(true);
-        }}
-        onOpenDaily={() => {
-          setIsExpeditionHubOpen(false);
-          setIsDailyModalOpen(true);
-        }}
-        onOpenJournal={() => {
-          setIsExpeditionHubOpen(false);
-          setIsJournalOpen(true);
-          setHasUnreadJournal(false);
-        }}
-        onOpenStageBriefing={() => {
-          setIsExpeditionHubOpen(false);
-          handleOpenStageBriefing(currentLevel.chapterNumber);
-        }}
-        onOpenShop={() => {
-          setIsExpeditionHubOpen(false);
-          setIsShopOpen(true);
-        }}
-        onOpenSettings={() => {
-          setIsExpeditionHubOpen(false);
-          setIsSettingsOpen(true);
-        }}
-        onOpenLevelSelect={() => {
-          setIsExpeditionHubOpen(false);
-          setIsLevelSelectOpen(true);
-        }}
-        isLevel120Completed={completedLevelIds.includes(120)}
-        onOpenGrandFinale={() => {
-          setIsExpeditionHubOpen(false);
-          setIsGrandFinaleOpen(true);
-        }}
-        onOpenMedals={() => {
-          setIsExpeditionHubOpen(false);
-          setIsMedalsCabinetOpen(true);
-        }}
-        unlockedMedalsCount={unlockedMedalIds.length}
-        totalMedals={ALL_ACHIEVEMENTS.length}
-        onOpenPassport={() => {
-          setIsExpeditionHubOpen(false);
-          setIsPassportOpen(true);
-        }}
-        unlockedVisasCount={CONSULAR_VISAS.filter(v => currentLevel.chapterNumber >= v.chapterNumber).length}
-        onOpenInstall={() => {
-          setIsExpeditionHubOpen(false);
-          setIsInstallModalOpen(true);
-        }}
-        isInstalled={isInstalled}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nel Quartier Generale della Spedizione. I tuoi dati sono intatti.">
+        <ExpeditionHubModal
+          isOpen={isExpeditionHubOpen}
+          onClose={() => setIsExpeditionHubOpen(false)}
+          currentLevel={currentLevel}
+          profile={explorerProfile}
+          coins={coins}
+          discoveredRelicCount={discoveredRelicIds.length}
+          totalRelics={ALL_COLLECTIBLE_RELICS.length}
+          hasUnreadDaily={hasUnreadDaily}
+          hasUnreadRelics={hasUnreadRelics}
+          hasNewStageUnlocked={hasNewStageUnlocked}
+          hasUnreadJournal={hasUnreadJournal}
+          hasUnreadBriefing={!seenStageBriefings.includes(currentLevel.chapterNumber)}
+          isBgmPlaying={isBgmPlaying}
+          onToggleBgm={handleToggleBgm}
+          onOpenTreasureMap={() => {
+            setIsExpeditionHubOpen(false);
+            setIsTreasureMapOpen(true);
+            setHasNewStageUnlocked(false);
+          }}
+          onOpenMuseum={() => {
+            setIsExpeditionHubOpen(false);
+            setIsRelicMuseumOpen(true);
+            setHasUnreadRelics(false);
+          }}
+          onOpenWardrobe={() => {
+            setIsExpeditionHubOpen(false);
+            setIsWardrobeOpen(true);
+          }}
+          onOpenDaily={() => {
+            setIsExpeditionHubOpen(false);
+            setIsDailyModalOpen(true);
+          }}
+          onOpenJournal={() => {
+            setIsExpeditionHubOpen(false);
+            setIsJournalOpen(true);
+            setHasUnreadJournal(false);
+          }}
+          onOpenStageBriefing={() => {
+            setIsExpeditionHubOpen(false);
+            handleOpenStageBriefing(currentLevel.chapterNumber);
+          }}
+          onOpenShop={() => {
+            setIsExpeditionHubOpen(false);
+            setIsShopOpen(true);
+          }}
+          onOpenSettings={() => {
+            setIsExpeditionHubOpen(false);
+            setIsSettingsOpen(true);
+          }}
+          onOpenLevelSelect={() => {
+            setIsExpeditionHubOpen(false);
+            setIsLevelSelectOpen(true);
+          }}
+          isLevel120Completed={completedLevelIds.includes(120)}
+          onOpenGrandFinale={() => {
+            setIsExpeditionHubOpen(false);
+            setIsGrandFinaleOpen(true);
+          }}
+          onOpenMedals={() => {
+            setIsExpeditionHubOpen(false);
+            setIsMedalsCabinetOpen(true);
+          }}
+          unlockedMedalsCount={unlockedMedalIds.length}
+          totalMedals={ALL_ACHIEVEMENTS.length}
+          onOpenPassport={() => {
+            setIsExpeditionHubOpen(false);
+            setIsPassportOpen(true);
+          }}
+          unlockedVisasCount={CONSULAR_VISAS.filter(v => currentLevel.chapterNumber >= v.chapterNumber).length}
+          onOpenInstall={() => {
+            setIsExpeditionHubOpen(false);
+            setIsInstallModalOpen(true);
+          }}
+          isInstalled={isInstalled}
+        />
+      </ErrorBoundary>
 
       {/* AAA Splash Screen with "Tocca per iniziare" - Pre-mounted underneath Intro for seamless crossfade */}
       {isSplashVisible && (
@@ -1641,13 +1655,15 @@ export const App: React.FC = () => {
 
       {/* Immersive 12-Stage Expedition Lore & Mission Briefing Dossier */}
       {activeStageBriefing !== null && (
-        <StageLoreBriefingModal
-          isOpen={activeStageBriefing !== null}
-          stageNumber={activeStageBriefing}
-          profile={explorerProfile}
-          onClose={handleCloseStageBriefing}
-          onStartStage={handleStartStageFromBriefing}
-        />
+        <ErrorBoundary fallbackMessage="Anomalia nel Dispaccio di Tappa. I tuoi progressi sono al sicuro.">
+          <StageLoreBriefingModal
+            isOpen={activeStageBriefing !== null}
+            stageNumber={activeStageBriefing}
+            profile={explorerProfile}
+            onClose={handleCloseStageBriefing}
+            onStartStage={handleStartStageFromBriefing}
+          />
+        </ErrorBoundary>
       )}
 
       {/* AAA Flying Coins & Golden Sparks Particles */}
@@ -1659,30 +1675,30 @@ export const App: React.FC = () => {
 
       {/* 30-Day Expedition Daily Challenge & Streak Modal */}
       {isDailyModalOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nella Spedizione Quotidiana. I tuoi timbri sono al sicuro.">
           <DailyExpeditionModal
             isOpen={isDailyModalOpen}
             onClose={() => setIsDailyModalOpen(false)}
             onStartDailyLevel={handleStartDailyLevel}
             coins={coins}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* Milestone Expedition Tactical Dilemma Modal (Levels 10, 20, 30... 110) */}
       {isDilemmaOpen && EXPEDITION_DILEMMAS[currentLevel.chapterNumber] && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel Bivio Morale della Spedizione.">
           <ExpeditionDilemmaModal
             isOpen={isDilemmaOpen}
             dilemma={EXPEDITION_DILEMMAS[currentLevel.chapterNumber]}
             onResolveChoice={handleResolveDilemmaChoice}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* Grand Finale Expedition Endings Modal (Level 120 / Campaign Complete) */}
       {isGrandFinaleOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel Gran Finale di Paititi. Il tuo trionfo è memorizzato.">
           <GrandFinaleModal
             isOpen={isGrandFinaleOpen}
             profile={explorerProfile}
@@ -1696,12 +1712,12 @@ export const App: React.FC = () => {
               setIsTreasureMapOpen(true);
             }}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* Victorian Walnut & Brass Medals Showcase (12 Royal Expedition Decorations) */}
       {isMedalsCabinetOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel Medagliere della Spedizione. Le tue onorificenze sono intatte.">
           <MedalsCabinetModal
             isOpen={isMedalsCabinetOpen}
             onClose={() => setIsMedalsCabinetOpen(false)}
@@ -1709,12 +1725,12 @@ export const App: React.FC = () => {
             claimedMedalIds={claimedMedalIds}
             onClaimBounty={handleClaimMedalBounty}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* 1928 Royal Expedition Passport & Consular Visas Modal */}
       {isPassportOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel Passaporto Consolare. I tuoi timbri consolari sono registrati.">
           <ExpeditionPassportModal
             isOpen={isPassportOpen}
             onClose={() => setIsPassportOpen(false)}
@@ -1723,12 +1739,12 @@ export const App: React.FC = () => {
             claimedVisaIds={claimedVisaIds}
             onClaimVisaBounty={handleClaimVisaBounty}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* PWA Full-Screen Standalone & Offline Installation Modal */}
       {isInstallModalOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia nel modulo di installazione PWA.">
           <PWAInstallModal
             isOpen={isInstallModalOpen}
             onClose={() => setIsInstallModalOpen(false)}
@@ -1737,7 +1753,7 @@ export const App: React.FC = () => {
             isIOS={isIOS}
             onPromptInstall={promptInstall}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       {/* Floating Royal Medal Unlock Celebration Toast */}

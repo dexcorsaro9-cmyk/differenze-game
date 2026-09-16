@@ -40,7 +40,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
                 Taccuino di Spedizione
                 <span className="text-xs font-normal text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full">
-                  Spedizione 1934
+                  Spedizione 1928
                 </span>
               </h3>
               <p className="text-xs text-slate-400">
@@ -84,7 +84,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                       {level.title}
                     </h5>
                     <span className="text-[10px] text-slate-400 block truncate">
-                      {level.era.split(' - ')[0]}
+                      {(level.era || '').split(' - ')[0] || level.era}
                     </span>
                   </div>
 
@@ -129,7 +129,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  I 10 Reperti Archeologici Decifrati
+                  Reperti Archeologici Decifrati ({selectedLevel.differences?.length || 8})
                 </span>
                 <span className="text-[10px] font-mono text-amber-300">
                   {selectedLevel.differences.filter(d => discoveredDifferenceIds.includes(d.id) || isCompleted).length} / {selectedLevel.differences.length}

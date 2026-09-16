@@ -96,15 +96,17 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
-  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile.equippedOutfitId);
+  const currentExplorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
   const activePortrait = activeOutfit?.image || currentExplorer.portrait;
 
-  const handleAction = (action: () => void) => {
+  const handleAction = (action?: () => void) => {
     sound.playTap();
     triggerHaptic('light');
     onClose();
-    action();
+    if (action) {
+      action();
+    }
   };
 
   return (

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { CONSULAR_VISAS, type ConsularVisa } from '../data/passportData';
 import type { ExplorerProfile } from '../data/avatarData';
-import { EXPLORERS } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -34,7 +34,9 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
   const [activeTab, setActiveTab] = useState<'identity' | 'page_1' | 'page_2' | 'page_3'>('identity');
   const [stampingVisaId, setStampingVisaId] = useState<string | null>(null);
 
-  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const currentExplorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
+  const passportPortrait = activeOutfit?.image || currentExplorer.portrait;
 
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +68,8 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
 
   const renderVisaStamp = (visa: ConsularVisa, index: number) => {
     const unlocked = isVisaUnlocked(visa);
-    const claimed = claimedVisaIds.includes(visa.id);
+    const safeClaimed = Array.isArray(claimedVisaIds) ? claimedVisaIds : [];
+    const claimed = safeClaimed.includes(visa.id);
     const isCurrentlyStamping = stampingVisaId === visa.id;
 
     // Slight organic stamp rotation based on index
@@ -336,7 +339,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                 {/* Explorer Vintage Portrait Card */}
                 <div className="relative w-28 h-36 rounded-lg bg-stone-900 border-2 border-stone-500 shadow-md overflow-hidden shrink-0 flex items-center justify-center">
                   <img
-                    src={currentExplorer.portrait}
+                    src={passportPortrait}
                     alt={currentExplorer.name}
                     className="w-full h-full object-cover object-top filter sepia-[0.2] contrast-[1.1]"
                   />

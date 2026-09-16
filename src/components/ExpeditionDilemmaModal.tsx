@@ -31,7 +31,7 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
-  if (!isOpen || !dilemma) return null;
+  if (!isOpen || !dilemma || !Array.isArray(dilemma.choices) || dilemma.choices.length < 2) return null;
 
   const handleSelect = (choice: DilemmaChoice) => {
     if (isConfirmed) return;
@@ -42,11 +42,15 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
     sound.playLevelWin();
     triggerHaptic('success');
 
-    confetti({
-      particleCount: 75,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
+    try {
+      confetti({
+        particleCount: 75,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    } catch {
+      // Graceful fallback if canvas confetti is unavailable
+    }
 
     setTimeout(() => {
       onResolveChoice(choice);

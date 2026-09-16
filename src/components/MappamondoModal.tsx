@@ -17,7 +17,7 @@ import {
   ScrollText
 } from 'lucide-react';
 import { SAGA_MILESTONES_120 } from '../data/sagaLore';
-import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
@@ -138,6 +138,8 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   profile,
 }) => {
   const explorer = EXPLORERS[profile?.avatarId || 'samira'];
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
+  const explorerPortrait = activeOutfit?.image || explorer.portrait;
   const originLat = explorer.originCoords.lat;
   const originLon = explorer.originCoords.lon;
   const originCity = `${explorer.originCity} (${explorer.originCountry})`;
@@ -173,11 +175,11 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   // Load avatar portrait for rendering onto canvas
   useEffect(() => {
     const img = new Image();
-    img.src = explorer.portrait;
+    img.src = explorerPortrait;
     img.onload = () => {
       avatarImgRef.current = img;
     };
-  }, [explorer.portrait]);
+  }, [explorerPortrait]);
 
   // Load World Map Texture
   useEffect(() => {
@@ -798,24 +800,32 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (isFlightActive) return;
+    (e.target as HTMLElement)?.setPointerCapture?.(e.pointerId);
     isDraggingRef.current = true;
     startMouseRef.current = { x: e.clientX, y: e.clientY };
     setIsAutoRotating(false);
   };
 
-  const handlePointerMove = (e: React.PointerEvent) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || isFlightActive) return;
     const dx = e.clientX - startMouseRef.current.x;
     const dy = e.clientY - startMouseRef.current.y;
 
-    setRotY(prev => prev + dx * 0.6);
-    setRotX(prev => Math.max(-45, Math.min(45, prev - dy * 0.4)));
-    startMouseRef.current = { x: e.clientX, y: e.clientY };
+    if (Number.isFinite(dx) && Number.isFinite(dy)) {
+      setRotY(prev => prev + dx * 0.6);
+      setRotX(prev => Math.max(-45, Math.min(45, prev - dy * 0.4)));
+      startMouseRef.current = { x: e.clientX, y: e.clientY };
+    }
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e?: React.PointerEvent<HTMLDivElement>) => {
+    if (e && (e.target as HTMLElement)?.releasePointerCapture) {
+      try {
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {}
+    }
     isDraggingRef.current = false;
   };
 
@@ -903,7 +913,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
           <div className="bg-gradient-to-r from-red-950 via-amber-950 to-red-950 border-b-2 border-red-500/50 px-3 py-1.5 flex items-center justify-between text-amber-200 shadow-xl animate-fadeIn shrink-0">
             <div className="flex items-center gap-2 truncate pr-2">
               <div className="w-8 h-8 rounded-full border-2 border-amber-400 overflow-hidden shrink-0 shadow-md">
-                <img src={explorer.portrait} alt={explorer.name} className="w-full h-full object-cover object-top" />
+                <img src={explorerPortrait} alt={explorer.name} className="w-full h-full object-cover object-top" />
               </div>
               <div className="truncate">
                 <div className="text-[10px] font-black uppercase tracking-wider text-red-400 font-serif flex items-center gap-1">
@@ -945,6 +955,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
         >
           <canvas
             ref={canvasRef}

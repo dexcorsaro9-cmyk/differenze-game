@@ -13,7 +13,7 @@ import {
   Feather
 } from 'lucide-react';
 import { STAGE_BRIEFINGS, type StageBriefing } from '../data/stageBriefingsData';
-import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
@@ -36,8 +36,10 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
   if (!isOpen) return null;
 
   const briefing: StageBriefing = STAGE_BRIEFINGS[stageNumber] || STAGE_BRIEFINGS[1];
-  const explorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
-  const explorerQuote = profile.avatarId === 'mateo' 
+  const explorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
+  const explorerPortrait = activeOutfit?.image || explorer.portrait;
+  const explorerQuote = profile?.avatarId === 'mateo' 
     ? briefing.explorerQuotes.mateo 
     : briefing.explorerQuotes.samira;
 
@@ -96,6 +98,9 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               src={assetUrl(briefing.bannerImage)} 
               alt={briefing.stageTitle}
               className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 opacity-80"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = assetUrl('/antique_world_map.jpg');
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
             
@@ -205,7 +210,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
           <div className="bg-gradient-to-r from-[#1f1207] via-[#170e06] to-[#1f1207] border border-amber-500/50 rounded-2xl p-3 sm:p-3.5 shadow-md flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-amber-400/80 overflow-hidden shadow-md shrink-0 bg-stone-900 flex items-center justify-center relative">
               <img 
-                src={explorer.portrait} 
+                src={explorerPortrait} 
                 alt={explorer.name}
                 className="w-full h-full object-cover object-top"
                 onError={(e) => {
@@ -234,7 +239,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
         {/* Footer Actions */}
         <div className="px-5 py-3.5 bg-gradient-to-r from-stone-950 via-[#1a0f07] to-stone-950 border-t border-amber-600/40 flex items-center justify-between gap-3 shrink-0">
           <div className="text-[11px] text-stone-400 font-serif hidden sm:block">
-            Livelli {((briefing.stageNumber - 1) * 10) + 1} — {briefing.stageNumber * 10} • 6 Anomalie per tavola
+            Livelli {((briefing.stageNumber - 1) * 10) + 1} — {briefing.stageNumber * 10} • 8 Reperti per tavola
           </div>
 
           <button
