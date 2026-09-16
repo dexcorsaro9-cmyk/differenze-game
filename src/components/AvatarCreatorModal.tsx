@@ -24,7 +24,8 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentExplorer = EXPLORERS[selectedAvatarId];
+  const currentExplorer = EXPLORERS[selectedAvatarId] || EXPLORERS.samira;
+  const [imgError, setImgError] = useState<boolean>(false);
 
   const handleSelectExplorer = (id: 'samira' | 'mateo') => {
     setSelectedAvatarId(id);
@@ -38,15 +39,34 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const finalName = customName.trim() || currentExplorer.name;
+    const isSwitchingAvatar = currentProfile && currentProfile.avatarId !== selectedAvatarId;
+
+    // If switching character, equip the default outfit of the new character
+    const safeEquippedOutfit = (!isSwitchingAvatar && currentProfile?.equippedOutfitId)
+      ? currentProfile.equippedOutfitId
+      : currentExplorer.defaultOutfitId;
+
+    const safeUnlockedOutfits = currentProfile?.unlockedOutfitIds
+      ? Array.from(new Set([...currentProfile.unlockedOutfitIds, currentExplorer.defaultOutfitId]))
+      : [currentExplorer.defaultOutfitId];
+
+    const safeUnlockedAccessories = Array.isArray(currentProfile?.unlockedAccessoryIds)
+      ? currentProfile.unlockedAccessoryIds
+      : ['off_compass_brass', 'legs_cargo_khaki', 'boots_leather_hiker'];
+
     const profile: ExplorerProfile = {
       avatarId: selectedAvatarId,
       playerName: finalName,
-      equippedOutfitId: currentProfile?.equippedOutfitId || currentExplorer.defaultOutfitId,
-      equippedHeadgearId: currentProfile?.equippedHeadgearId || null,
-      equippedToolId: currentProfile?.equippedToolId || null,
-      equippedTalismanId: currentProfile?.equippedTalismanId || null,
-      unlockedOutfitIds: currentProfile?.unlockedOutfitIds || [currentExplorer.defaultOutfitId],
-      unlockedAccessoryIds: currentProfile?.unlockedAccessoryIds || [],
+      equippedOutfitId: safeEquippedOutfit,
+      equippedHeadgearId: currentProfile?.equippedHeadgearId ?? null,
+      equippedToolId: currentProfile?.equippedToolId ?? null,
+      equippedOffHandId: currentProfile?.equippedOffHandId ?? 'off_compass_brass',
+      equippedLegsId: currentProfile?.equippedLegsId ?? 'legs_cargo_khaki',
+      equippedBootsId: currentProfile?.equippedBootsId ?? 'boots_leather_hiker',
+      equippedTalismanId: currentProfile?.equippedTalismanId ?? null,
+      equippedBackId: currentProfile?.equippedBackId ?? null,
+      unlockedOutfitIds: safeUnlockedOutfits,
+      unlockedAccessoryIds: safeUnlockedAccessories,
     };
 
     sound.playLevelWin();
@@ -106,12 +126,21 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
         <div className="flex-1 overflow-y-auto px-5 py-3 space-y-3.5 custom-scrollbar">
           
           {/* Pedestal Render Showcase */}
-          <div className="relative w-full aspect-[3/4] max-h-[320px] mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 shadow-[0_8px_30px_rgba(0,0,0,0.7)] group bg-stone-950">
-            <img
-              src={currentExplorer.image}
-              alt={currentExplorer.name}
-              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-            />
+          <div className="relative w-full aspect-[3/4] max-h-[320px] mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 shadow-[0_8px_30px_rgba(0,0,0,0.7)] group bg-stone-950 flex items-center justify-center">
+            {!imgError ? (
+              <img
+                src={currentExplorer.image}
+                alt={currentExplorer.name}
+                onError={() => setImgError(true)}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center text-amber-300 p-4 text-center bg-stone-900">
+                <User className="w-16 h-16 text-amber-400 mb-2" />
+                <span className="font-serif font-black text-sm">{currentExplorer.name}</span>
+                <span className="text-[11px] text-stone-400">{currentExplorer.title}</span>
+              </div>
+            )}
             {/* Cinematic Gradient Vignette */}
             <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-black/30 pointer-events-none" />
             

@@ -99,7 +99,9 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   const availableOutfits = ALL_OUTFITS.filter(o => o.avatarId === profile.avatarId);
 
   // Items currently worn/previewed
-  const displayOutfit = ALL_OUTFITS.find(o => o.id === (previewOutfitId || profile.equippedOutfitId));
+  const displayOutfit = ALL_OUTFITS.find(o => o.id === (previewOutfitId || profile.equippedOutfitId)) ||
+    ALL_OUTFITS.find(o => o.avatarId === profile.avatarId) ||
+    ALL_OUTFITS[0];
   const displayHeadgear = ALL_ACCESSORIES.find(
     a => a.id === (previewHeadgearId !== null ? previewHeadgearId : profile.equippedHeadgearId)
   );

@@ -29,11 +29,16 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
   onClose,
   discoveredRelicIds,
 }) => {
-  const [selectedRelic, setSelectedRelic] = useState<CollectibleRelic>(ALL_COLLECTIBLE_RELICS[0]);
+  const [selectedRelic, setSelectedRelic] = useState<CollectibleRelic>(() => ALL_COLLECTIBLE_RELICS[0]);
   const [isAutoRotating, setIsAutoRotating] = useState<boolean>(true);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [tiltX, setTiltX] = useState<number>(0);
   const [tiltY, setTiltY] = useState<number>(0);
+  const [imageError, setImageError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [selectedRelic?.id]);
 
   const displayCaseRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef<boolean>(false);
@@ -50,11 +55,14 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
 
   if (!isOpen) return null;
 
+  const safeRelic = selectedRelic || ALL_COLLECTIBLE_RELICS[0];
+  const safeDiscoveredIds = Array.isArray(discoveredRelicIds) ? discoveredRelicIds : [];
   const totalRelics = ALL_COLLECTIBLE_RELICS.length;
-  const discoveredCount = ALL_COLLECTIBLE_RELICS.filter(r => discoveredRelicIds.includes(r.id)).length;
-  const progressPercent = Math.round((discoveredCount / totalRelics) * 100);
-  const isSelectedDiscovered = discoveredRelicIds.includes(selectedRelic.id);
-  const selectedIndex = ALL_COLLECTIBLE_RELICS.findIndex(r => r.id === selectedRelic.id);
+  const discoveredCount = ALL_COLLECTIBLE_RELICS.filter(r => safeDiscoveredIds.includes(r.id)).length;
+  const progressPercent = totalRelics > 0 ? Math.round((discoveredCount / totalRelics) * 100) : 0;
+  const isSelectedDiscovered = safeDiscoveredIds.includes(safeRelic.id);
+  const rawIdx = ALL_COLLECTIBLE_RELICS.findIndex(r => r.id === safeRelic.id);
+  const selectedIndex = rawIdx >= 0 ? rawIdx : 0;
 
   // Pointer / Touch 3D Parallax Tilt Handler
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -66,10 +74,14 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
       startPosRef.current = { x: e.clientX, y: e.clientY };
     } else if (displayCaseRef.current) {
       const rect = displayCaseRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setTiltY(x * 14);
-      setTiltX(-y * 14);
+      const w = rect.width || 1;
+      const h = rect.height || 1;
+      const x = (e.clientX - rect.left) / w - 0.5;
+      const y = (e.clientY - rect.top) / h - 0.5;
+      const ny = x * 14;
+      const nx = -y * 14;
+      if (Number.isFinite(ny)) setTiltY(ny);
+      if (Number.isFinite(nx)) setTiltX(nx);
     }
   };
 
@@ -195,7 +207,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           <div 
             className="relative flex flex-col items-center justify-center transition-transform duration-100 ease-out origin-center my-auto"
             style={{
-              transform: `perspective(1100px) rotateY(${tiltY + Math.sin(rotationAngle * Math.PI / 180) * 8}deg) rotateX(${tiltX}deg)`,
+              transform: `perspective(1100px) rotateY(${(Number.isFinite(tiltY) ? tiltY : 0) + Math.sin((Number.isFinite(rotationAngle) ? rotationAngle : 0) * Math.PI / 180) * 8}deg) rotateX(${Number.isFinite(tiltX) ? tiltX : 0}deg)`,
               transformStyle: 'preserve-3d',
             }}
           >
@@ -224,11 +236,20 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                   <div className="relative z-10 flex flex-col items-center">
                     {/* The Specimen with Fine Gilded Framing */}
                     <div className="relative w-32 h-32 xs:w-36 xs:h-36 sm:w-40 sm:h-40 rounded-xl overflow-hidden border border-amber-400/80 shadow-[0_10px_25px_rgba(0,0,0,0.9),0_0_15px_rgba(245,158,11,0.25)] group bg-[#120a05] flex items-center justify-center p-1.5">
-                      <img
-                        src={assetUrl(selectedRelic.image)}
-                        alt={selectedRelic.name}
-                        className="w-full h-full object-contain select-none pointer-events-none transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
-                      />
+                      {!imageError ? (
+                        <img
+                          src={assetUrl(safeRelic.image)}
+                          alt={safeRelic.name}
+                          onError={() => setImageError(true)}
+                          className="w-full h-full object-contain select-none pointer-events-none transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center bg-stone-900/90 rounded-lg text-amber-300">
+                          <Sparkles className="w-8 h-8 text-amber-400 animate-pulse mb-1" />
+                          <span className="text-[10px] font-bold font-serif line-clamp-1">{safeRelic.name}</span>
+                          <span className="text-[8px] text-amber-400/80 font-mono">1928 • Reperto Storico</span>
+                        </div>
+                      )}
                       
                       {/* Specular Glare & Corner Ornaments */}
                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/15 pointer-events-none" />
@@ -397,8 +418,8 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
             
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
               {ALL_COLLECTIBLE_RELICS.map((r, idx) => {
-                const found = discoveredRelicIds.includes(r.id);
-                const isCurrent = r.id === selectedRelic.id;
+                const found = safeDiscoveredIds.includes(r.id);
+                const isCurrent = r.id === safeRelic.id;
                 return (
                   <button
                     key={r.id}

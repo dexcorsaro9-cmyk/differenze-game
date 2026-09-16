@@ -73,6 +73,8 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   const [dragStartX, setDragStartX] = useState<number>(0);
   const [dragStartRot, setDragStartRot] = useState<number>(0);
   const [isAutoSpin, setIsAutoSpin] = useState<boolean>(false);
+  const [frontImgError, setFrontImgError] = useState<boolean>(false);
+  const [backImgError, setBackImgError] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -106,8 +108,9 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
     previewTalismanId !== null ||
     previewBackId !== null;
 
-  // Normalized rotation in [0, 360)
-  const normRot = ((rotation % 360) + 360) % 360;
+  // Normalized rotation in [0, 360) with NaN safety
+  const safeRotation = Number.isFinite(rotation) ? rotation : 0;
+  const normRot = ((safeRotation % 360) + 360) % 360;
   // If angle is between 90 and 270, we are looking at the BACK of the character!
   const isFacingBack = normRot > 90 && normRot < 270;
 
@@ -349,13 +352,26 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
               className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
                 isFacingBack ? 'opacity-0 pointer-events-none' : 'opacity-100'
               }`}
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+              }}
             >
               {/* Main Front Character Image: Fills height & width naturally, centered */}
-              <img
-                src={currentExplorer.image}
-                alt={currentExplorer.name}
-                className={`h-full w-full max-h-full max-w-full object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-300 ${getOutfitShaderClass()}`}
-              />
+              {!frontImgError ? (
+                <img
+                  src={currentExplorer.image}
+                  alt={currentExplorer.name}
+                  onError={() => setFrontImgError(true)}
+                  className={`h-full w-full max-h-full max-w-full object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-300 ${getOutfitShaderClass()}`}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-6 text-center text-amber-300">
+                  <Shield className="w-20 h-20 text-amber-400 mb-2 animate-pulse" />
+                  <span className="font-serif font-black text-base">{currentExplorer.name}</span>
+                  <span className="text-xs text-stone-400">{currentExplorer.title}</span>
+                </div>
+              )}
 
               {/* ========================================================== */}
               {/* FRONT VISUAL OVERLAYS: GEAR SHOWN DIRECTLY ON CHARACTER    */}
@@ -486,7 +502,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                 <div className="absolute top-[62%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
                   <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
                     <Shield className="w-2.5 h-2.5 text-amber-400" />
-                    <span className="truncate max-w-[80px]">{displayLegs.name.split(' ')[0]}</span>
+                    <span className="truncate max-w-[80px]">{displayLegs.name ? displayLegs.name.split(' ')[0] : 'Gambe'}</span>
                   </div>
                 </div>
               )}
@@ -496,7 +512,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                 <div className="absolute top-[82%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
                   <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
                     <Footprints className="w-2.5 h-2.5 text-amber-400" />
-                    <span className="truncate max-w-[80px]">{displayBoots.name.split(' ')[0]}</span>
+                    <span className="truncate max-w-[80px]">{displayBoots.name ? displayBoots.name.split(' ')[0] : 'Scarponi'}</span>
                   </div>
                 </div>
               )}
@@ -507,14 +523,27 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
               className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
                 isFacingBack ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}
-              style={{ transform: 'rotateY(180deg)' }}
+              style={{
+                transform: 'rotateY(180deg)',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+              }}
             >
               {/* Back Character Image: Full body on stone pedestal seen from behind */}
-              <img
-                src={currentExplorer.backImage}
-                alt={`${currentExplorer.name} (Vista Posteriore)`}
-                className={`h-full w-full max-h-full max-w-full object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-300 ${getOutfitShaderClass()}`}
-              />
+              {!backImgError ? (
+                <img
+                  src={currentExplorer.backImage}
+                  alt={`${currentExplorer.name} (Vista Posteriore)`}
+                  onError={() => setBackImgError(true)}
+                  className={`h-full w-full max-h-full max-w-full object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-300 ${getOutfitShaderClass()}`}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-6 text-center text-amber-300">
+                  <Backpack className="w-20 h-20 text-amber-400 mb-2 animate-pulse" />
+                  <span className="font-serif font-black text-base">{currentExplorer.name}</span>
+                  <span className="text-xs text-stone-400">Vista Posteriore • Equipaggiamento</span>
+                </div>
+              )}
 
               {/* ========================================================== */}
               {/* BACK VISUAL OVERLAYS: GEAR SHOWN ON CHARACTER'S REAR       */}
@@ -547,7 +576,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                 <div className="absolute top-[62%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
                   <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
                     <Shield className="w-2.5 h-2.5 text-amber-400" />
-                    <span className="truncate max-w-[80px]">{displayLegs.name.split(' ')[0]}</span>
+                    <span className="truncate max-w-[80px]">{displayLegs.name ? displayLegs.name.split(' ')[0] : 'Gambe'}</span>
                   </div>
                 </div>
               )}
@@ -557,7 +586,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                 <div className="absolute top-[82%] left-[50%] -translate-x-1/2 z-15 pointer-events-none">
                   <div className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-amber-500/60 text-[8px] font-bold text-amber-300 shadow-md flex items-center gap-1">
                     <Footprints className="w-2.5 h-2.5 text-amber-400" />
-                    <span className="truncate max-w-[80px]">{displayBoots.name.split(' ')[0]}</span>
+                    <span className="truncate max-w-[80px]">{displayBoots.name ? displayBoots.name.split(' ')[0] : 'Scarponi'}</span>
                   </div>
                 </div>
               )}

@@ -13,6 +13,8 @@ import { SettingsModal } from './components/SettingsModal';
 import { SplashScreen } from './components/SplashScreen';
 import { CompanyLogoIntro } from './components/CompanyLogoIntro';
 import { AvatarCreatorModal } from './components/AvatarCreatorModal';
+import { RelicMuseumModal } from './components/RelicMuseumModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { WardrobeModal } from './components/WardrobeModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
@@ -22,7 +24,6 @@ import { FlyingCoinParticles, type CoinBurstEvent } from './components/FlyingCoi
 
 // Code-Split Heavy Modals with React.lazy to reduce initial JS chunk size and optimize TTI
 const MappamondoModal = lazy(() => import('./components/MappamondoModal').then(m => ({ default: m.MappamondoModal })));
-const RelicMuseumModal = lazy(() => import('./components/RelicMuseumModal').then(m => ({ default: m.RelicMuseumModal })));
 const DailyExpeditionModal = lazy(() => import('./components/DailyExpeditionModal').then(m => ({ default: m.DailyExpeditionModal })));
 const GrandFinaleModal = lazy(() => import('./components/GrandFinaleModal').then(m => ({ default: m.GrandFinaleModal })));
 const MedalsCabinetModal = lazy(() => import('./components/MedalsCabinetModal').then(m => ({ default: m.MedalsCabinetModal })));
@@ -1399,16 +1400,16 @@ export const App: React.FC = () => {
       />
 
       {isRelicMuseumOpen && (
-        <Suspense fallback={null}>
+        <ErrorBoundary fallbackMessage="Anomalia temporanea nella Sala delle Reliquie. I reperti archeologici sono al sicuro.">
           <RelicMuseumModal
             isOpen={isRelicMuseumOpen}
             onClose={() => {
               setIsRelicMuseumOpen(false);
               setHasUnreadRelics(false);
             }}
-            discoveredRelicIds={discoveredRelicIds}
+            discoveredRelicIds={Array.isArray(discoveredRelicIds) ? discoveredRelicIds : []}
           />
-        </Suspense>
+        </ErrorBoundary>
       )}
 
       <RelicFoundModal
@@ -1593,31 +1594,35 @@ export const App: React.FC = () => {
       )}
 
       {/* Explorer Avatar Creation & Selection Modal */}
-      <AvatarCreatorModal
-        isOpen={isAvatarCreatorOpen}
-        onConfirm={handleConfirmAvatarProfile}
-        currentProfile={explorerProfile}
-      />
+      <ErrorBoundary fallbackMessage="Anomalia nella selezione dell'Esploratore.">
+        <AvatarCreatorModal
+          isOpen={isAvatarCreatorOpen}
+          onConfirm={handleConfirmAvatarProfile}
+          currentProfile={explorerProfile}
+        />
+      </ErrorBoundary>
 
       {/* Explorer Wardrobe & Coin Upgrades Modal */}
       {isWardrobeOpen && (
-        <WardrobeModal
-          isOpen={isWardrobeOpen}
-          onClose={() => setIsWardrobeOpen(false)}
-          profile={explorerProfile}
-          coins={coins}
-          currentLevelId={currentLevel.id}
-          discoveredRelicCount={discoveredRelicIds.length}
-          onUpdateProfile={p => setExplorerProfile(p)}
-          onSpendCoins={amount => {
-            if (coins >= amount) {
-              setCoins(c => c - amount);
-              return true;
-            }
-            return false;
-          }}
-          onOpenAvatarCreator={() => setIsAvatarCreatorOpen(true)}
-        />
+        <ErrorBoundary fallbackMessage="Anomalia nell'Armeria e Camerino RPG. I tuoi oggetti ed equipaggiamenti sono intatti.">
+          <WardrobeModal
+            isOpen={isWardrobeOpen}
+            onClose={() => setIsWardrobeOpen(false)}
+            profile={explorerProfile}
+            coins={coins}
+            currentLevelId={currentLevel.id}
+            discoveredRelicCount={Array.isArray(discoveredRelicIds) ? discoveredRelicIds.length : 0}
+            onUpdateProfile={p => setExplorerProfile(p)}
+            onSpendCoins={amount => {
+              if (coins >= amount) {
+                setCoins(c => c - amount);
+                return true;
+              }
+              return false;
+            }}
+            onOpenAvatarCreator={() => setIsAvatarCreatorOpen(true)}
+          />
+        </ErrorBoundary>
       )}
 
       {/* Cinematic Prologue Cutscene (Google Veo Video / In-Engine Motion Graphics) */}
