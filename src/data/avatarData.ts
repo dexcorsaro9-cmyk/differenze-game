@@ -131,7 +131,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 350,
     requiredLevel: 15,
     perk: { type: 'coin_boost', value: 10, label: '+10% Monete guadagnate' },
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_samira_speleo.jpg'),
     tag: 'Speleologia',
   },
   {
@@ -142,7 +142,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 500,
     requiredLevel: 30,
     perk: { type: 'freeze_boost', value: 5, label: '+5s Durata Congelamento' },
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_samira_rain.jpg'),
     tag: 'Resistente',
   },
   {
@@ -153,7 +153,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 650,
     requiredLevel: 50,
     perk: { type: 'radar_boost', value: 25, label: '+25% Ampiezza Radar' },
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_samira_cenote.jpg'),
     tag: 'Subacquea',
   },
   {
@@ -164,7 +164,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 800,
     requiredLevel: 75,
     perk: { type: 'free_shield', value: 1, label: '1 Scudo Errore Gratuito' },
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_samira_society.jpg'),
     tag: 'Accademica',
   },
   {
@@ -176,7 +176,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     requiredLevel: 100,
     requiredRelics: 4,
     perk: { type: 'coin_boost', value: 25, label: '+25% Monete Totali' },
-    image: assetUrl('/avatars/female_samira.jpg'),
+    image: assetUrl('/avatars/female_samira_inti.jpg'),
     tag: 'Reliquia Sacra',
   },
 
@@ -200,7 +200,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 350,
     requiredLevel: 15,
     perk: { type: 'coin_boost', value: 10, label: '+10% Monete guadagnate' },
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_mateo_recon.jpg'),
     tag: 'Alpinismo',
   },
   {
@@ -211,7 +211,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 500,
     requiredLevel: 30,
     perk: { type: 'freeze_boost', value: 5, label: '+5s Durata Congelamento' },
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_mateo_alpine.jpg'),
     tag: 'Termico',
   },
   {
@@ -222,7 +222,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 650,
     requiredLevel: 50,
     perk: { type: 'radar_boost', value: 25, label: '+25% Ampiezza Radar' },
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_mateo_jungle.jpg'),
     tag: 'Fluviale',
   },
   {
@@ -233,7 +233,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     cost: 800,
     requiredLevel: 75,
     perk: { type: 'free_shield', value: 1, label: '1 Scudo Errore Gratuito' },
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_mateo_guild.jpg'),
     tag: 'Geodetico',
   },
   {
@@ -245,7 +245,7 @@ export const ALL_OUTFITS: WardrobeOutfit[] = [
     requiredLevel: 100,
     requiredRelics: 4,
     perk: { type: 'coin_boost', value: 25, label: '+25% Monete Totali' },
-    image: assetUrl('/avatars/male_mateo.jpg'),
+    image: assetUrl('/avatars/male_mateo_guard.jpg'),
     tag: 'Reliquia Sacra',
   },
 ];

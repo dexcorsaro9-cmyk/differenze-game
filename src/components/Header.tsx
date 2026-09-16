@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
-import { EXPLORERS } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -85,6 +85,8 @@ export const Header: React.FC<HeaderProps> = ({
   activeSetBonus,
 }) => {
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile.equippedOutfitId);
+  const activePortrait = activeOutfit?.image || currentExplorer.portrait;
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(() => {
     if (typeof document === 'undefined') return false;
@@ -190,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="Apri Passaporto di Spedizione 1928"
           >
             <img
-              src={currentExplorer.portrait}
+              src={activePortrait}
               alt={profile.playerName}
               className="w-full h-full object-cover object-top"
             />

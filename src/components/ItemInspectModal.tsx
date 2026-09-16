@@ -57,6 +57,15 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
   const isOutfit = 'avatarId' in item;
 
   const renderIcon = () => {
+    if (isOutfit && (item as WardrobeOutfit).image) {
+      return (
+        <img
+          src={(item as WardrobeOutfit).image}
+          alt={item.name}
+          className="w-full h-full object-cover object-top rounded-xl shadow-lg"
+        />
+      );
+    }
     if (isOutfit) {
       return <Sparkles className="w-12 h-12 text-amber-400" />;
     }

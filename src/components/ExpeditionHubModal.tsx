@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
-import { EXPLORERS } from '../data/avatarData';
+import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -97,6 +97,8 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   if (!isOpen) return null;
 
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const activeOutfit = ALL_OUTFITS.find(o => o.id === profile.equippedOutfitId);
+  const activePortrait = activeOutfit?.image || currentExplorer.portrait;
 
   const handleAction = (action: () => void) => {
     sound.playTap();
@@ -114,7 +116,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
           <div className="flex items-center gap-3">
             <div className="relative w-11 h-11 rounded-full border-2 border-amber-400 overflow-hidden shadow-md bg-stone-900 shrink-0">
               <img
-                src={currentExplorer.portrait}
+                src={activePortrait}
                 alt={currentExplorer.name}
                 className="w-full h-full object-cover object-top"
               />

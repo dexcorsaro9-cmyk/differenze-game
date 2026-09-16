@@ -503,7 +503,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-full border-2 border-amber-400 overflow-hidden shadow-md shrink-0">
               <img
-                src={currentExplorer.portrait}
+                src={displayOutfit?.image || currentExplorer.portrait}
                 alt={currentExplorer.name}
                 className="w-full h-full object-cover"
               />
@@ -693,10 +693,20 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-start gap-2 min-w-0 flex-1">
-                        <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
-                          <Shirt className="w-4 h-4 text-amber-400" />
-                        </div>
+                      <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                        {outfit.image ? (
+                          <div className="w-12 h-14 rounded-xl overflow-hidden border border-amber-500/50 bg-stone-900 shrink-0 shadow-md relative group">
+                            <img
+                              src={outfit.image}
+                              alt={outfit.name}
+                              className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                        ) : (
+                          <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
+                            <Shirt className="w-4 h-4 text-amber-400" />
+                          </div>
+                        )}
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="text-xs font-bold text-stone-100 font-serif">
@@ -1194,16 +1204,26 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     {/* Item Top Info */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                        <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
-                          {isOutfit ? (
-                            <Shirt className="w-5 h-5 text-amber-400" />
-                          ) : (
-                            renderAccessoryIcon(
-                              (item as WardrobeAccessory).iconName,
-                              'w-5 h-5 text-amber-400'
-                            )
-                          )}
-                        </div>
+                        {isOutfit && (item as WardrobeOutfit).image ? (
+                          <div className="w-12 h-14 rounded-xl overflow-hidden border border-amber-500/50 bg-stone-900 shrink-0 shadow-md relative group">
+                            <img
+                              src={(item as WardrobeOutfit).image}
+                              alt={item.name}
+                              className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                        ) : (
+                          <div className="p-2 rounded-xl bg-stone-900 border border-stone-700 text-amber-400 shrink-0">
+                            {isOutfit ? (
+                              <Shirt className="w-5 h-5 text-amber-400" />
+                            ) : (
+                              renderAccessoryIcon(
+                                (item as WardrobeAccessory).iconName,
+                                'w-5 h-5 text-amber-400'
+                              )
+                            )}
+                          </div>
+                        )}
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
                             <span className="text-xs sm:text-sm font-bold text-stone-100 font-serif">
