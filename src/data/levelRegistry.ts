@@ -159,7 +159,7 @@ export function generateAll120Levels(): Level[] {
 
     // Realistic masterwork photographs for all levels in Stages 1 to 12
     const imageA = isLevelTwo
-      ? '/stage2_crypt_A.jpg?v=8'
+      ? '/levels/stage1_lvl2_A.jpg?v=4'
       : isLevelThree
       ? '/levels/stage1_lvl3_A.jpg?v=2'
       : isLevelFour
@@ -193,9 +193,9 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighteen
       ? '/levels/stage2_lvl18_A.jpg?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_A.jpg?v=2'
+      ? '/levels/stage2_lvl19_A.jpg?v=3'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_A.jpg?v=2'
+      ? '/levels/stage2_lvl20_A.jpg?v=3'
       : isLevelTwentyOne
       ? '/levels/stage3_lvl21_A.jpg?v=2'
       : isLevelTwentyTwo
@@ -367,7 +367,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundredFive
       ? '/levels/stage11_lvl105_A.jpg?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_A.jpg?v=2'
+      ? '/levels/stage11_lvl106_A.jpg?v=3'
       : isLevelOneHundredSeven
       ? '/levels/stage11_lvl107_A.jpg?v=2'
       : isLevelOneHundredEight
@@ -442,7 +442,7 @@ export function generateAll120Levels(): Level[] {
       ? '/stage12_paititi_A.jpg'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/stage2_crypt_B.jpg?v=10'
+      ? '/levels/stage1_lvl2_B.jpg?v=4'
       : isLevelThree
       ? '/levels/stage1_lvl3_B.jpg?v=3'
       : isLevelFour
@@ -476,9 +476,9 @@ export function generateAll120Levels(): Level[] {
       : isLevelEighteen
       ? '/levels/stage2_lvl18_B.jpg?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_B.jpg?v=2'
+      ? '/levels/stage2_lvl19_B.jpg?v=3'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_B.jpg?v=2'
+      ? '/levels/stage2_lvl20_B.jpg?v=3'
       : isLevelTwentyOne
       ? '/levels/stage3_lvl21_B.jpg?v=2'
       : isLevelTwentyTwo
@@ -650,7 +650,7 @@ export function generateAll120Levels(): Level[] {
       : isLevelOneHundredFive
       ? '/levels/stage11_lvl105_B.jpg?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_B.jpg?v=2'
+      ? '/levels/stage11_lvl106_B.jpg?v=3'
       : isLevelOneHundredSeven
       ? '/levels/stage11_lvl107_B.jpg?v=2'
       : isLevelOneHundredEight
