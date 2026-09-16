@@ -39,6 +39,7 @@ import {
   getLevelIdForDate,
   getTodayDateString,
 } from './utils/dailyChallenge';
+import { safeStorage } from './utils/storage';
 import { ALL_120_LEVELS } from './data/levelRegistry';
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from './data/collectiblesData';
 import { ALL_ACHIEVEMENTS, type Achievement } from './data/achievementsData';
@@ -81,7 +82,7 @@ export const App: React.FC = () => {
       const parsedLvl = parseInt(queryLvl, 10);
       if (!isNaN(parsedLvl) && parsedLvl >= 1 && parsedLvl <= 120) return parsedLvl;
     }
-    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -101,10 +102,11 @@ export const App: React.FC = () => {
   const [errorsCount, setErrorsCount] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
+  const usedAssistanceThisLevelRef = useRef<boolean>(false);
 
   // Power-Ups & Economy State
   const [coins, setCoins] = useState<number>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_ECONOMY);
+    const saved = safeStorage.getItem(STORAGE_KEY_ECONOMY);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -117,7 +119,7 @@ export const App: React.FC = () => {
   });
 
   const [inventory, setInventory] = useState<PowerUpInventory>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_INVENTORY);
+    const saved = safeStorage.getItem(STORAGE_KEY_INVENTORY);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -145,7 +147,7 @@ export const App: React.FC = () => {
 
   // Collectible Relics State
   const [discoveredRelicIds, setDiscoveredRelicIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_RELICS);
+    const saved = safeStorage.getItem(STORAGE_KEY_RELICS);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -188,7 +190,7 @@ export const App: React.FC = () => {
 
   // Explorer Avatar & Wardrobe State
   const [explorerProfile, setExplorerProfile] = useState<ExplorerProfile>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_AVATAR);
+    const saved = safeStorage.getItem(STORAGE_KEY_AVATAR);
     if (saved) {
       try {
         return normalizeExplorerProfile(JSON.parse(saved));
@@ -198,11 +200,11 @@ export const App: React.FC = () => {
   });
 
   const [hasCompletedAvatarSetup, setHasCompletedAvatarSetup] = useState<boolean>(() => {
-    return !!localStorage.getItem(STORAGE_KEY_AVATAR);
+    return !!safeStorage.getItem(STORAGE_KEY_AVATAR);
   });
 
   const [hasCompletedTutorial, setHasCompletedTutorial] = useState<boolean>(() => {
-    return localStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
+    return safeStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
   });
 
   const [isCompanyIntroVisible, setIsCompanyIntroVisible] = useState<boolean>(() => {
@@ -243,7 +245,7 @@ export const App: React.FC = () => {
   // Progressive Web App & Offline capability hook
   const { canInstall, isInstalled, isOffline, isIOS, promptInstall } = usePWA();
   const [unlockedMedalIds, setUnlockedMedalIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_MEDALS);
+    const saved = safeStorage.getItem(STORAGE_KEY_MEDALS);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -252,7 +254,7 @@ export const App: React.FC = () => {
     return [];
   });
   const [claimedMedalIds, setClaimedMedalIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_CLAIMED_MEDALS);
+    const saved = safeStorage.getItem(STORAGE_KEY_CLAIMED_MEDALS);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -261,7 +263,7 @@ export const App: React.FC = () => {
     return [];
   });
   const [claimedVisaIds, setClaimedVisaIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('differenze_claimed_visas_v1');
+    const saved = safeStorage.getItem('differenze_claimed_visas_v1');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -276,7 +278,7 @@ export const App: React.FC = () => {
     return null;
   });
   const [seenStageBriefings, setSeenStageBriefings] = useState<number[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_SEEN_BRIEFINGS);
+    const saved = safeStorage.getItem(STORAGE_KEY_SEEN_BRIEFINGS);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -337,7 +339,7 @@ export const App: React.FC = () => {
 
   // Persistent Progress: Completed Level IDs & Discovered Difference Clues
   const [completedLevelIds, setCompletedLevelIds] = useState<number[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -350,7 +352,7 @@ export const App: React.FC = () => {
   });
 
   const [discoveredClues, setDiscoveredClues] = useState<string[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -364,7 +366,7 @@ export const App: React.FC = () => {
 
   // Speedrun Records: Best completion times per level
   const [bestTimes, setBestTimes] = useState<Record<number, number>>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -378,7 +380,7 @@ export const App: React.FC = () => {
 
   // Level Stars: Real 1, 2, or 3 stars per level (up to 360 stars total)
   const [levelStars, setLevelStars] = useState<Record<number, number>>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const saved = safeStorage.getItem(STORAGE_KEY_PROGRESS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -406,7 +408,7 @@ export const App: React.FC = () => {
 
   // Settings
   const [settings, setSettings] = useState<GameSettings>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_SETTINGS);
+    const saved = safeStorage.getItem(STORAGE_KEY_SETTINGS);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -429,7 +431,7 @@ export const App: React.FC = () => {
 
   // Save progress
   useEffect(() => {
-    localStorage.setItem(
+    safeStorage.setItem(
       STORAGE_KEY_PROGRESS,
       JSON.stringify({
         currentLevelId,
@@ -443,35 +445,35 @@ export const App: React.FC = () => {
 
   // Save economy & inventory
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins }));
+    safeStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins }));
   }, [coins]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(inventory));
+    safeStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(inventory));
   }, [inventory]);
 
   // Save relics
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_RELICS, JSON.stringify(discoveredRelicIds));
+    safeStorage.setItem(STORAGE_KEY_RELICS, JSON.stringify(discoveredRelicIds));
   }, [discoveredRelicIds]);
 
   // Save settings
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+    safeStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
   }, [settings]);
 
   // Save explorer avatar profile
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(explorerProfile));
+    safeStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(explorerProfile));
   }, [explorerProfile]);
 
   // Save expedition medals & claimed bounties
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_MEDALS, JSON.stringify(unlockedMedalIds));
+    safeStorage.setItem(STORAGE_KEY_MEDALS, JSON.stringify(unlockedMedalIds));
   }, [unlockedMedalIds]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_CLAIMED_MEDALS, JSON.stringify(claimedMedalIds));
+    safeStorage.setItem(STORAGE_KEY_CLAIMED_MEDALS, JSON.stringify(claimedMedalIds));
   }, [claimedMedalIds]);
 
   // Unlock Medal helper with celebratory sound, haptics & floating toast
@@ -502,7 +504,7 @@ export const App: React.FC = () => {
 
   // Save claimed passport visa bounties
   useEffect(() => {
-    localStorage.setItem('differenze_claimed_visas_v1', JSON.stringify(claimedVisaIds));
+    safeStorage.setItem('differenze_claimed_visas_v1', JSON.stringify(claimedVisaIds));
   }, [claimedVisaIds]);
 
   const handleClaimVisaBounty = (visa: ConsularVisa) => {
@@ -513,25 +515,48 @@ export const App: React.FC = () => {
     triggerHaptic('success');
   };
 
-  // Check Wardrobe RPG Achievements (8 slots & Set bonus)
+  // Check Passive & Milestones Expedition Medals
   useEffect(() => {
-    const all8Equipped = Boolean(
-      explorerProfile.equippedOutfitId &&
-      explorerProfile.equippedHeadgearId &&
-      explorerProfile.equippedToolId &&
-      explorerProfile.equippedOffHandId &&
-      explorerProfile.equippedLegsId &&
-      explorerProfile.equippedBootsId &&
-      explorerProfile.equippedTalismanId &&
-      explorerProfile.equippedBackId
-    );
-    if (all8Equipped) {
-      unlockMedal('full_gear');
-    }
     if (primaryActiveSet) {
-      unlockMedal('set_synergy');
+      unlockMedal('full_set_synergy');
     }
-  }, [explorerProfile, primaryActiveSet, unlockMedal]);
+    if (coins >= 1000) {
+      unlockMedal('wealthy_explorer');
+    }
+    if (discoveredClues.length >= 20) {
+      unlockMedal('lore_master');
+    }
+    if (discoveredRelicIds.length >= 3) {
+      unlockMedal('relic_hunter');
+    }
+    if (currentLevel.chapterNumber >= 5 || completedLevelIds.some(id => id >= 41)) {
+      unlockMedal('andes_climber');
+    }
+    if (currentLevel.chapterNumber >= 9 || completedLevelIds.some(id => id >= 81)) {
+      unlockMedal('sun_priest');
+    }
+    if (completedLevelIds.length >= 120) {
+      unlockMedal('grand_archaeologist');
+    }
+  }, [
+    coins,
+    primaryActiveSet,
+    discoveredClues.length,
+    discoveredRelicIds.length,
+    currentLevel.chapterNumber,
+    completedLevelIds,
+    unlockMedal,
+  ]);
+
+  // Check Cartographer Medal when consulting the 3D Globe / Map
+  useEffect(() => {
+    if (isTreasureMapOpen) {
+      const completedStagesCount = completedLevelIds.filter(id => id % 10 === 0).length;
+      if (completedStagesCount >= 10 || completedLevelIds.length >= 100) {
+        unlockMedal('cartographer');
+      }
+    }
+  }, [isTreasureMapOpen, completedLevelIds, unlockMedal]);
 
   // Computed flag: Check if any modal or blocking overlay is open
   const isAnyModalOpen =
@@ -729,6 +754,7 @@ export const App: React.FC = () => {
     setActiveClueToast(null);
     setLevelCoinsEarned(0);
     setComboStreak(0);
+    usedAssistanceThisLevelRef.current = false;
     if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
     setIsLevelCompleteOpen(false);
     setIsGameOverOpen(false);
@@ -791,9 +817,9 @@ export const App: React.FC = () => {
       setActiveClueToast(diff);
 
       // Check Real-time Expedition Medal Unlocks
-      unlockMedal('first_discovery');
-      if (nextStreak >= 4) unlockMedal('archaeo_combo');
-      if (discoveredClues.length + 1 >= 20) unlockMedal('clue_detective');
+      if (nextStreak >= 4) unlockMedal('combo_master');
+      if (discoveredClues.length + 1 >= 20) unlockMedal('lore_master');
+      if (nextFound.length >= 5 && !usedAssistanceThisLevelRef.current) unlockMedal('hawk_eye');
 
       // Clear active hint or radar if this was the targeted diff
       if (activeHint && activeHint.id === diff.id) {
@@ -809,10 +835,12 @@ export const App: React.FC = () => {
         setIsTimeFrozen(false);
 
         // Check Victory Medals
-        if (errorsCount === 0) unlockMedal('hawk_eye');
+        if (errorsCount === 0) unlockMedal('flawless_run');
         if (timeElapsed < 45) unlockMedal('speed_demon');
-        if (currentLevel.id >= 10 || currentLevel.chapterNumber >= 1) unlockMedal('oxford_scholar');
-        if (currentLevel.id >= 120) unlockMedal('paititi_legend');
+        if (currentLevel.chapterNumber >= 5) unlockMedal('andes_climber');
+        if (currentLevel.chapterNumber >= 9) unlockMedal('sun_priest');
+        if (currentLevel.id >= 120 || completedLevelIds.length + 1 >= 120) unlockMedal('grand_archaeologist');
+        if (!usedAssistanceThisLevelRef.current) unlockMedal('hawk_eye');
 
         // Calculate time-based 3-star speed bonus coins:
         // <= 105s (1:45) = 3 stars -> +100 coins
@@ -837,7 +865,6 @@ export const App: React.FC = () => {
           setHasUnreadDaily(false);
           setIsDailyActive(false);
           sound.playDailyRewardClaim();
-          unlockMedal('daily_veteran');
         }
 
         setCoins(c => c + totalBonus);
@@ -892,8 +919,7 @@ export const App: React.FC = () => {
 
       setDiscoveredRelicIds(prev => {
         const next = [...prev, relic.id];
-        if (next.length >= 1) unlockMedal('relic_hunter');
-        if (next.length >= 3) unlockMedal('antiquarian');
+        if (next.length >= 3) unlockMedal('relic_hunter');
         return next;
       });
       setCoins(c => c + relic.coinReward);
@@ -957,6 +983,7 @@ export const App: React.FC = () => {
         triggerHaptic('powerup_used', settings.vibrationEnabled);
       } else if (type === 'compass_radar') {
         if (inventory.compass_radar <= 0) return;
+        usedAssistanceThisLevelRef.current = true;
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
         setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar - 1 }));
@@ -977,6 +1004,7 @@ export const App: React.FC = () => {
         }, 8000);
       } else if (type === 'hint') {
         if (inventory.hint <= 0) return;
+        usedAssistanceThisLevelRef.current = true;
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
         setInventory(inv => ({ ...inv, hint: inv.hint - 1 }));
@@ -1074,7 +1102,7 @@ export const App: React.FC = () => {
     setSeenStageBriefings(prev => {
       if (prev.includes(stageNumber)) return prev;
       const next = [...prev, stageNumber];
-      localStorage.setItem(STORAGE_KEY_SEEN_BRIEFINGS, JSON.stringify(next));
+      safeStorage.setItem(STORAGE_KEY_SEEN_BRIEFINGS, JSON.stringify(next));
       return next;
     });
 
@@ -1112,13 +1140,13 @@ export const App: React.FC = () => {
     (choice: DilemmaChoice) => {
       // 1. Record expedition conduct choice & alignment
       try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPEDITION_CHOICES) || '{}');
+        const saved = JSON.parse(safeStorage.getItem(STORAGE_KEY_EXPEDITION_CHOICES) || '{}');
         saved[currentLevel.chapterNumber] = {
           choiceId: choice.id,
           alignment: choice.alignment,
           timestamp: Date.now(),
         };
-        localStorage.setItem(STORAGE_KEY_EXPEDITION_CHOICES, JSON.stringify(saved));
+        safeStorage.setItem(STORAGE_KEY_EXPEDITION_CHOICES, JSON.stringify(saved));
       } catch (e) {
         console.error('Failed to save expedition dilemma choice', e);
       }
@@ -1126,47 +1154,23 @@ export const App: React.FC = () => {
       // 2. Award tactical reward perk
       if (choice.rewardType === 'coins') {
         const amt = choice.rewardValue || 250;
-        setCoins(c => {
-          const next = c + amt;
-          localStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins: next }));
-          return next;
-        });
+        setCoins(c => c + amt);
       } else if (choice.rewardType === 'shield') {
         const amt = choice.rewardValue || 1;
-        setInventory(inv => {
-          const next = { ...inv, error_shield: inv.error_shield + amt };
-          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
-          return next;
-        });
+        setInventory(inv => ({ ...inv, error_shield: inv.error_shield + amt }));
       } else if (choice.rewardType === 'hint') {
         const amt = choice.rewardValue || 2;
-        setInventory(inv => {
-          const next = { ...inv, hint: inv.hint + amt };
-          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
-          return next;
-        });
+        setInventory(inv => ({ ...inv, hint: inv.hint + amt }));
       } else if (choice.rewardType === 'freeze') {
         const amt = choice.rewardValue || 1;
-        setInventory(inv => {
-          const next = { ...inv, freeze_time: inv.freeze_time + amt };
-          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
-          return next;
-        });
+        setInventory(inv => ({ ...inv, freeze_time: inv.freeze_time + amt }));
       } else if (choice.rewardType === 'compass') {
         const amt = choice.rewardValue || 1;
-        setInventory(inv => {
-          const next = { ...inv, compass_radar: inv.compass_radar + amt };
-          localStorage.setItem(STORAGE_KEY_INVENTORY, JSON.stringify(next));
-          return next;
-        });
+        setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar + amt }));
       } else {
         // Fallback or lore reward: grant bonus gold
         const amt = choice.rewardValue || 150;
-        setCoins(c => {
-          const next = c + amt;
-          localStorage.setItem(STORAGE_KEY_ECONOMY, JSON.stringify({ coins: next }));
-          return next;
-        });
+        setCoins(c => c + amt);
       }
 
       // 3. Close dilemma and advance to next stage/level
@@ -1206,7 +1210,7 @@ export const App: React.FC = () => {
   const handleConfirmAvatarProfile = useCallback((profile: ExplorerProfile) => {
     setExplorerProfile(profile);
     setHasCompletedAvatarSetup(true);
-    localStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(profile));
+    safeStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(profile));
     setIsAvatarCreatorOpen(false);
 
     // Launch the cinematic prologue if tutorial has not been completed yet!
@@ -1215,7 +1219,7 @@ export const App: React.FC = () => {
     } else {
       setIsTimerRunning(true);
     }
-  }, []);
+  }, [hasCompletedTutorial]);
 
   const handlePrologueComplete = useCallback(() => {
     setIsPrologueOpen(false);
@@ -1225,7 +1229,7 @@ export const App: React.FC = () => {
   const handleTutorialComplete = useCallback(() => {
     setIsTutorialOpen(false);
     setHasCompletedTutorial(true);
-    localStorage.setItem(STORAGE_KEY_TUTORIAL, 'true');
+    safeStorage.setItem(STORAGE_KEY_TUTORIAL, 'true');
     setIsTreasureMapOpen(false);
     loadLevel(1);
     setIsTimerRunning(true);
@@ -1484,14 +1488,14 @@ export const App: React.FC = () => {
           bgmTheme={customBgmTheme}
           onChangeBgmTheme={handleChangeBgmTheme}
           onResetProgress={() => {
-            localStorage.removeItem(STORAGE_KEY_PROGRESS);
-            localStorage.removeItem(STORAGE_KEY_ECONOMY);
-            localStorage.removeItem(STORAGE_KEY_INVENTORY);
-            localStorage.removeItem(STORAGE_KEY_RELICS);
-            localStorage.removeItem(STORAGE_KEY_AVATAR);
-            localStorage.removeItem(STORAGE_KEY_TUTORIAL);
-            localStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
-            localStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
+            safeStorage.removeItem(STORAGE_KEY_PROGRESS);
+            safeStorage.removeItem(STORAGE_KEY_ECONOMY);
+            safeStorage.removeItem(STORAGE_KEY_INVENTORY);
+            safeStorage.removeItem(STORAGE_KEY_RELICS);
+            safeStorage.removeItem(STORAGE_KEY_AVATAR);
+            safeStorage.removeItem(STORAGE_KEY_TUTORIAL);
+            safeStorage.removeItem(STORAGE_KEY_SEEN_BRIEFINGS);
+            safeStorage.removeItem(STORAGE_KEY_EXPEDITION_CHOICES);
             setCompletedLevelIds([]);
             setDiscoveredClues([]);
             setDiscoveredRelicIds([]);

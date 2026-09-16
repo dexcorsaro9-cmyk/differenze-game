@@ -22,28 +22,39 @@ export const RelicFoundModal: React.FC<RelicFoundModalProps> = ({
       // Golden fireworks confetti burst
       const end = Date.now() + 1800;
       const colors = ['#f59e0b', '#fbbf24', '#fef08a', '#d97706'];
+      let animId: number | null = null;
 
       const frame = () => {
-        confetti({
-          particleCount: 4,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors,
-        });
-        confetti({
-          particleCount: 4,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors,
-        });
+        try {
+          confetti({
+            particleCount: 4,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors,
+          });
+          confetti({
+            particleCount: 4,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors,
+          });
+        } catch {
+          // Confetti unavailable in certain embedded environments
+        }
 
         if (Date.now() < end) {
-          requestAnimationFrame(frame);
+          animId = requestAnimationFrame(frame);
         }
       };
-      frame();
+      animId = requestAnimationFrame(frame);
+
+      return () => {
+        if (animId !== null) {
+          cancelAnimationFrame(animId);
+        }
+      };
     }
   }, [isOpen, relic]);
 

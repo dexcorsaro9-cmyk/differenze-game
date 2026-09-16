@@ -24,6 +24,7 @@ import type { CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
+import { safeStorage } from '../utils/storage';
 
 interface HiddenObjectViewProps {
   imageA: string;
@@ -121,19 +122,15 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
   // Diurnal Lighting Atmosphere
   const [atmosphereMode, setAtmosphereMode] = useState<'dawn' | 'noon' | 'dusk' | 'lantern'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('differenze_atmosphere');
-      if (saved === 'dawn' || saved === 'noon' || saved === 'dusk' || saved === 'lantern') return saved;
-    }
+    const saved = safeStorage.getItem('differenze_atmosphere');
+    if (saved === 'dawn' || saved === 'noon' || saved === 'dusk' || saved === 'lantern') return saved;
     return 'dawn';
   });
 
   // Photo Plate Emulsion Filter
   const [photoFilter, setPhotoFilter] = useState<'silver' | 'cyanotype' | 'autochrome' | 'natural'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('differenze_photofilter');
-      if (saved === 'silver' || saved === 'cyanotype' || saved === 'autochrome' || saved === 'natural') return saved;
-    }
+    const saved = safeStorage.getItem('differenze_photofilter');
+    if (saved === 'silver' || saved === 'cyanotype' || saved === 'autochrome' || saved === 'natural') return saved;
     return 'silver';
   });
 
@@ -177,7 +174,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     const nextIdx = (modes.indexOf(atmosphereMode) + 1) % modes.length;
     const nextMode = modes[nextIdx];
     setAtmosphereMode(nextMode);
-    localStorage.setItem('differenze_atmosphere', nextMode);
+    safeStorage.setItem('differenze_atmosphere', nextMode);
     sound.playAtmosphereChange();
     triggerHaptic('light');
   };
@@ -187,7 +184,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     const nextIdx = (filters.indexOf(photoFilter) + 1) % filters.length;
     const nextFilter = filters[nextIdx];
     setPhotoFilter(nextFilter);
-    localStorage.setItem('differenze_photofilter', nextFilter);
+    safeStorage.setItem('differenze_photofilter', nextFilter);
     sound.playPaperInspect();
     triggerHaptic('light');
   };

@@ -14,6 +14,7 @@ import {
 import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { safeStorage } from '../utils/storage';
 
 interface GrandFinaleModalProps {
   isOpen: boolean;
@@ -88,10 +89,10 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   onOpenMappamondo,
 }) => {
   const [selectedEnding, setSelectedEnding] = useState<EndingType | null>(() => {
-    return (localStorage.getItem('differenze_saga_ending_v1') as EndingType) || null;
+    return (safeStorage.getItem('differenze_saga_ending_v1') as EndingType) || null;
   });
   const [isEndingConfirmed, setIsEndingConfirmed] = useState<boolean>(() => {
-    return Boolean(localStorage.getItem('differenze_saga_ending_v1'));
+    return Boolean(safeStorage.getItem('differenze_saga_ending_v1'));
   });
 
   if (!isOpen) return null;
@@ -103,7 +104,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   const handleChooseEnding = (ending: EndingType) => {
     setSelectedEnding(ending);
     setIsEndingConfirmed(true);
-    localStorage.setItem('differenze_saga_ending_v1', ending);
+    safeStorage.setItem('differenze_saga_ending_v1', ending);
     sound.playVictory();
     triggerHaptic('success');
 

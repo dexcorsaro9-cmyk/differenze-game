@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Sparkles } from 'lucide-react';
 import type { CollectibleRelic } from '../data/collectiblesData';
 
@@ -20,9 +20,21 @@ export const HiddenArtifactSpot: React.FC<HiddenArtifactSpotProps> = ({
     onDiscover(relic);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onDiscover(relic);
+  };
+
   return (
     <div
       onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className="absolute -translate-x-1/2 -translate-y-1/2 z-25 cursor-pointer select-none group"
       style={{ left: `${relic.coords.x}%`, top: `${relic.coords.y}%` }}
       title="Un bagliore dorato... cosa c'è nascosto qui?!"

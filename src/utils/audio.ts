@@ -1132,8 +1132,12 @@ class SoundManager {
   private isBgmPlaying: boolean = false;
   private bgmEnabled: boolean = (() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('differenze_bgm_enabled');
-      return saved !== 'false';
+      try {
+        const saved = localStorage.getItem('differenze_bgm_enabled');
+        return saved !== 'false';
+      } catch {
+        return true;
+      }
     }
     return true;
   })();
@@ -1146,7 +1150,11 @@ class SoundManager {
   // 1928 Shellac surface noise & acoustic horn simulation
   private isVintageCrackleEnabled: boolean = (() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('differenze_vintage_crackle') === 'true';
+      try {
+        return localStorage.getItem('differenze_vintage_crackle') === 'true';
+      } catch {
+        return false;
+      }
     }
     return false;
   })();
@@ -1187,7 +1195,9 @@ class SoundManager {
   public setBGMEnabled(enabled: boolean) {
     this.bgmEnabled = enabled;
     if (typeof window !== 'undefined') {
-      localStorage.setItem('differenze_bgm_enabled', enabled ? 'true' : 'false');
+      try {
+        localStorage.setItem('differenze_bgm_enabled', enabled ? 'true' : 'false');
+      } catch {}
     }
     if (!enabled) {
       this.pauseBGM();
@@ -1250,7 +1260,9 @@ class SoundManager {
   public setVintageCrackleEnabled(enabled: boolean) {
     this.isVintageCrackleEnabled = enabled;
     if (typeof window !== 'undefined') {
-      localStorage.setItem('differenze_vintage_crackle', enabled ? 'true' : 'false');
+      try {
+        localStorage.setItem('differenze_vintage_crackle', enabled ? 'true' : 'false');
+      } catch {}
     }
 
     if (this.ctx && this.bgmFilterNode) {

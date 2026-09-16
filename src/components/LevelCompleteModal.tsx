@@ -92,16 +92,17 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       triggerHaptic('medium');
     }, 1500);
 
-    // 3. Smooth Coin Count-Up Ticker starting at 1000ms
+    // 3. Smooth Coin Count-Up Ticker starting at 900ms
+    let coinInterval: ReturnType<typeof setInterval> | null = null;
     const coinTimer = setTimeout(() => {
       const steps = 15;
       const stepValue = Math.max(1, Math.floor(coinsEarned / steps));
       let current = 0;
-      const coinInterval = setInterval(() => {
+      coinInterval = setInterval(() => {
         current += stepValue;
         if (current >= coinsEarned) {
           setDisplayCoins(coinsEarned);
-          clearInterval(coinInterval);
+          if (coinInterval) clearInterval(coinInterval);
         } else {
           setDisplayCoins(current);
           sound.playCoinTick();
@@ -118,12 +119,16 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         return clearInterval(interval);
       }
 
-      confetti({
-        startVelocity: 30,
-        spread: 360,
-        ticks: 60,
-        origin: { x: Math.random(), y: Math.random() - 0.2 },
-      });
+      try {
+        confetti({
+          startVelocity: 30,
+          spread: 360,
+          ticks: 60,
+          origin: { x: Math.random(), y: Math.random() - 0.2 },
+        });
+      } catch {
+        // Confetti unavailable in certain embedded environments
+      }
     }, 300);
 
     return () => {
@@ -132,6 +137,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       if (t3) clearTimeout(t3);
       clearTimeout(stampTimer);
       clearTimeout(coinTimer);
+      if (coinInterval) clearInterval(coinInterval);
       clearInterval(interval);
     };
   }, [stars, coinsEarned]);
