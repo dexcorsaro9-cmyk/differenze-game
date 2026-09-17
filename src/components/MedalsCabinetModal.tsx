@@ -19,6 +19,8 @@ import {
 import { EXPEDITION_MEDALS, type ExpeditionMedal } from '../data/achievementsData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedMedal } from '../i18n/gameDataTranslations';
 
 interface MedalsCabinetModalProps {
   isOpen: boolean;
@@ -37,6 +39,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
   onClaimBounty,
   claimedMedalIds = [],
 }) => {
+  const { t, language } = useTranslation();
   if (!isOpen) return null;
 
   const unlockedCount = unlockedMedalIds.length;
@@ -67,21 +70,21 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
           border: 'border-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.7)]',
           badge: 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-stone-950',
           metal: 'bg-gradient-to-tr from-yellow-600 via-amber-300 to-yellow-200 text-stone-950',
-          label: 'LEGGENDARIO',
+          label: t.medals.legendary,
         };
       case 'gold':
         return {
           border: 'border-amber-400/80 shadow-[0_0_12px_rgba(245,158,11,0.5)]',
           badge: 'bg-amber-500/30 border border-amber-400 text-amber-200',
           metal: 'bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-300 text-stone-950',
-          label: 'ORO',
+          label: t.medals.gold,
         };
       case 'silver':
         return {
           border: 'border-slate-400/70',
           badge: 'bg-slate-500/30 border border-slate-400 text-slate-200',
           metal: 'bg-gradient-to-tr from-slate-500 via-slate-200 to-slate-400 text-stone-950',
-          label: 'ARGENTO',
+          label: t.medals.silver,
         };
       case 'bronze':
       default:
@@ -89,7 +92,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
           border: 'border-amber-800/70',
           badge: 'bg-amber-900/40 border border-amber-700 text-amber-300',
           metal: 'bg-gradient-to-tr from-amber-900 via-amber-700 to-amber-800 text-amber-100',
-          label: 'BRONZO',
+          label: t.medals.bronze,
         };
     }
   };
@@ -113,10 +116,10 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
             </div>
             <div>
               <span className="text-[10px] uppercase font-bold tracking-widest text-amber-400 font-mono block">
-                ROYAL GEOGRAPHIC SOCIETY • 1928
+                {t.medals.subtitle}
               </span>
               <h2 className="text-lg font-black text-amber-100 font-serif leading-none flex items-center gap-2">
-                Medagliere della Spedizione
+                {t.medals.title}
               </h2>
             </div>
           </div>
@@ -137,7 +140,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
                 onClose();
               }}
               className="p-1.5 rounded-full bg-stone-900/80 hover:bg-stone-800 text-stone-400 hover:text-white border border-stone-700 transition cursor-pointer active:scale-95"
-              title="Chiudi Medagliere"
+              title={t.common.close}
             >
               <X className="w-4 h-4" />
             </button>
@@ -149,7 +152,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
           
           <div className="text-center pb-1">
             <p className="text-xs text-amber-200/80 font-serif italic">
-              Onorificenze ufficiali conferite dalla Royal Geographic Society di Londra per meriti eccezionali sul campo.
+              {t.medals.subtitle}
             </p>
           </div>
 
@@ -159,6 +162,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
               const isUnlocked = unlockedMedalIds.includes(medal.id);
               const isClaimed = claimedMedalIds.includes(medal.id);
               const tierInfo = getTierBadge(medal.medalTier);
+              const locMedal = getLocalizedMedal(medal, language);
 
               return (
                 <div
@@ -197,7 +201,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
                           isUnlocked ? 'text-amber-100' : 'text-stone-400'
                         }`}
                       >
-                        {medal.title}
+                        {locMedal.title}
                       </h4>
                       <span className={`text-[8px] font-black px-1.5 py-0.2 rounded shrink-0 ${tierInfo.badge}`}>
                         {tierInfo.label}
@@ -205,11 +209,11 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
                     </div>
 
                     <span className="text-[10px] text-amber-400/90 font-medium block leading-tight font-serif italic mb-1">
-                      {medal.subtitle}
+                      {locMedal.subtitle}
                     </span>
 
                     <p className="text-[10px] text-stone-300 leading-relaxed line-clamp-2">
-                      {medal.description}
+                      {locMedal.description}
                     </p>
 
                     {/* Reward & Claim */}
@@ -222,7 +226,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
                       {isUnlocked ? (
                         isClaimed ? (
                           <span className="text-[9px] text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                            ✓ Riscattato
+                            {t.medals.bountyClaimed}
                           </span>
                         ) : onClaimBounty || onClaimMedalReward ? (
                           <button
@@ -238,16 +242,16 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
                             }}
                             className="px-2 py-0.5 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 font-black text-[9px] shadow active:scale-95 transition cursor-pointer hover:brightness-110 animate-pulse"
                           >
-                            Riscatta Premio
+                            {t.medals.claimBounty}
                           </button>
                         ) : (
                           <span className="text-[9px] text-amber-400 font-bold">
-                            ✓ Sbloccato
+                            {t.common.unlocked}
                           </span>
                         )
                       ) : (
                         <span className="text-[9px] text-stone-500 font-medium">
-                          Bloccato
+                          {t.common.locked}
                         </span>
                       )}
                     </div>
@@ -260,7 +264,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
 
         {/* Footer */}
         <div className="p-3 bg-[#120a05] border-t border-amber-900/60 flex items-center justify-between text-xs text-amber-300/80 font-serif">
-          <span>Tutti gli obiettivi sono memorizzati sul tuo profilo di spedizione.</span>
+          <span>{t.medals.subtitle}</span>
           <button
             type="button"
             onClick={() => {
@@ -269,7 +273,7 @@ export const MedalsCabinetModal: React.FC<MedalsCabinetModalProps> = ({
             }}
             className="px-4 py-1 rounded-xl bg-amber-600 hover:bg-amber-500 text-stone-950 font-black font-serif uppercase tracking-wider text-xs shadow transition cursor-pointer active:scale-95"
           >
-            Chiudi
+            {t.common.close}
           </button>
         </div>
       </div>

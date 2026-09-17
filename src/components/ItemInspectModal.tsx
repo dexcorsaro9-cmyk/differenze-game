@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedOutfit, getLocalizedAccessory } from '../i18n/gameDataTranslations';
 
 interface ItemInspectModalProps {
   item: WardrobeOutfit | WardrobeAccessory | null;
@@ -52,16 +54,21 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
   onTryOn,
   onBuyOrEquip,
 }) => {
+  const { language, t, interpolate } = useTranslation();
+
   if (!isOpen || !item) return null;
 
   const isOutfit = 'avatarId' in item;
+  const locItem = isOutfit
+    ? getLocalizedOutfit(item as WardrobeOutfit, language)
+    : getLocalizedAccessory(item as WardrobeAccessory, language);
 
   const renderIcon = () => {
     if (isOutfit && (item as WardrobeOutfit).image) {
       return (
         <img
           src={(item as WardrobeOutfit).image}
-          alt={item.name}
+          alt={locItem.name}
           className="w-full h-full object-cover object-top rounded-xl shadow-lg"
         />
       );
@@ -96,12 +103,13 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
         <div className="relative px-4 py-3 border-b border-amber-900/50 bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 flex items-center justify-between">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[10px] font-bold uppercase tracking-wider">
             <Eye className="w-3 h-3 text-amber-400" />
-            Scheda Oggetto & Anteprima
+            {t.itemInspect.badge}
           </div>
           <button
             type="button"
             onClick={onClose}
             className="p-1 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white border border-stone-700 transition cursor-pointer"
+            title={t.common.close}
           >
             <X className="w-4 h-4" />
           </button>
@@ -120,10 +128,10 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
 
           <div className="relative z-10 mt-3 flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-600/40 text-amber-300 text-[10px] font-bold uppercase tracking-wider">
-              {item.tag}
+              {locItem.tag}
             </span>
             <span className="text-[10px] text-stone-400 font-mono">
-              Liv. Richiesto {item.requiredLevel}
+              {interpolate(t.itemInspect.levelReq, { level: locItem.requiredLevel })}
             </span>
           </div>
         </div>
@@ -132,24 +140,24 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
         <div className="p-4 space-y-3">
           <div>
             <h3 className="text-base font-bold text-amber-100 font-serif leading-tight">
-              {item.name}
+              {locItem.name}
             </h3>
             <p className="text-xs text-stone-300 leading-relaxed mt-1">
-              {item.description}
+              {locItem.description}
             </p>
           </div>
 
           {/* Perk Card */}
-          {item.perk && (
+          {locItem.perk && (
             <div className="p-2.5 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-emerald-400 shrink-0" />
                 <div>
                   <div className="text-[10px] uppercase font-bold text-emerald-400/80 tracking-wider">
-                    Vantaggio di Spedizione
+                    {t.itemInspect.perkTitle}
                   </div>
                   <div className="text-xs font-bold text-emerald-200">
-                    {item.perk.label}
+                    {locItem.perk.label}
                   </div>
                 </div>
               </div>
@@ -159,15 +167,15 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
 
           {/* Price / Unlock Requirements */}
           <div className="flex items-center justify-between pt-1 text-xs">
-            <span className="text-stone-400 font-medium">Costo Spedizione:</span>
+            <span className="text-stone-400 font-medium">{t.itemInspect.costTitle}</span>
             {!isUnlocked ? (
               <span className="font-bold text-amber-300 flex items-center gap-1">
                 <Coins className="w-3.5 h-3.5 text-amber-400" />
-                {item.cost === 0 ? 'Gratuito' : `${item.cost} Monete`}
+                {locItem.cost === 0 ? t.itemInspect.free : `${locItem.cost} ${t.common.coins}`}
               </span>
             ) : (
               <span className="font-bold text-emerald-400 flex items-center gap-1">
-                <Check className="w-3.5 h-3.5" /> Posseduto
+                <Check className="w-3.5 h-3.5" /> {t.itemInspect.owned}
               </span>
             )}
           </div>
@@ -189,7 +197,7 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
             }`}
           >
             <Eye className="w-3.5 h-3.5 text-amber-400" />
-            {isPreviewing ? 'In Prova' : 'Prova sull\'Avatar'}
+            {isPreviewing ? t.itemInspect.inPreview : t.itemInspect.tryOn}
           </button>
 
           <button
@@ -211,22 +219,22 @@ export const ItemInspectModal: React.FC<ItemInspectModalProps> = ({
             {isEquipped ? (
               <>
                 <Check className="w-3.5 h-3.5 stroke-[3]" />
-                Indossato
+                {t.itemInspect.equipped}
               </>
             ) : isUnlocked ? (
               <>
                 <Check className="w-3.5 h-3.5" />
-                Indossa
+                {t.itemInspect.equip}
               </>
             ) : !canUnlockLevel || !canUnlockRelics ? (
               <>
                 <Lock className="w-3.5 h-3.5" />
-                Bloccato
+                {t.itemInspect.locked}
               </>
             ) : (
               <>
                 <Coins className="w-3.5 h-3.5" />
-                Acquista
+                {t.itemInspect.buy}
               </>
             )}
           </button>

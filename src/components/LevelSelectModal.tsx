@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import type { Level } from '../types/game';
 import { SAGA_MILESTONES_120 } from '../data/sagaLore';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
+import type { Language } from '../i18n/types';
 
 interface LevelSelectModalProps {
   isOpen: boolean;
@@ -25,19 +28,49 @@ interface LevelSelectModalProps {
   onSelectLevel: (levelId: number) => void;
 }
 
-const CHAPTER_NAMES: Record<number, { title: string; location: string; short: string }> = {
-  1: { title: "Lo Studio di Oxford", location: "Oxford, Inghilterra", short: "1. Oxford" },
-  2: { title: "I Sotterranei dell'Ossario", location: "Catacombe di Parigi", short: "2. Parigi" },
-  3: { title: "La Bottega dell'Alchimista", location: "Venezia, Italia", short: "3. Venezia" },
-  4: { title: "Il Labirinto di Minosse", location: "Cnosso, Creta", short: "4. Creta" },
-  5: { title: "La Biblioteca Sommersa", location: "Alessandria, Egitto", short: "5. Alessandria" },
-  6: { title: "La Tomba dei Trenta Sacerdoti", location: "Valle dei Re, Luxor", short: "6. Luxor" },
-  7: { title: "L'Oracolo delle Dune", location: "Oasi di Siwa, Sahara", short: "7. Siwa" },
-  8: { title: "La Porta Scavata nella Roccia", location: "Petra, Giordania", short: "8. Petra" },
-  9: { title: "La Gola del Tuono d'Acqua", location: "Cascate dell'Iguazú", short: "9. Iguazú" },
-  10: { title: "I Geoglifi degli Dei", location: "Deserto di Nazca, Perù", short: "10. Nazca" },
-  11: { title: "La Cittadella tra le Nubi", location: "Machu Picchu, Ande", short: "11. Ande" },
-  12: { title: "La Camera d'Oro di Paititi", location: "Santuario di Paititi", short: "12. Paititi" },
+const CHAPTER_NAMES: Record<Language, Record<number, { title: string; location: string; short: string }>> = {
+  it: {
+    1: { title: "Lo Studio di Oxford", location: "Oxford, Inghilterra", short: "1. Oxford" },
+    2: { title: "I Sotterranei dell'Ossario", location: "Catacombe di Parigi", short: "2. Parigi" },
+    3: { title: "La Bottega dell'Alchimista", location: "Venezia, Italia", short: "3. Venezia" },
+    4: { title: "Il Labirinto di Minosse", location: "Cnosso, Creta", short: "4. Creta" },
+    5: { title: "La Biblioteca Sommersa", location: "Alessandria, Egitto", short: "5. Alessandria" },
+    6: { title: "La Tomba dei Trenta Sacerdoti", location: "Valle dei Re, Luxor", short: "6. Luxor" },
+    7: { title: "L'Oracolo delle Dune", location: "Oasi di Siwa, Sahara", short: "7. Siwa" },
+    8: { title: "La Porta Scavata nella Roccia", location: "Petra, Giordania", short: "8. Petra" },
+    9: { title: "La Gola del Tuono d'Acqua", location: "Cascate dell'Iguazú", short: "9. Iguazú" },
+    10: { title: "I Geoglifi degli Dei", location: "Deserto di Nazca, Perù", short: "10. Nazca" },
+    11: { title: "La Cittadella tra le Nubi", location: "Machu Picchu, Ande", short: "11. Ande" },
+    12: { title: "La Camera d'Oro di Paititi", location: "Santuario di Paititi", short: "12. Paititi" },
+  },
+  en: {
+    1: { title: "Oxford Night Study", location: "Oxford, England", short: "1. Oxford" },
+    2: { title: "Catacomb Ossuary Vaults", location: "Paris Catacombs", short: "2. Paris" },
+    3: { title: "The Alchemist's Workshop", location: "Venice, Italy", short: "3. Venice" },
+    4: { title: "The Labyrinth of Minos", location: "Knossos, Crete", short: "4. Crete" },
+    5: { title: "The Sunken Library", location: "Alexandria, Egypt", short: "5. Alexandria" },
+    6: { title: "Tomb of the Thirty Priests", location: "Valley of the Kings, Luxor", short: "6. Luxor" },
+    7: { title: "The Oracle of the Dunes", location: "Siwa Oasis, Sahara", short: "7. Siwa" },
+    8: { title: "The Rock-Hewn Gate", location: "Petra, Jordan", short: "8. Petra" },
+    9: { title: "The Gorge of Thunder Water", location: "Iguazú Falls", short: "9. Iguazú" },
+    10: { title: "Geoglyphs of the Gods", location: "Nazca Desert, Peru", short: "10. Nazca" },
+    11: { title: "Citadel Among the Clouds", location: "Machu Picchu, Andes", short: "11. Andes" },
+    12: { title: "The Golden Chamber of Paititi", location: "Sanctuary of Paititi", short: "12. Paititi" },
+  },
+  es: {
+    1: { title: "El Estudio de Oxford", location: "Oxford, Inglaterra", short: "1. Oxford" },
+    2: { title: "Osario Subterráneo", location: "Catacumbas de París", short: "2. París" },
+    3: { title: "El Taller del Alquimista", location: "Venecia, Italia", short: "3. Venecia" },
+    4: { title: "El Laberinto de Minos", location: "Cnosos, Creta", short: "4. Creta" },
+    5: { title: "La Biblioteca Sumergida", location: "Alejandría, Egipto", short: "5. Alejandría" },
+    6: { title: "La Tumba de los Treinta Sacerdotes", location: "Valle de los Reyes, Luxor", short: "6. Luxor" },
+    7: { title: "El Oráculo de las Dunas", location: "Oasis de Siwa, Sáhara", short: "7. Siwa" },
+    8: { title: "La Puerta Tallada en la Roca", location: "Petra, Jordania", short: "8. Petra" },
+    9: { title: "La Garganta del Agua Atronadora", location: "Cataratas del Iguazú", short: "9. Iguazú" },
+    10: { title: "Los Geoglifos de los Dioses", location: "Desierto de Nazca, Perú", short: "10. Nazca" },
+    11: { title: "La Ciudadela entre las Nubes", location: "Machu Picchu, Andes", short: "11. Andes" },
+    12: { title: "La Cámara de Oro de Paititi", location: "Santuario de Paititi", short: "12. Paititi" },
+  }
 };
 
 export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
@@ -50,6 +83,8 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
   bestTimes = {},
   onSelectLevel,
 }) => {
+  const { language, t, interpolate } = useTranslation();
+
   const currentChapter = useMemo(() => {
     const curLevel = levels.find(l => l.id === currentLevelId);
     return curLevel ? curLevel.chapterNumber : 1;
@@ -66,7 +101,11 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
 
   const chapterLevels = levels.filter(l => l.chapterNumber === selectedChapter);
   const chapterMilestone = SAGA_MILESTONES_120.find(m => m.stageNumber === selectedChapter);
-  const chapterMeta = CHAPTER_NAMES[selectedChapter] || { title: `Capitolo ${selectedChapter}`, location: "Spedizione 1928", short: `Cap. ${selectedChapter}` };
+  const chapterMeta = CHAPTER_NAMES[language]?.[selectedChapter] || CHAPTER_NAMES.it[selectedChapter] || {
+    title: `${t.header.chapter} ${selectedChapter}`,
+    location: language === 'en' ? "1928 Expedition" : language === 'es' ? "Expedición 1928" : "Spedizione 1928",
+    short: `${selectedChapter}`
+  };
 
   const completedInChapter = chapterLevels.filter(l => completedLevelIds.includes(l.id)).length;
   const chapterStars = chapterLevels.reduce((sum, l) => sum + (levelStars[l.id] || 0), 0);
@@ -89,13 +128,13 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
             </div>
             <div>
               <h3 className="text-base sm:text-lg font-black text-amber-100 font-serif tracking-wide flex items-center gap-2">
-                Capitoli & Memorie
+                {t.levelSelect.title}
                 <span className="text-[10px] font-sans font-bold text-amber-400 bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded-full">
-                  120 Tappe Archeologiche
+                  {t.levelSelect.stageMilestones}
                 </span>
               </h3>
               <p className="text-xs text-amber-200/60 font-serif hidden sm:block">
-                Ripercorri i siti indagati dalla Spedizione del Professor Bellini
+                {t.levelSelect.subtitle}
               </p>
             </div>
           </div>
@@ -124,7 +163,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
         <div className="px-3 sm:px-6 py-2.5 bg-black/60 border-b border-amber-950/80 overflow-x-auto scrollbar-none flex items-center gap-1.5 shrink-0">
           {Array.from({ length: 12 }, (_, i) => i + 1).map(chapNum => {
             const isSelected = selectedChapter === chapNum;
-            const meta = CHAPTER_NAMES[chapNum];
+            const meta = CHAPTER_NAMES[language]?.[chapNum] || CHAPTER_NAMES.it[chapNum];
             const chapLvs = levels.filter(l => l.chapterNumber === chapNum);
             const isChapComplete = chapLvs.length > 0 && chapLvs.every(l => completedLevelIds.includes(l.id));
             const chapStCount = chapLvs.reduce((sum, l) => sum + (levelStars[l.id] || 0), 0);
@@ -161,7 +200,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-amber-400 px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/30">
-                Capitolo {selectedChapter} di 12
+                {interpolate(t.levelSelect.chapterOf, { current: selectedChapter, total: 12 })}
               </span>
               <span className="text-xs text-amber-300/80 font-serif flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-amber-400" />
@@ -181,9 +220,9 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
           {/* Chapter Stats */}
           <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
             <div className="text-right">
-              <div className="text-[10px] text-amber-300/70 font-serif uppercase tracking-wider">Avanzamento</div>
+              <div className="text-[10px] text-amber-300/70 font-serif uppercase tracking-wider">{t.levelSelect.progress}</div>
               <div className="text-xs font-bold text-amber-100 font-mono">
-                {completedInChapter} / {chapterLevels.length} Livelli
+                {interpolate(t.levelSelect.levelsCount, { completed: completedInChapter, total: chapterLevels.length })}
               </div>
             </div>
             <div className="px-2.5 py-1 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center gap-1">
@@ -202,6 +241,13 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
             const isCurrent = level.id === currentLevelId;
             const starsEarned = levelStars[level.id] || 0;
             const bestTime = bestTimes[level.id];
+            const localizedTitle = getLocalizedLevelTitle(
+              level.id,
+              level.chapterNumber,
+              level.levelNumberInStage || ((level.id - 1) % 10 + 1),
+              language,
+              level.title
+            );
 
             return (
               <div
@@ -222,7 +268,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                 <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-xl overflow-hidden bg-black border border-amber-900/50 shrink-0 relative">
                   <img
                     src={level.imageA}
-                    alt={level.title}
+                    alt={localizedTitle}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -240,7 +286,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400 px-1.5 py-0.2 rounded bg-amber-950/70 border border-amber-500/30">
-                      Tappa {level.levelNumberInStage || ((level.id - 1) % 10 + 1)}
+                      {t.levelSelect.stage} {level.levelNumberInStage || ((level.id - 1) % 10 + 1)}
                     </span>
                     <span
                       className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
@@ -251,12 +297,12 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                           : 'bg-rose-950/60 text-rose-300 border border-rose-500/30'
                       }`}
                     >
-                      {level.difficulty}
+                      {level.difficulty === 'Facile' ? t.levelSelect.easy : level.difficulty === 'Normale' ? t.levelSelect.normal : t.levelSelect.expert}
                     </span>
                   </div>
 
                   <h5 className="text-xs sm:text-sm font-black text-amber-100 font-serif truncate mt-1">
-                    {level.title}
+                    {localizedTitle}
                   </h5>
 
                   {/* 3 Real Stars & Speedrun Best Time */}
@@ -296,7 +342,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                       className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-black text-xs shadow-[0_0_12px_rgba(245,158,11,0.6)] flex items-center gap-1"
                     >
                       <Play className="w-3 h-3 fill-stone-950" />
-                      <span>In Corso</span>
+                      <span>{t.levelSelect.inProgress}</span>
                     </button>
                   ) : isCompleted ? (
                     <button
@@ -304,7 +350,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                       className="px-2.5 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900/80 text-amber-200 border border-amber-600/40 text-xs font-bold flex items-center gap-1"
                     >
                       <RotateCcw className="w-3 h-3 text-amber-400" />
-                      <span>Rigioca</span>
+                      <span>{t.levelSelect.replayingLevel}</span>
                     </button>
                   ) : (
                     <button
@@ -312,7 +358,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
                       className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow flex items-center gap-1"
                     >
                       <Play className="w-3 h-3 fill-stone-950" />
-                      <span>Gioca</span>
+                      <span>{t.levelSelect.playingLevel}</span>
                     </button>
                   )}
                 </div>
@@ -330,7 +376,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
             className="px-3 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-40 text-stone-300 text-xs font-serif font-bold border border-stone-700 flex items-center gap-1 cursor-pointer"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
-            <span>Capitolo Precedente</span>
+            <span>{t.common.previous}</span>
           </button>
 
           <span className="text-xs text-amber-300/80 font-mono">
@@ -343,7 +389,7 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
             disabled={selectedChapter >= 12}
             className="px-3 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-40 text-stone-300 text-xs font-serif font-bold border border-stone-700 flex items-center gap-1 cursor-pointer"
           >
-            <span>Capitolo Successivo</span>
+            <span>{t.common.next}</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>

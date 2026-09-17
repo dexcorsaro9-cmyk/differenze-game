@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedExplorer, getLocalizedOutfit, getLocalizedAccessory } from '../i18n/gameDataTranslations';
 
 export type EquipmentSlotType =
   | 'headgear'
@@ -68,6 +70,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   showSlotNodes = true,
   showControls = true,
 }) => {
+  const { language, t } = useTranslation();
   const [cameraZoom, setCameraZoom] = useState<'full' | 'chest' | 'face'>('full');
   const [rotation, setRotation] = useState<number>(0); // 0 = front, 180 = back
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -79,11 +82,12 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const currentExplorer = getLocalizedExplorer(EXPLORERS[profile.avatarId] || EXPLORERS.samira, language);
 
   // Active items (preview or equipped)
   const displayOutfitId = previewOutfitId || profile.equippedOutfitId;
-  const displayOutfit = ALL_OUTFITS.find(o => o.id === displayOutfitId);
+  const rawOutfit = ALL_OUTFITS.find(o => o.id === displayOutfitId);
+  const displayOutfit = rawOutfit ? getLocalizedOutfit(rawOutfit, language) : undefined;
   const frontCharacterImage = displayOutfit?.image || currentExplorer.image;
   const backCharacterImage = displayOutfit?.backImage || currentExplorer.backImage;
   const displayHeadgearId = previewHeadgearId !== null ? previewHeadgearId : profile.equippedHeadgearId;
@@ -94,13 +98,20 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   const displayTalismanId = previewTalismanId !== null ? previewTalismanId : profile.equippedTalismanId;
   const displayBackId = previewBackId !== null ? previewBackId : (profile.equippedBackId || 'back_canvas_pack');
 
-  const displayHeadgear = ALL_ACCESSORIES.find(a => a.id === displayHeadgearId);
-  const displayTool = ALL_ACCESSORIES.find(a => a.id === displayToolId);
-  const displayOffHand = ALL_ACCESSORIES.find(a => a.id === displayOffHandId);
-  const displayLegs = ALL_ACCESSORIES.find(a => a.id === displayLegsId);
-  const displayBoots = ALL_ACCESSORIES.find(a => a.id === displayBootsId);
-  const displayTalisman = ALL_ACCESSORIES.find(a => a.id === displayTalismanId);
-  const displayBack = ALL_ACCESSORIES.find(a => a.id === displayBackId);
+  const rawHeadgear = ALL_ACCESSORIES.find(a => a.id === displayHeadgearId);
+  const displayHeadgear = rawHeadgear ? getLocalizedAccessory(rawHeadgear, language) : undefined;
+  const rawTool = ALL_ACCESSORIES.find(a => a.id === displayToolId);
+  const displayTool = rawTool ? getLocalizedAccessory(rawTool, language) : undefined;
+  const rawOffHand = ALL_ACCESSORIES.find(a => a.id === displayOffHandId);
+  const displayOffHand = rawOffHand ? getLocalizedAccessory(rawOffHand, language) : undefined;
+  const rawLegs = ALL_ACCESSORIES.find(a => a.id === displayLegsId);
+  const displayLegs = rawLegs ? getLocalizedAccessory(rawLegs, language) : undefined;
+  const rawBoots = ALL_ACCESSORIES.find(a => a.id === displayBootsId);
+  const displayBoots = rawBoots ? getLocalizedAccessory(rawBoots, language) : undefined;
+  const rawTalisman = ALL_ACCESSORIES.find(a => a.id === displayTalismanId);
+  const displayTalisman = rawTalisman ? getLocalizedAccessory(rawTalisman, language) : undefined;
+  const rawBack = ALL_ACCESSORIES.find(a => a.id === displayBackId);
+  const displayBack = rawBack ? getLocalizedAccessory(rawBack, language) : undefined;
 
   const isAnyPreviewActive =
     previewOutfitId !== null ||
@@ -264,8 +275,8 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
         <div className="absolute top-2 left-2 right-2 sm:left-4 sm:right-4 z-40 flex items-center justify-between bg-stone-900/95 border border-amber-400/80 rounded-xl px-2.5 py-1.5 shadow-2xl backdrop-blur-md pointer-events-auto">
           <div className="flex items-center gap-1.5 text-xs text-amber-200 font-bold truncate">
             <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-spin-slow" />
-            <span className="text-[10px] uppercase text-amber-400 tracking-wider">Camerino RPG:</span>
-            <span className="truncate text-[11px]">Oggetti in Prova Attivi</span>
+            <span className="text-[10px] uppercase text-amber-400 tracking-wider">{t.wardrobe.fittingRoom}:</span>
+            <span className="truncate text-[11px]">{t.wardrobe.previewing}</span>
           </div>
           <button
             type="button"
@@ -278,7 +289,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
             className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-amber-300 text-[10px] font-bold border border-stone-600 transition cursor-pointer shrink-0 active:scale-95"
           >
             <RotateCcw className="w-3 h-3" />
-            <span>Ripristina</span>
+            <span>{t.wardrobe.clearPreview}</span>
           </button>
         </div>
       )}
@@ -620,7 +631,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Testa / Copricapo"
+                  title={t.wardrobe.slotHeadgear}
                 >
                   <Crown className="w-3.5 h-3.5" />
                 </button>
@@ -634,7 +645,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Collo / Amuleto Sacro"
+                  title={t.wardrobe.slotTalisman}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                 </button>
@@ -648,7 +659,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Busto / Tenuta & Giacca"
+                  title={t.wardrobe.slotTorso}
                 >
                   <Layers className="w-3.5 h-3.5" />
                 </button>
@@ -665,7 +676,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Schiena / Zaino & Mantello (Clicca per girare al retro)"
+                  title={t.avatarShowcase.backRear}
                 >
                   <Backpack className="w-3.5 h-3.5" />
                 </button>
@@ -679,7 +690,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Mano Destra / Strumento Primario"
+                  title={t.wardrobe.slotMainHand}
                 >
                   <Hammer className="w-3.5 h-3.5" />
                 </button>
@@ -693,7 +704,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Mano Sinistra / Scudo & Carte"
+                  title={t.wardrobe.slotOffHand}
                 >
                   <Shield className="w-3.5 h-3.5" />
                 </button>
@@ -707,7 +718,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Gambe / Pantaloni Tattici"
+                  title={t.wardrobe.slotLegs}
                 >
                   <Shield className="w-3.5 h-3.5" />
                 </button>
@@ -721,7 +732,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Piedi / Stivali da Marcia"
+                  title={t.wardrobe.slotBoots}
                 >
                   <Footprints className="w-3.5 h-3.5" />
                 </button>
@@ -742,7 +753,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Testa / Copricapo Posteriore"
+                  title={t.avatarShowcase.headgearRear}
                 >
                   <Crown className="w-3.5 h-3.5" />
                 </button>
@@ -756,7 +767,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border-2 border-amber-500 shadow-lg'
                   }`}
-                  title="Schiena / Zaino & Equipaggiamento da Spalla"
+                  title={t.avatarShowcase.backRear}
                 >
                   <Backpack className="w-4 h-4" />
                 </button>
@@ -770,7 +781,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Busto Posteriore / Mantello"
+                  title={t.avatarShowcase.torsoRear}
                 >
                   <Layers className="w-3.5 h-3.5" />
                 </button>
@@ -784,7 +795,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Gambe Posteriori / Tasche Tattiche"
+                  title={t.avatarShowcase.legsRear}
                 >
                   <Shield className="w-3.5 h-3.5" />
                 </button>
@@ -798,7 +809,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
                       ? 'scale-125 bg-amber-500 text-stone-950 shadow-[0_0_20px_#f59e0b] ring-2 ring-yellow-300'
                       : 'bg-black/80 hover:bg-amber-600/90 text-amber-300 border border-amber-500/70 shadow-md'
                   }`}
-                  title="Piedi Posteriori / Stivali da Marcia"
+                  title={t.avatarShowcase.bootsRear}
                 >
                   <Footprints className="w-3.5 h-3.5" />
                 </button>
@@ -820,7 +831,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
           type="button"
           onClick={() => rotateBy(-90)}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-black/80 hover:bg-amber-600/80 text-amber-300 text-[10px] font-bold border border-amber-500/50 shadow-lg transition cursor-pointer active:scale-95"
-          title="Ruota 90° a Sinistra"
+          title={t.avatarShowcase.rotateLeft}
         >
           <RotateCcw className="w-3 h-3" />
           <span className="hidden sm:inline">SX 90°</span>
@@ -838,7 +849,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
             }`}
           >
             <Eye className="w-3 h-3" />
-            <span>Fronte (0°)</span>
+            <span>{t.avatarShowcase.frontView}</span>
           </button>
           <button
             type="button"
@@ -850,7 +861,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
             }`}
           >
             <Backpack className="w-3 h-3" />
-            <span>Retro (180°)</span>
+            <span>{t.avatarShowcase.backView}</span>
           </button>
         </div>
 
@@ -859,7 +870,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
           type="button"
           onClick={() => rotateBy(90)}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-black/80 hover:bg-amber-600/80 text-amber-300 text-[10px] font-bold border border-amber-500/50 shadow-lg transition cursor-pointer active:scale-95"
-          title="Ruota 90° a Destra"
+          title={t.avatarShowcase.rotateRight}
         >
           <span className="hidden sm:inline">90° DX</span>
           <RotateCw className="w-3 h-3" />

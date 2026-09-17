@@ -24,6 +24,8 @@ import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
 
 interface ExpeditionHubModalProps {
   isOpen: boolean;
@@ -94,11 +96,19 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
   onOpenInstall,
   isInstalled = false,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   if (!isOpen) return null;
 
   const currentExplorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
   const activePortrait = activeOutfit?.image || currentExplorer.portrait;
+  const localizedLevelTitle = getLocalizedLevelTitle(
+    currentLevel.id,
+    currentLevel.chapterNumber,
+    currentLevel.levelNumberInStage || ((currentLevel.id - 1) % 10 + 1),
+    language,
+    currentLevel.title
+  );
 
   const handleAction = (action?: () => void) => {
     sound.playTap();
@@ -133,11 +143,11 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 </span>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-amber-400/80 mt-0.5">
-                <span>Livello {currentLevel.id} • Tappa {currentLevel.chapterNumber}</span>
+                <span>{interpolate(t.hub.currentMission, { level: currentLevel.id, stage: currentLevel.chapterNumber })}</span>
                 <span>•</span>
                 <span className="flex items-center gap-0.5 text-amber-300 font-mono font-bold">
                   <Coins className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                  {coins} Monete
+                  {coins} {t.common.coins}
                 </span>
               </div>
             </div>
@@ -157,7 +167,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                     ? 'bg-amber-500/25 border-amber-400 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.4)]'
                     : 'bg-stone-900 border-stone-700 text-stone-500'
                 }`}
-                title={isBgmPlaying ? 'Musica Attiva' : 'Musica Disattivata'}
+                title={isBgmPlaying ? t.header.soundOn : t.header.soundOff}
               >
                 {isBgmPlaying ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               </button>
@@ -171,7 +181,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 onClose();
               }}
               className="p-1.5 rounded-full bg-stone-900/80 hover:bg-stone-800 text-stone-400 hover:text-white border border-stone-700 transition cursor-pointer active:scale-90"
-              title="Chiudi Campo Base e torna al gioco"
+              title={t.common.close}
             >
               <X className="w-4 h-4" />
             </button>
@@ -182,15 +192,15 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
         <div className="px-5 pt-3 pb-1 flex items-center justify-between">
           <div>
             <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest font-mono block">
-              CAMPO BASE • SPEDIZIONE 1928
+              {t.hub.title}
             </span>
             <h2 className="text-lg font-black text-amber-100 font-serif leading-none">
-              Quartier Generale
+              {t.hub.subtitle}
             </h2>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-1 rounded-xl">
             <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
-            <span className="font-serif italic font-medium">{currentLevel.title}</span>
+            <span className="font-serif italic font-medium">{localizedLevelTitle}</span>
           </div>
         </div>
 
@@ -210,21 +220,21 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
-                    Mappamondo 3D & Rotta
+                    {t.hub.worldMap}
                   </span>
                   {hasNewStageUnlocked && (
                     <span className="px-1.5 py-0.2 rounded-full bg-yellow-400 text-stone-950 text-[9px] font-black animate-pulse">
-                      NUOVA TAPPA!
+                      {t.hub.newStage}
                     </span>
                   )}
                 </div>
                 <span className="text-[11px] text-stone-400 block font-serif">
-                  12 Capitoli geografici da Oxford a Paititi • 120 Livelli
+                  {t.hub.worldMapDesc}
                 </span>
               </div>
             </div>
             <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30">
-              Apri Globo ➔
+              {t.hub.openGlobe}
             </span>
           </button>
 
@@ -241,21 +251,21 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
-                    Museo delle Reliquie 3D
+                    {t.hub.museum}
                   </span>
                   {hasUnreadRelics && (
                     <span className="px-1.5 py-0.2 rounded-full bg-red-500 text-white text-[9px] font-black animate-ping">
-                      NUOVO!
+                      {t.hub.newBadge}
                     </span>
                   )}
                 </div>
                 <span className="text-[11px] text-stone-400 block font-serif">
-                  Teca rotante in cristallo & idoli sepolti • {discoveredRelicCount}/{totalRelics} Trovate
+                  {interpolate(t.hub.museumDesc, { found: discoveredRelicCount, total: totalRelics })}
                 </span>
               </div>
             </div>
             <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30">
-              Visita Sala ➔
+              {t.hub.visitHall}
             </span>
           </button>
 
@@ -273,19 +283,19 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
-                      Medagliere Reale della Spedizione
+                      {t.hub.medals}
                     </span>
                     <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[9px] font-mono font-bold">
                       {unlockedMedalsCount}/{totalMedals}
                     </span>
                   </div>
                   <span className="text-[11px] text-stone-400 block font-serif">
-                    12 Onorificenze vittoriane con nastri in seta & taglie d'oro
+                    {t.hub.medalsDesc}
                   </span>
                 </div>
               </div>
               <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
-                Apri Teca ➔
+                {t.hub.openCabinet}
               </span>
             </button>
           )}
@@ -304,19 +314,19 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
-                      Passaporto della Spedizione 1928
+                      {t.hub.passport}
                     </span>
                     <span className="px-1.5 py-0.2 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-[9px] font-mono font-bold">
-                      {unlockedVisasCount}/12 Visti
+                      {unlockedVisasCount}/12 {t.passport.visasTitle}
                     </span>
                   </div>
                   <span className="text-[11px] text-stone-400 block font-serif">
-                    12 Visti consolari timbrati a mano con sigilli d'epoca e credenziali
+                    {t.hub.passportDesc}
                   </span>
                 </div>
               </div>
               <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
-                Apri Visti ➔
+                {t.hub.openVisas}
               </span>
             </button>
           )}
@@ -335,19 +345,19 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs sm:text-sm font-black text-yellow-200 font-serif">
-                      Gran Finale di Paititi
+                      {t.hub.grandFinale}
                     </span>
                     <span className="px-1.5 py-0.2 rounded-full bg-yellow-400 text-stone-950 text-[9px] font-black">
-                      COMPLETATO
+                      {t.levelSelect.completed}
                     </span>
                   </div>
                   <span className="text-[11px] text-amber-200/90 block font-serif">
-                    Rivedi il finale della saga & i 3 destini dell'umanità
+                    {t.hub.grandFinaleDesc}
                   </span>
                 </div>
               </div>
               <span className="text-xs text-stone-950 font-black px-2.5 py-1 rounded-xl bg-yellow-400 border border-yellow-300 shrink-0">
-                Epilogo ➔
+                {t.hub.epilogueBtn}
               </span>
             </button>
           )}
@@ -365,15 +375,15 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <span className="text-[9px] text-emerald-400 font-bold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/30">
-                  Perk Attivi
+                  {t.hub.activePerks}
                 </span>
               </div>
               <div>
                 <span className="text-xs font-black text-amber-100 font-serif block leading-tight">
-                  Guardaroba & Outfit
+                  {t.hub.wardrobe}
                 </span>
                 <span className="text-[10px] text-stone-400 mt-0.5 block">
-                  Tenute, copricapi e amuleti
+                  {t.hub.wardrobeDesc}
                 </span>
               </div>
             </button>
@@ -390,16 +400,16 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 </div>
                 {hasUnreadDaily && (
                   <span className="text-[9px] text-orange-300 font-bold bg-orange-950/80 px-1.5 py-0.5 rounded border border-orange-500/40 animate-pulse">
-                    Oggi Disponibile!
+                    {t.hub.availableToday}
                   </span>
                 )}
               </div>
               <div>
                 <span className="text-xs font-black text-amber-100 font-serif block leading-tight">
-                  Spedizione Quotidiana
+                  {t.hub.daily}
                 </span>
                 <span className="text-[10px] text-stone-400 mt-0.5 block">
-                  Sfida del giorno & timbri ceralacca
+                  {t.hub.dailyDesc}
                 </span>
               </div>
             </button>
@@ -416,16 +426,16 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 </div>
                 {hasUnreadJournal && (
                   <span className="text-[9px] text-amber-300 font-bold bg-amber-950/80 px-1.5 py-0.5 rounded border border-amber-500/40">
-                    Nuovo Indizio
+                    {t.hub.newClue}
                   </span>
                 )}
               </div>
               <div>
                 <span className="text-xs font-black text-amber-100 font-serif block leading-tight">
-                  Taccuino & Note di Campo
+                  {t.hub.journal}
                 </span>
                 <span className="text-[10px] text-stone-400 mt-0.5 block">
-                  Archivio Bellini & 120 capitoli
+                  {t.hub.journalDesc}
                 </span>
               </div>
             </button>
@@ -441,15 +451,15 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                   <ShoppingBag className="w-4 h-4" />
                 </div>
                 <span className="text-[9px] text-yellow-300 font-bold bg-amber-950/80 px-1.5 py-0.5 rounded border border-yellow-500/40">
-                  Scorte
+                  {t.hub.supplies}
                 </span>
               </div>
               <div>
                 <span className="text-xs font-black text-amber-100 font-serif block leading-tight">
-                  Emporio Archeologico
+                  {t.hub.shop}
                 </span>
                 <span className="text-[10px] text-stone-400 mt-0.5 block">
-                  Bussola, Congela-Tempo, Scudi
+                  {t.hub.shopDesc}
                 </span>
               </div>
             </button>
@@ -469,21 +479,21 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs sm:text-sm font-black text-amber-100 font-serif">
-                      {isInstalled ? 'Archivio Spedizione Installato' : 'Installa App su Schermo'}
+                      {isInstalled ? t.hub.installedApp : t.hub.installApp}
                     </span>
                     <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-mono font-bold">
-                      Offline 100%
+                      {t.hub.offlineBadge}
                     </span>
                   </div>
                   <span className="text-[10px] text-stone-400 block font-serif">
                     {isInstalled
-                      ? 'Modalità a schermo intero nativa attiva senza barre del browser'
-                      : 'Schermo intero immersivo, zero barre del browser & gioco senza rete'}
+                      ? t.hub.installedAppDesc
+                      : t.hub.installAppDesc}
                   </span>
                 </div>
               </div>
               <span className="text-xs text-amber-400 font-bold px-2 py-1 rounded-xl bg-stone-900/60 border border-amber-600/30 shrink-0">
-                {isInstalled ? 'Dettagli ➔' : 'Installa ➔'}
+                {isInstalled ? t.hub.detailsBtn : t.pwa.installBtn}
               </span>
             </button>
           )}
@@ -498,10 +508,10 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               <ScrollText className="w-4 h-4 text-amber-400 shrink-0" />
               <div className="min-w-0 flex-1">
                 <span className="text-[11px] font-bold text-amber-200 block truncate">
-                  Dispaccio di Tappa
+                  {t.hub.stageDispatch}
                 </span>
                 <span className="text-[9px] text-stone-400 block truncate">
-                  Tappa {currentLevel.chapterNumber} di 12
+                  {interpolate(t.hub.stageOf, { stage: currentLevel.chapterNumber })}
                 </span>
               </div>
               {hasUnreadBriefing && (
@@ -517,10 +527,10 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
               <LayoutGrid className="w-4 h-4 text-amber-400 shrink-0" />
               <div className="min-w-0 flex-1">
                 <span className="text-[11px] font-bold text-amber-200 block truncate">
-                  Seleziona Livello
+                  {t.hub.levelSelectBtn}
                 </span>
                 <span className="text-[9px] text-stone-400 block truncate">
-                  Rigioca i 120 livelli
+                  {t.hub.replay120}
                 </span>
               </div>
             </button>
@@ -535,7 +545,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
             className="py-2.5 px-3.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white border border-stone-700 flex items-center gap-1.5 text-xs font-bold transition cursor-pointer active:scale-95"
           >
             <Settings className="w-4 h-4 text-amber-400" />
-            <span>Opzioni</span>
+            <span>{t.settings.title}</span>
           </button>
 
           <button
@@ -548,7 +558,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
             className="flex-1 py-2.5 px-5 rounded-xl font-black font-serif tracking-wider text-xs sm:text-sm uppercase bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 text-stone-950 shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition border border-yellow-200"
           >
             <Play className="w-4 h-4 fill-stone-950" />
-            <span>RITORNA ALLO SCAVO (LIV. {currentLevel.id})</span>
+            <span>{interpolate(t.hub.resumeLevel, { level: currentLevel.id })}</span>
           </button>
         </div>
 

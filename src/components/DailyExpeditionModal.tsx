@@ -25,6 +25,8 @@ import {
 } from '../utils/dailyChallenge';
 import { ALL_120_LEVELS } from '../data/levelRegistry';
 import { sound } from '../utils/audio';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
 
 interface DailyExpeditionModalProps {
   isOpen: boolean;
@@ -38,6 +40,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
   onClose,
   onStartDailyLevel,
 }) => {
+  const { t, language, interpolate } = useTranslation();
   const [dailyState] = useState<DailyExpeditionState>(() => getDailyExpeditionState());
 
   const todayStr = getTodayDateString();
@@ -68,10 +71,10 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-widest text-amber-400 font-bold font-serif block">
-                Royal Geographical Society • 1928
+                {t.daily.subtitle}
               </span>
               <h2 className="text-base sm:text-lg font-black text-amber-100 font-serif leading-none">
-                Spedizione Quotidiana Archeologica
+                {t.daily.title}
               </h2>
             </div>
           </div>
@@ -80,8 +83,8 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             {/* Active Streak Badge */}
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-orange-600/40 to-amber-500/30 border border-orange-400/60 shadow-inner">
               <Flame className="w-4 h-4 text-orange-400 fill-orange-400 animate-pulse" />
-              <span className="text-xs font-black text-amber-200 font-mono">
-                {dailyState.streak} {dailyState.streak === 1 ? 'GIORNO' : 'GIORNI'}
+              <span className="text-xs font-black text-amber-200 font-mono uppercase">
+                {interpolate(t.daily.streakDays, { count: dailyState.streak })}
               </span>
             </div>
 
@@ -122,12 +125,12 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                       <CheckCircle2 className="w-6 h-6 text-white" />
                     </div>
                     <span className="text-[10px] font-black text-rose-300 font-serif tracking-wider uppercase mt-1">
-                      SIGILLATO
+                      {t.passport.stamped}
                     </span>
                   </div>
                 ) : (
                   <div className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-amber-500/90 text-stone-950 font-black text-[9px] uppercase tracking-wider shadow">
-                    OGGI
+                    {t.daily.todayChallenge}
                   </div>
                 )}
               </div>
@@ -136,7 +139,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
               <div className="flex-1 text-center sm:text-left space-y-1.5">
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                   <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold uppercase tracking-wider">
-                    Tappa {todayLevel.chapterNumber} • Livello {todayLevel.id}
+                    {t.common.stage} {todayLevel.chapterNumber} • {t.common.level} {todayLevel.id}
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/40 text-[10px] font-black tracking-wide">
                     {todayModifier.badge}
@@ -144,7 +147,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                 </div>
 
                 <h3 className="text-base sm:text-lg font-black text-amber-200 font-serif">
-                  {todayLevel.title}
+                  {getLocalizedLevelTitle(todayLevel.id, todayLevel.chapterNumber, todayLevel.levelNumberInStage || ((todayLevel.id - 1) % 10 + 1), language, todayLevel.title)}
                 </h3>
                 <p className="text-xs text-stone-300 leading-snug font-sans">
                   {todayModifier.desc}
@@ -153,11 +156,11 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                 <div className="flex items-center justify-center sm:justify-start gap-2 pt-1 text-xs">
                   <span className="text-amber-400 font-semibold flex items-center gap-1">
                     <Coins className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                    +150 Monete Base
+                    +150 {t.common.coins}
                   </span>
                   <span className="text-stone-500">•</span>
                   <span className="text-emerald-400 font-semibold">
-                    +{todayModifier.bonusCoins} Bonus Missione
+                    +{todayModifier.bonusCoins} {t.daily.rewardBonus}
                   </span>
                 </div>
               </div>
@@ -167,14 +170,14 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                 {isTodayDone ? (
                   <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 text-xs font-bold shadow-md">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Spedizione Completata!</span>
+                    <span>{t.daily.todayDone}</span>
                   </div>
                 ) : (
                   <button
                     onClick={handleStartToday}
                     className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs sm:text-sm shadow-[0_4px_15px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
                   >
-                    <span>AVVIA SPEDIZIONE</span>
+                    <span>{t.daily.playToday}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 )}
@@ -187,10 +190,10 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300 font-serif">
                 <Compass className="w-3.5 h-3.5 text-amber-400" />
-                <span>Calendario di Spedizione (Ciclo 30 Giorni)</span>
+                <span>{t.daily.calendar30Days}</span>
               </div>
               <span className="text-[11px] font-mono text-stone-400">
-                {dailyState.totalDailiesCompleted} Timbri Conseguiti
+                {dailyState.totalDailiesCompleted} {t.passport.stampsCount}
               </span>
             </div>
 
@@ -257,10 +260,10 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300 font-serif">
                 <Trophy className="w-4 h-4 text-amber-400" />
-                <span>Traguardi di Fedeltà (Streak Milestones)</span>
+                <span>{t.daily.milestoneTitle}</span>
               </div>
               <span className="text-[10px] text-amber-400/80 font-medium">
-                Sblocca dobloni e reliquie esclusive
+                {t.daily.rewardBonus}
               </span>
             </div>
 
@@ -289,7 +292,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-black text-amber-300 truncate">
-                          {m.day} Giorni
+                          {m.day} {interpolate(t.daily.streakDays, { count: m.day })}
                         </span>
                         <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
                           isClaimed
@@ -298,7 +301,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                             ? 'bg-amber-500/30 text-amber-300 border border-amber-400/40'
                             : 'text-stone-500'
                         }`}>
-                          {isClaimed ? 'Riscosso' : isUnlocked ? 'Sbloccato' : 'In Corso'}
+                          {isClaimed ? t.daily.claimed : isUnlocked ? t.common.unlocked : t.common.locked}
                         </span>
                       </div>
                       <p className="text-[10px] text-stone-300 truncate font-medium">

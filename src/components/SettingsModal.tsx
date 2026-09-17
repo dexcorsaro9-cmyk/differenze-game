@@ -51,7 +51,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   bgmTheme = 'auto',
   onChangeBgmTheme,
 }) => {
-  const { language, setLanguage, t } = useTranslation();
+  const { language, setLanguage, t, interpolate } = useTranslation();
   const [backupStatus, setBackupStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -93,10 +93,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         navigator.clipboard.writeText(jsonStr).catch(() => {});
       }
 
-      setBackupStatus('Salvataggio scaricato (.json) e copiato!');
+      setBackupStatus(t.settings.backupExportSuccess);
       setTimeout(() => setBackupStatus(null), 3500);
     } catch {
-      setBackupStatus('Errore esportazione backup.');
+      setBackupStatus(t.settings.backupExportError);
       setTimeout(() => setBackupStatus(null), 3000);
     }
   };
@@ -113,7 +113,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
         const keysToRestore = parsed.keys || parsed;
         if (!keysToRestore || (!keysToRestore.differenze_progress_v1 && !keysToRestore.differenze_economy_v1)) {
-          alert('File di backup non valido per Paititi 1928.');
+          alert(t.settings.backupInvalidFile);
           return;
         }
 
@@ -128,10 +128,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           }
         });
 
-        alert(`Salvataggio ripristinato con successo (${count} sezioni ripristinate). La pagina verrà ricaricata.`);
+        alert(interpolate(t.settings.backupImportSuccess, { count }));
         window.location.reload();
       } catch {
-        alert('Impossibile importare: file corrotto o non in formato JSON.');
+        alert(t.settings.backupCorrupted);
       }
     };
     reader.readAsText(file);
@@ -196,7 +196,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               )}
               <div>
                 <h5 className="text-sm font-bold text-white">{t.settings.soundEffects}</h5>
-                <p className="text-xs text-slate-400">Rintocchi armonici e feedback audio</p>
+                <p className="text-xs text-slate-400">{t.settings.soundEffectsHelp}</p>
               </div>
             </div>
 
@@ -220,7 +220,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <Smartphone className={`w-5 h-5 ${settings.vibrationEnabled ? 'text-amber-400' : 'text-slate-500'}`} />
               <div>
                 <h5 className="text-sm font-bold text-white">{t.settings.vibration}</h5>
-                <p className="text-xs text-slate-400">Feedback aptico al tocco</p>
+                <p className="text-xs text-slate-400">{t.settings.vibrationHelp}</p>
               </div>
             </div>
 
@@ -268,8 +268,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="flex items-center gap-3">
                 <Music className={`w-5 h-5 ${isBgmPlaying ? 'text-amber-400' : 'text-slate-500'}`} />
                 <div>
-                  <h5 className="text-sm font-bold text-white">Musica d'Epoca (Orchestrale)</h5>
-                  <p className="text-xs text-slate-400">Sinfonia procedurale d'atmosfera 1928</p>
+                  <h5 className="text-sm font-bold text-white">{t.settings.bgmTitle}</h5>
+                  <p className="text-xs text-slate-400">{t.settings.bgmSubtitle}</p>
                 </div>
               </div>
 
@@ -294,14 +294,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             {isBgmPlaying && onChangeBgmTheme && (
               <div className="pt-2 border-t border-slate-700/60">
                 <div className="text-[11px] text-amber-300 font-serif font-bold mb-1.5">
-                  Tema Orchestrale della Spedizione:
+                  {t.settings.bgmThemeTitle}
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                   {[
-                    { id: 'auto', label: 'Auto (Cap.)' },
-                    { id: 'exploration', label: '🌿 Giungla' },
-                    { id: 'excavation', label: '⛏️ Cripte' },
-                    { id: 'sacred_temple', label: '🏛️ Paititi' },
+                    { id: 'auto', label: t.settings.themeAuto },
+                    { id: 'exploration', label: t.settings.themeExploration },
+                    { id: 'excavation', label: t.settings.themeExcavation },
+                    { id: 'sacred_temple', label: t.settings.themeSacredTemple },
                   ].map(item => (
                     <button
                       key={item.id}
@@ -326,14 +326,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Download className="w-4 h-4 text-amber-400" />
-                <h5 className="text-xs font-bold text-amber-100 font-serif">Modalità Offline & Installazione</h5>
+                <h5 className="text-xs font-bold text-amber-100 font-serif">{t.settings.offlineModeTitle}</h5>
               </div>
               <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono font-bold">
-                {isOffline ? 'Offline Attivo' : 'Cache Pronta'}
+                {isOffline ? t.settings.offlineStatusActive : t.settings.offlineStatusReady}
               </span>
             </div>
             <p className="text-[11px] text-stone-300 mb-3 font-sans">
-              Archivio 1928 autonomo: tutti i 120 capitoli, la musica e i reperti funzionano senza connessione.
+              {t.settings.offlineModeDesc}
             </p>
             {onOpenInstall && (
               <button
@@ -346,7 +346,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 }`}
               >
                 <Download className="w-3.5 h-3.5" />
-                {isInstalled ? '✓ Gioco Installato a Schermo Intero' : 'Installa Gioco su Schermo Home / Desktop'}
+                {isInstalled ? t.settings.installedButton : t.settings.installButton}
               </button>
             )}
           </div>
@@ -364,7 +364,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             <p className="text-[11px] text-stone-300 font-sans leading-relaxed">
-              Esporta la tua spedizione (capitoli, stelle, reperti, monete ed equipaggiamento) o ripristinala su un altro dispositivo mobile.
+              {t.settings.backupDesc}
             </p>
 
             <div className="grid grid-cols-2 gap-2 pt-1">
@@ -419,7 +419,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               rel="noopener noreferrer"
               className="py-1.5 px-3 rounded-xl bg-slate-700/70 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-amber-300 hover:text-amber-200 flex items-center gap-1.5 transition-all shrink-0 cursor-pointer"
             >
-              <span>Leggi</span>
+              <span>{t.common.read}</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
@@ -436,7 +436,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               className="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              Rivedi Tutorial & Manuale Esploratore
+              {t.settings.reviewTutorial}
             </button>
           )}
 

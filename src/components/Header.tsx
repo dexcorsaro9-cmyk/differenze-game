@@ -19,6 +19,7 @@ import type { Level } from '../types/game';
 import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 
@@ -85,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
   rpgPerksSummary,
   activeSetBonus,
 }) => {
-  const { t } = useTranslation();
+  const { t, language, interpolate } = useTranslation();
   const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile.equippedOutfitId);
   const activePortrait = activeOutfit?.image || currentExplorer.portrait;
@@ -191,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({
               }
             }}
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-amber-400 hover:border-amber-300 overflow-hidden shadow-sm bg-stone-900 shrink-0 cursor-pointer active:scale-95 transition-transform"
-            title="Apri Passaporto di Spedizione 1928"
+            title={t.passport.title}
           >
             <img
               src={activePortrait}
@@ -210,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </div>
             <span className="text-[9px] sm:text-[10px] text-amber-200/80 font-medium truncate mt-0.5 max-w-[105px] sm:max-w-[220px]">
-              {currentLevel.title}
+              {getLocalizedLevelTitle(currentLevel.id, currentLevel.chapterNumber, currentLevel.levelNumberInStage || ((currentLevel.id - 1) % 10 + 1), language, currentLevel.title)}
             </span>
           </div>
         </div>
@@ -240,7 +241,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={onOpenInstall}
               className="p-1 sm:p-1.5 rounded-full border border-amber-400 bg-amber-500/25 hover:bg-amber-500/40 text-amber-200 hover:text-white shadow-[0_0_8px_rgba(245,158,11,0.4)] transition cursor-pointer active:scale-95"
-              title="Installa Gioco su Schermo Home / Desktop (PWA)"
+              title={t.header.installApp}
             >
               <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
@@ -255,7 +256,7 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'bg-amber-500/40 border-amber-300 text-amber-100 shadow-[0_0_8px_rgba(245,158,11,0.5)]'
                 : 'bg-amber-950/60 border-amber-500/40 text-amber-300 hover:text-white'
             }`}
-            title={isFullscreen ? 'Disattiva Schermo Intero (Esc)' : 'Schermo Intero Nativo'}
+            title={isFullscreen ? t.header.fullscreenOff : t.header.fullscreenOn}
           >
             {isFullscreen ? (
               <Minimize className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -277,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
                   ? 'bg-amber-950/60 border-amber-500/40 text-amber-300 hover:text-white'
                   : 'bg-stone-900 border-stone-700 text-stone-500 hover:text-stone-300'
               }`}
-              title={soundEnabled ? 'Disattiva Audio' : 'Attiva Audio'}
+              title={soundEnabled ? t.header.soundOff : t.header.soundOn}
             >
               {soundEnabled ? (
                 <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -295,7 +296,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-black/50 border border-amber-500/50 text-amber-200 shadow-sm active:scale-95 transition cursor-pointer ${
               isCoinBouncing ? 'animate-coin-bounce ring-2 ring-yellow-400' : ''
             }`}
-            title="Monete d'Oro Guadagnate"
+            title={t.header.coinsTooltip}
           >
             <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-yellow-400" />
             <span className="text-[11px] sm:text-xs font-black font-mono text-amber-200">{coins}</span>
@@ -358,7 +359,11 @@ export const Header: React.FC<HeaderProps> = ({
                       ? 'w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-200 shadow-[0_0_8px_rgba(245,158,11,0.8)] scale-105 ring-1 ring-amber-300'
                       : 'w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 border border-amber-950 bg-stone-900/90 shadow-inner'
                   }`}
-                  title={isFound ? `Prova ${idx + 1} recuperata!` : `Prova ${idx + 1} occultata dalla Mano Oscura`}
+                  title={
+                    isFound
+                      ? interpolate(t.hiddenObject.evidenceFound, { number: idx + 1 })
+                      : interpolate(t.hiddenObject.evidenceHidden, { number: idx + 1 })
+                  }
                 >
                   {isFound ? (
                     <span className="text-[7px] sm:text-[8px] font-black text-amber-950 font-serif leading-none">✓</span>
@@ -372,7 +377,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Number indicator */}
           <div className="text-[10px] sm:text-[11px] font-black text-amber-300 font-serif tracking-tight shrink-0 flex items-center gap-0.5 sm:gap-1 pl-1 border-l border-amber-800/40">
-            <span className="text-[8px] sm:text-[9px] uppercase tracking-wider text-amber-400/80 hidden sm:inline">Prove:</span>
+            <span className="text-[8px] sm:text-[9px] uppercase tracking-wider text-amber-400/80 hidden sm:inline">{t.hiddenObject.evidenceLabel}:</span>
             <span className="font-mono text-amber-200">{foundCount}/{totalDifferences}</span>
           </div>
         </div>
@@ -394,10 +399,10 @@ export const Header: React.FC<HeaderProps> = ({
           {rpgPerksSummary && (rpgPerksSummary.coinBonus > 0 || rpgPerksSummary.radarBonus > 0) && (
             <div
               className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-500/40 text-[9px] font-bold text-amber-300"
-              title={`Bonus Equipaggiamento Attivo: +${rpgPerksSummary.coinBonus}% Oro, +${rpgPerksSummary.radarBonus}% Radar`}
+              title={`Bonus Equipaggiamento Attivo: +${rpgPerksSummary.coinBonus}% ${t.common.coins}, +${rpgPerksSummary.radarBonus}% Radar`}
             >
               <Sparkles className="w-2.5 h-2.5 text-amber-400" />
-              <span>+{rpgPerksSummary.coinBonus}% Oro</span>
+              <span>+{rpgPerksSummary.coinBonus}% {t.common.coins}</span>
             </div>
           )}
 
@@ -405,7 +410,7 @@ export const Header: React.FC<HeaderProps> = ({
           {isShieldActive && (
             <div
               className="flex items-center px-1 sm:px-1.5 py-0.5 rounded-md bg-indigo-950 border border-indigo-400 text-indigo-300 text-[9px] sm:text-[10px] font-bold animate-pulse shadow-sm"
-              title="Scudo Protettivo Attivo (Para 1 Errore)"
+              title={t.header.shieldActive}
             >
               <Shield className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-indigo-300 fill-indigo-400/50" />
             </div>

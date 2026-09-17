@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { WifiOff, Wifi, CheckCircle2 } from 'lucide-react';
 import { sound } from '../utils/audio';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface OfflineStatusToastProps {
   isOffline: boolean;
 }
 
 export const OfflineStatusToast: React.FC<OfflineStatusToastProps> = ({ isOffline }) => {
+  const { t } = useTranslation();
   const [showToast, setShowToast] = useState<boolean>(isOffline);
   const [wasOffline, setWasOffline] = useState<boolean>(isOffline);
   const [justReconnected, setJustReconnected] = useState<boolean>(false);
@@ -37,7 +39,7 @@ export const OfflineStatusToast: React.FC<OfflineStatusToastProps> = ({ isOfflin
 
   return (
     <aside
-      aria-label="Stato connessione di rete"
+      aria-label={justReconnected ? t.offline.reconnectedTitle : t.offline.offlineTitle}
       className="fixed top-3 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-bounce-short max-w-[92vw]"
     >
       <div
@@ -63,12 +65,10 @@ export const OfflineStatusToast: React.FC<OfflineStatusToastProps> = ({ isOfflin
 
         <div className="flex flex-col leading-tight">
           <span className="text-[11px] font-black font-serif uppercase tracking-wider text-amber-100">
-            {justReconnected ? 'Connessione Ristabilita' : 'Modalità Offline 1928 Attiva'}
+            {justReconnected ? t.offline.reconnectedTitle : t.offline.offlineTitle}
           </span>
           <span className="text-[9px] text-stone-300 font-sans">
-            {justReconnected
-              ? 'Archivio sincronizzato con il Campo Base'
-              : 'Tutti i 120 livelli e reperti sono operativi senza rete'}
+            {justReconnected ? t.offline.reconnectedDesc : t.offline.offlineDesc}
           </span>
         </div>
 

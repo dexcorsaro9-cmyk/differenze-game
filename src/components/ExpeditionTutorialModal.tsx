@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedExplorer } from '../i18n/gameDataTranslations';
 
 interface ExpeditionTutorialModalProps {
   isOpen: boolean;
@@ -33,6 +35,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
   profile,
   onComplete,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [hasPracticedDifference, setHasPracticedDifference] = useState<boolean>(false);
   const [practiceZoom, setPracticeZoom] = useState<number>(1);
@@ -40,7 +43,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
 
   if (!isOpen) return null;
 
-  const explorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const explorer = getLocalizedExplorer(EXPLORERS[profile.avatarId] || EXPLORERS.samira, language);
 
   const handleTestDifferenceClick = () => {
     if (!hasPracticedDifference) {
@@ -53,19 +56,19 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
   const steps = [
     {
       id: 'differences',
-      title: 'Obiettivo: Decifra gli 8 Indovinelli Archeologici',
-      subtitle: 'Esplora la scena storica, consulta gli indizi del Professore e tocca i reperti',
-      badge: 'FONDAMENTI DI GIOCO',
+      title: t.tutorial.step1Title,
+      subtitle: t.tutorial.step1Subtitle,
+      badge: t.tutorial.step1Badge,
       icon: Eye,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3 sm:p-4 space-y-3 shadow-inner">
           <div className="flex items-center justify-between text-[11px] font-serif text-amber-300">
             <span className="font-bold flex items-center gap-1.5">
               <MousePointerClick className="w-4 h-4 text-amber-400 animate-bounce" />
-              Scena del 1928 • Prova pratica:
+              {t.tutorial.step1SceneIntro}
             </span>
             <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px] border border-emerald-500/40">
-              8 REPERTI PER LIVELLO
+              {t.tutorial.step1RelicsCount}
             </span>
           </div>
 
@@ -82,12 +85,12 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             <div className="relative w-full h-24 bg-stone-950/80 rounded-xl border border-amber-900/60 flex items-center justify-center gap-6 px-4 overflow-hidden">
               <div className="flex flex-col items-center opacity-70">
                 <span className="text-3xl filter drop-shadow">📜</span>
-                <span className="text-[8px] text-amber-300/80 font-mono">Manoscritto</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">{t.tutorial.step1Manuscript}</span>
               </div>
 
               <div className="flex flex-col items-center opacity-70">
                 <span className="text-3xl filter drop-shadow">🕯️</span>
-                <span className="text-[8px] text-amber-300/80 font-mono">Lanterna</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">{t.tutorial.step1Lantern}</span>
               </div>
 
               {/* Target Relic: Professor Bellini's Astrolabe */}
@@ -100,7 +103,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                   <span className="text-3xl filter drop-shadow">🧭</span>
                 </div>
                 <span className={`text-[8px] font-bold font-mono mt-0.5 ${hasPracticedDifference ? 'text-emerald-300' : 'text-amber-300 animate-bounce'}`}>
-                  {hasPracticedDifference ? '✓ Sigillato!' : 'Tocca il Reperto!'}
+                  {hasPracticedDifference ? t.tutorial.step1Sealed : t.tutorial.step1ClickRelic}
                 </span>
 
                 {/* Wax Seal Stamp FX */}
@@ -113,7 +116,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
 
               <div className="flex flex-col items-center opacity-70">
                 <span className="text-3xl filter drop-shadow">⚱️</span>
-                <span className="text-[8px] text-amber-300/80 font-mono">Anfora</span>
+                <span className="text-[8px] text-amber-300/80 font-mono">{t.tutorial.step1Amphora}</span>
               </div>
             </div>
 
@@ -121,37 +124,36 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
               {hasPracticedDifference ? (
                 <span className="text-emerald-300 font-bold flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  Flash di magnesio attivato: Reperto registrato nel Taccuino!
+                  {t.tutorial.step1SuccessFlash}
                 </span>
               ) : (
                 <span>
-                  💡 <strong>Indovinello di Bellini:</strong> <em>"Guida i marinai d'oltremare con anelli d'ottone e meridiane celesti..."</em>
+                  <strong>{t.tutorial.step1RiddleIntro}</strong> <em>{t.tutorial.step1RiddleSample}</em>
                 </span>
               )}
             </div>
           </div>
 
           <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/20 text-center text-xs text-amber-200/80">
-            Ogni livello contiene una grande fotografia storica ad altissima risoluzione con <strong>8 reperti nascosti</strong>.
+            {t.tutorial.step1SceneDesc}
           </div>
         </div>
       ),
-      message:
-        "Non ci sono due immagini affiancate: esplori una scena archeologica a tutto schermo! Gli agenti della Mano Oscura hanno sottratto o manomesso 8 reperti storici. Leggi gli 8 indovinelli del Professor Bellini nella barra inferiore per dedurre cosa cercare.",
-      tip: "Tocca con precisione il reperto indicato: un flash di magnesio lo incornicerà con un sigillo d'ottone e ceralacca!",
+      message: t.tutorial.step1Message,
+      tip: t.tutorial.step1Tip,
     },
     {
       id: 'zoom_and_pan',
-      title: "Zoom 4x, Lente d'Ottone & Atmosfere",
-      subtitle: "Pizzica con due dita, usa la nuova Lente da Campo e adatta l'illuminazione",
-      badge: 'ESPLORAZIONE AVANZATA',
+      title: t.tutorial.step2Title,
+      subtitle: t.tutorial.step2Subtitle,
+      badge: t.tutorial.step2Badge,
       icon: ZoomIn,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-amber-300 font-serif flex items-center gap-1.5">
               <ZoomIn className="w-4 h-4 text-amber-400" />
-              Ingrandimento: {practiceZoom}x
+              {interpolate(t.tutorial.step2Magnification, { zoom: practiceZoom })}
             </span>
             <div className="flex items-center gap-1.5">
               {[1, 2, 4].map(lvl => (
@@ -181,70 +183,69 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             >
               <div className="flex flex-col items-center">
                 <span className="text-3xl">🏺</span>
-                <span className="text-[8px] text-amber-400 font-mono">Vaso Minoico</span>
+                <span className="text-[8px] text-amber-400 font-mono">{t.tutorial.step2MinoanVase}</span>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl">🧭</span>
-                <span className="text-[8px] text-amber-400 font-mono">Astrolabio</span>
+                <span className="text-[8px] text-amber-400 font-mono">{t.tutorial.step2Astrolabe}</span>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl">🗝️</span>
-                <span className="text-[8px] text-amber-400 font-mono">Sigillo Templare</span>
+                <span className="text-[8px] text-amber-400 font-mono">{t.tutorial.step2TemplarSeal}</span>
               </div>
             </div>
 
             {/* Gesture Guide Overlay */}
             <div className="absolute bottom-1.5 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/70 border border-amber-500/30 text-[9px] text-amber-300 font-mono">
               <Move className="w-3 h-3 text-amber-400 animate-pulse" />
-              <span>Trascina per muoverti</span>
+              <span>{t.tutorial.step2DragToPan}</span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-[10.5px] font-serif text-amber-200/90 text-left">
             <div className="p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
-              <strong className="text-amber-300 block mb-0.5">🔍 Lente d'Ottone 1928</strong>
-              Attiva la lente d'ingrandimento mobile dalla barra in alto per ispezionare dettagli microscopici!
+              <strong className="text-amber-300 block mb-0.5">{t.tutorial.step2BrassLensTitle}</strong>
+              {t.tutorial.step2BrassLensDesc}
             </div>
             <div className="p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
-              <strong className="text-amber-300 block mb-0.5">💡 Filtri & Luce Solare</strong>
-              Cambia la luce del giorno (Alba, Mezzogiorno, Crepuscolo, Lanterna) e la lastra fotografica.
+              <strong className="text-amber-300 block mb-0.5">{t.tutorial.step2SunlightTitle}</strong>
+              {t.tutorial.step2SunlightDesc}
             </div>
           </div>
         </div>
       ),
-      message:
-        "I reperti storici sono fusi organicamente nell'arredamento d'epoca. Usa il pinch-to-zoom a due dita (o la rotella su computer) per ingrandire fino a 4x, oppure attiva la Lente d'Ottone per scrutare angoli bui e carteggi.",
-      tip: "Quando sei ingrandito, trascina liberamente per spostare la visuale. Tocca il badge 'Ripristina' per tornare alla panoramica intera.",
+      message: t.tutorial.step2Message,
+      tip: t.tutorial.step2Tip,
     },
     {
       id: 'powerups',
-      title: 'I 4 Strumenti Tattici di Soccorso',
-      subtitle: 'Aiuti istantanei nella cintura inferiore quando sei in difficoltà',
-      badge: 'EQUIPAGGIAMENTO DA CAMPO',
+      title: t.tutorial.step3Title,
+      subtitle: t.tutorial.step3Subtitle,
+      badge: t.tutorial.step3Badge,
       icon: Zap,
       renderIllustration: () => {
         const toolDetails: Record<string, { title: string; desc: string; color: string; icon: React.ReactNode }> = {
           freeze: {
-            title: 'Congela Tempo (20s)',
-            desc: 'Blocca il cronometro per 20 secondi. Perfetto per conquistare le 3 Stelle d\'Oro senza fretta!',
+            title: t.tutorial.step3FreezeTitle,
+            desc: t.tutorial.step3FreezeDesc,
             color: 'text-cyan-300 border-cyan-500/60 bg-cyan-950/50',
             icon: <Snowflake className="w-5 h-5 text-cyan-400" />
           },
           radar: {
-            title: 'Bussola Radar',
-            desc: 'Scannerizza la scena e illumina il quadrante esatto in cui si nasconde un reperto ancora non individuato.',
+            title: t.tutorial.step3RadarTitle,
+            desc: t.tutorial.step3RadarDesc,
             color: 'text-amber-300 border-amber-500/60 bg-amber-950/50',
             icon: <Compass className="w-5 h-5 text-amber-400" />
           },
           hint: {
-            title: 'Lente Rivelatrice',
-            desc: 'Rivelazione chirurgica: una bussola dorata concentrica lampeggia direttamente sopra il reperto cercato.',
+            title: t.tutorial.step3HintTitle,
+            desc: t.tutorial.step3HintDesc,
             color: 'text-yellow-300 border-yellow-500/60 bg-yellow-950/50',
             icon: <Search className="w-5 h-5 text-yellow-400" />
           },
           shield: {
-            title: 'Scudo del Guardiano',
-            desc: 'Protezione totale: il tuo prossimo tocco a vuoto non ti farà perdere cuori né penalizzerà il tuo punteggio!',
+            title: t.tutorial.step3ShieldTitle,
+            desc: t.tutorial.step3ShieldDesc,
             color: 'text-indigo-300 border-indigo-500/60 bg-indigo-950/50',
             icon: <Shield className="w-5 h-5 text-indigo-400" />
           },
@@ -268,7 +269,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 }`}
               >
                 <Snowflake className="w-5 h-5 text-cyan-300" />
-                <span className="text-[9px] font-black uppercase text-cyan-200">Congela</span>
+                <span className="text-[9px] font-black uppercase text-cyan-200">{t.powerUps.freezeTime}</span>
               </button>
 
               <button
@@ -284,7 +285,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 }`}
               >
                 <Compass className="w-5 h-5 text-amber-300" />
-                <span className="text-[9px] font-black uppercase text-amber-200">Radar</span>
+                <span className="text-[9px] font-black uppercase text-amber-200">{t.powerUps.compassRadar}</span>
               </button>
 
               <button
@@ -300,7 +301,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 }`}
               >
                 <Search className="w-5 h-5 text-yellow-300" />
-                <span className="text-[9px] font-black uppercase text-yellow-200">Indizio</span>
+                <span className="text-[9px] font-black uppercase text-yellow-200">{t.powerUps.hint}</span>
               </button>
 
               <button
@@ -316,7 +317,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 }`}
               >
                 <Shield className="w-5 h-5 text-indigo-300" />
-                <span className="text-[9px] font-black uppercase text-indigo-200">Scudo</span>
+                <span className="text-[9px] font-black uppercase text-indigo-200">{t.powerUps.errorShield}</span>
               </button>
             </div>
 
@@ -337,15 +338,14 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           </div>
         );
       },
-      message:
-        "Se un reperto si rivela particolarmente sfuggente, non esitare a ricorrere alla tua cintura degli attrezzi. Guadagni monete d'oro a ogni livello decifrato e puoi rifornirti nell'Emporio quando vuoi!",
-      tip: "Tocca i 4 strumenti nella barra inferiore durante il gioco per attivarli istantaneamente.",
+      message: t.tutorial.step3Message,
+      tip: t.tutorial.step3Tip,
     },
     {
       id: 'milestone_dilemmas',
-      title: 'Bivi di Spedizione & i 3 Grandi Finali',
-      subtitle: 'Ogni 10 livelli affronti un bivio tattico che orienta il finale a Paititi',
-      badge: 'NARRAZIONE E SCELTE',
+      title: t.tutorial.step4Title,
+      subtitle: t.tutorial.step4Subtitle,
+      badge: t.tutorial.step4Badge,
       icon: Compass,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner text-left">
@@ -355,10 +355,10 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             </div>
             <div>
               <h4 className="text-xs font-black text-amber-100 font-serif uppercase tracking-wider">
-                11 Bivi Tattici Milestone (Livelli 10, 20... 110)
+                {t.tutorial.step4MilestonesHeader}
               </h4>
               <p className="text-[10px] text-amber-400/80 font-mono">
-                Scelte decisive del 1928 con ricompense immediate in Oro e Strumenti
+                {t.tutorial.step4MilestonesSub}
               </p>
             </div>
           </div>
@@ -366,37 +366,36 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
             <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-500/40 space-y-1">
               <span className="text-lg">🏛️</span>
-              <div className="text-amber-300 font-bold text-[10px]">Accademia</div>
-              <p className="text-[9px] text-stone-300 leading-tight">Scienza, musei e verità archeologica</p>
+              <div className="text-amber-300 font-bold text-[10px]">{t.tutorial.step4Academy}</div>
+              <p className="text-[9px] text-stone-300 leading-tight">{t.tutorial.step4AcademyDesc}</p>
             </div>
 
             <div className="p-2 rounded-xl bg-indigo-950/60 border border-indigo-500/40 space-y-1">
               <span className="text-lg">🗝️</span>
-              <div className="text-indigo-300 font-bold text-[10px]">Custode</div>
-              <p className="text-[9px] text-stone-300 leading-tight">Archivio segreto e protezione dei sigilli</p>
+              <div className="text-indigo-300 font-bold text-[10px]">{t.tutorial.step4Archive}</div>
+              <p className="text-[9px] text-stone-300 leading-tight">{t.tutorial.step4ArchiveDesc}</p>
             </div>
 
             <div className="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 space-y-1">
               <span className="text-lg">🌿</span>
-              <div className="text-emerald-300 font-bold text-[10px]">Natura</div>
-              <p className="text-[9px] text-stone-300 leading-tight">Armonia ancestrale e rispetto della giungla</p>
+              <div className="text-emerald-300 font-bold text-[10px]">{t.tutorial.step4Nature}</div>
+              <p className="text-[9px] text-stone-300 leading-tight">{t.tutorial.step4NatureDesc}</p>
             </div>
           </div>
 
           <div className="p-2 rounded-xl bg-black/50 border border-amber-500/30 text-[10.5px] text-amber-200/90 font-serif text-center">
-            ⭐ Al <strong>Livello 120</strong>, le tue scelte riveleranno la tua <strong>Affinità</strong> verso uno dei 3 Grandi Finali di Paititi!
+            {t.tutorial.step4AffinityNote}
           </div>
         </div>
       ),
-      message:
-        "Alla fine di ogni capitolo, il pulsante del livello si trasforma in 'Bivio di Spedizione'. Risolvi le crisi storiche (incursioni notturne, fughe tra i ghiacci, trattative con le guide locali) per ricevere monete e rifornimenti, plasmando il destino della spedizione.",
-      tip: "Nessuna scelta taglia via livelli: giocherai sempre tutti i 120 siti archeologici godendoti l'intera avventura!",
+      message: t.tutorial.step4Message,
+      tip: t.tutorial.step4Tip,
     },
     {
       id: 'stars_and_relics',
-      title: 'Sistema a 3 Stelle & Collezioni Reali',
-      subtitle: "360 Stelle d'Oro, 12 Reliquie Supreme e Visti Consolari",
-      badge: 'COLLEZIONISMO & REPLAY',
+      title: t.tutorial.step5Title,
+      subtitle: t.tutorial.step5Subtitle,
+      badge: t.tutorial.step5Badge,
       icon: Award,
       renderIllustration: () => (
         <div className="w-full bg-[#1c120a] border-2 border-amber-500/50 rounded-2xl p-3.5 space-y-3 shadow-inner text-left">
@@ -406,10 +405,10 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             </div>
             <div>
               <h4 className="text-xs font-black text-amber-100 font-serif uppercase tracking-wider">
-                Progressione della Reale Società Geografica
+                {t.tutorial.step5ProgressionTitle}
               </h4>
               <p className="text-[10px] text-amber-400/80 font-mono">
-                360 Stelle d'Oro • 12 Reliquie • 12 Visti di Spedizione
+                {t.tutorial.step5ProgressionSub}
               </p>
             </div>
           </div>
@@ -418,28 +417,27 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-600/40 space-y-1">
               <div className="flex items-center gap-1.5 text-amber-300 font-bold text-[11px]">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span>3 Stelle per Livello</span>
+                <span>{t.tutorial.step5StarsTitle}</span>
               </div>
               <p className="text-[10px] text-stone-300 leading-tight">
-                Trova gli 8 reperti in meno di 1m 45s e senza errori per conquistare 3 stelle d'oro e bonus monete massimi!
+                {t.tutorial.step5StarsDesc}
               </p>
             </div>
 
             <div className="p-2 rounded-xl bg-amber-950/60 border border-amber-600/40 space-y-1">
               <div className="flex items-center gap-1.5 text-amber-300 font-bold text-[11px]">
                 <Globe className="w-3.5 h-3.5 text-amber-400" />
-                <span>Mappamondo & Hub</span>
+                <span>{t.tutorial.step5GlobeTitle}</span>
               </div>
               <p className="text-[10px] text-stone-300 leading-tight">
-                Apri il Campo Base per ammirare il Mappamondo 3D, personalizzare il Guardaroba dell'esploratore e riscuotere le taglie!
+                {t.tutorial.step5GlobeDesc}
               </p>
             </div>
           </div>
         </div>
       ),
-      message:
-        "Tutto è pronto per la tua epopea del 1928! Consulta il Taccuino, segui le tracce del Professor Bellini e sventa i piani della Mano Oscura attraverso Europa, Medio Oriente e le Ande fino alla leggendaria città d'oro!",
-      tip: "Tocca 'Campo Base' in alto a destra durante il gioco per accedere a Mappamondo, Guardaroba, Emporio e Medaglie.",
+      message: t.tutorial.step5Message,
+      tip: t.tutorial.step5Tip,
     },
   ];
 
@@ -495,7 +493,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                 </span>
               </div>
               <span className="text-[10px] text-amber-400/80 font-serif mt-0.5 block">
-                Manuale Ufficiale di Spedizione • 1928
+                {t.tutorial.officialManual}
               </span>
             </div>
           </div>
@@ -516,7 +514,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                       ? 'w-6 bg-amber-400 shadow-[0_0_8px_#f59e0b]'
                       : 'w-2 bg-stone-700 hover:bg-stone-500'
                   }`}
-                  title={`Passo ${idx + 1}`}
+                  title={interpolate(t.tutorial.stepOf, { current: idx + 1, total: steps.length })}
                 />
               ))}
             </div>
@@ -526,9 +524,9 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
               type="button"
               onClick={handleComplete}
               className="px-2.5 py-1 rounded-full bg-amber-950/80 hover:bg-amber-900 text-amber-300 text-[11px] font-bold border border-amber-600/60 transition cursor-pointer active:scale-90 flex items-center gap-1 shadow"
-              title="Chiudi il tutorial e inizia a giocare"
+              title={t.tutorial.skipTutorial}
             >
-              <span>Salta</span>
+              <span>{t.tutorial.skipTutorial}</span>
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -540,7 +538,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           {/* Step Category Badge & Title */}
           <div>
             <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-bold uppercase tracking-wider mb-1">
-              {currentStepData.badge} • PASSO {currentStep + 1} DI {steps.length}
+              {currentStepData.badge} • {interpolate(t.tutorial.stepOf, { current: currentStep + 1, total: steps.length })}
             </span>
             <h2 className="text-lg sm:text-xl font-black text-amber-100 font-serif leading-tight">
               {currentStepData.title}
@@ -580,7 +578,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             }`}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Indietro</span>
+            <span>{t.tutorial.prevStep}</span>
           </button>
 
           <button
@@ -588,7 +586,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
             onClick={handleNext}
             className="py-2.5 px-5 rounded-xl font-black font-serif tracking-wider text-xs uppercase bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 text-stone-950 shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center gap-2 cursor-pointer active:scale-95 transition"
           >
-            <span>{currentStep === steps.length - 1 ? 'INIZIA LA SPEDIZIONE!' : 'AVANTI'}</span>
+            <span>{currentStep === steps.length - 1 ? t.tutorial.startExpedition : t.tutorial.nextStep}</span>
             {currentStep === steps.length - 1 ? (
               <Check className="w-4 h-4 stroke-[3]" />
             ) : (

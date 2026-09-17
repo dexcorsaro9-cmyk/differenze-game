@@ -22,6 +22,7 @@ import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
 import type { SagaMilestone } from '../types/game';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface MappamondoModalProps {
   isOpen: boolean;
@@ -137,6 +138,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   onOpenStageBriefing,
   profile,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   const explorer = EXPLORERS[profile?.avatarId || 'samira'];
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
   const explorerPortrait = activeOutfit?.image || explorer.portrait;
@@ -145,7 +147,11 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   const originCity = `${explorer.originCity} (${explorer.originCountry})`;
   const destLat = 51.50; // London / Oxford
   const destLon = -0.12;
-  const destCity = "Londra / Oxford (Inghilterra)";
+  const destCity = language === 'en'
+    ? "London / Oxford (England)"
+    : language === 'es'
+    ? "Londres / Oxford (Inglaterra)"
+    : "Londra / Oxford (Inghilterra)";
 
   const originVec = useMemo(() => latLonToVec3(originLat, originLon), [originLat, originLon]);
   const destVec = useMemo(() => latLonToVec3(destLat, destLon), [destLat, destLon]);
@@ -859,14 +865,14 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <h3 className="text-sm font-black uppercase tracking-wider text-amber-200 font-serif">
-                  Mappamondo 3D
+                  {t.hub.worldMap}
                 </h3>
                 <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded-full bg-amber-500/30 text-amber-300 border border-amber-400/50">
-                  12 TAPPE
+                  12 {t.levelSelect.stage.toUpperCase()}
                 </span>
               </div>
               <p className="text-[10px] text-stone-400">
-                Sblocco ogni 10 livelli • {totalStagesCompleted}/12 Tappe Decifrate
+                {interpolate(t.treasureMap.unlockedStage, { completed: totalStagesCompleted, total: 12 })}
               </p>
             </div>
           </div>
@@ -877,7 +883,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
               <button
                 onClick={() => startFlightSequence()}
                 className="p-2 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-amber-500/50 text-amber-300 transition-all active:scale-95 cursor-pointer"
-                title="Rivedi Volo Spedizione per Londra"
+                title={language === 'en' ? "Replay Expedition Flight to London" : language === 'es' ? "Repetir Vuelo de Expedición a Londres" : "Rivedi Volo Spedizione per Londra"}
               >
                 <Plane className="w-4 h-4" />
               </button>
@@ -892,7 +898,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                   ? 'bg-amber-500/20 border-amber-500/60 text-amber-300'
                   : 'bg-stone-800 border-stone-700 text-stone-400 hover:text-white'
               }`}
-              title="Rotazione 360°"
+              title={t.relics.toggleAutoRotate}
             >
               <RotateCw className={`w-4 h-4 ${isAutoRotating ? 'animate-spin-slow' : ''}`} />
             </button>
@@ -901,7 +907,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
             <button
               onClick={onClose}
               className="p-2 rounded-xl bg-stone-800/90 hover:bg-rose-950 border border-stone-700 hover:border-rose-500/60 text-stone-300 hover:text-white transition-all active:scale-90 cursor-pointer"
-              title="Chiudi Mappamondo"
+              title={t.common.close}
             >
               <X className="w-4 h-4" />
             </button>
@@ -918,7 +924,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
               <div className="truncate">
                 <div className="text-[10px] font-black uppercase tracking-wider text-red-400 font-serif flex items-center gap-1">
                   <Plane className="w-3 h-3 text-yellow-400 animate-pulse" />
-                  Volo Spedizione 1928
+                  {language === 'en' ? "1928 Expedition Flight" : language === 'es' ? "Vuelo Expedición 1928" : "Volo Spedizione 1928"}
                 </div>
                 <div className="text-[11px] font-bold text-white font-serif truncate">
                   {originCity} ➔ <span className="text-amber-300">{destCity}</span>
@@ -931,7 +937,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
               className="px-2.5 py-1 rounded-lg bg-stone-900/90 border border-amber-500/60 text-amber-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all cursor-pointer shrink-0"
             >
               <FastForward className="w-3 h-3" />
-              Salta
+              {t.prologue.skip}
             </button>
           </div>
         )}
@@ -941,10 +947,10 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
           <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 border-b border-amber-500/50 px-3 py-1.5 flex items-center justify-between text-amber-200 text-[11px] font-serif shadow-md">
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-spin-slow" />
-              <span>Arrivato a Londra! Seleziona il 1° livello per indagare nello Studio!</span>
+              <span>{language === 'en' ? "Arrived in London! Select Level 1 to investigate the Study!" : language === 'es' ? "¡Llegada a Londres! ¡Selecciona el 1° nivel para investigar el Estudio!" : "Arrivato a Londra! Seleziona il 1° livello per indagare nello Studio!"}</span>
             </span>
             <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-400/40">
-              Livello 1
+              {t.levelSelect.level} 1
             </span>
           </div>
         )}
@@ -973,7 +979,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                   setSelectedStageNumber(prev => (prev === 1 ? 12 : prev - 1));
                 }}
                 className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-stone-900/80 hover:bg-amber-950 border border-amber-500/50 text-amber-300 shadow-xl active:scale-90 cursor-pointer"
-                title="Tappa Precedente"
+                title={`${t.levelSelect.stage} ${t.common.previous}`}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -984,7 +990,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                   setSelectedStageNumber(prev => (prev === 12 ? 1 : prev + 1));
                 }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-stone-900/80 hover:bg-amber-950 border border-amber-500/50 text-amber-300 shadow-xl active:scale-90 cursor-pointer"
-                title="Tappa Successiva"
+                title={`${t.levelSelect.stage} ${t.common.next}`}
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -992,7 +998,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
               {/* Touch instruction hint */}
               <div className="absolute bottom-1 bg-stone-900/85 backdrop-blur-md px-3 py-1 rounded-full border border-amber-500/30 text-[10px] text-amber-200/90 flex items-center gap-1.5 shadow-md pointer-events-none">
                 <Sparkles className="w-3 h-3 text-amber-400 animate-spin-slow" />
-                <span>Trascina per ruotare il Mappamondo 3D</span>
+                <span>{t.treasureMap.dragToRotate}</span>
               </div>
             </>
           )}
@@ -1007,7 +1013,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className="px-2 py-0.5 rounded-md bg-amber-500/25 border border-amber-400/50 text-[10px] font-black uppercase tracking-wider text-amber-200 font-serif">
-                  TAPPA {selectedMilestone.stageNumber} • LIV. {selectedMilestone.targetLevel}
+                  {interpolate(t.treasureMap.stageLevel, { stage: selectedMilestone.stageNumber, level: selectedMilestone.targetLevel })}
                 </span>
                 <span className="text-[9px] font-mono text-amber-400/80">
                   {selectedMilestone.mapCoordinates.split(' - ')[0]}
@@ -1017,17 +1023,17 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
               {isSelectedCompleted ? (
                 <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-bold">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Decifrata</span>
+                  <span>{t.hiddenObject.deciphered.replace(':', '')}</span>
                 </div>
               ) : isSelectedCurrent ? (
                 <div className="flex items-center gap-1 text-amber-400 text-[10px] font-bold animate-pulse">
                   <Navigation className="w-3.5 h-3.5" />
-                  <span>In corso</span>
+                  <span>{t.treasureMap.inProgressStage}</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-1 text-stone-500 text-[10px] font-bold">
                   <Lock className="w-3 h-3" />
-                  <span>Sblocca al Liv. {selectedMilestone.targetLevel}</span>
+                  <span>{interpolate(t.treasureMap.unlockedAtLevel, { level: selectedMilestone.targetLevel })}</span>
                 </div>
               )}
             </div>
@@ -1047,10 +1053,10 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
             <div className="pt-1.5 border-t border-amber-500/20">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 font-serif">
-                  Indagini della Tappa (10 Livelli)
+                  {t.treasureMap.exploreStageLevels}
                 </span>
                 <span className="text-[9px] text-stone-400">
-                  {stageLevels.filter(lvl => completedLevelIds.includes(lvl)).length}/10 Risolti
+                  {interpolate(t.treasureMap.solvedLevels, { solved: stageLevels.filter(lvl => completedLevelIds.includes(lvl)).length })}
                 </span>
               </div>
               <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
@@ -1079,7 +1085,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                           ? 'bg-amber-950/60 border border-amber-500/50 text-amber-300 cursor-pointer hover:bg-amber-900/80'
                           : 'bg-stone-900/70 border border-stone-800 text-stone-600 cursor-not-allowed'
                       }`}
-                      title={isUnlocked ? `Seleziona e Gioca Livello ${lvl}` : `Livello ${lvl} Bloccato`}
+                      title={isUnlocked ? interpolate(t.treasureMap.playLevel, { level: lvl }) : `${t.levelSelect.level} ${lvl} ${t.levelSelect.locked}`}
                     >
                       {isCompleted ? '✓' : isCurrent ? `▶ ${lvl}` : isUnlocked ? lvl : '🔒'}
                     </button>
@@ -1105,10 +1111,10 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                       onClose();
                     }}
                     className="px-2.5 py-1.5 rounded-xl font-bold text-[10px] sm:text-[11px] bg-[#2a1b0d] hover:bg-[#3d2713] text-amber-300 border border-amber-500/50 shadow flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
-                    title={`Leggi Dispaccio di Spedizione Tappa ${selectedMilestone.stageNumber}`}
+                    title={`${t.hub.stageDispatch} ${selectedMilestone.stageNumber}`}
                   >
                     <ScrollText className="w-3.5 h-3.5 text-amber-400" />
-                    <span className="hidden xs:inline">Dispaccio</span>
+                    <span className="hidden xs:inline">{t.treasureMap.dispatchBtn}</span>
                   </button>
                 )}
 
@@ -1143,12 +1149,12 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                     <Play className="w-3.5 h-3.5 fill-current" />
                     <span>
                       {selectedMilestone.stageNumber === 1 && completedLevelIds.length === 0
-                        ? '🧭 Inizia Livello 1'
+                        ? `🧭 ${t.treasureMap.startLevel1}`
                         : isSelectedCurrent
-                        ? `▶ Gioca Livello ${currentLevelId}`
+                        ? `▶ ${interpolate(t.treasureMap.playLevel, { level: currentLevelId })}`
                         : isSelectedCompleted
-                        ? '🔄 Rigioca Tappa'
-                        : '🔒 Tappa Bloccata'}
+                        ? `🔄 ${t.treasureMap.replayStage}`
+                        : `🔒 ${t.treasureMap.lockedBtn}`}
                     </span>
                   </button>
                 )}
@@ -1182,7 +1188,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                       ? 'border-amber-500/80 bg-amber-950/60 text-amber-300 ring-1 ring-amber-400'
                       : 'border-stone-800 bg-stone-950 text-stone-600'
                   }`}
-                  title={`Tappa ${s.stageNumber}: ${s.name}`}
+                  title={`${t.levelSelect.stage} ${s.stageNumber}: ${s.name}`}
                 >
                   {completed ? (
                     <span>✓ T{s.stageNumber}</span>

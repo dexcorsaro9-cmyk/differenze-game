@@ -133,11 +133,11 @@ export const PowerUpBar: React.FC<PowerUpBarProps> = ({
       <button
         onClick={onOpenShop}
         className="flex flex-col items-center justify-center py-1 sm:py-2 px-0.5 sm:px-1 rounded-xl sm:rounded-2xl bg-gradient-to-b from-amber-500/35 via-yellow-600/30 to-amber-800/40 hover:from-amber-500/45 border-2 border-amber-400/80 text-amber-200 shadow-md sm:shadow-[0_4px_12px_rgba(245,158,11,0.25)] active:scale-90 active:translate-y-0.5 transition-all"
-        title="Emporio Archeologico"
+        title={t.powerUps.shopTooltip}
       >
         <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 mb-0.5 fill-amber-400/20" />
         <span className="text-[9px] sm:text-[10px] font-bold tracking-tight leading-none text-center font-serif text-amber-200 mt-0.5">
-          Shop
+          {t.powerUps.shop}
         </span>
       </button>
     </div>

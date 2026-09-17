@@ -13,6 +13,8 @@ import type { ExplorerProfile } from '../data/avatarData';
 import { EXPLORERS, ALL_OUTFITS } from '../data/avatarData';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedVisa } from '../i18n/gameDataTranslations';
 
 interface ExpeditionPassportModalProps {
   isOpen: boolean;
@@ -31,6 +33,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
   claimedVisaIds,
   onClaimVisaBounty,
 }) => {
+  const { t, language } = useTranslation();
   const [activeTab, setActiveTab] = useState<'identity' | 'page_1' | 'page_2' | 'page_3'>('identity');
   const [stampingVisaId, setStampingVisaId] = useState<string | null>(null);
 
@@ -71,6 +74,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
     const safeClaimed = Array.isArray(claimedVisaIds) ? claimedVisaIds : [];
     const claimed = safeClaimed.includes(visa.id);
     const isCurrentlyStamping = stampingVisaId === visa.id;
+    const locVisa = getLocalizedVisa(visa, language);
 
     // Slight organic stamp rotation based on index
     const angles = [-2, 1.5, -1.2, 2.2];
@@ -92,15 +96,15 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
         <div className="flex items-start justify-between gap-2 border-b border-stone-400/30 pb-1.5">
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-mono font-black tracking-wider text-amber-950">
-                CAPITOLO {visa.chapterNumber}
+              <span className="text-xs font-mono font-black tracking-wider text-amber-950 uppercase">
+                {t.header.chapter} {visa.chapterNumber}
               </span>
               <span className="text-[10px] text-stone-600 font-serif font-semibold">
-                • {visa.country}
+                • {locVisa.country}
               </span>
             </div>
             <h4 className="text-xs font-serif font-black text-amber-900 leading-tight">
-              {visa.title}
+              {locVisa.title}
             </h4>
           </div>
 
@@ -127,7 +131,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
               <div className="text-2xl">{visa.symbol}</div>
               <div className="flex flex-col text-left leading-none">
                 <span className="text-[10px] font-black uppercase tracking-wider font-mono">
-                  {visa.territory}
+                  {locVisa.territory}
                 </span>
                 <span className="text-[8px] font-bold tracking-widest mt-0.5 opacity-80">
                   {visa.date}
@@ -142,17 +146,17 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                 className="absolute -top-2 -right-2 px-1 py-0.2 rounded text-[7px] font-mono font-black uppercase text-white shadow"
                 style={{ backgroundColor: visa.inkColor.accent }}
               >
-                VISTATO
+                {t.passport.stamped}
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-stone-500 py-2">
               <Lock className="w-5 h-5 text-stone-400 mb-1" />
               <span className="text-[10px] font-serif font-bold text-center">
-                Sigillo Consolare Riservato
+                {t.passport.consularAuthority}
               </span>
               <span className="text-[9px] font-mono text-stone-500 text-center">
-                Raggiungi il Capitolo {visa.chapterNumber} per timbrare
+                {t.header.chapter} {visa.chapterNumber}
               </span>
             </div>
           )}
@@ -168,7 +172,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
         {/* Visa Footer & Bounty Claim */}
         <div className="pt-1.5 border-t border-stone-400/30 flex items-center justify-between">
           <span className="text-[9px] font-serif italic text-stone-600 truncate max-w-[140px]">
-            {visa.consul}
+            {locVisa.consul}
           </span>
 
           {unlocked && (
@@ -176,7 +180,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
               {claimed ? (
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/10 text-emerald-800 border border-emerald-600/30 text-[9px] font-bold">
                   <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                  <span>Timbrato & Riscattato</span>
+                  <span>{t.passport.visaClaimed}</span>
                 </div>
               ) : (
                 <button
@@ -185,7 +189,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                   className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-amber-50 font-bold text-[10px] shadow active:scale-95 transition cursor-pointer border border-amber-400"
                 >
                   <Stamp className="w-3 h-3" />
-                  <span>Timbra (+{visa.bounty})</span>
+                  <span>{t.passport.applyStamp} (+{visa.bounty})</span>
                 </button>
               )}
             </div>
@@ -217,10 +221,10 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
             </div>
             <div>
               <span className="text-[10px] font-mono tracking-widest text-amber-300/80 uppercase block">
-                BRITISH EMPIRE & DIPLOMATIC MISSIONS • 1928
+                {t.passport.subtitle}
               </span>
               <h2 className="text-base font-serif font-black text-amber-100 leading-tight">
-                Passaporto di Spedizione Reale
+                {t.passport.title}
               </h2>
             </div>
           </div>
@@ -228,7 +232,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-950/80 border border-amber-500/40 text-xs font-mono font-bold text-amber-300">
               <Stamp className="w-3.5 h-3.5 text-amber-400" />
-              <span>{unlockedCount}/12 Visti</span>
+              <span>{unlockedCount}/12 {t.passport.visasTitle}</span>
             </div>
 
             <button
@@ -259,7 +263,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
             }`}
           >
             <User className="w-3.5 h-3.5" />
-            <span>Credenziali & Identità</span>
+            <span>{t.passport.tabIdentity}</span>
           </button>
 
           <button
@@ -275,7 +279,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
             }`}
           >
             <Stamp className="w-3.5 h-3.5" />
-            <span>Visti 1 - 4: Europa & Rio Negro</span>
+            <span>{t.passport.tabPage1}</span>
           </button>
 
           <button
@@ -291,7 +295,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
             }`}
           >
             <Stamp className="w-3.5 h-3.5" />
-            <span>Visti 5 - 8: Ande & Valle Sacra</span>
+            <span>{t.passport.tabPage2}</span>
           </button>
 
           <button
@@ -307,7 +311,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
             }`}
           >
             <Stamp className="w-3.5 h-3.5" />
-            <span>Visti 9 - 12: Paititi del Sole</span>
+            <span>{t.passport.tabPage3}</span>
           </button>
         </div>
 

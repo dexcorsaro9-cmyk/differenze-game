@@ -35,6 +35,7 @@ import { useEconomy } from './hooks/useEconomy';
 import { useGameSession } from './hooks/useGameSession';
 import { useModalManager } from './hooks/useModalManager';
 import { useTranslation } from './i18n/LanguageContext';
+import { getLocalizedMedal } from './i18n/gameDataTranslations';
 import { hasPendingDaily } from './utils/dailyChallenge';
 import { safeStorage } from './utils/storage';
 import { ALL_COLLECTIBLE_RELICS } from './data/collectiblesData';
@@ -53,7 +54,7 @@ import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   // Persistence keys
   const STORAGE_KEY_SETTINGS = 'differenze_settings_v1';
@@ -680,7 +681,7 @@ export const App: React.FC = () => {
         />
       )}
 
-      <ErrorBoundary fallbackMessage="Anomalia nell'Emporio Archeologico. I tuoi fondi sono al sicuro.">
+      <ErrorBoundary>
         <ShopModal
           isOpen={modals.isShopOpen}
           onClose={() => modals.setIsShopOpen(false)}
@@ -692,7 +693,7 @@ export const App: React.FC = () => {
       </ErrorBoundary>
 
       {modals.isRelicMuseumOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia temporanea nella Sala delle Reliquie. I reperti archeologici sono al sicuro.">
+        <ErrorBoundary>
           <RelicMuseumModal
             isOpen={modals.isRelicMuseumOpen}
             onClose={() => {
@@ -704,7 +705,7 @@ export const App: React.FC = () => {
         </ErrorBoundary>
       )}
 
-      <ErrorBoundary fallbackMessage="Anomalia nella Reliquia Ritrovata.">
+      <ErrorBoundary>
         <RelicFoundModal
           isOpen={game.isRelicFoundModalOpen}
           relic={game.activeFoundRelic}
@@ -716,7 +717,7 @@ export const App: React.FC = () => {
         />
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackMessage="Anomalia nel Taccuino di Spedizione. I tuoi appunti sono intatti.">
+      <ErrorBoundary>
         <JournalModal
           isOpen={modals.isJournalOpen}
           onClose={() => modals.setIsJournalOpen(false)}
@@ -727,7 +728,7 @@ export const App: React.FC = () => {
         />
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackMessage="Anomalia nel Selettore Livelli. I tuoi progressi sono intatti.">
+      <ErrorBoundary>
         <LevelSelectModal
           isOpen={modals.isLevelSelectOpen}
           onClose={() => modals.setIsLevelSelectOpen(false)}
@@ -744,7 +745,7 @@ export const App: React.FC = () => {
       </ErrorBoundary>
 
       {modals.isTreasureMapOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Mappamondo 3D. Le rotte della spedizione sono intatte.">
+        <ErrorBoundary>
           <MappamondoModal
             isOpen={modals.isTreasureMapOpen}
             onClose={() => {
@@ -763,7 +764,7 @@ export const App: React.FC = () => {
         </ErrorBoundary>
       )}
 
-      <ErrorBoundary fallbackMessage="Anomalia nelle Impostazioni di Gioco.">
+      <ErrorBoundary>
         <SettingsModal
           isOpen={modals.isSettingsOpen}
           onClose={() => modals.setIsSettingsOpen(false)}
@@ -782,7 +783,7 @@ export const App: React.FC = () => {
       </ErrorBoundary>
 
       {/* Central Expedition Headquarters / Campo Base Modal */}
-      <ErrorBoundary fallbackMessage="Anomalia nel Quartier Generale della Spedizione. I tuoi dati sono intatti.">
+      <ErrorBoundary>
         <ExpeditionHubModal
           isOpen={modals.isExpeditionHubOpen}
           onClose={() => modals.setIsExpeditionHubOpen(false)}
@@ -877,7 +878,7 @@ export const App: React.FC = () => {
       )}
 
       {/* Explorer Avatar Creation & Selection Modal */}
-      <ErrorBoundary fallbackMessage="Anomalia nella selezione dell'Esploratore.">
+      <ErrorBoundary>
         <AvatarCreatorModal
           isOpen={modals.isAvatarCreatorOpen}
           onConfirm={handleConfirmAvatarProfile}
@@ -887,7 +888,7 @@ export const App: React.FC = () => {
 
       {/* Explorer Wardrobe & Upgrades Modal */}
       {modals.isWardrobeOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nell'Armeria e Camerino RPG. I tuoi oggetti ed equipaggiamenti sono intatti.">
+        <ErrorBoundary>
           <WardrobeModal
             isOpen={modals.isWardrobeOpen}
             onClose={() => modals.setIsWardrobeOpen(false)}
@@ -918,7 +919,7 @@ export const App: React.FC = () => {
 
       {/* 12-Stage Expedition Lore & Mission Briefing Dossier */}
       {modals.activeStageBriefing !== null && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Dispaccio di Tappa. I tuoi progressi sono al sicuro.">
+        <ErrorBoundary>
           <StageLoreBriefingModal
             isOpen={modals.activeStageBriefing !== null}
             stageNumber={modals.activeStageBriefing}
@@ -938,7 +939,7 @@ export const App: React.FC = () => {
 
       {/* 30-Day Expedition Daily Challenge & Streak Modal */}
       {modals.isDailyModalOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nella Spedizione Quotidiana. I tuoi timbri sono al sicuro.">
+        <ErrorBoundary>
           <DailyExpeditionModal
             isOpen={modals.isDailyModalOpen}
             onClose={() => modals.setIsDailyModalOpen(false)}
@@ -950,7 +951,7 @@ export const App: React.FC = () => {
 
       {/* Milestone Expedition Tactical Dilemma Modal */}
       {modals.isDilemmaOpen && EXPEDITION_DILEMMAS[game.currentLevel.chapterNumber] && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Bivio Morale della Spedizione.">
+        <ErrorBoundary>
           <ExpeditionDilemmaModal
             isOpen={modals.isDilemmaOpen}
             dilemma={EXPEDITION_DILEMMAS[game.currentLevel.chapterNumber]}
@@ -961,7 +962,7 @@ export const App: React.FC = () => {
 
       {/* Grand Finale Expedition Endings Modal */}
       {modals.isGrandFinaleOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Gran Finale di Paititi. Il tuo trionfo è memorizzato.">
+        <ErrorBoundary>
           <GrandFinaleModal
             isOpen={modals.isGrandFinaleOpen}
             profile={explorerProfile}
@@ -980,7 +981,7 @@ export const App: React.FC = () => {
 
       {/* Victorian Walnut & Brass Medals Showcase */}
       {modals.isMedalsCabinetOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Medagliere della Spedizione. Le tue onorificenze sono intatte.">
+        <ErrorBoundary>
           <MedalsCabinetModal
             isOpen={modals.isMedalsCabinetOpen}
             onClose={() => modals.setIsMedalsCabinetOpen(false)}
@@ -993,7 +994,7 @@ export const App: React.FC = () => {
 
       {/* 1928 Royal Expedition Passport & Consular Visas Modal */}
       {modals.isPassportOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nel Passaporto Consolare. I tuoi timbri consolari sono registrati.">
+        <ErrorBoundary>
           <ExpeditionPassportModal
             isOpen={modals.isPassportOpen}
             onClose={() => modals.setIsPassportOpen(false)}
@@ -1007,7 +1008,7 @@ export const App: React.FC = () => {
 
       {/* PWA Full-Screen Standalone & Offline Installation Modal */}
       {modals.isInstallModalOpen && (
-        <ErrorBoundary fallbackMessage="Anomalia nel modulo di installazione PWA.">
+        <ErrorBoundary>
           <PWAInstallModal
             isOpen={modals.isInstallModalOpen}
             onClose={() => modals.setIsInstallModalOpen(false)}
@@ -1020,35 +1021,38 @@ export const App: React.FC = () => {
       )}
 
       {/* Floating Royal Medal Unlock Celebration Toast */}
-      {economy.unlockedToastMedal && (
-        <div
-          onClick={() => {
-            modals.setIsMedalsCabinetOpen(true);
-            economy.setUnlockedToastMedal(null);
-          }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-80 w-auto max-w-sm px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#2c1d0f] via-[#1a0e06] to-[#2c1d0f] border-2 border-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.5),0_0_20px_rgba(251,191,36,0.3)] flex items-center gap-3 cursor-pointer animate-slideDown select-none hover:scale-105 transition-transform"
-        >
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/80 flex items-center justify-center text-amber-300 text-xl shadow-inner shrink-0 animate-bounce">
-            <Award className="w-6 h-6 text-amber-400" />
+      {economy.unlockedToastMedal && (() => {
+        const locMedal = getLocalizedMedal(economy.unlockedToastMedal, language);
+        return (
+          <div
+            onClick={() => {
+              modals.setIsMedalsCabinetOpen(true);
+              economy.setUnlockedToastMedal(null);
+            }}
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-80 w-auto max-w-sm px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#2c1d0f] via-[#1a0e06] to-[#2c1d0f] border-2 border-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.5),0_0_20px_rgba(251,191,36,0.3)] flex items-center gap-3 cursor-pointer animate-slideDown select-none hover:scale-105 transition-transform"
+          >
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/80 flex items-center justify-center text-amber-300 text-xl shadow-inner shrink-0 animate-bounce">
+              <Award className="w-6 h-6 text-amber-400" />
+            </div>
+            <div className="flex-1 min-w-0 text-left">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest">
+                  {t.medals.unlockedToast}
+                </span>
+                <span className="text-[9px] px-1 rounded bg-amber-400/20 text-amber-300 font-mono">
+                  +{economy.unlockedToastMedal.coinReward} 🪙
+                </span>
+              </div>
+              <div className="text-xs font-bold font-serif text-amber-100 truncate">
+                {locMedal.title}
+              </div>
+              <div className="text-[10px] text-stone-400 font-serif truncate">
+                {locMedal.description}
+              </div>
+            </div>
           </div>
-          <div className="flex-1 min-w-0 text-left">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest">
-                ONORIFICENZA SBLOCCATA!
-              </span>
-              <span className="text-[9px] px-1 rounded bg-amber-400/20 text-amber-300 font-mono">
-                +{economy.unlockedToastMedal.coinReward} 🪙
-              </span>
-            </div>
-            <div className="text-xs font-bold font-serif text-amber-100 truncate">
-              {economy.unlockedToastMedal.title}
-            </div>
-            <div className="text-[10px] text-stone-400 font-serif truncate">
-              {economy.unlockedToastMedal.description}
-            </div>
-          </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* 1928 Expedition Vintage Background Pause Modal */}
       {modals.isBackgroundPaused && (
@@ -1059,14 +1063,14 @@ export const App: React.FC = () => {
             </div>
 
             <span className="text-[10px] font-mono tracking-widest text-amber-400/90 uppercase font-bold">
-              Spedizione Fawcett • Anno 1928
+              {t.pause.expedition}
             </span>
             <h3 className="text-xl font-serif font-black text-amber-100 mt-1 mb-2 tracking-wide">
-              Spedizione in Sospeso
+              {t.pause.title}
             </h3>
 
             <p className="text-xs text-stone-300 font-sans leading-relaxed mb-6">
-              L'esplorazione è stata congelata durante il passaggio in background. Il cronometro e l'orchestra riprenderanno appena sei pronto.
+              {t.pause.description}
             </p>
 
             <button
@@ -1075,7 +1079,7 @@ export const App: React.FC = () => {
               className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-stone-950 font-black text-sm tracking-wider uppercase border border-amber-300 shadow-[0_4px_25px_rgba(245,158,11,0.6)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4 fill-stone-950" />
-              Riprendi Spedizione
+              {t.pause.resume}
             </button>
           </div>
         </div>

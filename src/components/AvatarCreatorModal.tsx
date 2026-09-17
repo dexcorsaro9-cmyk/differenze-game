@@ -4,6 +4,7 @@ import { Compass, BookOpen, Check, Sparkles, Shield, User } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedExplorer } from '../i18n/gameDataTranslations';
 
 interface AvatarCreatorModalProps {
   isOpen: boolean;
@@ -16,7 +17,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
   onConfirm,
   currentProfile,
 }) => {
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
   const [selectedAvatarId, setSelectedAvatarId] = useState<'samira' | 'mateo'>(
     currentProfile?.avatarId || 'samira'
   );
@@ -26,7 +27,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentExplorer = EXPLORERS[selectedAvatarId] || EXPLORERS.samira;
+  const currentExplorer = getLocalizedExplorer(EXPLORERS[selectedAvatarId] || EXPLORERS.samira, language);
   const [imgError, setImgError] = useState<boolean>(false);
 
   const handleSelectExplorer = (id: 'samira' | 'mateo') => {
@@ -151,14 +152,14 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
               <div>
                 <div className="text-[11px] font-bold text-amber-300 font-serif flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-amber-400" />
-                  Tenuta da Campo Iniziale
+                  {t.avatarCreator.initialOutfit}
                 </div>
                 <div className="text-[10px] text-stone-300">
-                  {selectedAvatarId === 'samira' ? 'Lino salvia, taccuino glifi & bussola' : 'Maglia terracotta, cilindro mappe & clinometro'}
+                  {selectedAvatarId === 'samira' ? t.avatarCreator.samiraInitialOutfit : t.avatarCreator.mateoInitialOutfit}
                 </div>
               </div>
               <div className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">
-                Inclusa
+                {t.avatarCreator.included}
               </div>
             </div>
           </div>

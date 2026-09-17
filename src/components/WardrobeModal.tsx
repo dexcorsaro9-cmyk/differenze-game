@@ -40,6 +40,14 @@ import {
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { interpolate } from '../i18n';
+import {
+  getLocalizedExplorer,
+  getLocalizedOutfit,
+  getLocalizedAccessory,
+  getLocalizedEquipmentSet,
+} from '../i18n/gameDataTranslations';
 
 interface WardrobeModalProps {
   isOpen: boolean;
@@ -64,6 +72,8 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   onSpendCoins,
   onOpenAvatarCreator,
 }) => {
+  const { t, language } = useTranslation();
+
   // Active Slot Selected (for Paperdoll highlight and item drawer)
   const [selectedSlot, setSelectedSlot] = useState<EquipmentSlotType>('torso');
 
@@ -83,13 +93,14 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   // Modal for Close-Up Item Lore & 3D Inspection
   const [inspectItem, setInspectItem] = useState<WardrobeOutfit | WardrobeAccessory | null>(null);
 
-  const currentExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const rawExplorer = EXPLORERS[profile.avatarId] || EXPLORERS.samira;
+  const currentExplorer = getLocalizedExplorer(rawExplorer, language);
 
   const safeUnlockedOutfitIds = useMemo(() => {
     return Array.isArray(profile.unlockedOutfitIds) && profile.unlockedOutfitIds.length > 0
       ? profile.unlockedOutfitIds
-      : [currentExplorer.defaultOutfitId];
-  }, [profile.unlockedOutfitIds, currentExplorer.defaultOutfitId]);
+      : [rawExplorer.defaultOutfitId];
+  }, [profile.unlockedOutfitIds, rawExplorer.defaultOutfitId]);
 
   const safeUnlockedAccessoryIds = useMemo(() => {
     return Array.isArray(profile.unlockedAccessoryIds) ? profile.unlockedAccessoryIds : [];
@@ -98,54 +109,69 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   // Available outfits for current explorer
   const availableOutfits = ALL_OUTFITS.filter(o => o.avatarId === profile.avatarId);
 
-  // Items currently worn/previewed
-  const displayOutfit = ALL_OUTFITS.find(o => o.id === (previewOutfitId || profile.equippedOutfitId)) ||
+  // Items currently worn/previewed (raw for matching, localized for display)
+  const displayOutfitRaw = ALL_OUTFITS.find(o => o.id === (previewOutfitId || profile.equippedOutfitId)) ||
     ALL_OUTFITS.find(o => o.avatarId === profile.avatarId) ||
     ALL_OUTFITS[0];
-  const displayHeadgear = ALL_ACCESSORIES.find(
+  const displayOutfit = displayOutfitRaw ? getLocalizedOutfit(displayOutfitRaw, language) : undefined;
+
+  const displayHeadgearRaw = ALL_ACCESSORIES.find(
     a => a.id === (previewHeadgearId !== null ? previewHeadgearId : profile.equippedHeadgearId)
   );
-  const displayTool = ALL_ACCESSORIES.find(
+  const displayHeadgear = displayHeadgearRaw ? getLocalizedAccessory(displayHeadgearRaw, language) : undefined;
+
+  const displayToolRaw = ALL_ACCESSORIES.find(
     a => a.id === (previewToolId !== null ? previewToolId : profile.equippedToolId)
   );
-  const displayOffHand = ALL_ACCESSORIES.find(
+  const displayTool = displayToolRaw ? getLocalizedAccessory(displayToolRaw, language) : undefined;
+
+  const displayOffHandRaw = ALL_ACCESSORIES.find(
     a =>
       a.id ===
       (previewOffHandId !== null
         ? previewOffHandId
         : profile.equippedOffHandId || 'off_compass_brass')
   );
-  const displayLegs = ALL_ACCESSORIES.find(
+  const displayOffHand = displayOffHandRaw ? getLocalizedAccessory(displayOffHandRaw, language) : undefined;
+
+  const displayLegsRaw = ALL_ACCESSORIES.find(
     a =>
       a.id ===
       (previewLegsId !== null
         ? previewLegsId
         : profile.equippedLegsId || 'legs_cargo_khaki')
   );
-  const displayBoots = ALL_ACCESSORIES.find(
+  const displayLegs = displayLegsRaw ? getLocalizedAccessory(displayLegsRaw, language) : undefined;
+
+  const displayBootsRaw = ALL_ACCESSORIES.find(
     a =>
       a.id ===
       (previewBootsId !== null
         ? previewBootsId
         : profile.equippedBootsId || 'boots_leather_hiker')
   );
-  const displayTalisman = ALL_ACCESSORIES.find(
+  const displayBoots = displayBootsRaw ? getLocalizedAccessory(displayBootsRaw, language) : undefined;
+
+  const displayTalismanRaw = ALL_ACCESSORIES.find(
     a => a.id === (previewTalismanId !== null ? previewTalismanId : profile.equippedTalismanId)
   );
-  const displayBack = ALL_ACCESSORIES.find(
+  const displayTalisman = displayTalismanRaw ? getLocalizedAccessory(displayTalismanRaw, language) : undefined;
+
+  const displayBackRaw = ALL_ACCESSORIES.find(
     a => a.id === (previewBackId !== null ? previewBackId : profile.equippedBackId || null)
   );
+  const displayBack = displayBackRaw ? getLocalizedAccessory(displayBackRaw, language) : undefined;
 
   // Dynamic Tags of currently worn / previewed items across all 8 slots
   const displayedTags: string[] = [
-    displayOutfit?.tag,
-    displayHeadgear?.tag,
-    displayTool?.tag,
-    displayOffHand?.tag,
-    displayLegs?.tag,
-    displayBoots?.tag,
-    displayTalisman?.tag,
-    displayBack?.tag,
+    displayOutfitRaw?.tag,
+    displayHeadgearRaw?.tag,
+    displayToolRaw?.tag,
+    displayOffHandRaw?.tag,
+    displayLegsRaw?.tag,
+    displayBootsRaw?.tag,
+    displayTalismanRaw?.tag,
+    displayBackRaw?.tag,
   ].filter((t): t is string => Boolean(t));
 
   const equipmentSetsStatus = useMemo(
@@ -415,32 +441,32 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   }[] = [
     {
       id: 'headgear',
-      name: 'Testa',
-      subname: 'Copricapo',
+      name: t.wardrobe.slotHeadgearName,
+      subname: t.wardrobe.slotHeadgearSub,
       icon: Crown,
       item: displayHeadgear,
       isPreview: previewHeadgearId !== null,
     },
     {
       id: 'talisman',
-      name: 'Collo',
-      subname: 'Amuleto',
+      name: t.wardrobe.slotTalismanName,
+      subname: t.wardrobe.slotTalismanSub,
       icon: Sparkles,
       item: displayTalisman,
       isPreview: previewTalismanId !== null,
     },
     {
       id: 'torso',
-      name: 'Busto',
-      subname: 'Tenuta & Giacca',
+      name: t.wardrobe.slotTorsoName,
+      subname: t.wardrobe.slotTorsoSub,
       icon: Shirt,
       item: displayOutfit,
       isPreview: previewOutfitId !== null,
     },
     {
       id: 'back',
-      name: 'Schiena',
-      subname: 'Zaino & Mantello',
+      name: t.wardrobe.slotBackName,
+      subname: t.wardrobe.slotBackSub,
       icon: Backpack,
       item: displayBack,
       isPreview: previewBackId !== null,
@@ -457,32 +483,32 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
   }[] = [
     {
       id: 'main_hand',
-      name: 'Mano DX',
-      subname: 'Strumento Primario',
+      name: t.wardrobe.slotMainHandName,
+      subname: t.wardrobe.slotMainHandSub,
       icon: Hammer,
       item: displayTool,
       isPreview: previewToolId !== null,
     },
     {
       id: 'off_hand',
-      name: 'Mano SX',
-      subname: 'Scudo & Carte',
+      name: t.wardrobe.slotOffHandName,
+      subname: t.wardrobe.slotOffHandSub,
       icon: Shield,
       item: displayOffHand,
       isPreview: previewOffHandId !== null,
     },
     {
       id: 'legs',
-      name: 'Gambe',
-      subname: 'Pantaloni Tattici',
+      name: t.wardrobe.slotLegsName,
+      subname: t.wardrobe.slotLegsSub,
       icon: Layers,
       item: displayLegs,
       isPreview: previewLegsId !== null,
     },
     {
       id: 'boots',
-      name: 'Piedi',
-      subname: 'Calzature da Marcia',
+      name: t.wardrobe.slotBootsName,
+      subname: t.wardrobe.slotBootsSub,
       icon: Footprints,
       item: displayBoots,
       isPreview: previewBootsId !== null,
@@ -511,10 +537,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-sm sm:text-base font-black text-amber-100 font-serif leading-tight">
-                  Armeria & Camerino RPG
+                  {t.wardrobe.title}
                 </h2>
                 <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-[9px] font-bold text-amber-300 uppercase tracking-widest">
-                  8 Slot Equipaggiamento
+                  {t.wardrobe.equipmentSlotsBadge}
                 </span>
               </div>
               <div className="text-[11px] text-stone-300 font-medium">
@@ -542,7 +568,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
               className="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-amber-300 text-xs font-bold border border-stone-700 transition cursor-pointer"
             >
               <UserCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>Cambia Eroe</span>
+              <span>{t.wardrobe.switchExplorer}</span>
             </button>
 
             {/* Close Button */}
@@ -576,7 +602,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             }`}
           >
             <Shirt className="w-3.5 h-3.5" />
-            <span>👗 Tenute</span>
+            <span>👗 {t.wardrobe.tabOutfits}</span>
           </button>
           <button
             type="button"
@@ -592,7 +618,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Eroe & Stats</span>
+            <span>{t.wardrobe.tabPreview}</span>
           </button>
           <button
             type="button"
@@ -608,7 +634,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             }`}
           >
             <Hammer className="w-3.5 h-3.5" />
-            <span>Armeria</span>
+            <span>{t.wardrobe.tabGear}</span>
           </button>
         </div>
 
@@ -654,7 +680,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
               <div className="flex items-center justify-between px-1 pb-1 text-xs text-amber-300 font-bold border-b border-amber-900/40">
                 <span className="flex items-center gap-1.5">
                   <Shirt className="w-3.5 h-3.5 text-amber-400" />
-                  Tenute di {currentExplorer.name} ({availableOutfits.length})
+                  {interpolate(t.wardrobe.outfitsOfExplorer, { name: currentExplorer.name, count: availableOutfits.length })}
                 </span>
                 {previewOutfitId && (
                   <button
@@ -663,12 +689,13 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     className="text-[10px] text-amber-400 hover:text-amber-200 flex items-center gap-1 underline cursor-pointer"
                   >
                     <RotateCcw className="w-3 h-3" />
-                    Ripristina
+                    {t.common.retry}
                   </button>
                 )}
               </div>
 
               {availableOutfits.map(outfit => {
+                const locOutfit = getLocalizedOutfit(outfit, language);
                 const isEquipped = profile.equippedOutfitId === outfit.id;
                 const isPreviewing = previewOutfitId === outfit.id;
                 const isUnlocked = safeUnlockedOutfitIds.includes(outfit.id) || outfit.cost === 0;
@@ -694,11 +721,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                        {outfit.image ? (
+                        {locOutfit.image ? (
                           <div className="w-12 h-14 rounded-xl overflow-hidden border border-amber-500/50 bg-stone-900 shrink-0 shadow-md relative group">
                             <img
-                              src={outfit.image}
-                              alt={outfit.name}
+                              src={locOutfit.image}
+                              alt={locOutfit.name}
                               className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
                             />
                           </div>
@@ -710,21 +737,21 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="text-xs font-bold text-stone-100 font-serif">
-                              {outfit.name}
+                              {locOutfit.name}
                             </span>
                             <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
-                              {outfit.tag}
+                              {locOutfit.tag}
                             </span>
                           </div>
                           <p className="text-[10px] text-stone-400 mt-0.5 leading-tight line-clamp-2">
-                            {outfit.description}
+                            {locOutfit.description}
                           </p>
                         </div>
                       </div>
-                      {outfit.perk && outfit.perk.label !== 'Assetto Standard' && (
+                      {locOutfit.perk && (
                         <div className="shrink-0 px-1.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[9px] font-bold flex items-center gap-1">
                           <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                          <span>{outfit.perk.label}</span>
+                          <span>{locOutfit.perk.label}</span>
                         </div>
                       )}
                     </div>
@@ -734,22 +761,22 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         {!isUnlocked ? (
                           <div className="flex items-center gap-1 font-bold text-amber-300">
                             <Coins className="w-3 h-3 text-amber-400" />
-                            <span>{outfit.cost} Monete</span>
+                            <span>{outfit.cost} {t.wardrobe.coins}</span>
                             {!canUnlockLevel && (
                               <span className="text-[9px] text-red-400">
-                                (Liv. {outfit.requiredLevel})
+                                ({interpolate(t.wardrobe.levelReq, { level: outfit.requiredLevel ?? 1 })})
                               </span>
                             )}
                             {!canUnlockRelics && (
                               <span className="text-[9px] text-red-400">
-                                ({outfit.requiredRelics} Reliquie)
+                                ({interpolate(t.wardrobe.relicsReq, { count: outfit.requiredRelics ?? 1 })})
                               </span>
                             )}
                           </div>
                         ) : (
                           <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
                             <Check className="w-3 h-3" />
-                            Posseduto
+                            {t.itemInspect.owned}
                           </div>
                         )}
                       </div>
@@ -765,7 +792,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           }`}
                         >
                           <Eye className="w-3 h-3" />
-                          <span>{isPreviewing ? 'In Prova' : 'Anteprima'}</span>
+                          <span>{isPreviewing ? t.wardrobe.previewing : t.wardrobe.tryOn}</span>
                         </button>
 
                         <button
@@ -785,14 +812,14 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           {isEquipped ? (
                             <>
                               <Check className="w-3 h-3 stroke-[3]" />
-                              <span>Indossato</span>
+                              <span>{t.wardrobe.equipped}</span>
                             </>
                           ) : isUnlocked ? (
-                            <span>Indossa</span>
+                            <span>{t.wardrobe.equip}</span>
                           ) : (
                             <>
                               <Lock className="w-3 h-3" />
-                              <span>Sblocca</span>
+                              <span>{t.wardrobe.buy}</span>
                             </>
                           )}
                         </button>
@@ -856,7 +883,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           </span>
                         </div>
                         <div className="text-[9px] sm:text-[10px] text-amber-200/90 font-medium truncate">
-                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">Vuoto</span>}
+                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">{t.wardrobe.emptySlot}</span>}
                         </div>
                       </button>
                     );
@@ -929,7 +956,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           </div>
                         </div>
                         <div className="text-[9px] sm:text-[10px] text-amber-200/90 font-medium truncate w-full text-right">
-                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">Vuoto</span>}
+                          {slot.item ? slot.item.name : <span className="text-stone-500 italic">{t.wardrobe.emptySlot}</span>}
                         </div>
                       </button>
                     );
@@ -943,11 +970,11 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                 <div className="flex items-center justify-between mb-1 text-[10px] text-amber-400 font-bold uppercase tracking-wider">
                   <div className="flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-amber-400" />
-                    <span>Attributi di Spedizione Attivi</span>
+                    <span>{t.wardrobe.activeAttributes}</span>
                   </div>
                   {isAnyPreviewActive && (
                     <span className="text-[9px] text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/40">
-                      Include Statistiche Anteprima
+                      {t.wardrobe.includePreviewStats}
                     </span>
                   )}
                 </div>
@@ -963,10 +990,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   >
                     <div className="flex items-center gap-1 text-[10px] font-bold">
                       <Shield className="w-3 h-3 text-emerald-400" />
-                      <span>Difesa</span>
+                      <span>{t.wardrobe.statDefense}</span>
                     </div>
                     <div className="text-xs font-black mt-0.5">
-                      {hasErrorShield ? '1 Scudo Attivo' : 'Nessuno'}
+                      {hasErrorShield ? t.wardrobe.statShieldActive : t.wardrobe.statNone}
                     </div>
                   </div>
 
@@ -980,7 +1007,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   >
                     <div className="flex items-center gap-1 text-[10px] font-bold">
                       <Coins className="w-3 h-3 text-amber-400" />
-                      <span>Bonus Oro</span>
+                      <span>{t.wardrobe.statGoldBonus}</span>
                     </div>
                     <div className="text-xs font-black mt-0.5">
                       {totalCoinBonus > 0 ? `+${totalCoinBonus}%` : '0%'}
@@ -997,10 +1024,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   >
                     <div className="flex items-center gap-1 text-[10px] font-bold">
                       <Snowflake className="w-3 h-3 text-cyan-400" />
-                      <span>Dilatazione</span>
+                      <span>{t.wardrobe.statTimeDilation}</span>
                     </div>
                     <div className="text-xs font-black mt-0.5">
-                      {totalFreezeBonus > 0 ? `+${totalFreezeBonus}s Tempo` : '0s'}
+                      {totalFreezeBonus > 0 ? interpolate(t.wardrobe.statTimeSeconds, { count: totalFreezeBonus }) : '0s'}
                     </div>
                   </div>
 
@@ -1014,10 +1041,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   >
                     <div className="flex items-center gap-1 text-[10px] font-bold">
                       <Compass className="w-3 h-3 text-purple-400" />
-                      <span>Percezione</span>
+                      <span>{t.wardrobe.statPerception}</span>
                     </div>
                     <div className="text-xs font-black mt-0.5">
-                      {totalRadarBonus > 0 ? `+${totalRadarBonus}% Radar` : '0%'}
+                      {totalRadarBonus > 0 ? interpolate(t.wardrobe.statRadarBonus, { count: totalRadarBonus }) : '0%'}
                     </div>
                   </div>
                 </div>
@@ -1027,56 +1054,61 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   <div className="flex items-center justify-between mb-1 text-[10px] text-amber-300 font-bold uppercase tracking-wider">
                     <div className="flex items-center gap-1">
                       <Crown className="w-3 h-3 text-amber-400" />
-                      <span>Sinergie di Set Archeologico</span>
+                      <span>{t.wardrobe.setSynergiesTitle}</span>
                     </div>
                     <span className="text-[9px] text-amber-400/90 font-medium">
                       {activeSetBonuses.length > 0 ? (
-                        <span className="text-yellow-300 font-bold">✨ {activeSetBonuses.length} Set Attivo!</span>
+                        <span className="text-yellow-300 font-bold">
+                          {interpolate(t.wardrobe.setBonusActiveCount, { count: activeSetBonuses.length })}
+                        </span>
                       ) : (
-                        <span className="text-stone-400">Combina 3 pezzi affini</span>
+                        <span className="text-stone-400">{t.wardrobe.setBonusHint}</span>
                       )}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-1.5">
-                    {equipmentSetsStatus.map(s => (
-                      <div
-                        key={s.set.id}
-                        className={`px-2 py-1 rounded-lg border flex items-center justify-between transition-all ${
-                          s.isActive
-                            ? `bg-gradient-to-r ${s.set.themeGradient} ${s.set.borderAccent} shadow-[0_0_10px_rgba(245,158,11,0.25)] ring-1 ring-amber-400/60`
-                            : 'bg-black/40 border-stone-800/90 opacity-60'
-                        }`}
-                      >
-                        <div className="flex items-center gap-1.5 min-w-0">
-                          <span className="text-xs shrink-0">{s.set.badge}</span>
-                          <div className="flex flex-col min-w-0">
+                    {equipmentSetsStatus.map(s => {
+                      const locSet = getLocalizedEquipmentSet(s.set, language);
+                      return (
+                        <div
+                          key={s.set.id}
+                          className={`px-2 py-1 rounded-lg border flex items-center justify-between transition-all ${
+                            s.isActive
+                              ? `bg-gradient-to-r ${s.set.themeGradient} ${s.set.borderAccent} shadow-[0_0_10px_rgba(245,158,11,0.25)] ring-1 ring-amber-400/60`
+                              : 'bg-black/40 border-stone-800/90 opacity-60'
+                          }`}
+                        >
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <span className="text-xs shrink-0">{s.set.badge}</span>
+                            <div className="flex flex-col min-w-0">
+                              <span
+                                className={`text-[9px] sm:text-[10px] font-black truncate leading-tight ${
+                                  s.isActive ? 'text-amber-200 font-black' : 'text-stone-300'
+                                }`}
+                              >
+                                {locSet.shortName}
+                              </span>
+                              <span className="text-[8px] text-amber-300/80 truncate leading-none mt-0.5">
+                                {locSet.perk.label}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="shrink-0 pl-1">
                             <span
-                              className={`text-[9px] sm:text-[10px] font-black truncate leading-tight ${
-                                s.isActive ? 'text-amber-200 font-black' : 'text-stone-300'
+                              className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
+                                s.isActive
+                                  ? 'bg-amber-400 text-stone-950 shadow-sm font-black'
+                                  : 'bg-stone-850 text-stone-400 border border-stone-700'
                               }`}
                             >
-                              {s.set.shortName}
-                            </span>
-                            <span className="text-[8px] text-amber-300/80 truncate leading-none mt-0.5">
-                              {s.set.perk.label}
+                              {s.equippedCount}/{s.set.minPieces}
                             </span>
                           </div>
                         </div>
-
-                        <div className="shrink-0 pl-1">
-                          <span
-                            className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
-                              s.isActive
-                                ? 'bg-amber-400 text-stone-950 shadow-sm font-black'
-                                : 'bg-stone-850 text-stone-400 border border-stone-700'
-                            }`}
-                          >
-                            {s.equippedCount}/{s.set.minPieces}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -1128,7 +1160,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                     Slot: {activeSlotMeta.name} ({activeSlotMeta.subname})
                   </h3>
                   <div className="text-[10px] text-stone-400">
-                    {currentSlotItems.length} equipaggiamenti disponibili per questa parte
+                    {interpolate(t.wardrobe.itemsAvailableForSlot, { count: currentSlotItems.length })}
                   </div>
                 </div>
               </div>
@@ -1140,7 +1172,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                   className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-amber-300 text-[10px] font-bold border border-stone-600 transition cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
-                  <span>Annulla Anteprima</span>
+                  <span>{t.wardrobe.clearPreview}</span>
                 </button>
               )}
             </div>
@@ -1149,6 +1181,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             <div className="flex-1 overflow-y-auto p-2.5 sm:p-3 space-y-2.5 custom-scrollbar bg-stone-950/40">
               {currentSlotItems.map(item => {
                 const isOutfit = 'avatarId' in item;
+                const locItem = isOutfit
+                  ? getLocalizedOutfit(item as WardrobeOutfit, language)
+                  : getLocalizedAccessory(item as WardrobeAccessory, language);
+
                 const isEquipped = isOutfit
                   ? profile.equippedOutfitId === item.id
                   : (selectedSlot === 'headgear' && profile.equippedHeadgearId === item.id) ||
@@ -1208,7 +1244,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           <div className="w-12 h-14 rounded-xl overflow-hidden border border-amber-500/50 bg-stone-900 shrink-0 shadow-md relative group">
                             <img
                               src={(item as WardrobeOutfit).image}
-                              alt={item.name}
+                              alt={locItem.name}
                               className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
                             />
                           </div>
@@ -1227,23 +1263,23 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
                             <span className="text-xs sm:text-sm font-bold text-stone-100 font-serif">
-                              {item.name}
+                              {locItem.name}
                             </span>
                             <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-amber-300 font-medium border border-stone-700">
-                              {item.tag}
+                              {locItem.tag}
                             </span>
                           </div>
                           <p className="text-[11px] text-stone-400 leading-relaxed line-clamp-2">
-                            {item.description}
+                            {locItem.description}
                           </p>
                         </div>
                       </div>
 
                       {/* Perk badge */}
-                      {item.perk && item.perk.label !== 'Assetto Standard' && (
+                      {locItem.perk && (
                         <div className="shrink-0 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[10px] font-bold flex items-center gap-1">
                           <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                          <span>{item.perk.label}</span>
+                          <span>{locItem.perk.label}</span>
                         </div>
                       )}
                     </div>
@@ -1255,22 +1291,22 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                         {!isUnlocked ? (
                           <div className="flex items-center gap-1.5 font-bold text-amber-300">
                             <Coins className="w-3.5 h-3.5 text-amber-400" />
-                            <span>{item.cost} Monete</span>
+                            <span>{item.cost} {t.wardrobe.coins}</span>
                             {!canUnlockLevel && (
                               <span className="text-[10px] text-red-400 font-normal">
-                                (Liv. {item.requiredLevel})
+                                ({interpolate(t.wardrobe.levelReq, { level: item.requiredLevel ?? 1 })})
                               </span>
                             )}
                             {!canUnlockRelics && (
                               <span className="text-[10px] text-red-400 font-normal">
-                                ({('requiredRelics' in item && item.requiredRelics) || 0} Reliquie)
+                                ({interpolate(t.wardrobe.relicsReq, { count: ('requiredRelics' in item && item.requiredRelics) || 0 })})
                               </span>
                             )}
                           </div>
                         ) : (
                           <div className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
                             <Check className="w-3.5 h-3.5" />
-                            Posseduto
+                            {t.itemInspect.owned}
                           </div>
                         )}
                       </div>
@@ -1286,10 +1322,10 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                               ? 'bg-amber-500 text-stone-950 shadow-[0_0_12px_#f59e0b]'
                               : 'bg-stone-800 hover:bg-stone-700 text-amber-300 border border-amber-600/40'
                           }`}
-                          title="Vedi subito questo pezzo indossato sul corpo del modello"
+                          title={t.wardrobe.tryOnTooltip}
                         >
                           <Eye className="w-3 h-3" />
-                          <span>{isPreviewing ? 'In Prova' : 'Anteprima'}</span>
+                          <span>{isPreviewing ? t.wardrobe.previewing : t.wardrobe.tryOn}</span>
                         </button>
 
                         {/* 2. Ispeziona scheda completa */}
@@ -1297,7 +1333,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                           type="button"
                           onClick={() => setInspectItem(item)}
                           className="p-1 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 transition cursor-pointer"
-                          title="Ispeziona modello e dettagli"
+                          title={t.wardrobe.inspectTooltip}
                         >
                           <Search className="w-3.5 h-3.5" />
                         </button>
@@ -1314,7 +1350,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                             }`}
                           >
                             <Check className="w-3 h-3 stroke-[3]" />
-                            <span>{isOutfit ? 'Indossato' : 'Rimuovi'}</span>
+                            <span>{isOutfit ? t.wardrobe.equipped : t.wardrobe.remove}</span>
                           </button>
                         ) : isUnlocked ? (
                           <button
@@ -1326,7 +1362,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                             }
                             className="px-3 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shadow-md transition cursor-pointer active:scale-95"
                           >
-                            Equipaggia
+                            {t.wardrobe.equip}
                           </button>
                         ) : (
                           <button
@@ -1346,12 +1382,12 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
                             {!canUnlockLevel || !canUnlockRelics ? (
                               <>
                                 <Lock className="w-3 h-3" />
-                                Bloccato
+                                {t.wardrobe.locked}
                               </>
                             ) : (
                               <>
                                 <Coins className="w-3 h-3" />
-                                Sblocca
+                                {t.wardrobe.buy}
                               </>
                             )}
                           </button>
@@ -1367,7 +1403,7 @@ export const WardrobeModal: React.FC<WardrobeModalProps> = ({
             <div className="px-3.5 py-2 border-t border-stone-800 bg-stone-950/90 text-[10px] text-stone-400 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-1.5">
                 <Shield className="w-3 h-3 text-amber-400 shrink-0" />
-                <span className="truncate">Tutti i bonus sono cumulativi e attivi nelle indagini.</span>
+                <span className="truncate">{t.wardrobe.cumulativeBonusNotice}</span>
               </div>
               <span className="text-amber-400 font-bold shrink-0">{profile.playerName}</span>
             </div>

@@ -17,6 +17,8 @@ import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedBriefing } from '../i18n/gameDataTranslations';
 
 interface StageLoreBriefingModalProps {
   isOpen: boolean;
@@ -33,9 +35,11 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
   onClose,
   onStartStage,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   if (!isOpen) return null;
 
-  const briefing: StageBriefing = STAGE_BRIEFINGS[stageNumber] || STAGE_BRIEFINGS[1];
+  const rawBriefing: StageBriefing = STAGE_BRIEFINGS[stageNumber] || STAGE_BRIEFINGS[1];
+  const briefing = getLocalizedBriefing(rawBriefing, language);
   const explorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
   const explorerPortrait = activeOutfit?.image || explorer.portrait;
@@ -83,7 +87,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               onClose();
             }}
             className="p-1.5 rounded-full bg-stone-900/80 hover:bg-amber-900/50 border border-stone-700 hover:border-amber-500/50 text-stone-400 hover:text-white transition-all cursor-pointer"
-            title="Chiudi Dispaccio"
+            title={t.common.close}
           >
             <X className="w-4 h-4" />
           </button>
@@ -134,10 +138,10 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
             <div className="flex items-center justify-between border-b border-amber-900/60 pb-1.5">
               <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider font-serif">
                 <BookOpen className="w-4 h-4 text-amber-500" />
-                <span>Rapporto di Campo Archeologico</span>
+                <span>{t.briefing.fieldReport}</span>
               </div>
               <span className="text-[10px] text-amber-500/80 font-mono font-bold">
-                Tappa {briefing.stageNumber} di 12
+                {interpolate(t.briefing.stageOf, { stage: briefing.stageNumber })}
               </span>
             </div>
 
@@ -156,7 +160,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
             <div className="bg-[#140c06]/90 border border-amber-600/30 rounded-2xl p-3.5 space-y-2">
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider font-serif border-b border-amber-900/60 pb-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Obiettivi Ricognizione</span>
+                <span>{t.briefing.objectives}</span>
               </div>
               <ul className="space-y-1.5 text-[11px] sm:text-xs text-stone-300 font-serif">
                 {briefing.missionObjectives.map((obj, i) => (
@@ -173,7 +177,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               <div>
                 <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider font-serif border-b border-amber-900/60 pb-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Reliquia di Tappa</span>
+                  <span>{t.briefing.targetRelic}</span>
                 </div>
                 <div className="flex items-start gap-2.5 mt-2">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 via-yellow-600/30 to-amber-950 border border-amber-400/50 flex items-center justify-center text-lg shrink-0 shadow-md">
@@ -201,7 +205,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               </div>
               <div className="pt-1 text-[10px] text-emerald-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3" />
-                <span>Si sblocca completando il Livello {briefing.stageNumber * 10}</span>
+                <span>{interpolate(t.briefing.unlocksAtLevel, { level: briefing.stageNumber * 10 })}</span>
               </div>
             </div>
           </div>
@@ -225,7 +229,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               <div className="flex items-center gap-1.5">
                 <Feather className="w-3.5 h-3.5 text-amber-400" />
                 <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider font-serif">
-                  Note di Campo di {profile.playerName} ({explorer.title})
+                  {interpolate(t.briefing.explorerNotes, { name: profile.playerName, title: explorer.title })}
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs text-stone-200 font-serif italic leading-snug">
@@ -239,14 +243,14 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
         {/* Footer Actions */}
         <div className="px-5 py-3.5 bg-gradient-to-r from-stone-950 via-[#1a0f07] to-stone-950 border-t border-amber-600/40 flex items-center justify-between gap-3 shrink-0">
           <div className="text-[11px] text-stone-400 font-serif hidden sm:block">
-            Livelli {((briefing.stageNumber - 1) * 10) + 1} — {briefing.stageNumber * 10} • 8 Reperti per tavola
+            {interpolate(t.briefing.levelsRange, { start: ((briefing.stageNumber - 1) * 10) + 1, end: briefing.stageNumber * 10 })}
           </div>
 
           <button
             onClick={handleStart}
             className="w-full sm:w-auto px-6 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-stone-950 font-black text-xs sm:text-sm font-serif uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.5)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-yellow-200"
           >
-            <span>Apri il Taccuino e Inizia la Tappa</span>
+            <span>{t.briefing.startStage}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

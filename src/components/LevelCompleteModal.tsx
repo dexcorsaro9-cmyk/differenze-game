@@ -19,6 +19,7 @@ import type { Level } from '../types/game';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
 
 interface LevelCompleteModalProps {
   level: Level;
@@ -49,7 +50,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
   bestTime,
   isNewRecord = false,
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [isStamped, setIsStamped] = useState(false);
   const [revealedStars, setRevealedStars] = useState<number>(0);
   const [displayCoins, setDisplayCoins] = useState<number>(0);
@@ -180,7 +181,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         </span>
 
         <h2 className="text-xl sm:text-2xl font-black text-amber-100 font-serif tracking-tight">
-          {level.title}
+          {getLocalizedLevelTitle(level.id, level.chapterNumber, level.levelNumberInStage || ((level.id - 1) % 10 + 1), language, level.title)}
         </h2>
         <p className="text-xs text-amber-200/70 mt-0.5 font-medium">
           {t.header.chapter} {level.chapterNumber} • {level.era}
@@ -218,10 +219,10 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
           <span className="text-xs font-bold text-amber-300 mt-2 font-serif">
             {stars === 3
-              ? '⭐⭐⭐ Velocità da Maestro! (Tempo < 1m 45s)'
+              ? t.levelComplete.speedMaster
               : stars === 2
-              ? '⭐⭐ Ritmo Solido! (Tempo < 3m 30s)'
-              : '⭐ Completato! (Tempo > 3m 30s)'}
+              ? t.levelComplete.speedSolid
+              : t.levelComplete.speedCompleted}
           </span>
         </div>
 
@@ -236,19 +237,19 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
           {errorsCount === 0 && (
             <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 text-[10px] font-bold shadow-md">
               <Shield className="w-3 h-3 text-emerald-400" />
-              <span>Spedizione Impeccabile (0 Errori!)</span>
+              <span>{t.levelComplete.flawlessRun}</span>
             </div>
           )}
           {timeElapsed <= 60 && (
             <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/60 text-cyan-300 text-[10px] font-bold shadow-md">
               <Zap className="w-3 h-3 text-cyan-400" />
-              <span>Occhio di Falco (&lt; 60s)</span>
+              <span>{t.levelComplete.hawkEyeBonus}</span>
             </div>
           )}
           {isRelicFound && (
             <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-950/80 border border-purple-500/60 text-purple-300 text-[10px] font-bold shadow-md">
               <Award className="w-3 h-3 text-purple-400" />
-              <span>Reliquia Scoperta!</span>
+              <span>{t.levelComplete.relicDiscovered}</span>
             </div>
           )}
         </div>
@@ -284,7 +285,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
               </div>
               {isNewRecord && (
                 <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 font-black text-[9px] shadow-[0_0_8px_rgba(245,158,11,0.8)] animate-pulse">
-                  ⚡ NUOVO RECORD!
+                  {t.levelComplete.newRecordBadge}
                 </span>
               )}
             </div>
@@ -295,7 +296,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
         <div className="text-left bg-black/60 border border-amber-500/30 rounded-2xl p-3 sm:p-4 mb-5 shadow-inner space-y-2">
           <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider font-serif">
             <BookOpen className="w-3.5 h-3.5" />
-            <span>Resoconto della Spedizione</span>
+            <span>{t.levelComplete.expeditionReport}</span>
           </div>
           <p className="text-xs sm:text-sm text-stone-300 leading-relaxed italic">
             "{level.story.resolution}"
@@ -303,7 +304,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
 
           <div className="pt-2 border-t border-stone-800/80">
             <span className="text-[10px] font-bold text-amber-300 block mb-1">
-              Nuova Pagina del Taccuino Sbloccata:
+              {t.levelComplete.notebookPageUnlocked}:
             </span>
             <p className="text-xs text-amber-200/90 leading-relaxed font-serif bg-amber-950/40 p-2 rounded-lg border border-amber-500/20">
               {level.story.unlockedSecret}

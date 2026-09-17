@@ -17,6 +17,8 @@ import {
 import { ALL_COLLECTIBLE_RELICS, type CollectibleRelic } from '../data/collectiblesData';
 import { sound } from '../utils/audio';
 import { assetUrl } from '../utils/assetUrl';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedRelic } from '../i18n/gameDataTranslations';
 
 interface RelicMuseumModalProps {
   isOpen: boolean;
@@ -29,6 +31,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
   onClose,
   discoveredRelicIds,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   const [selectedRelic, setSelectedRelic] = useState<CollectibleRelic>(() => ALL_COLLECTIBLE_RELICS[0]);
   const [isAutoRotating, setIsAutoRotating] = useState<boolean>(true);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
@@ -63,6 +66,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
   const isSelectedDiscovered = safeDiscoveredIds.includes(safeRelic.id);
   const rawIdx = ALL_COLLECTIBLE_RELICS.findIndex(r => r.id === safeRelic.id);
   const selectedIndex = rawIdx >= 0 ? rawIdx : 0;
+  const localizedRelic = getLocalizedRelic(safeRelic, language);
 
   // Pointer / Touch 3D Parallax Tilt Handler
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -118,14 +122,14 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-sm sm:text-base font-black tracking-wider text-amber-200 uppercase font-serif">
-                SALA DELLE RELIQUIE • ROYAL GEOGRAPHICAL SOCIETY
+                {t.relics.roomTitle}
               </h2>
               <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/25 text-amber-300 border border-amber-500/40">
-                LONDRA 1928
+                {t.relics.london1928}
               </span>
             </div>
             <p className="text-[11px] text-stone-400">
-              Collezione Bellini • {discoveredCount} / {totalRelics} Reperti Portati alla Luce ({progressPercent}%)
+              {interpolate(t.relics.collectionStats, { discovered: discoveredCount, total: totalRelics, progress: progressPercent })}
             </p>
           </div>
         </div>
@@ -139,7 +143,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 ? 'bg-amber-500/20 border-amber-500/60 text-amber-300'
                 : 'bg-stone-800/90 border-stone-700 text-stone-400 hover:text-white'
             }`}
-            title="Attiva/Disattiva Rotazione Automatica 360°"
+            title={t.relics.toggleAutoRotate}
           >
             <RotateCw className={`w-3.5 h-3.5 ${isAutoRotating ? 'animate-spin-slow' : ''}`} />
             <span className="hidden xs:inline">360°</span>
@@ -148,7 +152,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           <button
             onClick={onClose}
             className="p-2 rounded-xl bg-stone-800/80 hover:bg-rose-950 border border-stone-700 hover:border-rose-500/60 text-stone-300 hover:text-white transition-all active:scale-95 ml-1"
-            title="Chiudi Museo"
+            title={t.relics.closeMuseum}
           >
             <X className="w-5 h-5" />
           </button>
@@ -189,7 +193,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           {/* Navigation Arrows */}
           <button
             onClick={handlePrev}
-            aria-label="Reperto Precedente"
+            aria-label={t.relics.prevRelic}
             className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-xl bg-stone-900/85 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_20px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
           >
             <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
@@ -197,7 +201,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
 
           <button
             onClick={handleNext}
-            aria-label="Reperto Successivo"
+            aria-label={t.relics.nextRelic}
             className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-xl bg-stone-900/85 hover:bg-amber-950/90 border-2 border-amber-600/50 hover:border-amber-400 text-amber-300 shadow-[0_4px_20px_rgba(0,0,0,0.8)] transition-all active:scale-90 hover:scale-105"
           >
             <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
@@ -239,15 +243,15 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                       {!imageError ? (
                         <img
                           src={assetUrl(safeRelic.image)}
-                          alt={safeRelic.name}
+                          alt={localizedRelic.name}
                           onError={() => setImageError(true)}
                           className="w-full h-full object-contain select-none pointer-events-none transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
                         />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center bg-stone-900/90 rounded-lg text-amber-300">
                           <Sparkles className="w-8 h-8 text-amber-400 animate-pulse mb-1" />
-                          <span className="text-[10px] font-bold font-serif line-clamp-1">{safeRelic.name}</span>
-                          <span className="text-[8px] text-amber-400/80 font-mono">1928 • Reperto Storico</span>
+                          <span className="text-[10px] font-bold font-serif line-clamp-1">{localizedRelic.name}</span>
+                          <span className="text-[8px] text-amber-400/80 font-mono">1928 • {t.relics.historicalSpecimen}</span>
                         </div>
                       )}
                       
@@ -274,10 +278,10 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                     
                     <span className="mt-2.5 px-2.5 py-0.5 rounded-full bg-stone-900/90 border border-amber-600/40 text-[9px] sm:text-[10px] font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-1 shadow">
                       <ShieldAlert className="w-3 h-3 text-amber-500" />
-                      Non Dissotterrato
+                      {t.relics.notUnearthed}
                     </span>
                     <p className="mt-1 text-[10px] text-stone-400 max-w-[170px] leading-tight font-serif italic">
-                      Livello {selectedRelic.hiddenLevelId} • Esplora la scena per trovarlo
+                      {interpolate(t.relics.hiddenInLevel, { level: selectedRelic.hiddenLevelId })}
                     </p>
                   </div>
                 )}
@@ -294,16 +298,16 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 {/* Plaque Inner Cartouche */}
                 <div className="w-full px-2 py-1 rounded-md bg-gradient-to-r from-amber-900/40 via-amber-600/20 to-amber-900/40 border border-amber-500/40 shadow-inner">
                   <h3 className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-amber-200 font-serif line-clamp-1">
-                    {isSelectedDiscovered ? selectedRelic.name : `TECA N. ${selectedIndex + 1} • REPERTO SEPOLTO`}
+                    {isSelectedDiscovered ? localizedRelic.name : interpolate(t.relics.caseSealed, { number: selectedIndex + 1 })}
                   </h3>
                   <p className="text-[9px] text-amber-400/80 font-serif italic line-clamp-1 mt-0.5">
-                    {isSelectedDiscovered ? selectedRelic.subtitle : `Celato nel Settore ${selectedRelic.hiddenLevelId}`}
+                    {isSelectedDiscovered ? localizedRelic.subtitle : interpolate(t.relics.hiddenInSector, { sector: selectedRelic.hiddenLevelId })}
                   </p>
                 </div>
 
                 <div className="mt-0.5 flex items-center justify-between w-full px-1.5 text-[8px] font-mono text-amber-300/70">
-                  <span>CATALOGO #{selectedIndex + 1}</span>
-                  <span>{isSelectedDiscovered ? selectedRelic.era.split(' (')[0] : 'SCONOSCIUTO'}</span>
+                  <span>{interpolate(t.relics.catalogIndex, { number: selectedIndex + 1 })}</span>
+                  <span>{isSelectedDiscovered ? localizedRelic.era.split(' (')[0] : t.relics.unknown}</span>
                 </div>
               </div>
             </div>
@@ -311,7 +315,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
             {/* Interaction Hint */}
             <div className="mt-2 pointer-events-none bg-stone-900/90 backdrop-blur-md px-3 py-0.5 rounded-full border border-amber-500/40 text-[9px] text-amber-200/90 flex items-center gap-1 shadow-md">
               <Sparkles className="w-2.5 h-2.5 text-amber-400 animate-spin-slow" />
-              <span>Trascina per ruotare ed esaminare</span>
+              <span>{t.relics.dragToInspect}</span>
             </div>
           </div>
         </div>
@@ -324,26 +328,30 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
               <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${
                 !isSelectedDiscovered
                   ? 'bg-stone-900 border-stone-700 text-stone-500'
-                  : selectedRelic.rarity === 'Mitico'
+                  : safeRelic.rarity === 'Mitico'
                   ? 'bg-amber-500/30 border-amber-400 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : selectedRelic.rarity === 'Leggendario'
+                  : safeRelic.rarity === 'Leggendario'
                   ? 'bg-purple-900/40 border-purple-400 text-purple-200'
                   : 'bg-emerald-900/40 border-emerald-400 text-emerald-200'
               }`}>
-                {isSelectedDiscovered ? selectedRelic.rarity : 'Non Dissotterrato'}
+                {isSelectedDiscovered
+                  ? (safeRelic.rarity === 'Mitico' ? t.relics.rarityMythic :
+                     safeRelic.rarity === 'Leggendario' ? t.relics.rarityLegendary :
+                     safeRelic.rarity === 'Raro' ? t.relics.rarityRare : t.relics.rarityCommon)
+                  : t.relics.notUnearthed}
               </span>
 
               <span className="text-xs font-mono font-bold text-amber-400">
-                TECA #{selectedIndex + 1} / {totalRelics}
+                {interpolate(t.relics.vitrineIndex, { current: selectedIndex + 1, total: totalRelics })}
               </span>
             </div>
 
             {/* Relic Title */}
             <h3 className="text-lg sm:text-xl font-black text-amber-100 font-serif leading-snug mb-1">
-              {isSelectedDiscovered ? selectedRelic.name : 'Artefatto Avvolto nel Mistero'}
+              {isSelectedDiscovered ? localizedRelic.name : t.relics.mysteryRelic}
             </h3>
             <p className="text-xs text-amber-400/90 italic mb-4 font-serif">
-              {isSelectedDiscovered ? selectedRelic.subtitle : 'Sepolto nelle sabbie del tempo'}
+              {isSelectedDiscovered ? localizedRelic.subtitle : t.relics.buriedInTime}
             </p>
 
             {isSelectedDiscovered ? (
@@ -353,16 +361,16 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
                     <div>
-                      <div className="text-[9px] uppercase tracking-wider text-stone-400">Epoca Storica</div>
-                      <div className="text-xs font-bold text-stone-200">{selectedRelic.era}</div>
+                      <div className="text-[9px] uppercase tracking-wider text-stone-400">{t.relics.historicalEra}</div>
+                      <div className="text-xs font-bold text-stone-200">{localizedRelic.era}</div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
                     <div>
-                      <div className="text-[9px] uppercase tracking-wider text-stone-400">Sito di Scavo</div>
-                      <div className="text-xs font-bold text-stone-200 truncate">{selectedRelic.location}</div>
+                      <div className="text-[9px] uppercase tracking-wider text-stone-400">{t.relics.originPlace}</div>
+                      <div className="text-xs font-bold text-stone-200 truncate">{localizedRelic.location}</div>
                     </div>
                   </div>
                 </div>
@@ -371,10 +379,10 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 <div className="bg-[#29170a]/75 border border-amber-500/40 p-4 rounded-2xl relative shadow-inner">
                   <div className="text-[10px] uppercase font-bold tracking-widest text-amber-400 mb-1.5 flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5" />
-                    Diario di Campo del Prof. Bellini:
+                    {t.relics.belliniDiary}
                   </div>
                   <p className="text-xs sm:text-sm text-amber-100/95 font-serif italic leading-relaxed">
-                    "{selectedRelic.lore}"
+                    "{localizedRelic.lore}"
                   </p>
                 </div>
 
@@ -382,7 +390,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 <div className="bg-emerald-950/40 border border-emerald-500/40 p-3 rounded-2xl flex items-center justify-between shadow">
                   <div className="flex items-center gap-2">
                     <Coins className="w-4 h-4 text-yellow-400" />
-                    <span className="text-xs font-bold text-emerald-200">Bounty Riscattata:</span>
+                    <span className="text-xs font-bold text-emerald-200">{t.relics.bountyClaimed}</span>
                   </div>
                   <span className="text-sm font-black text-yellow-400">+{selectedRelic.coinReward} 🪙</span>
                 </div>
@@ -393,17 +401,17 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                   <Lock className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-bold text-stone-300">
-                  Reperto ancora Sepolto
+                  {t.relics.stillBuried}
                 </h4>
                 <p className="text-xs text-stone-400">
-                  Questo tesoro attende di essere dissotterrato nella scena del crimine archeologica del <strong className="text-amber-300">Livello {selectedRelic.hiddenLevelId}</strong>.
+                  {interpolate(t.relics.stillBuriedDesc, { level: selectedRelic.hiddenLevelId })}
                 </p>
                 <div className="bg-[#24150a] border border-amber-500/30 p-3 rounded-2xl text-xs text-amber-300/90 font-serif italic leading-relaxed">
                   <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-amber-400 uppercase not-italic mb-1">
                     <Compass className="w-3 h-3" />
-                    <span>Indizio del Diario</span>
+                    <span>{t.relics.diaryClue}</span>
                   </div>
-                  "{selectedRelic.hintClue}"
+                  "{localizedRelic.hintClue}"
                 </div>
               </div>
             )}
@@ -412,7 +420,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
           {/* Quick Carousel Selector with Real Thumbnails at Bottom */}
           <div className="mt-4 pt-3 border-t border-amber-500/20">
             <div className="flex items-center justify-between text-[10px] uppercase tracking-wider font-bold text-amber-400/80 mb-2">
-              <span>Galleria Reperti (20 Teca):</span>
+              <span>{t.relics.galleryTitle}</span>
               <span className="text-stone-400 font-mono">{selectedIndex + 1}/20</span>
             </div>
             
@@ -420,6 +428,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
               {ALL_COLLECTIBLE_RELICS.map((r, idx) => {
                 const found = safeDiscoveredIds.includes(r.id);
                 const isCurrent = r.id === safeRelic.id;
+                const locR = getLocalizedRelic(r, language);
                 return (
                   <button
                     key={r.id}
@@ -434,12 +443,12 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                         ? 'border-amber-700/60 opacity-80 hover:opacity-100 hover:border-amber-400'
                         : 'border-stone-800 bg-stone-950 opacity-40 hover:opacity-70'
                     }`}
-                    title={found ? r.name : `Teca #${idx + 1} (Sigillata)`}
+                    title={found ? locR.name : interpolate(t.relics.sealedCase, { number: idx + 1 })}
                   >
                     {found ? (
                       <img
                         src={assetUrl(r.image)}
-                        alt={r.name}
+                        alt={locR.name}
                         className="w-full h-full object-cover select-none pointer-events-none"
                       />
                     ) : (

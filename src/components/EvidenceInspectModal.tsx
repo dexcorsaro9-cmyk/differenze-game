@@ -15,6 +15,7 @@ import {
 import type { Difference } from '../types/game';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface EvidenceInspectModalProps {
   difference: Difference | null;
@@ -35,6 +36,8 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
   total,
   chapterNumber = 1,
 }) => {
+  const { t, interpolate } = useTranslation();
+
   useEffect(() => {
     if (isOpen) {
       sound.playPaperInspect();
@@ -58,37 +61,37 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
     switch (difference.clueType) {
       case 'stolen_relic':
         return {
-          label: 'Reperto Trafugato',
+          label: t.evidenceInspect.stolenRelic,
           icon: Shield,
           color: 'text-amber-400 bg-amber-950/60 border-amber-500/40',
         };
       case 'sabotage':
         return {
-          label: 'Manomissione / Sabotaggio',
+          label: t.evidenceInspect.sabotage,
           icon: AlertTriangle,
           color: 'text-rose-400 bg-rose-950/60 border-rose-500/40',
         };
       case 'dark_seal':
         return {
-          label: 'Sigillo Esoterico',
+          label: t.evidenceInspect.darkSeal,
           icon: Sparkles,
           color: 'text-purple-400 bg-purple-950/60 border-purple-500/40',
         };
       case 'forced_lock':
         return {
-          label: 'Serratura Violata',
+          label: t.evidenceInspect.forcedLock,
           icon: KeyRound,
           color: 'text-emerald-400 bg-emerald-950/60 border-emerald-500/40',
         };
       case 'torn_evidence':
         return {
-          label: 'Frammento Strappato',
+          label: t.evidenceInspect.tornEvidence,
           icon: FileText,
           color: 'text-cyan-400 bg-cyan-950/60 border-cyan-500/40',
         };
       default:
         return {
-          label: 'Anomalia Spaziale Forense',
+          label: t.evidenceInspect.spatialAnomaly,
           icon: Compass,
           color: 'text-amber-300 bg-amber-950/50 border-amber-500/30',
         };
@@ -109,8 +112,8 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
             <span className="px-2 py-0.5 rounded bg-amber-900/10 border border-amber-900/20 text-[10px] font-mono font-bold tracking-widest text-amber-950 uppercase">
               SPECIMEN #{String(index).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
-            <span className="text-[10px] font-sans font-medium text-stone-600">
-              CAP. {chapterNumber}
+            <span className="text-[10px] font-sans font-medium text-stone-600 uppercase">
+              {t.header.chapter} {chapterNumber}
             </span>
           </div>
           <button
@@ -120,7 +123,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
               onClose();
             }}
             className="p-1 rounded-full bg-stone-300/60 hover:bg-stone-400/60 text-stone-800 transition cursor-pointer"
-            aria-label="Chiudi Scheda"
+            aria-label={t.common.close}
           >
             <X className="w-4 h-4" />
           </button>
@@ -154,13 +157,13 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
 
             {/* Rubber Stamp mark in corner */}
             <div className="absolute top-2 right-2 rotate-[-12deg] border-2 border-red-700/80 text-red-700/90 px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase tracking-wider select-none pointer-events-none bg-red-100/40 shadow-sm">
-              ACQUISITO • 1928
+              {t.evidenceInspect.acquiredStamp}
             </div>
 
             {/* Bottom Coordinate Indicator */}
             <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm border border-white/10 text-amber-300 text-[10px] font-mono">
               <MapPin className="w-3 h-3 text-amber-400" />
-              COORD: {Math.round(difference.x)}%E, {Math.round(difference.y)}%N
+              {interpolate(t.evidenceInspect.coordinates, { x: Math.round(difference.x), y: Math.round(difference.y) })}
             </div>
           </div>
 
@@ -172,7 +175,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
             </div>
             <div className="flex items-center gap-1 text-emerald-700 text-xs font-sans font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Rilevato sulla scena
+              {t.evidenceInspect.detectedOnScene}
             </div>
           </div>
 
@@ -188,7 +191,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
                 &ldquo;{difference.loreClue}&rdquo;
               </p>
               <div className="mt-1 text-right text-[10px] font-mono text-stone-500">
-                — Taccuino del Prof. Bellini, 1928
+                {t.evidenceInspect.typewriterFooter}
               </div>
             </div>
           </div>
@@ -202,7 +205,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
                 className="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-stone-950 font-sans font-black text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 transition cursor-pointer border border-amber-400/60"
               >
                 <ZoomIn className="w-4 h-4" />
-                Inquadra sulla Scena
+                {t.evidenceInspect.focusScene}
               </button>
             )}
             <button
@@ -213,7 +216,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
               }}
               className="py-2.5 px-4 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-700 font-sans font-bold text-xs uppercase tracking-wider transition cursor-pointer border border-stone-300"
             >
-              Chiudi
+              {t.common.close}
             </button>
           </div>
         </div>

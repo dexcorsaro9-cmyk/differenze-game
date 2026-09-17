@@ -15,6 +15,8 @@ import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { safeStorage } from '../utils/storage';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedExplorer } from '../i18n/gameDataTranslations';
 
 interface GrandFinaleModalProps {
   isOpen: boolean;
@@ -39,48 +41,6 @@ interface EndingDetail {
   accentBg: string;
 }
 
-const SAGA_ENDINGS: Record<EndingType, EndingDetail> = {
-  academy: {
-    id: 'academy',
-    title: "L'Accademia della Luce",
-    badge: 'RIVELAZIONE AL MONDO',
-    icon: '🏛️',
-    shortDesc: "Condividi la scoperta con la Royal Geographic Society e l'umanità intera.",
-    epilogue:
-      "Hai scelto la via della verità e della conoscenza scientifica. Le tue 120 tavole archeologiche e i 12 Sigilli vengono esposti nelle più illustri università e musei di Londra, Parigi e Roma. La Mano Oscura viene smascherata pubblicamente dai resoconti della spedizione. Il Professor Bellini e Padre Lopez vengono riabilitati come pionieri immortali dell'archeologia moderna.",
-    loreTitle: 'Titolo Onorifico: Gran Maestro del Sapere Universale',
-    themeColor: 'text-amber-300',
-    borderColor: 'border-amber-400',
-    accentBg: 'bg-amber-950/70',
-  },
-  secret_archive: {
-    id: 'secret_archive',
-    title: 'Il Sigillo dei Guardiani',
-    badge: "L'ARCHIVIO SEGRETO",
-    icon: '🗝️',
-    shortDesc: 'Sigilla per sempre le coordinate di Paititi per proteggerla dalla cupidigia umana.',
-    epilogue:
-      "Riconosci che il mondo del 1928 non è ancora pronto per il potere del Cuore di Paititi. Insieme a Padre Lopez, riponi i 12 Sigilli in una cassaforte sotterranea inespugnabile, cancellando le coordinate dalla mappa. La Mano Oscura non troverà mai la Città dell'Oro. Sei diventato il Custode Silenzioso del più grande enigma del pianeta.",
-    loreTitle: 'Titolo Onorifico: Cavaliere del Silenzio Eterno',
-    themeColor: 'text-indigo-300',
-    borderColor: 'border-indigo-400',
-    accentBg: 'bg-indigo-950/70',
-  },
-  sacred_jungle: {
-    id: 'sacred_jungle',
-    title: 'Il Respiro di Paititi',
-    badge: "L'EQUILIBRIO ANCESTRALE",
-    icon: '🌿',
-    shortDesc: "Restituisci il Cuore d'Oro ai guardiani nativi e alla foresta pluviale.",
-    epilogue:
-      "Comprendi che Paititi non appartiene a imperi né a collezioni d'antiquariato. Deponi il Cuore d'Oro tra le braccia dei saggi anziani del Madre de Dios e delle cascate sacre. Le liane della giungla richiudono il portale ciclopico per sempre, preservando l'armonia millenaria tra uomo e natura. La tua leggenda vivrà nei canti degli spiriti delle Ande.",
-    loreTitle: 'Titolo Onorifico: Protettore della Pachamama',
-    themeColor: 'text-emerald-300',
-    borderColor: 'border-emerald-400',
-    accentBg: 'bg-emerald-950/70',
-  },
-};
-
 export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   isOpen,
   profile,
@@ -88,6 +48,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   onOpenJournal,
   onOpenMappamondo,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   const [selectedEnding, setSelectedEnding] = useState<EndingType | null>(() => {
     return (safeStorage.getItem('differenze_saga_ending_v1') as EndingType) || null;
   });
@@ -97,7 +58,46 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
 
   if (!isOpen) return null;
 
-  const explorer = EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira;
+  const sagaEndings: Record<EndingType, EndingDetail> = {
+    academy: {
+      id: 'academy',
+      title: t.grandFinale.endingAcademyTitle,
+      badge: t.grandFinale.endingAcademyBadge,
+      icon: '🏛️',
+      shortDesc: t.grandFinale.endingAcademyDesc,
+      epilogue: t.grandFinale.endingAcademyEpilogue,
+      loreTitle: t.grandFinale.endingAcademyHonor,
+      themeColor: 'text-amber-300',
+      borderColor: 'border-amber-400',
+      accentBg: 'bg-amber-950/70',
+    },
+    secret_archive: {
+      id: 'secret_archive',
+      title: t.grandFinale.endingArchiveTitle,
+      badge: t.grandFinale.endingArchiveBadge,
+      icon: '🗝️',
+      shortDesc: t.grandFinale.endingArchiveDesc,
+      epilogue: t.grandFinale.endingArchiveEpilogue,
+      loreTitle: t.grandFinale.endingArchiveHonor,
+      themeColor: 'text-indigo-300',
+      borderColor: 'border-indigo-400',
+      accentBg: 'bg-indigo-950/70',
+    },
+    sacred_jungle: {
+      id: 'sacred_jungle',
+      title: t.grandFinale.endingJungleTitle,
+      badge: t.grandFinale.endingJungleBadge,
+      icon: '🌿',
+      shortDesc: t.grandFinale.endingJungleDesc,
+      epilogue: t.grandFinale.endingJungleEpilogue,
+      loreTitle: t.grandFinale.endingJungleHonor,
+      themeColor: 'text-emerald-300',
+      borderColor: 'border-emerald-400',
+      accentBg: 'bg-emerald-950/70',
+    },
+  };
+
+  const explorer = getLocalizedExplorer(EXPLORERS[profile?.avatarId || 'samira'] || EXPLORERS.samira, language);
   const activeOutfit = ALL_OUTFITS.find(o => o.id === profile?.equippedOutfitId);
   const explorerPortrait = activeOutfit?.image || explorer.portrait;
 
@@ -119,7 +119,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
     }
   };
 
-  const activeEndingData = selectedEnding ? SAGA_ENDINGS[selectedEnding] : null;
+  const activeEndingData = selectedEnding ? sagaEndings[selectedEnding] : null;
 
   // Calculate player's expedition alignment from their milestone dilemma choices
   const dilemmaStats = (() => {
@@ -163,21 +163,21 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
               <div className="flex items-center gap-2">
                 <Crown className="w-4 h-4 text-amber-300" />
                 <span className="text-sm font-black text-amber-200 font-serif tracking-wide uppercase">
-                  Gran Finale della Saga
+                  {t.grandFinale.title}
                 </span>
                 <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-bold">
-                  120 / 120 LIVELLI
+                  {t.grandFinale.levelsCompletedBadge}
                 </span>
               </div>
               <span className="text-[10px] text-amber-400/80 font-serif block">
-                Il Mistero di Paititi è Stato Risolto!
+                {t.grandFinale.solvedPaititi}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 font-mono text-xs font-black shadow-inner">
             <Trophy className="w-4 h-4 text-yellow-400" />
-            <span>100% COMPLETATO</span>
+            <span>{t.grandFinale.completed100}</span>
           </div>
         </div>
 
@@ -186,7 +186,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
           <div className="relative rounded-2xl bg-gradient-to-b from-amber-950/80 via-yellow-950/50 to-stone-950/90 border-2 border-amber-500/60 p-4 sm:p-5 text-center shadow-2xl overflow-hidden">
             <div className="absolute top-2 right-3 flex items-center gap-1 text-[10px] font-mono text-amber-400/80">
               <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-spin-slow" />
-              <span>Paititi • Livello 120</span>
+              <span>{t.grandFinale.paititiLevel120}</span>
             </div>
 
             <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-600 via-yellow-300 to-amber-100 border-2 border-yellow-200 shadow-[0_0_35px_rgba(245,158,11,0.8)] flex items-center justify-center text-3xl sm:text-4xl animate-pulse mb-3">
@@ -194,10 +194,10 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
             </div>
 
             <h2 className="text-xl sm:text-2xl font-black text-amber-100 font-serif leading-tight">
-              HAI CONQUISTATO IL CUORE DI PAITITI!
+              {t.grandFinale.conqueredHeart}
             </h2>
             <p className="text-xs sm:text-sm text-amber-200/90 max-w-lg mx-auto font-serif italic mt-1.5 leading-relaxed">
-              "Attraverso 12 capitoli, dai sotterranei d'Europa alle vette delle Ande, hai superato ogni trappola della Mano Oscura e ricomposto il puzzle archeologico più ambizioso della storia."
+              "{t.grandFinale.epicSagaDesc}"
             </p>
           </div>
 
@@ -209,7 +209,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
                   {activeEndingData.badge}
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-black/60 border border-white/10 text-xs font-bold text-amber-200">
-                  Epilogo Scelto
+                  {t.grandFinale.chosenEpilogue}
                 </span>
               </div>
 
@@ -231,7 +231,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
                   onClick={() => setIsEndingConfirmed(false)}
                   className="text-[11px] text-amber-400 hover:text-amber-300 underline cursor-pointer text-left"
                 >
-                  Cambia la tua decisione finale
+                  {t.grandFinale.changeDecision}
                 </button>
               </div>
             </div>
@@ -239,34 +239,34 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
             <div className="space-y-3">
               <div className="text-center">
                 <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold uppercase tracking-wider">
-                  IL DESTINO DELLA CITTÀ D'ORO
+                  {t.grandFinale.fateOfGold}
                 </span>
                 <h3 className="text-base sm:text-lg font-black text-amber-100 font-serif mt-1">
-                  Quale sarà la sorte di Paititi e dei 12 Sigilli?
+                  {t.grandFinale.whatIsDestiny}
                 </h3>
                 <p className="text-xs text-amber-300/70 mb-2">
-                  Tocca una delle tre scelte per determinare il finale della tua epopea:
+                  {t.grandFinale.tapChoicePrompt}
                 </p>
 
                 {dilemmaStats.total > 0 && (
                   <div className="mb-1 px-3 py-1.5 rounded-xl bg-black/50 border border-amber-500/30 text-[10.5px] text-amber-200/90 flex flex-wrap items-center justify-center gap-2">
-                    <span className="font-bold text-amber-300">Condotta nei Bivi:</span>
+                    <span className="font-bold text-amber-300">{t.grandFinale.dilemmaConduct}</span>
                     <span className="px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-500/30 text-amber-300">
-                      🏛️ {dilemmaStats.counts.academy} Accademia
+                      🏛️ {dilemmaStats.counts.academy} {t.tutorial.step4Academy}
                     </span>
                     <span className="px-1.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-500/30 text-indigo-300">
-                      🗝️ {dilemmaStats.counts.secret_archive} Custode
+                      🗝️ {dilemmaStats.counts.secret_archive} {t.tutorial.step4Archive}
                     </span>
                     <span className="px-1.5 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
-                      🌿 {dilemmaStats.counts.sacred_jungle} Natura
+                      🌿 {dilemmaStats.counts.sacred_jungle} {t.tutorial.step4Nature}
                     </span>
                   </div>
                 )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                {(Object.keys(SAGA_ENDINGS) as EndingType[]).map(key => {
-                  const item = SAGA_ENDINGS[key];
+                {(Object.keys(sagaEndings) as EndingType[]).map(key => {
+                  const item = sagaEndings[key];
                   const isAffinity = dilemmaStats.total > 0 && dilemmaStats.dominant === key;
                   return (
                     <button
@@ -284,7 +284,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
                             </span>
                             {isAffinity && (
                               <span className="text-[8px] font-black px-1.5 py-0.2 rounded bg-amber-400 text-stone-950 uppercase tracking-tighter animate-pulse">
-                                ★ Affinità
+                                {t.grandFinale.affinityBadge}
                               </span>
                             )}
                           </div>
@@ -298,7 +298,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] font-bold text-amber-400 mt-2 pt-2 border-t border-white/10">
-                        <span>Scegli questo Finale</span>
+                        <span>{t.grandFinale.chooseThisEnding}</span>
                         <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </button>
@@ -315,13 +315,13 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
               </div>
               <div className="text-left">
                 <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider block font-serif">
-                  Certificato Ufficiale • RGS 1928
+                  {t.grandFinale.officialCertificate}
                 </span>
                 <span className="text-sm font-bold text-amber-100 font-serif block">
-                  {profile.playerName} • Gran Maestro di Paititi
+                  {interpolate(t.grandFinale.grandMasterTitle, { name: profile.playerName })}
                 </span>
                 <span className="text-[11px] text-stone-300">
-                  Tutti i 12 Capitoli e 120 Livelli registrati negli annali storici.
+                  {t.grandFinale.allChaptersRecorded}
                 </span>
               </div>
             </div>
@@ -329,9 +329,9 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
             <div className="hidden sm:flex flex-col items-end shrink-0">
               <div className="flex items-center gap-1 text-amber-300 font-mono font-black text-xs">
                 <Coins className="w-4 h-4 text-yellow-400" />
-                <span>+1000 Oro Bonus</span>
+                <span>{t.grandFinale.bonusGold}</span>
               </div>
-              <span className="text-[9px] text-emerald-400 font-bold uppercase">Accreditato</span>
+              <span className="text-[9px] text-emerald-400 font-bold uppercase">{t.grandFinale.credited}</span>
             </div>
           </div>
         </div>
@@ -347,7 +347,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
               className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition active:scale-95"
             >
               <BookOpen className="w-4 h-4" />
-              <span>Diario Completo</span>
+              <span>{t.grandFinale.openJournal}</span>
             </button>
 
             <button
@@ -359,7 +359,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
               className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-amber-950/80 hover:bg-amber-900 border border-amber-500/50 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition active:scale-95"
             >
               <Globe className="w-4 h-4" />
-              <span>Mappamondo 3D</span>
+              <span>{t.grandFinale.openMappamondo}</span>
             </button>
           </div>
 
@@ -371,7 +371,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
             }}
             className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-black font-serif tracking-wider text-xs uppercase bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 text-stone-950 shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition"
           >
-            <span>Torna al Campo Base</span>
+            <span>{t.grandFinale.backToBaseCamp}</span>
             <Check className="w-4 h-4 stroke-[3]" />
           </button>
         </div>

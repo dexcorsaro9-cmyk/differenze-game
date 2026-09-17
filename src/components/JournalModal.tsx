@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { BookOpen, X, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 import type { Level } from '../types/game';
-
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
 
 interface JournalModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
   completedLevelIds,
   discoveredDifferenceIds,
 }) => {
+  const { t, language } = useTranslation();
   const [selectedLevelId, setSelectedLevelId] = useState<number>(currentLevelId);
 
   if (!isOpen) return null;
@@ -38,13 +40,13 @@ export const JournalModal: React.FC<JournalModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                Taccuino di Spedizione
+                {t.journal.title}
                 <span className="text-xs font-normal text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full">
-                  Spedizione 1928
+                  {t.journal.edition}
                 </span>
               </h3>
               <p className="text-xs text-slate-400">
-                Gli appunti, le mappe e i segreti archeologici del Professor Bellini
+                {t.journal.subtitle}
               </p>
 
             </div>
@@ -78,10 +80,10 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                 >
                   <div className="pr-2">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400/80 block">
-                      Capitolo {level.chapterNumber}
+                      {t.header.chapter} {level.chapterNumber}
                     </span>
                     <h5 className="text-xs sm:text-sm font-bold text-white truncate max-w-[140px] sm:max-w-[160px]">
-                      {level.title}
+                      {getLocalizedLevelTitle(level.id, level.chapterNumber, level.levelNumberInStage || ((level.id - 1) % 10 + 1), language, level.title)}
                     </h5>
                     <span className="text-[10px] text-slate-400 block truncate">
                       {(level.era || '').split(' - ')[0] || level.era}
@@ -104,12 +106,12 @@ export const JournalModal: React.FC<JournalModalProps> = ({
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold rounded-full">
-                  Capitolo {selectedLevel.chapterNumber}
+                  {t.header.chapter} {selectedLevel.chapterNumber}
                 </span>
                 <span className="text-xs text-slate-400">{selectedLevel.era}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-                {selectedLevel.title}: <span className="text-amber-300 font-normal">{selectedLevel.subtitle}</span>
+                {getLocalizedLevelTitle(selectedLevel.id, selectedLevel.chapterNumber, selectedLevel.levelNumberInStage || ((selectedLevel.id - 1) % 10 + 1), language, selectedLevel.title)}
               </h2>
             </div>
 
@@ -117,7 +119,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                Prologo del Capitolo
+                {t.journal.belliniNotes}
               </h4>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 {selectedLevel.story.prologue}
@@ -129,7 +131,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  Reperti Archeologici Decifrati ({selectedLevel.differences?.length || 8})
+                  {t.journal.cluesFound} ({selectedLevel.differences?.length || 8})
                 </span>
                 <span className="text-[10px] font-mono text-amber-300">
                   {selectedLevel.differences.filter(d => discoveredDifferenceIds.includes(d.id) || isCompleted).length} / {selectedLevel.differences.length}
@@ -159,17 +161,17 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                         {isFound ? (
                           <span className="text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30 flex items-center gap-1">
                             <CheckCircle2 className="w-3 h-3" />
-                            <span>Decifrata</span>
+                            <span>{t.hiddenObject.deciphered}</span>
                           </span>
                         ) : (
                           <span className="text-[10px] text-stone-500 font-semibold px-2 py-0.5 rounded-full bg-stone-900 border border-stone-800">
-                            Non ancora scoperta
+                            {t.hiddenObject.toFind}
                           </span>
                         )}
                       </div>
 
                       <p className="text-xs text-slate-300 leading-relaxed italic font-serif">
-                        {isFound ? `"${diff.loreClue}"` : "🔒 [Annotazione protetta: individua questa anomalia durante il livello per trascriverla nel taccuino]"}
+                        {isFound ? `"${diff.loreClue}"` : `🔒 [${t.journal.riddleHint}]`}
                       </p>
                     </div>
                   );
@@ -182,7 +184,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               <div className="bg-gradient-to-r from-amber-950/40 to-slate-900/90 border border-amber-500/40 rounded-2xl p-4 sm:p-5">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
                   <BookOpen className="w-4 h-4 text-amber-400" />
-                  Taccuino Segreto di Bellini (Decifrato)
+                  {t.journal.secretArchive}
                 </h4>
 
                 <p className="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-serif italic bg-amber-950/30 p-3 rounded-xl border border-amber-500/20">
@@ -191,7 +193,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
               </div>
             ) : (
               <div className="border border-dashed border-amber-900/40 bg-black/30 rounded-2xl p-5 text-center text-stone-400 text-xs sm:text-sm">
-                🔒 Decifra tutti gli 8 indovinelli di questa tavola per rivelare la nota segreta del Professor Bellini.
+                🔒 {t.journal.evidenceNotes}
               </div>
             )}
           </div>

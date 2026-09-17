@@ -16,6 +16,8 @@ import {
 import type { ExpeditionDilemma, DilemmaChoice } from '../data/expeditionDilemmas';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedDilemma } from '../i18n/gameDataTranslations';
 
 interface ExpeditionDilemmaModalProps {
   isOpen: boolean;
@@ -28,10 +30,13 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
   dilemma,
   onResolveChoice,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
   if (!isOpen || !dilemma || !Array.isArray(dilemma.choices) || dilemma.choices.length < 2) return null;
+
+  const locDilemma = getLocalizedDilemma(dilemma, language);
 
   const handleSelect = (choice: DilemmaChoice) => {
     if (isConfirmed) return;
@@ -57,8 +62,8 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
     }, 1800);
   };
 
-  const choiceA = dilemma.choices[0];
-  const choiceB = dilemma.choices[1];
+  const choiceA = locDilemma.choices[0];
+  const choiceB = locDilemma.choices[1];
 
   const getRewardIcon = (type: string) => {
     switch (type) {
@@ -105,17 +110,17 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
             </div>
             <div>
               <div className="text-[10px] uppercase font-mono tracking-widest text-amber-400/80 font-bold">
-                DILEMMI DI SPEDIZIONE • TAPPA {dilemma.stageNumber} / 12
+                {interpolate(t.dilemma.stageDilemmas, { stage: locDilemma.stageNumber })}
               </div>
               <div className="text-xs font-serif font-black text-amber-100 tracking-wide">
-                {dilemma.location} ({dilemma.era})
+                {locDilemma.location} ({locDilemma.era})
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold">
             <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-            <span>BIVIO MORALE</span>
+            <span>{t.dilemma.moralCrossroad}</span>
           </div>
         </div>
 
@@ -126,16 +131,16 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
           <div className="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-500/30 shadow-inner">
             <div className="flex items-center gap-2 text-amber-300 text-xs font-serif font-bold uppercase tracking-wider mb-1.5">
               <Scroll className="w-3.5 h-3.5 text-amber-400" />
-              <span>{dilemma.title}</span>
+              <span>{locDilemma.title}</span>
             </div>
             <p className="text-xs sm:text-sm text-stone-200 leading-relaxed font-serif italic">
-              "{dilemma.situation}"
+              "{locDilemma.situation}"
             </p>
           </div>
 
           <div className="text-center text-[11px] font-bold tracking-wider uppercase text-amber-400/90 flex items-center justify-center gap-2">
             <span className="w-8 h-px bg-amber-500/40" />
-            <span>Scegli come deve agire la spedizione</span>
+            <span>{t.dilemma.chooseAction}</span>
             <span className="w-8 h-px bg-amber-500/40" />
           </div>
 
@@ -177,17 +182,17 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
                   <div className="flex items-center justify-between pt-2 border-t border-amber-900/40">
                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-900/90 border border-amber-500/40 text-[11px] font-bold text-amber-200 shadow-sm">
                       {getRewardIcon(choice.rewardType)}
-                      <span>Ricompensa: {choice.rewardText}</span>
+                      <span>{t.dilemma.reward}: {choice.rewardText}</span>
                     </div>
 
                     {isSelected ? (
                       <div className="flex items-center gap-1 text-xs font-bold text-emerald-300 animate-pulse">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        <span>Scelta Adottata!</span>
+                        <span>{t.dilemma.choiceAdopted}</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1 text-[11px] font-bold text-amber-400/80">
-                        <span>Adotta Strategia</span>
+                        <span>{t.dilemma.adoptStrategy}</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </div>
                     )}
@@ -200,7 +205,7 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
           {isConfirmed && (
             <div className="p-3 rounded-xl bg-amber-950/50 border border-amber-400/60 text-center text-xs font-serif text-amber-200 animate-fade-in shadow-lg">
               <Sparkles className="w-4 h-4 text-amber-300 inline-block mr-1.5 animate-spin" />
-              <span>Rotta aggiornata nel Taccuino di Spedizione! Proseguimento verso la prossima tappa...</span>
+              <span>{t.dilemma.routeUpdated}</span>
             </div>
           )}
 

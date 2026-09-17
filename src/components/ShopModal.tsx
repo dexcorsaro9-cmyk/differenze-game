@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { X, Snowflake, Compass, Search, Shield, Package, Sparkles, Coins, Check, AlertCircle } from 'lucide-react';
 import type { PowerUpInventory, ShopItem } from '../types/game';
 import { sound } from '../utils/audio';
+import { useTranslation } from '../i18n/LanguageContext';
+import type { Translations } from '../i18n/types';
 
 interface ShopModalProps {
   isOpen: boolean;
@@ -12,11 +14,11 @@ interface ShopModalProps {
   onClaimEmergencyFunds: () => void;
 }
 
-export const SHOP_ITEMS: ShopItem[] = [
+export const getLocalizedShopItems = (t: Translations): ShopItem[] => [
   {
     id: 'freeze_single',
-    name: 'Congela Tempo (20s)',
-    description: 'Ferma il cronometro per 20 secondi. Mantieni il tempo basso per conquistare le 3 stelle!',
+    name: t.shop.freezeSingleName,
+    description: t.shop.freezeSingleDesc,
     type: 'freeze_time',
     powerUpType: 'freeze_time',
     quantity: 1,
@@ -25,19 +27,19 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'freeze_triple',
-    name: 'Tris Congela Tempo (x3)',
-    description: 'Scorta da 3 utilizzi di Ferma-Tempo da 20 secondi ciascuno.',
+    name: t.shop.freezeTripleName,
+    description: t.shop.freezeTripleDesc,
     type: 'freeze_time',
     powerUpType: 'freeze_time',
     quantity: 3,
     coinPrice: 150,
     iconName: 'Snowflake',
-    badge: 'Risparmi 30🪙',
+    badge: t.shop.freezeTripleBadge,
   },
   {
     id: 'compass_single',
-    name: "Bussola d'Astrolabio (x1)",
-    description: 'Punta ed evidenzia il quadrante della scena contenente un indizio per 8 secondi.',
+    name: t.shop.compassSingleName,
+    description: t.shop.compassSingleDesc,
     type: 'compass_radar',
     powerUpType: 'compass_radar',
     quantity: 1,
@@ -46,19 +48,19 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'compass_triple',
-    name: 'Kit Bussole d\'Oro (x3)',
-    description: 'Pacco da 3 bussole di rilevamento per i settori più complessi.',
+    name: t.shop.compassTripleName,
+    description: t.shop.compassTripleDesc,
     type: 'compass_radar',
     powerUpType: 'compass_radar',
     quantity: 3,
     coinPrice: 100,
     iconName: 'Compass',
-    badge: 'Risparmi 20🪙',
+    badge: t.shop.compassTripleBadge,
   },
   {
     id: 'hint_triple',
-    name: 'Lente d\'Ingrandimento (x3)',
-    description: 'Punta e centra direttamente la lente sul punto esatto della differenza.',
+    name: t.shop.hintTripleName,
+    description: t.shop.hintTripleDesc,
     type: 'hint',
     powerUpType: 'hint',
     quantity: 3,
@@ -67,8 +69,8 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'shield_single',
-    name: 'Scudo del Guardiano (x1)',
-    description: 'Attiva una barriera sacra: assorbe il prossimo tocco errato senza perdere cuori.',
+    name: t.shop.shieldSingleName,
+    description: t.shop.shieldSingleDesc,
     type: 'error_shield',
     powerUpType: 'error_shield',
     quantity: 1,
@@ -77,24 +79,24 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'shield_triple',
-    name: 'Bastione Runico (x3)',
-    description: '3 Scudi protettivi per esplorare le rovine senza timore di sbagliare.',
+    name: t.shop.shieldTripleName,
+    description: t.shop.shieldTripleDesc,
     type: 'error_shield',
     powerUpType: 'error_shield',
     quantity: 3,
     coinPrice: 110,
     iconName: 'Shield',
-    badge: 'Risparmi 25🪙',
+    badge: t.shop.shieldTripleBadge,
   },
   {
     id: 'expedition_bundle',
-    name: 'Baule della Spedizione',
-    description: 'Pacco completo di scorte: 2x Ferma-Tempo, 2x Bussole, 2x Scudi e 3x Lenti d\'Ingrandimento!',
+    name: t.shop.bundleName,
+    description: t.shop.bundleDesc,
     type: 'bundle',
     quantity: 1,
     coinPrice: 250,
     iconName: 'Package',
-    badge: 'Super Valore!',
+    badge: t.shop.bundleBadge,
     contents: [
       { type: 'freeze_time', count: 2 },
       { type: 'compass_radar', count: 2 },
@@ -104,6 +106,31 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
 ];
 
+export const SHOP_ITEMS = getLocalizedShopItems({
+  shop: {
+    freezeSingleName: 'Congela Tempo (20s)',
+    freezeSingleDesc: 'Ferma il cronometro per 20 secondi. Mantieni il tempo basso per conquistare le 3 stelle!',
+    freezeTripleName: 'Tris Congela Tempo (x3)',
+    freezeTripleDesc: 'Scorta da 3 utilizzi di Ferma-Tempo da 20 secondi ciascuno.',
+    freezeTripleBadge: 'Risparmi 30🪙',
+    compassSingleName: "Bussola d'Astrolabio (x1)",
+    compassSingleDesc: 'Punta ed evidenzia il quadrante della scena contenente un indizio per 8 secondi.',
+    compassTripleName: 'Kit Bussole d\'Oro (x3)',
+    compassTripleDesc: 'Pacco da 3 bussole di rilevamento per i settori più complessi.',
+    compassTripleBadge: 'Risparmi 20🪙',
+    hintTripleName: 'Lente d\'Ingrandimento (x3)',
+    hintTripleDesc: 'Punta e centra direttamente la lente sul punto esatto della differenza.',
+    shieldSingleName: 'Scudo del Guardiano (x1)',
+    shieldSingleDesc: 'Attiva una barriera sacra: assorbe il prossimo tocco errato senza perdere cuori.',
+    shieldTripleName: 'Bastione Runico (x3)',
+    shieldTripleDesc: '3 Scudi protettivi per esplorare le rovine senza timore di sbagliare.',
+    shieldTripleBadge: 'Risparmi 25🪙',
+    bundleName: 'Baule della Spedizione',
+    bundleDesc: 'Pacco completo di scorte: 2x Ferma-Tempo, 2x Bussole, 2x Scudi e 3x Lenti d\'Ingrandimento!',
+    bundleBadge: 'Super Valore!',
+  }
+} as any);
+
 export const ShopModal: React.FC<ShopModalProps> = ({
   isOpen,
   onClose,
@@ -112,8 +139,10 @@ export const ShopModal: React.FC<ShopModalProps> = ({
   onBuyItem,
   onClaimEmergencyFunds,
 }) => {
+  const { t } = useTranslation();
   const [purchaseSuccessId, setPurchaseSuccessId] = useState<string | null>(null);
   const [notEnoughCoinsId, setNotEnoughCoinsId] = useState<string | null>(null);
+  const shopItems = getLocalizedShopItems(t);
 
   if (!isOpen) return null;
 
@@ -161,11 +190,11 @@ export const ShopModal: React.FC<ShopModalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
-                <span>Emporio Archeologico</span>
+                <span>{t.shop.title}</span>
               </h2>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Acquista strumenti speciali usando le monete d'oro vinte nei livelli
+              {t.shop.subtitle}
             </p>
           </div>
 
@@ -177,7 +206,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({
                 {coins}
               </span>
               <span className="text-[10px] uppercase tracking-wider text-amber-400/80 font-bold">
-                Monete
+                {t.common.coins}
               </span>
             </div>
 
@@ -195,28 +224,28 @@ export const ShopModal: React.FC<ShopModalProps> = ({
         <div className="flex items-center justify-around py-2 px-3 bg-slate-950/60 rounded-xl border border-slate-800/80 my-3 text-[11px] sm:text-xs text-slate-300">
           <div className="flex items-center gap-1.5">
             <Snowflake className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Ferma Tempo: <strong>{inventory.freeze_time}</strong></span>
+            <span>{t.powerUps.freezeTime}: <strong>{inventory.freeze_time}</strong></span>
           </div>
           <div className="text-slate-700">•</div>
           <div className="flex items-center gap-1.5">
             <Compass className="w-3.5 h-3.5 text-amber-400" />
-            <span>Bussole: <strong>{inventory.compass_radar}</strong></span>
+            <span>{t.powerUps.compassRadar}: <strong>{inventory.compass_radar}</strong></span>
           </div>
           <div className="text-slate-700">•</div>
           <div className="flex items-center gap-1.5">
             <Search className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Lenti: <strong>{inventory.hint}</strong></span>
+            <span>{t.powerUps.hint}: <strong>{inventory.hint}</strong></span>
           </div>
           <div className="text-slate-700">•</div>
           <div className="flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Scudi: <strong>{inventory.error_shield}</strong></span>
+            <span>{t.powerUps.errorShield}: <strong>{inventory.error_shield}</strong></span>
           </div>
         </div>
 
         {/* Shop Items Grid */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-2.5 my-1 custom-scrollbar">
-          {SHOP_ITEMS.map(item => {
+          {shopItems.map(item => {
             const canAfford = coins >= item.coinPrice;
             const isSuccess = purchaseSuccessId === item.id;
             const isNotEnough = notEnoughCoinsId === item.id;
@@ -264,12 +293,12 @@ export const ShopModal: React.FC<ShopModalProps> = ({
                     {isSuccess ? (
                       <>
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>Preso!</span>
+                        <span>{t.shop.purchaseSuccess}</span>
                       </>
                     ) : isNotEnough ? (
                       <>
                         <AlertCircle className="w-3.5 h-3.5" />
-                        <span>Mancano Monete</span>
+                        <span>{t.shop.notEnoughCoins}</span>
                       </>
                     ) : (
                       <>
@@ -287,7 +316,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({
         {/* Emergency Relief / Bottom Note */}
         <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
           <span className="italic">
-            💡 Vinci monete decifrando gli indovinelli archeologici (+20 a scoperta, +100 bonus a 3 stelle)!
+            {t.shop.emergencyDesc}
           </span>
 
           {coins < 40 && (
@@ -298,7 +327,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({
               }}
               className="px-2.5 py-1 rounded-lg bg-indigo-900/60 hover:bg-indigo-800/80 border border-indigo-500/40 text-indigo-300 font-semibold text-[11px] active:scale-95 transition-all"
             >
-              Richiedi Rifornimento (+60 🪙)
+              {t.shop.claimAid}
             </button>
           )}
         </div>

@@ -25,6 +25,7 @@ import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
 import { safeStorage } from '../utils/storage';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface HiddenObjectViewProps {
   imageA: string;
@@ -80,6 +81,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   chapterNumber = 1,
   levelId,
 }) => {
+  const { t, interpolate } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -458,7 +460,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         id: `${Date.now()}_${Math.random()}`,
         x: clickXPercent,
         y: clickYPercent,
-        text: comboStreak >= 1 ? `Indizio Decifrato! (x${comboStreak + 1})` : 'Indizio Decifrato!',
+        text: comboStreak >= 1 ? `${t.hiddenObject.evidenceFound} (x${comboStreak + 1})` : t.hiddenObject.evidenceFound,
         name: matchedDiff.name,
       };
       setDiscoveryPops(prev => [...prev, pop]);
@@ -540,7 +542,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-indigo-950/95 border border-indigo-400 text-indigo-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-bounce">
           <Shield className="w-4 h-4 text-indigo-300 shrink-0" />
           <span className="text-xs font-bold">
-            Scudo del Guardiano: Errore parato senza perdere vite!
+            {t.powerUps.shieldBlocked}
           </span>
         </div>
       )}
@@ -552,10 +554,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <button
             onClick={handleResetZoom}
             className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-stone-950 font-black text-[11px] shadow-[0_0_15px_rgba(245,158,11,0.8)] border border-amber-200 transition-transform active:scale-95 animate-fade-in"
-            title="Tocca per ripristinare la visuale intera"
+            title={t.controls.resetZoom}
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>{scale.toFixed(1)}x • Ripristina</span>
+            <span>{scale.toFixed(1)}x • {t.controls.resetZoom.split(' ')[0]}</span>
           </button>
         )}
 
@@ -580,7 +582,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 ? 'bg-amber-500 text-stone-950 font-bold shadow-[0_0_12px_rgba(245,158,11,0.8)] ring-1 ring-amber-200 scale-105'
                 : 'text-amber-300/80 hover:text-amber-200 hover:bg-stone-800'
             }`}
-            title={isMagnifierActive ? "Disattiva Lente d'Ottone" : "Attiva Lente d'Ottone 1928 (Ingranditore di Campo 2.4x)"}
+            title={isMagnifierActive ? t.controls.magnifierActive : t.controls.magnifier}
           >
             <Search className="w-3.5 h-3.5" />
           </button>
@@ -589,7 +591,11 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <button
             onClick={cycleAtmosphere}
             className="p-1 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
-            title={`Atmosfera Luce: ${atmosphereMode}`}
+            title={`${t.controls.atmosphere}: ${
+              atmosphereMode === 'dawn' ? t.controls.dawn :
+              atmosphereMode === 'noon' ? t.controls.noon :
+              atmosphereMode === 'dusk' ? t.controls.dusk : t.controls.lantern
+            }`}
           >
             {atmosphereMode === 'dawn' && <Sun className="w-3.5 h-3.5 text-amber-400" />}
             {atmosphereMode === 'noon' && <Sun className="w-3.5 h-3.5 text-yellow-300" />}
@@ -601,7 +607,11 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <button
             onClick={cyclePhotoFilter}
             className="p-1 rounded-full text-amber-300/80 hover:text-amber-200 hover:bg-stone-800 transition-colors"
-            title={`Filtro Lastra Fotografica: ${photoFilter}`}
+            title={`${t.controls.photoFilter}: ${
+              photoFilter === 'silver' ? t.controls.silver :
+              photoFilter === 'cyanotype' ? t.controls.cyanotype :
+              photoFilter === 'autochrome' ? t.controls.autochrome : t.controls.natural
+            }`}
           >
             <Layers className="w-3.5 h-3.5" />
           </button>
@@ -641,7 +651,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                   <div className="w-full h-full rounded-full overflow-hidden relative bg-stone-950">
                     <img
                       src={assetUrl(imageA)}
-                      alt="Ingrandimento Ottico"
+                      alt={t.controls.magnifier}
                       className="absolute max-w-none pointer-events-none select-none"
                       style={{
                         width: '100%',
@@ -751,7 +761,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             >
               <div className="absolute top-2 left-2 flex items-center gap-1 bg-stone-900/85 px-2 py-0.5 rounded text-[10px] text-cyan-300 font-mono tracking-wider border border-cyan-500/40">
                 <MapPin className="w-3 h-3 text-cyan-400" />
-                QUADRANTE ATTIVO
+                {t.powerUps.quadrantActive}
               </div>
             </div>
           )}
@@ -830,14 +840,14 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <div className="flex items-center gap-1 sm:gap-1.5 text-amber-300 font-serif font-bold tracking-wide min-w-0 shrink overflow-hidden">
             <Scroll className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             <span className="uppercase text-[10px] sm:text-[11px] tracking-wider font-sans whitespace-nowrap truncate">
-              <span className="hidden sm:inline">Taccuino di Spedizione</span>
-              <span className="sm:hidden">Taccuino</span> (8 Indovinelli)
+              <span className="hidden sm:inline">{t.hiddenObject.notebookTitle}</span>
+              <span className="sm:hidden">{t.hiddenObject.notebookTitle.split(' ')[0]}</span> ({interpolate(t.hiddenObject.riddlesCount, { count: 8 })})
             </span>
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap">
             <div className="flex items-center gap-1 text-[11px] whitespace-nowrap shrink-0">
-              <span className="text-stone-400 hidden sm:inline">Decifrati:</span>
+              <span className="text-stone-400 hidden sm:inline">{t.hiddenObject.deciphered}</span>
               <span className="text-amber-300 font-mono font-bold bg-stone-950 px-2 py-0.5 rounded border border-amber-600/40 shadow-inner whitespace-nowrap shrink-0">
                 {foundCount}&nbsp;/&nbsp;{totalCount}
               </span>
@@ -847,9 +857,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             <button
               onClick={() => setIsGridExpanded(prev => !prev)}
               className="flex items-center gap-0.5 text-[10px] text-amber-300/80 hover:text-amber-200 bg-stone-900/90 px-1.5 sm:px-2 py-0.5 rounded border border-amber-700/40 transition cursor-pointer shrink-0 whitespace-nowrap"
-              title={isGridExpanded ? 'Comprimi Taccuino' : 'Espandi tutti gli 8 Indovinelli'}
+              title={isGridExpanded ? t.hiddenObject.collapse : t.hiddenObject.expand}
             >
-              <span>{isGridExpanded ? 'Comprimi' : 'Tutti gli 8'}</span>
+              <span>{isGridExpanded ? t.hiddenObject.collapse : t.hiddenObject.allEight}</span>
               {isGridExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
             </button>
           </div>
@@ -875,12 +885,12 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                   {selectedRiddleIndex + 1}
                 </span>
                 <span className="text-[10px] uppercase tracking-wider font-bold text-amber-400">
-                  {isActiveRiddleFound ? 'Indizio Decifrato:' : 'Indovinello Attivo:'}
+                  {isActiveRiddleFound ? t.hiddenObject.decipheredClue : t.hiddenObject.activeRiddle}
                 </span>
               </div>
 
               <div className="text-[9px] text-stone-400 flex items-center gap-1">
-                <span>Pinch con due dita per zoomare sulla foto</span>
+                <span>{t.hiddenObject.pinchHint}</span>
               </div>
             </div>
 
@@ -928,10 +938,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                     <span className="text-[10px] font-mono font-bold text-amber-400">#{idx + 1}</span>
                     {isFound ? (
                       <span className="text-[8px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">
-                        DECIFRATO
+                        {t.hiddenObject.deciphered.toUpperCase().replace(':', '')}
                       </span>
                     ) : (
-                      <span className="text-[8px] text-stone-500 font-mono">DA TROVARE</span>
+                      <span className="text-[8px] text-stone-500 font-mono">{t.hiddenObject.toFind}</span>
                     )}
                   </div>
 

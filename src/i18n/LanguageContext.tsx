@@ -20,7 +20,7 @@ interface LanguageContextType {
   interpolate: (template: string, params?: Record<string, string | number>) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | null>(null);
+export const LanguageContext = createContext<LanguageContextType | null>(null);
 
 function detectDefaultLanguage(): Language {
   const saved = safeStorage.getItem(STORAGE_KEY_LANGUAGE);
@@ -66,6 +66,11 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
 };
 
+export function interpolate(tmpl: string, params?: Record<string, string | number>): string {
+  if (!params) return tmpl;
+  return Object.entries(params).reduce((acc, [k, v]) => acc.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v)), tmpl);
+}
+
 export function useTranslation(): LanguageContextType {
   const context = useContext(LanguageContext);
   if (!context) {
@@ -74,10 +79,7 @@ export function useTranslation(): LanguageContextType {
       language: 'it',
       setLanguage: () => {},
       t: dictionaries.it,
-      interpolate: (tmpl, params) => {
-        if (!params) return tmpl;
-        return Object.entries(params).reduce((acc, [k, v]) => acc.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v)), tmpl);
-      },
+      interpolate,
     };
   }
   return context;

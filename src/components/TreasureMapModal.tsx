@@ -1,6 +1,7 @@
 import React from 'react';
 import { Map, X, Award, CheckCircle2, Lock, Sparkles, Navigation } from 'lucide-react';
 import { SAGA_MILESTONES_120 } from '../data/sagaLore';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface TreasureMapModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
   currentLevelId,
   completedLevelIds,
 }) => {
+  const { language, t, interpolate } = useTranslation();
   if (!isOpen) return null;
 
   // Number of stages unlocked (each stage is 10 levels)
@@ -35,13 +37,13 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
-                Mappa del Tesoro di Paititi
+                {t.treasureMap.title}
                 <span className="text-xs font-bold text-amber-300 bg-amber-950/80 border border-amber-500/40 px-2.5 py-0.5 rounded-full">
-                  12 Tappe di Spedizione
+                  {t.treasureMap.stageMilestones}
                 </span>
               </h3>
               <p className="text-xs text-slate-400">
-                Completa 10 livelli per ogni tappa per ricomporre la mappa e raggiungere il Tesoro Finale
+                {t.treasureMap.subtitle}
               </p>
             </div>
           </div>
@@ -49,6 +51,7 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
           <button
             onClick={onClose}
             className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-all active:scale-95"
+            title={t.common.close}
           >
             <X className="w-5 h-5" />
           </button>
@@ -58,7 +61,7 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
         <div className="px-6 py-3 bg-amber-950/25 border-b border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-xs text-amber-200">
             <Navigation className="w-4 h-4 text-amber-400" />
-            <span>Progresso Spedizione: <strong>Livello {currentLevelId} di 120</strong> ({progressPercent}%)</span>
+            <span>{interpolate(t.treasureMap.progress, { level: currentLevelId, total: 120, percent: progressPercent })}</span>
           </div>
 
           <div className="w-full sm:w-64 bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700">
@@ -69,7 +72,7 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
           </div>
 
           <div className="text-xs font-bold text-amber-300">
-            Tappe Concluse: {completedStagesCount} / 12
+            {interpolate(t.levelSelect.levelsCount, { completed: completedStagesCount, total: 12 })}
           </div>
         </div>
 
@@ -97,23 +100,23 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
                     {/* Stage Header */}
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                        Tappa {milestone.stageNumber} • Livello {milestone.targetLevel}
+                        {t.levelSelect.stage} {milestone.stageNumber} • {t.levelSelect.level} {milestone.targetLevel}
                       </span>
 
                       {isStageCompleted ? (
                         <div className="flex items-center gap-1 text-emerald-400 text-xs font-bold">
                           <CheckCircle2 className="w-4 h-4" />
-                          <span>Decifrata</span>
+                          <span>{t.hiddenObject.deciphered.replace(':', '')}</span>
                         </div>
                       ) : isCurrentStage ? (
                         <div className="flex items-center gap-1 text-amber-400 text-xs font-bold animate-pulse">
                           <Navigation className="w-3.5 h-3.5" />
-                          <span>In corso</span>
+                          <span>{t.treasureMap.inProgressStage}</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-1 text-slate-500 text-xs">
                           <Lock className="w-3.5 h-3.5" />
-                          <span>Bloccata</span>
+                          <span>{t.treasureMap.lockedStage}</span>
                         </div>
                       )}
                     </div>
@@ -129,7 +132,11 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
                     <p className="text-[11px] text-slate-300 line-clamp-3 italic leading-relaxed">
                       {isStageCompleted
                         ? `"${milestone.storyFragment}"`
-                        : "Frammento cartografico protetto. Raggiungi il livello per sbloccarlo."}
+                        : (language === 'en'
+                          ? "Protected cartographic fragment. Reach the milestone level to decipher it."
+                          : language === 'es'
+                          ? "Fragmento cartográfico protegido. Alcanza el nivel clave para descifrarlo."
+                          : "Frammento cartografico protetto. Raggiungi il livello per sbloccarlo.")}
                     </p>
                   </div>
 
@@ -155,13 +162,25 @@ export const TreasureMapModal: React.FC<TreasureMapModalProps> = ({
             </div>
 
             <span className="text-xs uppercase font-bold tracking-widest text-amber-400 block mb-1">
-              Obiettivo Finale Spedizione (Livello 120)
+              {language === 'en'
+                ? "Final Expedition Objective (Level 120)"
+                : language === 'es'
+                ? "Objetivo Final de la Expedición (Nivel 120)"
+                : "Obiettivo Finale Spedizione (Livello 120)"}
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-white">
-              L'Occhio Supremo di Quetzalcoatl & L'Oro di Paititi
+              {language === 'en'
+                ? "The Supreme Eye of Quetzalcoatl & The Gold of Paititi"
+                : language === 'es'
+                ? "El Ojo Supremo de Quetzalcoatl y el Oro de Paititi"
+                : "L'Occhio Supremo di Quetzalcoatl & L'Oro di Paititi"}
             </h3>
             <p className="text-xs sm:text-sm text-amber-100/90 max-w-xl mx-auto mt-2 leading-relaxed">
-              Il santuario nascosto nel cuore delle Ande peruviane si aprirà solo a chi completerà tutte le 12 tappe decifrando gli 8 indovinelli di ciascuna tavola. La gloria eterna ti attende alla fine del taccuino!
+              {language === 'en'
+                ? "The hidden sanctuary in the heart of the Peruvian Andes will open only to those who complete all 12 stages, deciphering the 8 riddles of each plate. Eternal glory awaits you at the end of the journal!"
+                : language === 'es'
+                ? "El santuario oculto en el corazón de los Andes peruanos solo se abrirá a quien complete las 12 etapas descifrando los 8 enigmas de cada lámina. ¡La gloria eterna te aguarda al final del cuaderno!"
+                : "Il santuario nascosto nel cuore delle Ande peruviane si aprirà solo a chi completerà tutte le 12 tappe decifrando gli 8 indovinelli di ciascuna tavola. La gloria eterna ti attende alla fine del taccuino!"}
             </p>
           </div>
         </div>
