@@ -102,6 +102,8 @@ export const en: Translations = {
     importBackup: 'Restore Save from File',
     resetProgress: 'Wipe All Expedition Progress',
     resetConfirm: 'Are you certain you wish to wipe all progress? This action cannot be undone.',
+    privacyPolicy: 'Privacy Policy',
+    privacyPolicyDesc: 'Zero tracking, GDPR & COPPA compliant.',
     version: '1928 Archaeological Edition • v2.0',
   },
   shop: {

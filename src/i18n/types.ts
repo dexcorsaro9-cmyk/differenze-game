@@ -102,6 +102,8 @@ export interface Translations {
     importBackup: string;
     resetProgress: string;
     resetConfirm: string;
+    privacyPolicy: string;
+    privacyPolicyDesc: string;
     version: string;
   };
   shop: {

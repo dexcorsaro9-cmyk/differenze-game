@@ -102,6 +102,8 @@ export const it: Translations = {
     importBackup: 'Ripristina Salvataggio da File',
     resetProgress: 'Azzera Tutti i Dati di Spedizione',
     resetConfirm: 'Sei sicuro di voler azzerare tutti i progressi? Questa azione non può essere annullata.',
+    privacyPolicy: 'Informativa sulla Privacy',
+    privacyPolicyDesc: 'Zero tracciamento dati, conformità GDPR & COPPA.',
     version: 'Edizione Archeologica 1928 • v2.0',
   },
   shop: {

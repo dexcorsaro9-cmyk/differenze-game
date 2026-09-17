@@ -102,6 +102,8 @@ export const es: Translations = {
     importBackup: 'Restaurar Partida desde Archivo',
     resetProgress: 'Borrar Todos los Datos de Expedición',
     resetConfirm: '¿Seguro que deseas reiniciar todo el progreso? Esta acción no se puede deshacer.',
+    privacyPolicy: 'Política de Privacidad',
+    privacyPolicyDesc: 'Cero rastreo, cumplimiento de RGPD y COPPA.',
     version: 'Edición Arqueológica 1928 • v2.0',
   },
   shop: {
