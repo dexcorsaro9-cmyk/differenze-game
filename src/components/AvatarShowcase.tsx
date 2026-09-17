@@ -85,6 +85,7 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   const displayOutfitId = previewOutfitId || profile.equippedOutfitId;
   const displayOutfit = ALL_OUTFITS.find(o => o.id === displayOutfitId);
   const frontCharacterImage = displayOutfit?.image || currentExplorer.image;
+  const backCharacterImage = displayOutfit?.backImage || currentExplorer.backImage;
   const displayHeadgearId = previewHeadgearId !== null ? previewHeadgearId : profile.equippedHeadgearId;
   const displayToolId = previewToolId !== null ? previewToolId : (profile.equippedToolId || 'tool_theodolite');
   const displayOffHandId = previewOffHandId !== null ? previewOffHandId : (profile.equippedOffHandId || 'off_compass_brass');
@@ -138,6 +139,11 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
   useEffect(() => {
     setFrontImgError(false);
   }, [frontCharacterImage]);
+
+  // Reset back image error if outfit or explorer changes
+  useEffect(() => {
+    setBackImgError(false);
+  }, [backCharacterImage]);
 
   // Touch & Mouse Drag Handlers for 3D Turntable
   const handlePointerDown = (clientX: number) => {
@@ -540,8 +546,8 @@ export const AvatarShowcase: React.FC<AvatarShowcaseProps> = ({
               {/* Back Character Image: Full body on stone pedestal seen from behind */}
               {!backImgError ? (
                 <img
-                  src={currentExplorer.backImage}
-                  alt={`${currentExplorer.name} (Vista Posteriore)`}
+                  src={backCharacterImage}
+                  alt={`${displayOutfit?.name || currentExplorer.name} (Vista Posteriore)`}
                   onError={() => setBackImgError(true)}
                   className={`h-full w-full max-h-full max-w-full object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-300 ${getOutfitShaderClass()}`}
                 />
