@@ -187,4 +187,15 @@ export interface Translations {
     selectLanguage: string;
     expeditionEdition: string;
   };
+  avatarCreator: {
+    academyBadge: string;
+    title: string;
+    subtitle: string;
+    upgradesAvailable: string;
+    nameLabel: string;
+    confirmAndStart: string;
+  };
+  prologue: {
+    skip: string;
+  };
 }

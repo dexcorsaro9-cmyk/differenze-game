@@ -3,6 +3,7 @@ import { EXPLORERS, type ExplorerProfile } from '../data/avatarData';
 import { Compass, BookOpen, Check, Sparkles, Shield, User } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface AvatarCreatorModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
   onConfirm,
   currentProfile,
 }) => {
+  const { t } = useTranslation();
   const [selectedAvatarId, setSelectedAvatarId] = useState<'samira' | 'mateo'>(
     currentProfile?.avatarId || 'samira'
   );
@@ -82,13 +84,13 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
         <div className="relative px-5 pt-4 pb-3 border-b border-amber-900/50 bg-gradient-to-b from-stone-800 to-stone-900 text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[10px] font-bold uppercase tracking-widest mb-1 shadow-inner">
             <Compass className="w-3 h-3 text-amber-400 animate-spin-slow" />
-            Accademia Geografica di Paititi
+            {t.avatarCreator.academyBadge}
           </div>
           <h2 className="text-xl font-black text-amber-100 font-serif tracking-wide drop-shadow-md">
-            Scegli il Tuo Esploratore
+            {t.avatarCreator.title}
           </h2>
           <p className="text-stone-400 text-xs mt-0.5">
-            Personalità scientifica originale & tenuta di base da campo
+            {t.avatarCreator.subtitle}
           </p>
         </div>
 
@@ -187,7 +189,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
                 {currentExplorer.specialization}
               </span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-950/40 border border-amber-700/40 text-[10px] text-amber-300">
-                🪙 Upgrade Guardaroba Disponibili
+                {t.avatarCreator.upgradesAvailable}
               </span>
             </div>
           </div>
@@ -196,7 +198,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
           <div className="bg-stone-950/70 border border-stone-800 rounded-2xl p-3">
             <label className="block text-[11px] font-bold text-stone-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-amber-400" />
-              Nome Esploratore / Nome Giocatore
+              {t.avatarCreator.nameLabel}
             </label>
             <input
               type="text"
@@ -217,7 +219,7 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
             className="w-full py-3 px-4 rounded-2xl font-black font-serif tracking-wider text-sm uppercase bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-stone-950 shadow-[0_0_25px_rgba(245,158,11,0.4)] flex items-center justify-center gap-2 active:scale-95 transition-all duration-150 cursor-pointer"
           >
             <Check className="w-4 h-4 stroke-[3]" />
-            Conferma Esploratore & Inizia
+            {t.avatarCreator.confirmAndStart}
           </button>
         </div>
       </div>

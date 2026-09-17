@@ -187,4 +187,15 @@ export const en: Translations = {
     selectLanguage: 'Choose your language',
     expeditionEdition: 'Expedition 1928',
   },
+  avatarCreator: {
+    academyBadge: 'Geographical Academy of Paititi',
+    title: 'Choose Your Explorer',
+    subtitle: 'Original scientific expertise & base field gear',
+    upgradesAvailable: '🪙 Wardrobe Upgrades Available',
+    nameLabel: 'Explorer Name / Player Name',
+    confirmAndStart: 'Confirm Explorer & Begin',
+  },
+  prologue: {
+    skip: 'Skip',
+  },
 };
