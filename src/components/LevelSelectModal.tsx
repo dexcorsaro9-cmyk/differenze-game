@@ -14,7 +14,7 @@ import {
 import type { Level } from '../types/game';
 import { SAGA_MILESTONES_120 } from '../data/sagaLore';
 import { useTranslation } from '../i18n/LanguageContext';
-import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
+import { getLocalizedLevelTitle, getLocalizedMilestone } from '../i18n/gameDataTranslations';
 import type { Language } from '../i18n/types';
 
 interface LevelSelectModalProps {
@@ -100,7 +100,8 @@ export const LevelSelectModal: React.FC<LevelSelectModalProps> = ({
   if (!isOpen) return null;
 
   const chapterLevels = levels.filter(l => l.chapterNumber === selectedChapter);
-  const chapterMilestone = SAGA_MILESTONES_120.find(m => m.stageNumber === selectedChapter);
+  const rawMilestone = SAGA_MILESTONES_120.find(m => m.stageNumber === selectedChapter);
+  const chapterMilestone = rawMilestone ? getLocalizedMilestone(rawMilestone, language) : undefined;
   const chapterMeta = CHAPTER_NAMES[language]?.[selectedChapter] || CHAPTER_NAMES.it[selectedChapter] || {
     title: `${t.header.chapter} ${selectedChapter}`,
     location: language === 'en' ? "1928 Expedition" : language === 'es' ? "Expedición 1928" : "Spedizione 1928",

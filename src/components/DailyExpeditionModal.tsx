@@ -26,7 +26,7 @@ import {
 import { ALL_120_LEVELS } from '../data/levelRegistry';
 import { sound } from '../utils/audio';
 import { useTranslation } from '../i18n/LanguageContext';
-import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
+import { getLocalizedLevelTitle, getLocalizedModifier, getLocalizedMilestoneReward } from '../i18n/gameDataTranslations';
 
 interface DailyExpeditionModalProps {
   isOpen: boolean;
@@ -46,7 +46,8 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
   const todayStr = getTodayDateString();
   const todayLevelId = getLevelIdForDate(todayStr);
   const todayLevel = ALL_120_LEVELS.find(l => l.id === todayLevelId) || ALL_120_LEVELS[0];
-  const todayModifier = getModifierForDate(todayStr);
+  const rawModifier = getModifierForDate(todayStr);
+  const todayModifier = getLocalizedModifier(rawModifier, language);
   const isTodayDone = dailyState.completedDates.includes(todayStr);
 
   const calendarDays = useMemo(() => get30DayExpeditionCalendar(), []);
@@ -219,7 +220,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                     <span className={`text-[10px] font-black font-mono leading-none ${
                       day.isToday ? 'text-amber-300' : 'text-stone-400'
                     }`}>
-                      G{day.dayNumber}
+                      {language === 'it' ? 'G' : 'D'}{day.dayNumber}
                     </span>
 
                     {/* Center Icon: Stamp, Today Compass, Milestone Chest, or Lock */}
@@ -268,7 +269,8 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {DAILY_MILESTONES.map((m: MilestoneReward) => {
+              {DAILY_MILESTONES.map((rawM: MilestoneReward) => {
+                const m = getLocalizedMilestoneReward(rawM, language);
                 const isUnlocked = dailyState.streak >= m.day;
                 const isClaimed = dailyState.claimedMilestones.includes(m.day);
 
@@ -324,7 +326,11 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
         {/* Footer info note */}
         <div className="p-3 bg-black/60 border-t border-amber-900/40 text-center">
           <p className="text-[10px] text-stone-400 font-serif italic">
-            "La costanza dell'archeologo svela i segreti che i secoli hanno tentato di seppellire." — Taccuino RGS, Londra 1928
+            {language === 'en'
+              ? '"The constancy of the archaeologist unveils the secrets that centuries sought to bury." — RGS Notebook, London 1928'
+              : language === 'es'
+              ? '"La constancia del arqueólogo desvela los secretos que los siglos intentaron sepultar." — Cuaderno RGS, Londres 1928'
+              : '"La costanza dell\'archeologo svela i segreti che i secoli hanno tentato di seppellire." — Taccuino RGS, Londra 1928'}
           </p>
         </div>
 

@@ -331,7 +331,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                   His Britannic Majesty's Foreign Office • Archaeological Expeditionary Corps
                 </div>
                 <h3 className="text-lg font-serif font-black tracking-wide text-amber-950 uppercase mt-0.5">
-                  Certificato di Identità & Lasciapassare
+                  {language === 'en' ? "Identity Certificate & Safe Conduct" : language === 'es' ? "Certificado de Identidad y Salvoconducto" : "Certificato di Identità & Lasciapassare"}
                 </h3>
                 <span className="text-[10px] font-mono tracking-widest text-amber-900/80">
                   N° REGISTRO A-1928-884-ROYAL
@@ -365,7 +365,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                 <div className="flex-1 space-y-2 text-xs">
                   <div>
                     <span className="text-[9px] font-mono uppercase text-stone-500 block">
-                      Nome dell'Esploratore Titolare
+                      {language === 'en' ? "Bearer Explorer's Full Name" : language === 'es' ? "Nombre del Explorador Titular" : "Nome dell'Esploratore Titolare"}
                     </span>
                     <span className="text-sm font-serif font-black text-amber-950">
                       {profile.playerName}
@@ -375,7 +375,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <span className="text-[9px] font-mono uppercase text-stone-500 block">
-                        Grado di Spedizione
+                        {language === 'en' ? "Expedition Rank" : language === 'es' ? "Rango de Expedición" : "Grado di Spedizione"}
                       </span>
                       <span className="font-serif font-bold text-stone-800">
                         {currentExplorer.title}
@@ -384,20 +384,24 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
 
                     <div>
                       <span className="text-[9px] font-mono uppercase text-stone-500 block">
-                        Data di Rilascio
+                        {language === 'en' ? "Date of Issue" : language === 'es' ? "Fecha de Emisión" : "Data di Rilascio"}
                       </span>
                       <span className="font-mono font-bold text-stone-800">
-                        14 Settembre 1928
+                        {language === 'en' ? "14 September 1928" : language === 'es' ? "14 de Septiembre de 1928" : "14 Settembre 1928"}
                       </span>
                     </div>
                   </div>
 
                   <div>
                     <span className="text-[9px] font-mono uppercase text-stone-500 block">
-                      Missione Ufficiale
+                      {language === 'en' ? "Official Mandate" : language === 'es' ? "Misión Oficial" : "Missione Ufficiale"}
                     </span>
                     <span className="font-serif italic text-stone-700 text-[11px] block">
-                      Recupero del Disco Solare e delle 12 Reliquie Celate di Vilcabamba e Paititi.
+                      {language === 'en'
+                        ? "Recovery of the Sacred Sun Disk and the 12 Hidden Relics of Vilcabamba and Paititi."
+                        : language === 'es'
+                        ? "Recuperación del Disco Solar Sagrado y las 12 Reliquias Ocultas de Vilcabamba y Paititi."
+                        : "Recupero del Disco Solare e delle 12 Reliquie Celate di Vilcabamba e Paititi."}
                     </span>
                   </div>
 
@@ -405,7 +409,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                   <div className="pt-2 border-t border-stone-400/40 flex items-center justify-between">
                     <div>
                       <span className="text-[8px] font-mono uppercase text-stone-500 block">
-                        Firma dell'Ufficiale Console
+                        {language === 'en' ? "Consular Officer's Signature" : language === 'es' ? "Firma del Oficial Cónsul" : "Firma dell'Ufficiale Console"}
                       </span>
                       <span className="font-serif italic font-bold text-indigo-950 text-xs">
                         Arthur Penhaligon, K.C.B.
@@ -423,10 +427,14 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
               <div className="p-3 rounded-2xl bg-amber-900/10 border border-amber-800/30 flex items-center justify-between">
                 <div>
                   <span className="text-xs font-serif font-bold text-amber-900">
-                    Avanzamento Passaporto
+                    {language === 'en' ? "Passport Progress" : language === 'es' ? "Progreso del Pasaporte" : "Avanzamento Passaporto"}
                   </span>
                   <span className="text-[10px] text-stone-600 block">
-                    {unlockedCount} visti su 12 apposti • Capitolo attuale: {currentChapter}
+                    {language === 'en'
+                      ? `${unlockedCount} of 12 visas stamped • Current Chapter: ${currentChapter}`
+                      : language === 'es'
+                      ? `${unlockedCount} de 12 visados sellados • Capítulo actual: ${currentChapter}`
+                      : `${unlockedCount} visti su 12 apposti • Capitolo attuale: ${currentChapter}`}
                   </span>
                 </div>
 
@@ -439,7 +447,7 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
                   }}
                   className="px-3 py-1 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow flex items-center gap-1 transition cursor-pointer active:scale-95"
                 >
-                  <span>Sfoglia Visti</span>
+                  <span>{language === 'en' ? "Browse Visas" : language === 'es' ? "Examinar Visados" : "Sfoglia Visti"}</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -504,10 +512,14 @@ export const ExpeditionPassportModal: React.FC<ExpeditionPassportModalProps> = (
         {/* Passport Booklet Footer */}
         <div className="px-5 py-2.5 bg-gradient-to-r from-[#2c0b11] via-[#3a1017] to-[#2c0b11] border-t border-amber-500/40 flex items-center justify-between shrink-0 text-amber-200/80 text-[10px]">
           <span className="font-serif italic">
-            Proprietà Ufficiale della Royal Geographic Society • Londra 1928
+            {language === 'en'
+              ? "Official Property of the Royal Geographical Society • London 1928"
+              : language === 'es'
+              ? "Propiedad Oficial de la Real Sociedad Geográfica • Londres 1928"
+              : "Proprietà Ufficiale della Royal Geographic Society • Londra 1928"}
           </span>
           <span className="font-mono">
-            SERIE SPE-1928-VISTI
+            {language === 'en' ? "SERIES EXP-1928-VISAS" : language === 'es' ? "SERIE EXP-1928-VISADOS" : "SERIE SPE-1928-VISTI"}
           </span>
         </div>
       </div>

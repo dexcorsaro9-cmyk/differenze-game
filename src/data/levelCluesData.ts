@@ -876,9 +876,9 @@ export const LEVEL_CLUES_REGISTRY: Record<number, Difference[]> = {
     },
     {
       id: 'lvl11_d6',
-      x: 62.08,
-      y: 58.31,
-      radius: 5.5,
+      x: 74.62,
+      y: 51.38,
+      radius: 7.0,
       clueType: 'stolen_relic',
       name: "Il Teschio con Crittogramma nella Nicchia",
       riddle: "Cranio alloggiato nell'incavo del muro che reca un'incisione geometrica sulla fronte.",

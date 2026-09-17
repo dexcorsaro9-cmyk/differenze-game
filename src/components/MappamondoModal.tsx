@@ -21,8 +21,8 @@ import { EXPLORERS, ALL_OUTFITS, type ExplorerProfile } from '../data/avatarData
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
-import type { SagaMilestone } from '../types/game';
 import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedMilestone } from '../i18n';
 
 interface MappamondoModalProps {
   isOpen: boolean;
@@ -835,9 +835,10 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
     isDraggingRef.current = false;
   };
 
-  const selectedMilestone: SagaMilestone =
+  const rawMilestone =
     SAGA_MILESTONES_120.find(m => m.stageNumber === selectedStageNumber) ||
     SAGA_MILESTONES_120[0];
+  const selectedMilestone = getLocalizedMilestone(rawMilestone, language);
 
   const isSelectedCompleted = completedLevelIds.includes(selectedMilestone.targetLevel);
   const isSelectedCurrent =

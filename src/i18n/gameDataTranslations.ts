@@ -1248,3 +1248,407 @@ export function getLocalizedLevelTitle(id: number, stageNumber: number, levelInS
 }
 
 export { getLocalizedDifference, getLocalizedDifferences } from './clues';
+
+// =========================================================================
+// SAGA MILESTONES (12 STAGES) LOCALIZATION
+// =========================================================================
+import type { SagaMilestone } from '../types/game';
+import type { DailyChallengeModifier, MilestoneReward } from '../utils/dailyChallenge';
+
+interface MilestoneLoc {
+  zoneName: string;
+  stageTitle: string;
+  location: string;
+  storyFragment: string;
+  unlockedRelic: string;
+  relicDescription: string;
+}
+
+const MILESTONES_I18N: Record<number, Record<'en' | 'es', MilestoneLoc>> = {
+  1: {
+    en: {
+      zoneName: "Act I: The Riddle of Europe",
+      stageTitle: "The Oxford Study",
+      location: "Oxford, England",
+      storyFragment: "In the Department study, concealed behind the century-old bookcase, we unearthed the initial coded parchment. The cipher corresponds with the journal of the Portuguese navigator who vanished in 1512. The trail begins not across the Atlantic, but within Paris's ancient crypts!",
+      unlockedRelic: "Bellini's Wax Signet",
+      relicDescription: "A brass signet ring bearing the crest of the Royal Geographical Society, used to validate authenticated charts."
+    },
+    es: {
+      zoneName: "Acto I: El Enigma de Europa",
+      stageTitle: "El Estudio de Oxford",
+      location: "Oxford, Inglaterra",
+      storyFragment: "En el despacho del Departamento, tras la librería centenaria, descubrimos el primer pergamino cifrado. Los símbolos concuerdan con el diario del navegante portugués desaparecido en 1512. ¡El itinerario no comienza en las Américas, sino entre las criptas parisinas!",
+      unlockedRelic: "El Sello de Lacre de Bellini",
+      relicDescription: "Un anillo de latón con el blasón de la Real Sociedad Geográfica, empleado para rubricar mapas verídicos."
+    }
+  },
+  2: {
+    en: {
+      zoneName: "Act I: The Riddle of Europe",
+      stageTitle: "Catacomb Ossuary Vaults",
+      location: "Paris Catacombs, France",
+      storyFragment: "Descending thirty meters down through limestone galleries beneath Paris, we discovered the bas-relief of the Knights Templar. Their fleet carried no mere gold, but the Lodestone to navigate beyond known horizons!",
+      unlockedRelic: "The Silver Cross Pattée",
+      relicDescription: "An ancient talisman whose needle oscillates toward subterranean magnetic anomalies."
+    },
+    es: {
+      zoneName: "Acto I: El Enigma de Europa",
+      stageTitle: "Las Galerías del Osario",
+      location: "Catacumbas de París, Francia",
+      storyFragment: "Descendiendo treinta metros por las galerías calizas bajo París, hallamos el bajorrelieve de la Orden del Temple. ¡Su flota no transportaba oro, sino la Piedra Guía para navegar más allá del horizonte!",
+      unlockedRelic: "La Cruz Patada de Plata",
+      relicDescription: "Un antiguo talismán que oscila señalando yacimientos magnéticos subterráneos."
+    }
+  },
+  3: {
+    en: {
+      zoneName: "Act I: The Riddle of Europe",
+      stageTitle: "The Alchemist's Workshop",
+      location: "Grand Canal, Venice",
+      storyFragment: "Concealed behind a Murano mirror in a fourteenth-century palazzo lay the secret correspondence between Marco Polo and Eastern astronomers. The course charts directly towards the Minotaur's isle!",
+      unlockedRelic: "The Murano Nautical Chart",
+      relicDescription: "Goatskin parchment outlining hidden currents and submerged reefs across the Mediterranean."
+    },
+    es: {
+      zoneName: "Acto I: El Enigma de Europa",
+      stageTitle: "El Taller del Alquimista",
+      location: "Gran Canal, Venecia",
+      storyFragment: "Oculto tras un espejo de Murano en un palacio del siglo XIV yacía el carteo secreto entre Marco Polo y los astrónomos de Oriente. ¡El rumbo apunta directo hacia la isla del Minotauro!",
+      unlockedRelic: "La Carta Náutica de Murano",
+      relicDescription: "Pergamino en piel de cabra con las corrientes secretas y arrecifes sumergidos del Mediterráneo."
+    }
+  },
+  4: {
+    en: {
+      zoneName: "Act I: The Riddle of Europe",
+      stageTitle: "The Labyrinth of Minos",
+      location: "Palace of Knossos, Crete",
+      storyFragment: "At the heart of the subterranean maze, within an unbreached alabaster sarcophagus, we assembled the map's first quadrant! Archaeological duty now beckons us toward Egyptian sands.",
+      unlockedRelic: "Ptolemy's Astrolabe",
+      relicDescription: "A gilded bronze astronomical instrument capable of calculating primordial solar azimuths."
+    },
+    es: {
+      zoneName: "Acto I: El Enigma de Europa",
+      stageTitle: "El Laberinto de Minos",
+      location: "Palacio de Cnosos, Creta",
+      storyFragment: "¡En el centro del laberinto subterráneo, en un sarcófago de alabastro intacto, completamos el primer cuadrante del mapa! La llamada arqueológica nos apremia hacia las arenas de Egipto.",
+      unlockedRelic: "El Astrolabio de Ptolomeo",
+      relicDescription: "Instrumento astronómico en bronce dorado capaz de calcular la declinación solar primordial."
+    }
+  },
+  5: {
+    en: {
+      zoneName: "Act II: The Desert Trail",
+      stageTitle: "The Sunken Library",
+      location: "Ancient Harbor of Alexandria, Egypt",
+      storyFragment: "Beneath the waters of the ancient haven, we uncovered the remnants of a watertight stone chamber. A pitch-sealed papyrus roll recounts the pharaoh who concealed the second key beyond the Nile!",
+      unlockedRelic: "The Medallion of Serapis",
+      relicDescription: "Electrum coinage serving as the key to trigger hydraulic sluice gates in Egyptian sanctuaries."
+    },
+    es: {
+      zoneName: "Acto II: La Pista del Desierto",
+      stageTitle: "La Biblioteca Sumergida",
+      location: "Puerto Antiguo de Alejandría, Egipto",
+      storyFragment: "En las aguas del puerto antiguo descubrimos una cámara estanca de piedra. ¡Un rollo de papiro sellado con pez relata cómo el faraón ocultó la segunda llave más allá del Nilo!",
+      unlockedRelic: "El Medallón de Serapis",
+      relicDescription: "Moneda de electro dorado que acciona las compuertas hidráulicas de los santuarios egipcios."
+    }
+  },
+  6: {
+    en: {
+      zoneName: "Act II: The Desert Trail",
+      stageTitle: "Tomb of the Thirty Priests",
+      location: "Valley of the Kings, Luxor, Egypt",
+      storyFragment: "Behind the royal tomb's false partition stood no sarcophagi, but a monumental black granite counterweight mechanism. Solving the puzzle unlocked our passage toward Siwa Oasis.",
+      unlockedRelic: "The Jasper Ankh Key",
+      relicDescription: "Ceremonial sceptre carved from Sinai red jasper, indispensable for sliding monolithic gates."
+    },
+    es: {
+      zoneName: "Acto II: La Pista del Desierto",
+      stageTitle: "La Tumba de los Treinta Sacerdotes",
+      location: "Valle de los Reyes, Lúxor, Egipto",
+      storyFragment: "Tras el tabique falso de la tumba real no había sarcófagos, sino un imponente contrapeso de granito negro. Resolviendo el enigma desbloqueamos la senda hacia el Oasis de Siwa.",
+      unlockedRelic: "La Llave Anj de Jaspe",
+      relicDescription: "Cetro ceremonial tallado en jaspe rojo del Sinaí, indispensable para destrabar portales megalíticos."
+    }
+  },
+  7: {
+    en: {
+      zoneName: "Act II: The Desert Trail",
+      stageTitle: "The Oracle of the Dunes",
+      location: "Siwa Oasis, Western Desert",
+      storyFragment: "Desert sandstorms failed to deter our expedition. Beneath the altar where Alexander the Great offered prayers, we recovered the bronze cylinder etched with Petra's canyon route!",
+      unlockedRelic: "The Gold-Dust Hourglass",
+      relicDescription: "A sealed chronometer filled with auriferous sand engineered to time pressure plate traps."
+    },
+    es: {
+      zoneName: "Acto II: La Pista del Desierto",
+      stageTitle: "El Oráculo de las Dunas",
+      location: "Oasis de Siwa, Desierto Occidental",
+      storyFragment: "Las tormentas de arena no frenaron la expedición. Bajo el altar donde oró Alejandro Magno hallamos el cilindro de bronce grabado con la ruta del cañón de Petra.",
+      unlockedRelic: "La Clepsidra de Polvo de Oro",
+      relicDescription: "Reloj sellado con arena aurífera diseñado para cronometrar trampas de presión mecánica."
+    }
+  },
+  8: {
+    en: {
+      zoneName: "Act II: The Desert Trail",
+      stageTitle: "The Rock-Hewn Gate",
+      location: "Al-Khazneh, Petra, Jordan",
+      storyFragment: "Level 80 conquered! Petra's façade harbored an immense secret aqueduct. Aligning the three channels yielded the Pharaoh's Obsidian Scarab: our route to the Andes is mapped!",
+      unlockedRelic: "The Pharaoh's Obsidian Scarab",
+      relicDescription: "The First Supreme Key of the Treasury: projects collimated light revealing hidden alpine mountain tracks."
+    },
+    es: {
+      zoneName: "Acto II: La Pista del Desierto",
+      stageTitle: "La Puerta Esculpida en la Roca",
+      location: "Al-Khazneh, Petra, Jordania",
+      storyFragment: "¡Nivel 80 conquistado! La fachada de Petra ocultaba un inmenso acueducto secreto. Alineamos los tres caudales y recuperamos el Escarabajo de Obsidiana: ¡el rumbo a los Andes queda fijado!",
+      unlockedRelic: "El Escarabajo de Obsidiana del Faraón",
+      relicDescription: "La Primera Llave Suprema del Tesoro: proyecta haces de luz que delatan sendas cordilleranas invisibles."
+    }
+  },
+  9: {
+    en: {
+      zoneName: "Act III: The Jungle Sanctuary",
+      stageTitle: "The Gorge of Thunder Water",
+      location: "Iguazú Falls, Rainforest",
+      storyFragment: "The roar of the cataracts was deafening. Passing behind the sheet of water at the Devil's Throat, we discovered the Guaraní grotto and disarmed the portcullis with the jasper talisman.",
+      unlockedRelic: "The Lunar Silver Disk",
+      relicDescription: "Ceremonial disk of virgin silver reflecting full moonlight to divert internal subterranean cataracts."
+    },
+    es: {
+      zoneName: "Acto III: El Santuario de la Selva",
+      stageTitle: "La Garganta del Trueno de Agua",
+      location: "Cataratas del Iguazú, Selva Pluvial",
+      storyFragment: "El bramido de las cascadas era ensordecedor. Cruzando tras la cortina de agua de la Garganta del Diablo hallamos la gruta guaraní y neutralizamos la reja con el talismán de jaspe.",
+      unlockedRelic: "El Disco de Plata Lunar",
+      relicDescription: "Disco ceremonial de plata virgen que refracta la luna llena para desviar cascadas subterráneas."
+    }
+  },
+  10: {
+    en: {
+      zoneName: "Act III: The Jungle Sanctuary",
+      stageTitle: "Geoglyphs of the Gods",
+      location: "Nazca Plateau, Peru",
+      storyFragment: "One hundred levels overcome! The beak of the colossal desert Hummingbird aligns with mathematical precision toward a hidden ravine above Machu Picchu. The air grows thin; we are upon it!",
+      unlockedRelic: "The Nazca Astronomical Tablet",
+      relicDescription: "Quartz tablet etched with mathematical proportions engineered to unseal Andean megalithic gates."
+    },
+    es: {
+      zoneName: "Acto III: El Santuario de la Selva",
+      stageTitle: "Los Geoglifos de los Dioses",
+      location: "Meseta de Nazca, Perú",
+      storyFragment: "¡Cien niveles superados! El pico del Colibrí gigante trazado en la pampa apunta con precisión hacia una quebrada secreta sobre Machu Picchu. El aire se enrarece: ¡estamos a las puertas!",
+      unlockedRelic: "La Tablilla Astronómica de Nazca",
+      relicDescription: "Tablilla de cuarzo con las razones matemáticas para desencajar los portales megalíticos andinos."
+    }
+  },
+  11: {
+    en: {
+      zoneName: "Act III: The Jungle Sanctuary",
+      stageTitle: "Citadel Among the Clouds",
+      location: "Machu Picchu, Sacred Valley",
+      storyFragment: "At the Intihuatana, the sacred solar hitching stone, the solstice shadow unlocked the secret shaft beneath the Temple of the Condor. Only 10 levels remain to Paititi's Supreme Hall!",
+      unlockedRelic: "The Golden Tumi of the Sun Kings",
+      relicDescription: "24-karat gold crescent ceremonial blade: serving as the hilt for the ultimate key."
+    },
+    es: {
+      zoneName: "Acto III: El Santuario de la Selva",
+      stageTitle: "La Ciudadela entre las Nubes",
+      location: "Machu Picchu, Valle Sagrado",
+      storyFragment: "En el Intihuatana, la roca sagrada del sol, la sombra solsticial abrió el pozo secreto bajo el Templo del Cóndor. ¡Apenas restan 10 niveles para la Cámara Suprema de Paititi!",
+      unlockedRelic: "El Tumi de Oro de los Reyes del Sol",
+      relicDescription: "Cuchillo ceremonial semilunar de oro de 24 quilates: constituye la empuñadura de la llave final."
+    }
+  },
+  12: {
+    en: {
+      zoneName: "Act III: The Jungle Sanctuary",
+      stageTitle: "THE GOLDEN VAULT OF PAITITI: THE SUPREME TREASURE!",
+      location: "Sanctuary of Paititi, Mountain Heart",
+      storyFragment: "LEVEL 120 COMPLETED! THE TREASURE MAP IS 100% ASSEMBLED! Paititi's colossal Golden Gateway opened with a majestic rumble. Before our eyes gleams Humanity's Supreme Hoard: pyramids of golden artifacts, Colombian emeralds, and the Great Sun Disk! Professor Bellini grasps your hand: 'You have solved the greatest mystery of history!'",
+      unlockedRelic: "THE FINAL TREASURE: THE SUPREME EYE OF PAITITI",
+      relicDescription: "The Supreme Legendary Relic: the lost treasure of pre-Columbian civilization embodying all the knowledge and splendor of Eldorado!"
+    },
+    es: {
+      zoneName: "Acto III: El Santuario de la Selva",
+      stageTitle: "¡LA CÁMARA DE ORO DE PAITITI: EL TESORO FINAL!",
+      location: "El Santuario de Paititi, Corazón del Macizo",
+      storyFragment: "¡NIVEL 120 SUPERADO! ¡EL MAPA DEL TESORO RECOMPUESTO AL 100%! La colosal Puerta de Oro de Paititi se abrió con un estruendo triunfal. Ante nuestros ojos resplandece el Tesoro Supremo: pirámides de oro votivo, esmeraldas colombianas y el Gran Disco Solar. Bellini te estrecha la mano: '¡Has descifrado el mayor misterio de la historia!'",
+      unlockedRelic: "EL TESORO FINAL: EL OJO SUPREMO DE PAITITI",
+      relicDescription: "La Reliquia Legendaria Suprema: el tesoro mítico precolombino que custodia el saber y el esplendor de El Dorado."
+    }
+  }
+};
+
+export function getLocalizedMilestone(milestone: SagaMilestone, lang: Language): SagaMilestone {
+  if (lang === 'it') return milestone;
+  const loc = MILESTONES_I18N[milestone.stageNumber]?.[lang as 'en' | 'es'];
+  if (!loc) return milestone;
+  return {
+    ...milestone,
+    zoneName: loc.zoneName,
+    stageTitle: loc.stageTitle,
+    location: loc.location,
+    storyFragment: loc.storyFragment,
+    unlockedRelic: loc.unlockedRelic,
+    relicDescription: loc.relicDescription,
+  };
+}
+
+// =========================================================================
+// DAILY EXPEDITION MODIFIERS & MILESTONES LOCALIZATION
+// =========================================================================
+const DAILY_MODIFIERS_I18N: Record<string, Record<'en' | 'es', { title: string; desc: string; badge: string }>> = {
+  "Spedizione d'Oro Massiccio": {
+    en: {
+      title: "Solid Gold Expedition",
+      desc: "The secret chamber holds double chests of colonial doubloons!",
+      badge: "💰 2X DOUBLOONS"
+    },
+    es: {
+      title: "Expedición de Oro Macizo",
+      desc: "¡La cámara secreta contiene cofres dobles de doblones coloniales!",
+      badge: "💰 2X DOBLONES"
+    }
+  },
+  "Precisione Archeologica Reale": {
+    en: {
+      title: "Royal Archaeological Precision",
+      desc: "Delicate excavation: graphic survey plates demand absolute attention.",
+      badge: "🎯 PERFECTION BONUS"
+    },
+    es: {
+      title: "Precisión Arqueológica Real",
+      desc: "Excavación delicada: las láminas topográficas exigen máxima cautela.",
+      badge: "🎯 BONUS PERFECCIÓN"
+    }
+  },
+  "Scavo Rapido prima del Crepuscolo": {
+    en: {
+      title: "Rapid Dig Before Twilight",
+      desc: "The desert sandstorm nears: decipher the site before sundown!",
+      badge: "⚡ SPEED MERIT"
+    },
+    es: {
+      title: "Excavación Rápida antes del Ocaso",
+      desc: "La tormenta de arena se aproxima: ¡descifra el yacimiento antes del crepúsculo!",
+      badge: "⚡ VELOCIDAD PREMIADA"
+    }
+  },
+  "Mistero delle Tavole Perdute": {
+    en: {
+      title: "Mystery of the Lost Tablets",
+      desc: "A high-standing academic mission under Royal Geographical Society auspices.",
+      badge: "📜 ELITE SURVEY"
+    },
+    es: {
+      title: "Misterio de las Tablillas Perdidas",
+      desc: "Una misión académica de alto prestigio de la Real Sociedad Geográfica.",
+      badge: "📜 INFORME DE ÉLITE"
+    }
+  }
+};
+
+export function getLocalizedModifier(modifier: DailyChallengeModifier, lang: Language): DailyChallengeModifier {
+  if (lang === 'it') return modifier;
+  const loc = DAILY_MODIFIERS_I18N[modifier.title]?.[lang as 'en' | 'es'];
+  if (!loc) return modifier;
+  return {
+    ...modifier,
+    title: loc.title,
+    desc: loc.desc,
+    badge: loc.badge,
+  };
+}
+
+const DAILY_MILESTONES_I18N: Record<number, Record<'en' | 'es', { title: string; badgeName: string; desc: string; powerUpName?: string }>> = {
+  3: {
+    en: {
+      title: "Bronze Compass",
+      badgeName: "🥉 Steadfast Explorer",
+      desc: "Complete 3 consecutive expedition days",
+      powerUpName: "Magnifying Lens"
+    },
+    es: {
+      title: "Brújula de Bronce",
+      badgeName: "🥉 Explorador Constante",
+      desc: "Completa 3 días consecutivos de expedición",
+      powerUpName: "Lupa de Aumento"
+    }
+  },
+  7: {
+    en: {
+      title: "RGS Silver Seal",
+      badgeName: "🥈 Trailblazer Pioneer",
+      desc: "One uninterrupted week of field excavations",
+      powerUpName: "Radar Compass"
+    },
+    es: {
+      title: "Sello de Plata RGS",
+      badgeName: "🥈 Pionero de la Aventura",
+      desc: "Una semana ininterrumpida de excavaciones",
+      powerUpName: "Brújula Radar"
+    }
+  },
+  14: {
+    en: {
+      title: "Two-Week Medal",
+      badgeName: "🎖️ Expedition Veteran",
+      desc: "14 days of unwavering cartographic fidelity",
+      powerUpName: "Time Freeze"
+    },
+    es: {
+      title: "Medalla de Dos Semanas",
+      badgeName: "🎖️ Veterano de Expedición",
+      desc: "14 días de lealtad cartográfica inquebrantable",
+      powerUpName: "Congelar Tiempo"
+    }
+  },
+  21: {
+    en: {
+      title: "Gold Guardian Runes",
+      badgeName: "🛡️ Lodge Champion",
+      desc: "Three weeks of relentless fieldwork",
+      powerUpName: "Protective Shield"
+    },
+    es: {
+      title: "Runas del Guardián de Oro",
+      badgeName: "🛡️ Campeón de la Logia",
+      desc: "Tres semanas de investigaciones sin tregua",
+      powerUpName: "Escudo Protector"
+    }
+  },
+  30: {
+    en: {
+      title: "Golden Crown of Paititi",
+      badgeName: "👑 Grandmaster Explorer 1928",
+      desc: "A full month of global archaeological triumphs",
+      powerUpName: "Archaeologist Cache"
+    },
+    es: {
+      title: "Corona de Oro de Paititi",
+      badgeName: "👑 Gran Maestro Explorador 1928",
+      desc: "Un mes íntegro de triunfos arqueológicos mundiales",
+      powerUpName: "Reserva de Arqueólogo"
+    }
+  }
+};
+
+export function getLocalizedMilestoneReward(milestone: MilestoneReward, lang: Language): MilestoneReward {
+  if (lang === 'it') return milestone;
+  const loc = DAILY_MILESTONES_I18N[milestone.day]?.[lang as 'en' | 'es'];
+  if (!loc) return milestone;
+  return {
+    ...milestone,
+    title: loc.title,
+    badgeName: loc.badgeName,
+    desc: loc.desc,
+    powerUp: milestone.powerUp ? {
+      ...milestone.powerUp,
+      name: loc.powerUpName || milestone.powerUp.name,
+    } : undefined
+  };
+}
