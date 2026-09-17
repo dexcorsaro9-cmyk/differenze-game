@@ -1246,3 +1246,5 @@ export function getLocalizedLevelTitle(id: number, stageNumber: number, levelInS
     return SUB_AREAS_ES[subIdx] || `Sector ${levelInStage} de la Excavación`;
   }
 }
+
+export { getLocalizedDifference, getLocalizedDifferences } from './clues';

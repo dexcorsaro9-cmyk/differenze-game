@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Header } from './components/Header';
 import { HiddenObjectView } from './components/HiddenObjectView';
 import { PowerUpBar } from './components/PowerUpBar';
@@ -13,20 +13,20 @@ import { SettingsModal } from './components/SettingsModal';
 import { SplashScreen } from './components/SplashScreen';
 import { CompanyLogoIntro } from './components/CompanyLogoIntro';
 import { AvatarCreatorModal } from './components/AvatarCreatorModal';
-import { RelicMuseumModal } from './components/RelicMuseumModal';
-import { ErrorBoundary } from './components/ErrorBoundary';
 import { WardrobeModal } from './components/WardrobeModal';
-import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
-import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
-import { ExpeditionHubModal } from './components/ExpeditionHubModal';
-import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
-import { FlyingCoinParticles } from './components/FlyingCoinParticles';
-import { MappamondoModal } from './components/MappamondoModal';
-import { DailyExpeditionModal } from './components/DailyExpeditionModal';
-import { GrandFinaleModal } from './components/GrandFinaleModal';
 import { MedalsCabinetModal } from './components/MedalsCabinetModal';
+import { RelicMuseumModal } from './components/RelicMuseumModal';
+import { StageLoreBriefingModal } from './components/StageLoreBriefingModal';
+import { MappamondoModal } from './components/MappamondoModal';
 import { ExpeditionPassportModal } from './components/ExpeditionPassportModal';
+import { DailyExpeditionModal } from './components/DailyExpeditionModal';
+import { ExpeditionHubModal } from './components/ExpeditionHubModal';
+import { ExpeditionTutorialModal } from './components/ExpeditionTutorialModal';
+import { GrandFinaleModal } from './components/GrandFinaleModal';
 import { PWAInstallModal } from './components/PWAInstallModal';
+import { FlyingCoinParticles } from './components/FlyingCoinParticles';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionDilemmaModal } from './components/ExpeditionDilemmaModal';
 import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
 import { OfflineStatusToast } from './components/OfflineStatusToast';
@@ -35,7 +35,7 @@ import { useEconomy } from './hooks/useEconomy';
 import { useGameSession } from './hooks/useGameSession';
 import { useModalManager } from './hooks/useModalManager';
 import { useTranslation } from './i18n/LanguageContext';
-import { getLocalizedMedal } from './i18n/gameDataTranslations';
+import { getLocalizedMedal, getLocalizedDifference, getLocalizedDifferences } from './i18n';
 import { hasPendingDaily } from './utils/dailyChallenge';
 import { safeStorage } from './utils/storage';
 import { ALL_COLLECTIBLE_RELICS } from './data/collectiblesData';
@@ -512,6 +512,22 @@ export const App: React.FC = () => {
     setSeenStageBriefings([]);
   }, [economy, game]);
 
+  // Memoized localized differences & clues for current level
+  const localizedDifferences = useMemo(
+    () => getLocalizedDifferences(game.currentLevel.differences, language),
+    [game.currentLevel.differences, language]
+  );
+
+  const localizedActiveHint = useMemo(
+    () => getLocalizedDifference(game.activeHint, language),
+    [game.activeHint, language]
+  );
+
+  const localizedActiveClueToast = useMemo(
+    () => getLocalizedDifference(game.activeClueToast, language),
+    [game.activeClueToast, language]
+  );
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-[#070402] text-stone-100 overflow-hidden font-sans select-none relative">
       {/* Vintage Explorer Vignette */}
@@ -586,9 +602,9 @@ export const App: React.FC = () => {
           key={`hidden_obj_lvl_${game.currentLevel.id}`}
           levelId={game.currentLevel.id}
           imageA={game.currentLevel.imageA}
-          differences={game.currentLevel.differences}
+          differences={localizedDifferences}
           foundDifferenceIds={game.foundDifferenceIds}
-          activeHint={game.activeHint}
+          activeHint={localizedActiveHint}
           activeRadar={game.activeRadar}
           isTimeFrozen={game.isTimeFrozen}
           hiddenRelic={game.currentLevelHiddenRelic}
@@ -627,7 +643,7 @@ export const App: React.FC = () => {
 
         {/* Floating Lore Clue Toast */}
         <LoreClueToast
-          difference={game.activeClueToast}
+          difference={localizedActiveClueToast}
           onDismiss={game.handleDismissClueToast}
         />
       </div>

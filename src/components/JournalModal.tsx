@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, X, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 import type { Level } from '../types/game';
 import { useTranslation } from '../i18n/LanguageContext';
-import { getLocalizedLevelTitle } from '../i18n/gameDataTranslations';
+import { getLocalizedLevelTitle, getLocalizedDifference } from '../i18n/gameDataTranslations';
 
 interface JournalModalProps {
   isOpen: boolean;
@@ -140,6 +140,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
 
               <div className="space-y-2.5">
                 {selectedLevel.differences.map((diff, index) => {
+                  const locDiff = getLocalizedDifference(diff, language);
                   const isFound = discoveredDifferenceIds.includes(diff.id) || isCompleted;
 
                   return (
@@ -156,7 +157,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                           <span className="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center text-[10px] font-mono font-bold">
                             {index + 1}
                           </span>
-                          <span>{diff.name}</span>
+                          <span>{locDiff.name}</span>
                         </span>
                         {isFound ? (
                           <span className="text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30 flex items-center gap-1">
@@ -171,7 +172,7 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                       </div>
 
                       <p className="text-xs text-slate-300 leading-relaxed italic font-serif">
-                        {isFound ? `"${diff.loreClue}"` : `🔒 [${t.journal.riddleHint}]`}
+                        {isFound ? `"${locDiff.loreClue}"` : `🔒 [${t.journal.riddleHint}]`}
                       </p>
                     </div>
                   );

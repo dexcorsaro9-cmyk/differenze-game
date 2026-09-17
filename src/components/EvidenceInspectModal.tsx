@@ -16,6 +16,7 @@ import type { Difference } from '../types/game';
 import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { useTranslation } from '../i18n/LanguageContext';
+import { getLocalizedDifference } from '../i18n';
 
 interface EvidenceInspectModalProps {
   difference: Difference | null;
@@ -36,7 +37,7 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
   total,
   chapterNumber = 1,
 }) => {
-  const { t, interpolate } = useTranslation();
+  const { t, interpolate, language } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -46,6 +47,8 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
   }, [isOpen]);
 
   if (!isOpen || !difference) return null;
+
+  const locDiff = getLocalizedDifference(difference, language) || difference;
 
   const handleFocus = () => {
     sound.playArchiveLens();
@@ -182,13 +185,13 @@ export const EvidenceInspectModal: React.FC<EvidenceInspectModalProps> = ({
           {/* Clue Title & Lore Note */}
           <div className="w-full mt-3 text-left">
             <h3 className="text-base font-bold text-stone-900 tracking-tight flex items-center gap-1.5">
-              <span>{difference.name}</span>
+              <span>{locDiff.name}</span>
             </h3>
 
             {/* Typewriter text note */}
             <div className="relative mt-2 p-3 bg-[#f4ebd5] border-l-4 border-amber-700 rounded-r-lg shadow-inner">
               <p className="text-xs italic text-stone-800 font-mono leading-relaxed">
-                &ldquo;{difference.loreClue}&rdquo;
+                &ldquo;{locDiff.loreClue}&rdquo;
               </p>
               <div className="mt-1 text-right text-[10px] font-mono text-stone-500">
                 {t.evidenceInspect.typewriterFooter}
