@@ -184,5 +184,7 @@ export const it: Translations = {
     subtitle: 'Indagini, Reliquie & Oggetti Nascosti',
     startExpedition: 'Inizia la Spedizione',
     quickPlay: 'Partita Rapida',
+    selectLanguage: 'Scegli la tua lingua',
+    expeditionEdition: 'Spedizione 1928',
   },
 };

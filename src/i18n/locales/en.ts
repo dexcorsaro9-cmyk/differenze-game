@@ -184,5 +184,7 @@ export const en: Translations = {
     subtitle: 'Hidden Objects, Relics & Investigations',
     startExpedition: 'Start Expedition',
     quickPlay: 'Quick Play',
+    selectLanguage: 'Choose your language',
+    expeditionEdition: 'Expedition 1928',
   },
 };

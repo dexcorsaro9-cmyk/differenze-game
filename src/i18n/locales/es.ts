@@ -184,5 +184,7 @@ export const es: Translations = {
     subtitle: 'Objetos Ocultos, Reliquias e Investigaciones',
     startExpedition: 'Comenzar Expedición',
     quickPlay: 'Partida Rápida',
+    selectLanguage: 'Elige tu idioma',
+    expeditionEdition: 'Expedición 1928',
   },
 };

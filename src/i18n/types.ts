@@ -184,5 +184,7 @@ export interface Translations {
     subtitle: string;
     startExpedition: string;
     quickPlay: string;
+    selectLanguage: string;
+    expeditionEdition: string;
   };
 }
