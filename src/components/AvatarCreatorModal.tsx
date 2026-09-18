@@ -24,11 +24,11 @@ export const AvatarCreatorModal: React.FC<AvatarCreatorModalProps> = ({
   const [customName, setCustomName] = useState<string>(
     currentProfile?.playerName || EXPLORERS[selectedAvatarId].name
   );
+  const [imgError, setImgError] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
   const currentExplorer = getLocalizedExplorer(EXPLORERS[selectedAvatarId] || EXPLORERS.samira, language);
-  const [imgError, setImgError] = useState<boolean>(false);
 
   const handleSelectExplorer = (id: 'samira' | 'mateo') => {
     setSelectedAvatarId(id);
