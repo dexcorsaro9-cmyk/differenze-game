@@ -26,6 +26,7 @@ import { GrandFinaleModal } from './components/GrandFinaleModal';
 import { PWAInstallModal } from './components/PWAInstallModal';
 import { FlyingCoinParticles } from './components/FlyingCoinParticles';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { WelcomeTelegramModal } from './components/WelcomeTelegramModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionDilemmaModal } from './components/ExpeditionDilemmaModal';
 import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
@@ -98,6 +99,7 @@ export const App: React.FC = () => {
   const [hasNewStageUnlocked, setHasNewStageUnlocked] = useState<boolean>(false);
   const [hasUnreadJournal, setHasUnreadJournal] = useState<boolean>(false);
   const [isDailyActive, setIsDailyActive] = useState<boolean>(false);
+  const [isTelegramOpen, setIsTelegramOpen] = useState<boolean>(false);
 
   // Settings State
   const [settings, setSettings] = useState<GameSettings>(() => {
@@ -435,12 +437,14 @@ export const App: React.FC = () => {
   // Splash & Avatar Flow Handlers
   const handleSplashStart = useCallback(() => {
     modals.setIsSplashVisible(false);
-    if (settings.soundEnabled && isBgmPlaying) {
+    if (settings.soundEnabled && !isBgmPlaying) {
       sound.setBGMEnabled(true);
       sound.startBGM(getActiveBgmTheme(game.currentLevel.chapterNumber));
     }
     if (!hasCompletedAvatarSetup) {
       modals.setIsAvatarCreatorOpen(true);
+    } else if (!safeStorage.getItem('paititi_seen_telegram_v1')) {
+      setIsTelegramOpen(true);
     } else {
       game.setIsTimerRunning(true);
     }
@@ -456,7 +460,11 @@ export const App: React.FC = () => {
     modals.setIsAvatarCreatorOpen(false);
     modals.setIsPrologueOpen(false);
     modals.setIsTutorialOpen(false);
-    game.setIsTimerRunning(true);
+    if (!safeStorage.getItem('paititi_seen_telegram_v1')) {
+      setIsTelegramOpen(true);
+    } else {
+      game.setIsTimerRunning(true);
+    }
   }, [settings.soundEnabled, isBgmPlaying, getActiveBgmTheme, game, modals]);
 
   const handleConfirmAvatarProfile = useCallback(
@@ -468,6 +476,8 @@ export const App: React.FC = () => {
 
       if (!hasCompletedTutorial) {
         modals.setIsPrologueOpen(true);
+      } else if (!safeStorage.getItem('paititi_seen_telegram_v1')) {
+        setIsTelegramOpen(true);
       } else {
         game.setIsTimerRunning(true);
       }
@@ -477,8 +487,22 @@ export const App: React.FC = () => {
 
   const handlePrologueComplete = useCallback(() => {
     modals.setIsPrologueOpen(false);
-    modals.setIsTutorialOpen(true);
+    if (!safeStorage.getItem('paititi_seen_telegram_v1')) {
+      setIsTelegramOpen(true);
+    } else {
+      modals.setIsTutorialOpen(true);
+    }
   }, [modals]);
+
+  const handleCloseTelegram = useCallback(() => {
+    setIsTelegramOpen(false);
+    safeStorage.setItem('paititi_seen_telegram_v1', 'true');
+    if (!hasCompletedTutorial) {
+      modals.setIsTutorialOpen(true);
+    } else {
+      game.setIsTimerRunning(true);
+    }
+  }, [hasCompletedTutorial, modals, game]);
 
   const handleTutorialComplete = useCallback(() => {
     modals.setIsTutorialOpen(false);
@@ -787,6 +811,7 @@ export const App: React.FC = () => {
           settings={settings}
           onUpdateSettings={newS => setSettings(s => ({ ...s, ...newS }))}
           onOpenTutorial={() => modals.setIsTutorialOpen(true)}
+          onOpenTelegram={() => setIsTelegramOpen(true)}
           onOpenInstall={() => modals.setIsInstallModalOpen(true)}
           isInstalled={isInstalled}
           isOffline={isOffline}
@@ -795,6 +820,14 @@ export const App: React.FC = () => {
           bgmTheme={customBgmTheme}
           onChangeBgmTheme={handleChangeBgmTheme}
           onResetProgress={handleResetAllProgress}
+        />
+      </ErrorBoundary>
+
+      {/* 1928 Imperial Consular Welcome Telegram */}
+      <ErrorBoundary>
+        <WelcomeTelegramModal
+          isOpen={isTelegramOpen}
+          onClose={handleCloseTelegram}
         />
       </ErrorBoundary>
 

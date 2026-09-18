@@ -1,7 +1,7 @@
 // =========================================================================
-// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE v5.1)
+// PAITITI 1928 - EXPEDITION SERVICE WORKER (OFFLINE ARCHIVE ENGINE v6.0)
 // =========================================================================
-const CACHE_VERSION = 'paititi-expedition-v5.1';
+const CACHE_VERSION = 'paititi-expedition-v6.0';
 const CACHE_NAME = `paititi-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `paititi-runtime-${CACHE_VERSION}`;
 
@@ -110,7 +110,7 @@ self.addEventListener('fetch', (event) => {
 
   // 3. Static Media Assets (Images, Audio, WebFonts): Cache-First with Network Revalidation
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
 
       return fetch(request)
