@@ -707,27 +707,22 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
             <div className="absolute inset-0 pointer-events-none border-4 border-cyan-400/50 shadow-[inset_0_0_30px_rgba(34,211,238,0.35)] z-25 animate-pulse" />
           )}
 
-          {/* Discovered Clues: Golden Wax Seals & Rings (POINTER-EVENTS-NONE to never block nearby objects!) */}
+          {/* Discovered Clues: Clean circular badge with green flag/checkmark (POINTER-EVENTS-NONE to never block nearby objects!) */}
           {differences.map(diff => {
             const isFound = foundDifferenceIds.includes(diff.id);
             if (!isFound) return null;
-            const ringRadius = Math.max(diff.radius || 8.5, 8.5);
             return (
               <div
                 key={`found_${diff.id}`}
-                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-20"
                 style={{
                   left: `${diff.x}%`,
                   top: `${diff.y}%`,
-                  width: `${ringRadius * 2}%`,
-                  height: `${ringRadius * 2}%`,
                 }}
               >
-                {/* Vintage Brass/Emerald Discovery Ring with Wax Seal */}
-                <div className="w-full h-full rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-pulse flex items-center justify-center">
-                  <div className="bg-stone-950/90 border border-amber-400/90 rounded-full p-1 shadow-lg">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  </div>
+                {/* Clean, minimalist discovery badge with green checkmark */}
+                <div className="bg-stone-950/90 border-2 border-emerald-400 rounded-full p-1 shadow-[0_0_10px_rgba(16,185,129,0.5)] flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                 </div>
               </div>
             );
