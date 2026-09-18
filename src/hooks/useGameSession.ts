@@ -11,6 +11,7 @@ import {
   getTodayDateString,
 } from '../utils/dailyChallenge';
 import { assetUrl } from '../utils/assetUrl';
+import { recordHit, recordError, recordHintUsed, recordLevelCompletion } from '../utils/telemetry';
 import type { Difference, Level, PowerUpInventory, PowerUpType, RadarQuadrant } from '../types/game';
 
 const STORAGE_KEY_PROGRESS = 'differenze_progress_v1';
@@ -317,6 +318,7 @@ export const useGameSession = ({
       // Add to found
       const nextFound = [...foundDifferenceIds, diff.id];
       setFoundDifferenceIds(nextFound);
+      recordHit(!usedAssistanceThisLevelRef.current);
 
       // Add to discovered lore clues
       if (!discoveredClues.includes(diff.id)) {
@@ -344,6 +346,7 @@ export const useGameSession = ({
       if (nextFound.length >= currentLevel.differences.length) {
         setIsTimerRunning(false);
         setIsTimeFrozen(false);
+        recordLevelCompletion(currentLevel.id, timeElapsed);
 
         // Check Victory Medals
         if (errorsCount === 0) onUnlockMedal('flawless_run');
@@ -470,6 +473,7 @@ export const useGameSession = ({
     sound.playError();
     triggerHaptic('error', vibrationEnabled);
     setErrorsCount(e => e + 1);
+    recordError();
 
     if (!zenMode) {
       setLives(prevLives => {
@@ -497,6 +501,7 @@ export const useGameSession = ({
       } else if (type === 'compass_radar') {
         if (inventory.compass_radar <= 0) return;
         usedAssistanceThisLevelRef.current = true;
+        recordHintUsed();
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
         setInventory(inv => ({ ...inv, compass_radar: inv.compass_radar - 1 }));
@@ -518,6 +523,7 @@ export const useGameSession = ({
       } else if (type === 'hint') {
         if (inventory.hint <= 0) return;
         usedAssistanceThisLevelRef.current = true;
+        recordHintUsed();
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
         setInventory(inv => ({ ...inv, hint: inv.hint - 1 }));

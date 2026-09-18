@@ -274,6 +274,7 @@ export interface Translations {
     claimVisa: string;
     visaClaimed: string;
     tabIdentity: string;
+    tabTelemetry: string;
     tabPage1: string;
     tabPage2: string;
     tabPage3: string;
@@ -281,6 +282,17 @@ export interface Translations {
     applyStamp: string;
     stamped: string;
     unlockedVisas: string;
+    telemetryTitle: string;
+    telemetrySubtitle: string;
+    statTotalTime: string;
+    statAccuracy: string;
+    statIndependentRiddles: string;
+    statFastestLevel: string;
+    statCompletedLevels: string;
+    statTotalStars: string;
+    statRelicsFound: string;
+    statAccuracyRemark: string;
+    emitCertificateBtn: string;
   };
   journal: {
     title: string;
@@ -772,5 +784,27 @@ export interface Translations {
     senderTitle: string;
     acceptMissionBtn: string;
     reopenTooltip: string;
+  };
+  certificate: {
+    modalTitle: string;
+    modalSubtitle: string;
+    downloadBtn: string;
+    shareBtn: string;
+    copiedNotice: string;
+    closeBtn: string;
+    viewCertificateBtn: string;
+    diplomaHeading: string;
+    subHeading: string;
+    confermentText: string;
+    completedLevelsLabel: string;
+    totalStarsLabel: string;
+    relicsFoundLabel: string;
+    expeditionTimeLabel: string;
+    moralPathLabel: string;
+    honorRollTitle: string;
+    signatureTitle: string;
+    consularSealLabel: string;
+    shareTitle: string;
+    shareText: string;
   };
 }

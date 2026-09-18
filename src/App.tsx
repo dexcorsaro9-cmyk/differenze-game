@@ -27,6 +27,7 @@ import { PWAInstallModal } from './components/PWAInstallModal';
 import { FlyingCoinParticles } from './components/FlyingCoinParticles';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { WelcomeTelegramModal } from './components/WelcomeTelegramModal';
+import { ExpeditionCertificateModal } from './components/ExpeditionCertificateModal';
 import { PrologueCutsceneModal } from './components/PrologueCutsceneModal';
 import { ExpeditionDilemmaModal } from './components/ExpeditionDilemmaModal';
 import { EXPEDITION_DILEMMAS, type DilemmaChoice } from './data/expeditionDilemmas';
@@ -100,6 +101,7 @@ export const App: React.FC = () => {
   const [hasUnreadJournal, setHasUnreadJournal] = useState<boolean>(false);
   const [isDailyActive, setIsDailyActive] = useState<boolean>(false);
   const [isTelegramOpen, setIsTelegramOpen] = useState<boolean>(false);
+  const [isCertificateOpen, setIsCertificateOpen] = useState<boolean>(false);
 
   // Settings State
   const [settings, setSettings] = useState<GameSettings>(() => {
@@ -1024,6 +1026,7 @@ export const App: React.FC = () => {
               modals.setIsGrandFinaleOpen(false);
               modals.setIsTreasureMapOpen(true);
             }}
+            onOpenCertificate={() => setIsCertificateOpen(true)}
           />
         </ErrorBoundary>
       )}
@@ -1051,6 +1054,27 @@ export const App: React.FC = () => {
             currentChapter={game.currentLevel.chapterNumber}
             claimedVisaIds={economy.claimedVisaIds}
             onClaimVisaBounty={economy.handleClaimVisaBounty}
+            completedLevelIds={game.completedLevelIds}
+            levelStars={game.levelStars}
+            bestTimes={game.bestTimes}
+            discoveredRelicCount={game.discoveredRelicIds.length}
+            onOpenCertificate={() => setIsCertificateOpen(true)}
+          />
+        </ErrorBoundary>
+      )}
+
+      {/* 1928 Official Downloadable Expedition Diploma Modal */}
+      {isCertificateOpen && (
+        <ErrorBoundary>
+          <ExpeditionCertificateModal
+            isOpen={isCertificateOpen}
+            onClose={() => setIsCertificateOpen(false)}
+            profile={explorerProfile}
+            completedLevelIds={game.completedLevelIds}
+            levelStars={game.levelStars}
+            bestTimes={game.bestTimes}
+            discoveredRelicCount={game.discoveredRelicIds.length}
+            endingId={safeStorage.getItem('differenze_saga_ending_v1') as any}
           />
         </ErrorBoundary>
       )}

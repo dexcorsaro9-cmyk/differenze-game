@@ -51,6 +51,7 @@ const BACKUP_STORAGE_KEYS = [
   'differenze_vintage_crackle',
   'differenze_bgm_enabled',
   'paititi_seen_telegram_v1',
+  'differenze_telemetry_v1',
 ];
 
 function buildBackupPayload(): Record<string, any> {

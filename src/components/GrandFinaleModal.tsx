@@ -24,6 +24,7 @@ interface GrandFinaleModalProps {
   onClose: () => void;
   onOpenJournal: () => void;
   onOpenMappamondo: () => void;
+  onOpenCertificate?: () => void;
 }
 
 type EndingType = 'academy' | 'secret_archive' | 'sacred_jungle';
@@ -47,6 +48,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
   onClose,
   onOpenJournal,
   onOpenMappamondo,
+  onOpenCertificate,
 }) => {
   const { language, t, interpolate } = useTranslation();
   const [selectedEnding, setSelectedEnding] = useState<EndingType | null>(() => {
@@ -326,12 +328,29 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
               </div>
             </div>
 
-            <div className="hidden sm:flex flex-col items-end shrink-0">
-              <div className="flex items-center gap-1 text-amber-300 font-mono font-black text-xs">
-                <Coins className="w-4 h-4 text-yellow-400" />
-                <span>{t.grandFinale.bonusGold}</span>
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2.5 shrink-0">
+              {onOpenCertificate && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playHeavyStamp();
+                    triggerHaptic('success');
+                    onOpenCertificate();
+                  }}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:brightness-110 text-stone-950 font-serif font-black text-xs uppercase tracking-wider shadow-md active:scale-95 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Award className="w-4 h-4" />
+                  <span>{t.certificate.viewCertificateBtn}</span>
+                </button>
+              )}
+
+              <div className="hidden sm:flex flex-col items-end shrink-0">
+                <div className="flex items-center gap-1 text-amber-300 font-mono font-black text-xs">
+                  <Coins className="w-4 h-4 text-yellow-400" />
+                  <span>{t.grandFinale.bonusGold}</span>
+                </div>
+                <span className="text-[9px] text-emerald-400 font-bold uppercase">{t.grandFinale.credited}</span>
               </div>
-              <span className="text-[9px] text-emerald-400 font-bold uppercase">{t.grandFinale.credited}</span>
             </div>
           </div>
         </div>
