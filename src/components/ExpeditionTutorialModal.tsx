@@ -514,7 +514,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
                       ? 'w-6 bg-amber-400 shadow-[0_0_8px_#f59e0b]'
                       : 'w-2 bg-stone-700 hover:bg-stone-500'
                   }`}
-                  title={interpolate(t.tutorial.stepOf, { current: idx + 1, total: steps.length })}
+                  title={interpolate(t.tutorial.stepOf, { badge: 'GUIDA', step: idx + 1, current: idx + 1, total: steps.length })}
                 />
               ))}
             </div>
@@ -538,7 +538,7 @@ export const ExpeditionTutorialModal: React.FC<ExpeditionTutorialModalProps> = (
           {/* Step Category Badge & Title */}
           <div>
             <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-bold uppercase tracking-wider mb-1">
-              {currentStepData.badge} • {interpolate(t.tutorial.stepOf, { current: currentStep + 1, total: steps.length })}
+              {interpolate(t.tutorial.stepOf, { badge: currentStepData.badge, step: currentStep + 1, current: currentStep + 1, total: steps.length })}
             </span>
             <h2 className="text-lg sm:text-xl font-black text-amber-100 font-serif leading-tight">
               {currentStepData.title}

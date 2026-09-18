@@ -298,15 +298,15 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                 {/* Plaque Inner Cartouche */}
                 <div className="w-full px-2 py-1 rounded-md bg-gradient-to-r from-amber-900/40 via-amber-600/20 to-amber-900/40 border border-amber-500/40 shadow-inner">
                   <h3 className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-amber-200 font-serif line-clamp-1">
-                    {isSelectedDiscovered ? localizedRelic.name : interpolate(t.relics.caseSealed, { number: selectedIndex + 1 })}
+                    {isSelectedDiscovered ? localizedRelic.name : interpolate(t.relics.caseSealed, { index: selectedIndex + 1, number: selectedIndex + 1 })}
                   </h3>
                   <p className="text-[9px] text-amber-400/80 font-serif italic line-clamp-1 mt-0.5">
-                    {isSelectedDiscovered ? localizedRelic.subtitle : interpolate(t.relics.hiddenInSector, { sector: selectedRelic.hiddenLevelId })}
+                    {isSelectedDiscovered ? localizedRelic.subtitle : interpolate(t.relics.hiddenInSector, { level: selectedRelic.hiddenLevelId, sector: selectedRelic.hiddenLevelId })}
                   </p>
                 </div>
 
                 <div className="mt-0.5 flex items-center justify-between w-full px-1.5 text-[8px] font-mono text-amber-300/70">
-                  <span>{interpolate(t.relics.catalogIndex, { number: selectedIndex + 1 })}</span>
+                  <span>{interpolate(t.relics.catalogIndex, { index: selectedIndex + 1, number: selectedIndex + 1 })}</span>
                   <span>{isSelectedDiscovered ? localizedRelic.era.split(' (')[0] : t.relics.unknown}</span>
                 </div>
               </div>
@@ -342,7 +342,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
               </span>
 
               <span className="text-xs font-mono font-bold text-amber-400">
-                {interpolate(t.relics.vitrineIndex, { current: selectedIndex + 1, total: totalRelics })}
+                {interpolate(t.relics.vitrineIndex, { index: selectedIndex + 1, current: selectedIndex + 1, total: totalRelics })}
               </span>
             </div>
 
@@ -443,7 +443,7 @@ export const RelicMuseumModal: React.FC<RelicMuseumModalProps> = ({
                         ? 'border-amber-700/60 opacity-80 hover:opacity-100 hover:border-amber-400'
                         : 'border-stone-800 bg-stone-950 opacity-40 hover:opacity-70'
                     }`}
-                    title={found ? locR.name : interpolate(t.relics.sealedCase, { number: idx + 1 })}
+                    title={found ? locR.name : interpolate(t.relics.sealedCase, { index: idx + 1, number: idx + 1 })}
                   >
                     {found ? (
                       <img

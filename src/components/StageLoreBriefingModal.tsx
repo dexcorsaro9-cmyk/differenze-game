@@ -141,7 +141,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
                 <span>{t.briefing.fieldReport}</span>
               </div>
               <span className="text-[10px] text-amber-500/80 font-mono font-bold">
-                {interpolate(t.briefing.stageOf, { stage: briefing.stageNumber })}
+                {interpolate(t.briefing.stageOf, { current: briefing.stageNumber, total: 12, stage: briefing.stageNumber })}
               </span>
             </div>
 

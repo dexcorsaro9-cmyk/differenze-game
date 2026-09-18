@@ -1057,7 +1057,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
                   {t.treasureMap.exploreStageLevels}
                 </span>
                 <span className="text-[9px] text-stone-400">
-                  {interpolate(t.treasureMap.solvedLevels, { solved: stageLevels.filter(lvl => completedLevelIds.includes(lvl)).length })}
+                  {interpolate(t.treasureMap.solvedLevels, { completed: stageLevels.filter(lvl => completedLevelIds.includes(lvl)).length, solved: stageLevels.filter(lvl => completedLevelIds.includes(lvl)).length })}
                 </span>
               </div>
               <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">

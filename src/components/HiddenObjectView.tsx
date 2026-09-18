@@ -456,11 +456,14 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       }, 650);
 
       // Discovery floating popup
+      const matchedIndex = differences.findIndex(d => d.id === matchedDiff.id);
+      const clueIndex = matchedIndex !== -1 ? matchedIndex + 1 : foundDifferenceIds.length + 1;
+      const baseFoundText = interpolate(t.hiddenObject.evidenceFound, { index: clueIndex, number: clueIndex });
       const pop: DiscoveryPop = {
         id: `${Date.now()}_${Math.random()}`,
         x: clickXPercent,
         y: clickYPercent,
-        text: comboStreak >= 1 ? `${t.hiddenObject.evidenceFound} (x${comboStreak + 1})` : t.hiddenObject.evidenceFound,
+        text: comboStreak >= 1 ? `${baseFoundText} (x${comboStreak + 1})` : baseFoundText,
         name: matchedDiff.name,
       };
       setDiscoveryPops(prev => [...prev, pop]);

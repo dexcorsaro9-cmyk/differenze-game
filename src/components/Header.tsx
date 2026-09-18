@@ -361,8 +361,8 @@ export const Header: React.FC<HeaderProps> = ({
                   }`}
                   title={
                     isFound
-                      ? interpolate(t.hiddenObject.evidenceFound, { number: idx + 1 })
-                      : interpolate(t.hiddenObject.evidenceHidden, { number: idx + 1 })
+                      ? interpolate(t.hiddenObject.evidenceFound, { index: idx + 1, number: idx + 1 })
+                      : interpolate(t.hiddenObject.evidenceHidden, { index: idx + 1, number: idx + 1 })
                   }
                 >
                   {isFound ? (

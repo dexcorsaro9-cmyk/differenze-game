@@ -53,10 +53,47 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   const t = useMemo(() => dictionaries[language] || dictionaries.it, [language]);
 
   const interpolate = (template: string, params?: Record<string, string | number>): string => {
-    if (!params) return template;
-    return Object.entries(params).reduce((acc, [key, val]) => {
+    if (!template) return '';
+    if (!params) {
+      return template.replace(/\{(\w+)\}/g, '');
+    }
+
+    const resolved: Record<string, string | number> = { ...params };
+
+    // Smart aliases: index / number / current / step / stage / sector / level
+    const num = params.index ?? params.number ?? params.current ?? params.step ?? params.stage ?? params.sector ?? params.level;
+    if (num !== undefined) {
+      if (resolved.index === undefined) resolved.index = num;
+      if (resolved.number === undefined) resolved.number = num;
+      if (resolved.current === undefined) resolved.current = num;
+      if (resolved.step === undefined) resolved.step = num;
+      if (resolved.stage === undefined) resolved.stage = num;
+      if (resolved.sector === undefined) resolved.sector = num;
+      if (resolved.level === undefined) resolved.level = num;
+    }
+
+    // Smart aliases: count / days / total / completed / solved
+    const cnt = params.count ?? params.days ?? params.solved ?? params.completed;
+    if (cnt !== undefined) {
+      if (resolved.count === undefined) resolved.count = cnt;
+      if (resolved.days === undefined) resolved.days = cnt;
+      if (resolved.solved === undefined) resolved.solved = cnt;
+      if (resolved.completed === undefined) resolved.completed = cnt;
+    }
+
+    if (resolved.total === undefined) {
+      if (params.stage !== undefined) resolved.total = 12;
+      else if (params.step !== undefined) resolved.total = 3;
+    }
+
+    let result = Object.entries(resolved).reduce((acc, [key, val]) => {
       return acc.replace(new RegExp(`\\{${key}\\}`, 'g'), String(val));
     }, template);
+
+    // Clean up any remaining unreplaced {placeholder} tags so raw code strings never leak to UI
+    result = result.replace(/\{(\w+)\}/g, '');
+
+    return result;
   };
 
   return (

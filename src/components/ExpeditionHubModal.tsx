@@ -511,7 +511,7 @@ export const ExpeditionHubModal: React.FC<ExpeditionHubModalProps> = ({
                   {t.hub.stageDispatch}
                 </span>
                 <span className="text-[9px] text-stone-400 block truncate">
-                  {interpolate(t.hub.stageOf, { stage: currentLevel.chapterNumber })}
+                  {interpolate(t.hub.stageOf, { current: currentLevel.chapterNumber, total: 12, stage: currentLevel.chapterNumber })}
                 </span>
               </div>
               {hasUnreadBriefing && (

@@ -85,7 +85,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-orange-600/40 to-amber-500/30 border border-orange-400/60 shadow-inner">
               <Flame className="w-4 h-4 text-orange-400 fill-orange-400 animate-pulse" />
               <span className="text-xs font-black text-amber-200 font-mono uppercase">
-                {interpolate(t.daily.streakDays, { count: dailyState.streak })}
+                {interpolate(t.daily.streakDays, { days: dailyState.streak, count: dailyState.streak })}
               </span>
             </div>
 
@@ -294,7 +294,7 @@ export const DailyExpeditionModal: React.FC<DailyExpeditionModalProps> = ({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-black text-amber-300 truncate">
-                          {m.day} {interpolate(t.daily.streakDays, { count: m.day })}
+                          {interpolate(t.daily.streakDays, { days: m.day, count: m.day })}
                         </span>
                         <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
                           isClaimed
