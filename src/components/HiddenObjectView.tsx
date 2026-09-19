@@ -101,6 +101,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   // Mouse pan drag state for desktop
   const mouseDragStartRef = useRef<{ x: number; y: number } | null>(null);
   const lastTouchProcessedRef = useRef<number>(0);
+  const missTimestampsRef = useRef<number[]>([]);
 
   // Visual effects state
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
@@ -424,6 +425,25 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     const clickXPercent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
     const clickYPercent = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
 
+    // Progressive difficulty scaling:
+    // Early levels (1-20): forgiving hit area for accessible exploration (floor 8.5%)
+    // Mid levels (21-60): focused search (floor 6.5%)
+    // Advanced levels (61-120): authentic object-sized hitboxes (floor 4.8% - 5.2%),
+    // rewarding genuine observation and pinch-to-zoom investigation.
+    const currentLvl = levelId || 1;
+    let baseToleranceFloor: number;
+    if (currentLvl <= 20) {
+      baseToleranceFloor = 8.5;
+    } else if (currentLvl <= 60) {
+      baseToleranceFloor = 6.5;
+    } else {
+      baseToleranceFloor = 4.8;
+    }
+
+    // Zoom assist: when the player pinches in to inspect details closely (scale > 1.2),
+    // provide a slight touch buffer (+0.6% to +1.4%) so hitting the magnified real object is responsive on touchscreens
+    const zoomAssist = scale > 1.2 ? Math.min((scale - 1) * 0.7, 1.4) : 0;
+
     // Check hit against all unfound clues:
     // Finds the closest unfound clue whose tolerance contains the tap point.
     let matchedDiff: Difference | null = null;
@@ -432,8 +452,11 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     for (const diff of differences) {
       if (foundDifferenceIds.includes(diff.id)) continue;
       const isHintTarget = activeHint && activeHint.id === diff.id;
-      // Generous hit tolerance: 16% for active hint, 9.5% minimum for natural finger touches
-      const tolerance = isHintTarget ? 16.0 : Math.max(diff.radius || 9.5, 9.5);
+      const nominalRadius = diff.radius || baseToleranceFloor;
+      const tolerance = isHintTarget
+        ? 16.0
+        : Math.max(nominalRadius, baseToleranceFloor) + zoomAssist;
+
       const dx = clickXPercent - diff.x;
       const dy = clickYPercent - diff.y;
       const dist = Math.hypot(dx, dy);
@@ -445,7 +468,8 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     }
 
     if (matchedDiff) {
-      // Object found! Reset lastTapRef so it never triggers zoom
+      // Object found! Clear spam tracker & zoom tap ref
+      missTimestampsRef.current = [];
       lastTapRef.current = null;
 
       // 1928 Magnesium Flash Celebration
@@ -485,8 +509,23 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
         { x: clientX, y: clientY }
       );
     } else {
-      // Tap missed: check if user double-tapped on empty space to zoom in
       const now = Date.now();
+
+      // Anti-spam rapid tapping guard:
+      // Prevent blind erratic clicking across the screen from burning lives instantly
+      missTimestampsRef.current.push(now);
+      if (missTimestampsRef.current.length > 5) missTimestampsRef.current.shift();
+      if (missTimestampsRef.current.length >= 3) {
+        const timeDiff = now - missTimestampsRef.current[missTimestampsRef.current.length - 3];
+        if (timeDiff < 650) {
+          addErrorFeedback(clickXPercent, clickYPercent);
+          sound.playError();
+          triggerHaptic('error');
+          return;
+        }
+      }
+
+      // Tap missed: check if user double-tapped on empty space to zoom in
       // Double tap only triggers zoom in from base view (scale <= 1.1).
       // Accidental double taps while zoomed in NEVER zoom out! (Zoom out is handled via the Ripristina button or pinch)
       if (
