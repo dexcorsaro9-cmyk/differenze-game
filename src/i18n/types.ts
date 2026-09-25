@@ -118,6 +118,11 @@ export interface Translations {
     vibrationHelp: string;
     zenMode: string;
     zenModeHelp: string;
+    sealedMode: string;
+    sealedModeHelp: string;
+    sealedNever: string;
+    sealedMilestones: string;
+    sealedAlways: string;
     bgmTitle: string;
     bgmSubtitle: string;
     bgmThemeTitle: string;
@@ -216,6 +221,17 @@ export interface Translations {
     stageOf: string;
     levelSelectBtn: string;
     replay120: string;
+  };
+  rewards: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    watchButton: string;
+    remainingToday: string;
+    coolingDown: string;
+    dailyCapReached: string;
+    dismissed: string;
+    failed: string;
+    granted: string;
   };
   shop: {
     title: string;
@@ -578,6 +594,10 @@ export interface Translations {
     toFind: string;
     pinchHint: string;
     errorTap: string;
+    tapPenalty: string;
+    sealedBadge: string;
+    sealedHint: string;
+    sealedMismatch: string;
     evidenceFound: string;
     evidenceHidden: string;
     evidenceLabel: string;

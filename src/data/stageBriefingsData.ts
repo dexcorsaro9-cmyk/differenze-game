@@ -29,7 +29,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "12 Ottobre 1928 — Ore 23:45",
     coordinates: "51°45'N, 1°15'W",
     dispatchCode: "RGS-EXP-1928-OXF-01",
-    bannerImage: "/oxford_study_A.jpg",
+    bannerImage: "/oxford_study_A.webp",
     tagline: "Un'irruzione notturna, una mappa contraffatta e il primo indizio verso la Città d'Oro.",
     loreStory: [
       "La pioggia battente sferza le vetrate gotiche del Dipartimento di Epigrafia di Oxford. Solo poche ore fa, il Professor Evelyn Bellini — la massima autorità britannica sulle civiltà precolombiane — è scomparso nel nulla senza lasciare traccia.",
@@ -60,7 +60,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "26 Ottobre 1928 — Ore 03:15",
     coordinates: "48°51'N, 2°20'E",
     dispatchCode: "RGS-EXP-1928-PAR-02",
-    bannerImage: "/levels/stage_2_A.jpg",
+    bannerImage: "/levels/stage_2_A.webp",
     tagline: "Trenta metri sotto il selciato di Parigi, tra le ombre millenarie dei Cavalieri Templari.",
     loreStory: [
       "La prima traccia decifrata a Oxford ci ha condotti a Parigi, a bordo del piroscafo notturno attraverso la Manica. Qui, la mappa di Bellini non indicava i musei del Louvre, ma le viscere calcaree della città: le Catacombe e le gallerie vietate dell'Ossario.",
@@ -90,7 +90,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "14 Novembre 1928 — Ore 19:20",
     coordinates: "45°26'N, 12°19'E",
     dispatchCode: "RGS-EXP-1928-VEN-03",
-    bannerImage: "/levels/stage_3_A.jpg",
+    bannerImage: "/levels/stage_3_A.webp",
     tagline: "Vetri risonanti, specchi d'alchimia e le lettere segrete del Milione di Marco Polo.",
     loreStory: [
       "La Croce d'Argento di Parigi ha orientato il nostro ago magnetico verso la Serenissima Repubblica di Venezia. Tra la nebbia salmastra che avvolge il Canal Grande e i palazzi trecenteschi affacciati sulle lagune, si cela la bottega di un antico maestro vetraio e cartografo.",
@@ -120,7 +120,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "02 Dicembre 1928 — Ore 11:30",
     coordinates: "35°17'N, 25°11'E",
     dispatchCode: "RGS-EXP-1928-CRT-04",
-    bannerImage: "/levels/stage_4_A.jpg",
+    bannerImage: "/levels/stage_4_A.webp",
     tagline: "I meandri di pietra minoici e la chiave del Primo Quadrante Celeste.",
     loreStory: [
       "Lasciate le lagune venete a bordo di una goletta mercantile, siamo sbarcati sulle coste aride di Creta. A Cnosso, dove Sir Arthur Evans ha da poco riportato alla luce i cortili e le colonne scarlatte della civiltà minoica, riposa la radice prima dell'astronomia mediterranea.",
@@ -150,7 +150,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "18 Dicembre 1928 — Ore 15:10",
     coordinates: "31°12'N, 29°53'E",
     dispatchCode: "RGS-EXP-1928-ALX-05",
-    bannerImage: "/levels/stage_5_A.jpg",
+    bannerImage: "/levels/stage_5_A.webp",
     tagline: "Nelle profondità marine del porto tolemaico, dove riposa la sapienza di Alessandro.",
     loreStory: [
       "Inauguriamo l'Atto II giungendo alle porte dell'Oriente e dell'Africa: Alessandria d'Egitto. Davanti a noi si stendono le acque turchesi dove secoli di terremoti hanno inabissato le fondamenta del celeberrimo Faro e i padiglioni del quartiere reale di Cleopatra.",
@@ -180,7 +180,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "04 Gennaio 1929 — Ore 06:40",
     coordinates: "25°44'N, 32°36'E",
     dispatchCode: "RGS-EXP-1928-LUX-06",
-    bannerImage: "/levels/stage_6_A.jpg",
+    bannerImage: "/levels/stage_6_A.webp",
     tagline: "Nel cuore della tebaide, tra affreschi dorati e meandri ipogei scavati nella roccia calcarea.",
     loreStory: [
       "Risalendo il Nilo a bordo di un feluca tradizionale, siamo approdati a Tebe, l'odierna Luxor. A pochi anni dalla clamorosa scoperta di Tutankhamon da parte di Howard Carter nel 1922, la Valle dei Re brulica di scavi archeologici.",
@@ -210,7 +210,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "21 Gennaio 1929 — Ore 17:50",
     coordinates: "29°12'N, 25°31'E",
     dispatchCode: "RGS-EXP-1928-SIW-07",
-    bannerImage: "/levels/stage_7_A.jpg",
+    bannerImage: "/levels/stage_7_A.webp",
     tagline: "Dune infuocate, palmeti millenari e il santuario dove pregò Alessandro il Grande.",
     loreStory: [
       "Una carovana di dromedari ci ha guidato per dieci giorni attraverso il Grande Mare di Sabbia, sfidando tempeste di ghibli e miraggi accecanti, fino all'isolata Oasi di Siwa.",
@@ -240,7 +240,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "09 Febbraio 1929 — Ore 14:15",
     coordinates: "30°19'N, 35°26'E",
     dispatchCode: "RGS-EXP-1928-PET-08",
-    bannerImage: "/levels/stage_8_A.jpg",
+    bannerImage: "/levels/stage_8_A.webp",
     tagline: "La facciata monumentale scolpita nella pietra rosa e il compimento dell'Atto II.",
     loreStory: [
       "Attraversata la penisola del Sinai, siamo penetrati nella stretta fessura del Siq di Petra, dove pareti di arenaria rossa alte cento metri bloccano il cielo. All'improvviso, tra la gola rocciosa appare la maestosa facciata ellenistica di Al-Khazneh (Il Tesoro).",
@@ -270,7 +270,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "01 Marzo 1929 — Ore 09:30",
     coordinates: "25°41'S, 54°26'W",
     dispatchCode: "RGS-EXP-1928-IGU-09",
-    bannerImage: "/levels/stage_9_A.jpg",
+    bannerImage: "/levels/stage_9_A.webp",
     tagline: "Il rombo di 275 cascate, il vapore della giungla e l'ingresso nel continente andino.",
     loreStory: [
       "Inauguriamo l'epico Atto III: dopo una traversata oceanica a bordo di un trimotore idrovolante, siamo atterrati sulle acque tumultuose dell'alto fiume Paraná, al confine tra Brasile e Argentina.",
@@ -300,7 +300,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "16 Marzo 1929 — Ore 07:15",
     coordinates: "14°43'S, 75°08'W",
     dispatchCode: "RGS-EXP-1928-NAZ-10",
-    bannerImage: "/levels/stage_10_A.jpg",
+    bannerImage: "/levels/stage_10_A.webp",
     tagline: "Cento livelli di spedizione: i disegni monumentali visibili solo dall'alto dei cieli.",
     loreStory: [
       "Salendo verso l'altopiano arido del Perù meridionale, ci troviamo di fronte a uno dei più grandi enigmi dell'umanità: le Linee e i Geoglifi di Nazca. Tracciati rimuovendo l'ossido di ferro dai ciottoli del deserto oltre duemila anni fa, questi disegni colossali si estendono per centinaia di metri quadrati.",
@@ -330,7 +330,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "28 Marzo 1929 — Ore 05:50",
     coordinates: "13°09'S, 72°32'W",
     dispatchCode: "RGS-EXP-1928-MAC-11",
-    bannerImage: "/levels/stage_11_A.jpg",
+    bannerImage: "/levels/stage_11_A.webp",
     tagline: "Tra le vette scoscese di Huayna Picchu, l'ultimo avamposto prima dell'ignoto.",
     loreStory: [
       "L'aria è sottile e tersa a duemilaquattrocento metri d'altitudine. Tra le creste granitiche che dominano la gola vertiginosa dell'Urubamba, sorge la città perduta degli imperatori inca: Machu Picchu.",
@@ -360,7 +360,7 @@ export const STAGE_BRIEFINGS: Record<number, StageBriefing> = {
     date: "05 Aprile 1929 — Ore 12:00 (Mezzogiorno del Sole allo Zenit)",
     coordinates: "12°45'S, 71°50'W",
     dispatchCode: "RGS-EXP-1928-PAI-12",
-    bannerImage: "/levels/stage_12_A.jpg",
+    bannerImage: "/levels/stage_12_A.webp",
     tagline: "Il mistero svelato: 120 livelli, 12 tappe mondiali, il Cuore Solare di Paititi.",
     loreStory: [
       "Siamo finalmente giunti nel cuore inviolato della giungla amazzonica, oltre le gole inesplorate del Río Madre de Dios. Dove le mappe dei conquistatori segnavano 'Terra Incognita', tra felci giganti e cascate dorate, si ergono le porte monumentali di Paititi.",

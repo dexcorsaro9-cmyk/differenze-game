@@ -118,6 +118,11 @@ export const it: Translations = {
     "vibrationHelp": "Feedback aptico al tocco",
     "zenMode": "Modalità Zen Senza Limiti",
     "zenModeHelp": "Vite infinite e nessun timer per un'esplorazione rilassata",
+    "sealedMode": "Indagine Sigillata",
+    "sealedModeHelp": "Devi scegliere l'indovinello prima di indicare l'oggetto che descrive.",
+    "sealedNever": "Mai",
+    "sealedMilestones": "Tappe finali",
+    "sealedAlways": "Sempre",
     "bgmTitle": "Musica d'Epoca (Orchestrale)",
     "bgmSubtitle": "Sinfonia procedurale d'atmosfera 1928",
     "bgmThemeTitle": "Tema Orchestrale della Spedizione:",
@@ -216,6 +221,17 @@ export const it: Translations = {
     "stageOf": "Tappa {current} di {total}",
     "levelSelectBtn": "Seleziona Livello",
     "replay120": "Rigioca i 120 livelli"
+  },
+  "rewards": {
+    "sectionTitle": "Sostieni la Spedizione",
+    "sectionSubtitle": "Guarda un breve filmato e ricevi un rifornimento, senza spendere monete.",
+    "watchButton": "Guarda e ricevi",
+    "remainingToday": "Ancora {count} oggi",
+    "coolingDown": "Disponibile tra {minutes} min",
+    "dailyCapReached": "Rifornimenti esauriti per oggi",
+    "dismissed": "Filmato interrotto: nessun rifornimento.",
+    "failed": "Filmato non disponibile al momento.",
+    "granted": "Rifornimento aggiunto al taccuino!"
   },
   "shop": {
     "title": "Emporio della Reale Società Geografica",
@@ -578,6 +594,10 @@ export const it: Translations = {
     "toFind": "DA TROVARE",
     "pinchHint": "Pinch con due dita per zoomare sulla foto",
     "errorTap": "Nessuna discrepanza qui. Fai attenzione!",
+    "tapPenalty": "Osserva, non tempestare: la fretta \u00e8 costata una vita.",
+    "sealedBadge": "Indagine Sigillata",
+    "sealedHint": "Scegli l'indovinello nel taccuino, poi indica l'oggetto che descrive.",
+    "sealedMismatch": "Reperto autentico, ma non e quello che l'indovinello descrive.",
     "evidenceFound": "Prova #{index} recuperata!",
     "evidenceHidden": "Prova #{index} occultata dalla Mano Oscura",
     "evidenceLabel": "Prove"

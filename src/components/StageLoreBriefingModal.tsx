@@ -103,7 +103,7 @@ export const StageLoreBriefingModal: React.FC<StageLoreBriefingModalProps> = ({
               alt={briefing.stageTitle}
               className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 opacity-80"
               onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = assetUrl('/antique_world_map.jpg');
+                (e.currentTarget as HTMLImageElement).src = assetUrl('/antique_world_map.webp');
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />

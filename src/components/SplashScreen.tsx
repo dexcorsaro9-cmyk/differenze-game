@@ -106,7 +106,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
       {/* Background AAA Splash Art with subtle cinematic Ken Burns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none bg-[#070402]">
         <img
-          src={assetUrl('/splash_screen.jpg')}
+          src={assetUrl('/splash_screen.webp')}
           alt="Paititi Splash Art"
           className="w-full h-full object-cover object-center animate-kenburns transform scale-105"
         />

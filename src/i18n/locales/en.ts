@@ -118,6 +118,11 @@ export const en: Translations = {
     "vibrationHelp": "Haptic response on touch",
     "zenMode": "Limitless Zen Mode",
     "zenModeHelp": "Infinite lives and no countdown timer for relaxed exploration",
+    "sealedMode": "Sealed Investigation",
+    "sealedModeHelp": "You must name the riddle before pointing to the object it describes.",
+    "sealedNever": "Never",
+    "sealedMilestones": "Stage finales",
+    "sealedAlways": "Always",
     "bgmTitle": "Period Music (Orchestral)",
     "bgmSubtitle": "Procedural atmospheric 1928 symphony",
     "bgmThemeTitle": "Expedition Orchestral Theme:",
@@ -216,6 +221,17 @@ export const en: Translations = {
     "stageOf": "Stage {current} of {total}",
     "levelSelectBtn": "Select Level",
     "replay120": "Replay 120 levels"
+  },
+  "rewards": {
+    "sectionTitle": "Support the Expedition",
+    "sectionSubtitle": "Watch a short film and receive a supply, without spending coins.",
+    "watchButton": "Watch and receive",
+    "remainingToday": "{count} left today",
+    "coolingDown": "Available in {minutes} min",
+    "dailyCapReached": "No supplies left today",
+    "dismissed": "Film cut short: no supply granted.",
+    "failed": "No film available right now.",
+    "granted": "Supply added to your field book!"
   },
   "shop": {
     "title": "Royal Geographic Society Emporium",
@@ -578,6 +594,10 @@ export const en: Translations = {
     "toFind": "TO FIND",
     "pinchHint": "Pinch with two fingers to zoom into the photograph",
     "errorTap": "No discrepancy here. Tread carefully!",
+    "tapPenalty": "Observe, do not flail: that haste cost you a life.",
+    "sealedBadge": "Sealed Investigation",
+    "sealedHint": "Name the riddle in your field book, then point to the object it describes.",
+    "sealedMismatch": "A genuine find, but not the one this riddle describes.",
     "evidenceFound": "Clue #{index} recovered!",
     "evidenceHidden": "Clue #{index} concealed by the Obsidian Brotherhood",
     "evidenceLabel": "Clues"

@@ -21,12 +21,12 @@ export function getAllExpeditionAssetUrls(): string[] {
     '/icon-192.png',
     '/icon-512.png',
     '/apple-touch-icon.png',
-    '/splash_screen.jpg',
+    '/splash_screen.webp',
     '/app_icon.jpg',
-    '/avatars/female_samira.jpg',
-    '/avatars/female_samira_back.jpg',
-    '/avatars/male_mateo.jpg',
-    '/avatars/male_mateo_back.jpg',
+    '/avatars/female_samira.webp',
+    '/avatars/female_samira_back.webp',
+    '/avatars/male_mateo.webp',
+    '/avatars/male_mateo_back.webp',
   ];
   coreAssets.forEach((asset) => {
     urls.add(assetUrl(asset));
@@ -39,11 +39,11 @@ export function getAllExpeditionAssetUrls(): string[] {
     }
   });
 
-  // 3. All 120 Levels: Photographic Plates A & B
+  // 3. All 120 Levels: the one scene photograph each investigation renders.
+  // This is a single-plate hidden-object hunt, so there is exactly one image per level.
   const allLevels = generateAll120Levels();
   allLevels.forEach((lvl) => {
     if (lvl.imageA) urls.add(assetUrl(lvl.imageA));
-    if (lvl.imageB) urls.add(assetUrl(lvl.imageB));
   });
 
   return Array.from(urls).filter(Boolean);

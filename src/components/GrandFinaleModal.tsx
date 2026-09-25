@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
+import { prefersReducedMotion } from '../utils/motion';
 import {
   Trophy,
   Crown,
@@ -111,7 +112,7 @@ export const GrandFinaleModal: React.FC<GrandFinaleModalProps> = ({
     triggerHaptic('success');
 
     try {
-      confetti({
+      if (!prefersReducedMotion()) confetti({
         particleCount: 120,
         spread: 100,
         origin: { y: 0.6 },

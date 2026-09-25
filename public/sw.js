@@ -14,12 +14,12 @@ const PRECACHE_ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
-  './splash_screen.jpg',
+  './splash_screen.webp',
   './app_icon.jpg',
-  './avatars/female_samira.jpg',
-  './avatars/female_samira_back.jpg',
-  './avatars/male_mateo.jpg',
-  './avatars/male_mateo_back.jpg'
+  './avatars/female_samira.webp',
+  './avatars/female_samira_back.webp',
+  './avatars/male_mateo.webp',
+  './avatars/male_mateo_back.webp'
 ];
 
 // Install Event: Pre-cache shell and force activation without waiting

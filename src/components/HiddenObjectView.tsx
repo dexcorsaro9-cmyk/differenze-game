@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   RotateCcw,
   Sparkles,
@@ -25,6 +25,8 @@ import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
 import { safeStorage } from '../utils/storage';
+import { buildNeighbourCaps, resolveStageTap } from '../utils/hitDetection';
+import { useReducedMotion } from '../utils/motion';
 import { useTranslation } from '../i18n/LanguageContext';
 
 interface HiddenObjectViewProps {
@@ -48,6 +50,12 @@ interface HiddenObjectViewProps {
   shieldBlockedNotice?: boolean;
   chapterNumber?: number;
   levelId?: number;
+  /**
+   * Sealed investigation: the player must select the riddle they are answering, and only
+   * the object that riddle describes will register. Touching a different clue is a
+   * mismatch, which costs the same as a miss but says so differently.
+   */
+  isSealed?: boolean;
 }
 
 interface ErrorRipple {
@@ -80,8 +88,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   shieldBlockedNotice = false,
   chapterNumber = 1,
   levelId,
+  isSealed = false,
 }) => {
   const { t, interpolate } = useTranslation();
+  const reducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -103,11 +113,26 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   const lastTouchProcessedRef = useRef<number>(0);
   const missTimestampsRef = useRef<number[]>([]);
 
+  // Spam penalty lock: set when blind rapid tapping is detected, so a burst of misses
+  // is charged as a single error instead of granting free immunity (see processStageTap).
+  const inputLockUntilRef = useRef<number>(0);
+  const lockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Visual effects state
   const [errorRipples, setErrorRipples] = useState<ErrorRipple[]>([]);
   const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
+  const [isInputLocked, setIsInputLocked] = useState<boolean>(false);
+  const [sealMismatch, setSealMismatch] = useState<boolean>(false);
+  const mismatchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Mirrors isDraggingRef for rendering. The ref stays the source of truth inside the
+  // gesture handlers (it must update synchronously mid-move); this only flips at the
+  // start and end of a drag, so the transform transition can actually react to it.
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [magnesiumFlash, setMagnesiumFlash] = useState<{ id: string; x: number; y: number } | null>(null);
+
+  // Per-scene hitbox caps: recomputed only when the scene's clue set changes
+  const neighbourCaps = useMemo(() => buildNeighbourCaps(differences), [differences]);
 
   // Clue inspector modal
   const [inspectingDiff, setInspectingDiff] = useState<Difference | null>(null);
@@ -143,10 +168,21 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     setPan({ x: 0, y: 0 });
     setSelectedRiddleIndex(0);
     setIsGridExpanded(false);
+    inputLockUntilRef.current = 0;
+    missTimestampsRef.current = [];
+    setIsInputLocked(false);
     if (ribbonRef.current) {
       ribbonRef.current.scrollLeft = 0;
     }
   }, [imageA, levelId]);
+
+  // Clear a pending spam-lock timer if the view unmounts mid-penalty
+  useEffect(() => {
+    return () => {
+      if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+      if (mismatchTimeoutRef.current) clearTimeout(mismatchTimeoutRef.current);
+    };
+  }, []);
 
   // Smoothly scroll the selected riddle card into view whenever selectedRiddleIndex changes
   useEffect(() => {
@@ -167,10 +203,19 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       return;
     }
     const firstUnfoundIdx = differences.findIndex(d => !foundDifferenceIds.includes(d.id));
-    if (firstUnfoundIdx !== -1) {
-      setSelectedRiddleIndex(firstUnfoundIdx);
+    if (firstUnfoundIdx === -1) return;
+
+    // Under seal the choice of riddle is the player's move, so only skip past one they
+    // have already solved rather than steering them to the next.
+    if (isSealed) {
+      setSelectedRiddleIndex(current =>
+        foundDifferenceIds.includes(differences[current]?.id) ? firstUnfoundIdx : current
+      );
+      return;
     }
-  }, [foundDifferenceIds, differences]);
+
+    setSelectedRiddleIndex(firstUnfoundIdx);
+  }, [foundDifferenceIds, differences, isSealed]);
 
   const cycleAtmosphere = () => {
     const modes: ('dawn' | 'noon' | 'dusk' | 'lantern')[] = ['dawn', 'noon', 'dusk', 'lantern'];
@@ -311,6 +356,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       const dx = t.clientX - singleTouchStartRef.current.x;
       const dy = t.clientY - singleTouchStartRef.current.y;
       if (Math.hypot(dx, dy) > 8) {
+        if (!isDraggingRef.current) setIsDragging(true);
         isDraggingRef.current = true;
       }
       if (isDraggingRef.current) {
@@ -329,16 +375,17 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     touchStartCenterRef.current = null;
 
     // Check for clean mobile tap gesture (< 18px movement, < 400ms duration)
-    if (
-      singleTouchStartRef.current &&
-      !isDraggingRef.current &&
-      Date.now() - singleTouchStartRef.current.time < 400
-    ) {
+    const tapDuration =
+      // oxlint-disable-next-line react/purity -- touch event handler, never called during render
+      Date.now() - (singleTouchStartRef.current?.time ?? 0);
+
+    if (singleTouchStartRef.current && !isDraggingRef.current && tapDuration < 400) {
       const t = e.changedTouches[0];
       if (t) {
         const dx = t.clientX - singleTouchStartRef.current.x;
         const dy = t.clientY - singleTouchStartRef.current.y;
         if (Math.hypot(dx, dy) < 18) {
+          // oxlint-disable-next-line react/purity -- touch event handler, not render
           lastTouchProcessedRef.current = Date.now();
           processStageTap(t.clientX, t.clientY);
         }
@@ -347,6 +394,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
     setTimeout(() => {
       isDraggingRef.current = false;
+      setIsDragging(false);
     }, 50);
   };
 
@@ -373,6 +421,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       updateMagnifierPosition(e.clientX, e.clientY);
     }
     if (mouseDragStartRef.current && scale > 1) {
+      if (!isDraggingRef.current) setIsDragging(true);
       isDraggingRef.current = true;
       const newX = e.clientX - mouseDragStartRef.current.x;
       const newY = e.clientY - mouseDragStartRef.current.y;
@@ -388,12 +437,25 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     mouseDragStartRef.current = null;
     setTimeout(() => {
       isDraggingRef.current = false;
+      setIsDragging(false);
     }, 50);
   };
 
+  // Blocks the stage for a beat after a spam burst. The miss that triggers it is still
+  // charged as a real error; the lock only stops the same burst being charged five times.
+  const SPAM_LOCK_MS = 900;
+  const triggerInputLock = useCallback(() => {
+    inputLockUntilRef.current = Date.now() + SPAM_LOCK_MS;
+    setIsInputLocked(true);
+    if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+    lockTimeoutRef.current = setTimeout(() => setIsInputLocked(false), SPAM_LOCK_MS);
+  }, []);
+
   const addErrorFeedback = (x: number, y: number) => {
-    setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 380);
+    if (!reducedMotion) {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 380);
+    }
 
     const newRipple: ErrorRipple = {
       id: `${Date.now()}_${Math.random()}`,
@@ -408,6 +470,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
   // Unified Tap & Click Processing Engine
   const processStageTap = (clientX: number, clientY: number) => {
+    // Spam penalty in force: swallow the tap entirely (no hit, no extra error)
+    if (Date.now() < inputLockUntilRef.current) return;
+
     const imgElement = imgRef.current;
     if (!imgElement) return;
 
@@ -425,52 +490,42 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     const clickXPercent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
     const clickYPercent = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
 
-    // Progressive difficulty scaling:
-    // Early levels (1-20): forgiving hit area for accessible exploration (floor 8.5%)
-    // Mid levels (21-60): focused search (floor 6.5%)
-    // Advanced levels (61-120): authentic object-sized hitboxes (floor 4.8% - 5.2%),
-    // rewarding genuine observation and pinch-to-zoom investigation.
-    const currentLvl = levelId || 1;
-    let baseToleranceFloor: number;
-    if (currentLvl <= 20) {
-      baseToleranceFloor = 8.5;
-    } else if (currentLvl <= 60) {
-      baseToleranceFloor = 6.5;
-    } else {
-      baseToleranceFloor = 4.8;
+    // Tap resolution lives in utils/hitDetection.ts so the rule is unit-tested against all
+    // 120 levels of real clue data (band floors, zoom assist, neighbour caps, hint radius).
+    const requiredDifferenceId = isSealed ? differences[selectedRiddleIndex]?.id ?? null : null;
+
+    const tapResult = resolveStageTap({
+      differences,
+      foundDifferenceIds,
+      x: clickXPercent,
+      y: clickYPercent,
+      levelId: levelId || 1,
+      scale,
+      activeHintId: activeHint ? activeHint.id : null,
+      neighbourCaps,
+      requiredDifferenceId,
+    });
+
+    // Right eye, wrong deduction: the object is a real clue, but not the one the chosen
+    // riddle describes. It costs what a miss costs; the feedback is what differs.
+    if (tapResult.kind === 'mismatch') {
+      missTimestampsRef.current = [];
+      lastTapRef.current = null;
+      setSealMismatch(true);
+      if (mismatchTimeoutRef.current) clearTimeout(mismatchTimeoutRef.current);
+      mismatchTimeoutRef.current = setTimeout(() => setSealMismatch(false), 2600);
+      addErrorFeedback(clickXPercent, clickYPercent);
+      onErrorClick({ x: clickXPercent, y: clickYPercent }, 0);
+      return;
     }
 
-    // Zoom assist: when the player pinches in to inspect details closely (scale > 1.2),
-    // provide a slight touch buffer (+0.6% to +1.4%) so hitting the magnified real object is responsive on touchscreens
-    const zoomAssist = scale > 1.2 ? Math.min((scale - 1) * 0.7, 1.4) : 0;
-
-    // Check hit against all unfound clues:
-    // Finds the closest unfound clue whose tolerance contains the tap point.
-    let matchedDiff: Difference | null = null;
-    let minDistance = Infinity;
-
-    for (const diff of differences) {
-      if (foundDifferenceIds.includes(diff.id)) continue;
-      const isHintTarget = activeHint && activeHint.id === diff.id;
-      const nominalRadius = diff.radius || baseToleranceFloor;
-      const tolerance = isHintTarget
-        ? 16.0
-        : Math.max(nominalRadius, baseToleranceFloor) + zoomAssist;
-
-      const dx = clickXPercent - diff.x;
-      const dy = clickYPercent - diff.y;
-      const dist = Math.hypot(dx, dy);
-
-      if (dist <= tolerance && dist < minDistance) {
-        minDistance = dist;
-        matchedDiff = diff;
-      }
-    }
+    const matchedDiff = tapResult.kind === 'hit' ? tapResult.difference : null;
 
     if (matchedDiff) {
       // Object found! Clear spam tracker & zoom tap ref
       missTimestampsRef.current = [];
       lastTapRef.current = null;
+      setSealMismatch(false);
 
       // 1928 Magnesium Flash Celebration
       setMagnesiumFlash({ id: String(Date.now()), x: clickXPercent, y: clickYPercent });
@@ -518,9 +573,14 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       if (missTimestampsRef.current.length >= 3) {
         const timeDiff = now - missTimestampsRef.current[missTimestampsRef.current.length - 3];
         if (timeDiff < 650) {
+          // Blind rapid tapping. The miss is charged as a genuine error: skipping it would
+          // make spamming the scene a risk-free way to brute-force all eight clues. The
+          // lock below then absorbs the rest of the burst so it costs one life, not five.
+          missTimestampsRef.current = [];
+          lastTapRef.current = null;
           addErrorFeedback(clickXPercent, clickYPercent);
-          sound.playError();
-          triggerHaptic('error');
+          triggerInputLock();
+          onErrorClick({ x: clickXPercent, y: clickYPercent }, 0);
           return;
         }
       }
@@ -585,6 +645,31 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <Shield className="w-4 h-4 text-indigo-300 shrink-0" />
           <span className="text-xs font-bold">
             {t.powerUps.shieldBlocked}
+          </span>
+        </div>
+      )}
+
+      {isSealed && !isInputLocked && !sealMismatch && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-amber-950/95 border border-amber-500/80 text-amber-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2">
+          <Scroll className="w-4 h-4 text-amber-300 shrink-0" />
+          <span className="text-[11px] font-bold leading-tight text-center">
+            {t.hiddenObject.sealedBadge} — {t.hiddenObject.sealedHint}
+          </span>
+        </div>
+      )}
+
+      {sealMismatch && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-orange-950/95 border border-orange-400 text-orange-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-fade-in">
+          <HelpCircle className="w-4 h-4 text-orange-300 shrink-0" />
+          <span className="text-xs font-bold text-center">{t.hiddenObject.sealedMismatch}</span>
+        </div>
+      )}
+
+      {isInputLocked && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-red-950/95 border border-red-400 text-red-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-fade-in">
+          <Search className="w-4 h-4 text-red-300 shrink-0" />
+          <span className="text-xs font-bold">
+            {t.hiddenObject.tapPenalty}
           </span>
         </div>
       )}
@@ -669,7 +754,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center cursor-crosshair rounded-lg overflow-hidden shadow-2xl border border-amber-900/40 bg-stone-900"
           style={{
             transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
-            transition: isDraggingRef.current ? 'none' : 'transform 0.15s ease-out',
+            transition: isDragging ? 'none' : 'transform 0.15s ease-out',
           }}
           onClick={handleStageClick}
           onMouseEnter={() => isMagnifierActive && setIsMagnifierHovering(true)}
@@ -821,9 +906,15 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 top: `${magnesiumFlash.y}%`,
               }}
             >
-              <div className="w-32 h-32 rounded-full bg-amber-100/95 blur-md animate-ping" />
+              <div
+                className={`w-32 h-32 rounded-full blur-md ${
+                  reducedMotion ? 'bg-amber-100/40' : 'bg-amber-100/95 animate-ping'
+                }`}
+              />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="w-12 h-12 text-amber-200 animate-spin" />
+                <Sparkles
+                  className={`w-12 h-12 text-amber-200 ${reducedMotion ? '' : 'animate-spin'}`}
+                />
               </div>
             </div>
           )}

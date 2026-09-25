@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, 'claude/**' ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Lint, typecheck & data integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          # jsdom pulls in an undici that needs Node 22: on Node 20 it throws
+          # "webidl.util.markAsUncloneable is not a function" and the component test
+          # worker never starts. Node 20 is also deprecated on Actions runners.
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc -b
+
+      - name: Data integrity & gameplay rule tests
+        run: npm test

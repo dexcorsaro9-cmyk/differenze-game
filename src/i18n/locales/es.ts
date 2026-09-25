@@ -118,6 +118,11 @@ export const es: Translations = {
     "vibrationHelp": "Respuesta háptica al pulsar",
     "zenMode": "Modo Zen Ilimitado",
     "zenModeHelp": "Vidas infinitas y sin cronómetro para una exploración relajada",
+    "sealedMode": "Investigacion Sellada",
+    "sealedModeHelp": "Debes elegir el acertijo antes de senalar el objeto que describe.",
+    "sealedNever": "Nunca",
+    "sealedMilestones": "Finales de etapa",
+    "sealedAlways": "Siempre",
     "bgmTitle": "Música de Época (Orquestal)",
     "bgmSubtitle": "Sinfonía atmosférica procesal de 1928",
     "bgmThemeTitle": "Tema Orquestal de Expedición:",
@@ -216,6 +221,17 @@ export const es: Translations = {
     "stageOf": "Etapa {current} de {total}",
     "levelSelectBtn": "Seleccionar Nivel",
     "replay120": "Rejugar los 120 niveles"
+  },
+  "rewards": {
+    "sectionTitle": "Apoya la Expedicion",
+    "sectionSubtitle": "Mira un breve video y recibe un suministro, sin gastar monedas.",
+    "watchButton": "Mirar y recibir",
+    "remainingToday": "Quedan {count} hoy",
+    "coolingDown": "Disponible en {minutes} min",
+    "dailyCapReached": "Sin suministros por hoy",
+    "dismissed": "Video interrumpido: sin suministro.",
+    "failed": "No hay video disponible ahora.",
+    "granted": "Suministro anadido al cuaderno!"
   },
   "shop": {
     "title": "Emporio de la Real Sociedad Geográfica",
@@ -578,6 +594,10 @@ export const es: Translations = {
     "toFind": "POR ENCONTRAR",
     "pinchHint": "Pellizca con dos dedos para ampliar la fotografía",
     "errorTap": "No hay diferencias aquí. ¡Observa con atención!",
+    "tapPenalty": "Observa, no golpees a ciegas: esa prisa te cost\u00f3 una vida.",
+    "sealedBadge": "Investigacion Sellada",
+    "sealedHint": "Elige el acertijo en tu cuaderno y senala el objeto que describe.",
+    "sealedMismatch": "Hallazgo autentico, pero no es el que describe este acertijo.",
     "evidenceFound": "¡Pista #{index} recuperada!",
     "evidenceHidden": "Pista #{index} ocultada por la Hermandad de Obsidiana",
     "evidenceLabel": "Pistas"

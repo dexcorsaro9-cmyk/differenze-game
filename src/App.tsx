@@ -37,26 +37,30 @@ import { useEconomy } from './hooks/useEconomy';
 import { useGameSession } from './hooks/useGameSession';
 import { useModalManager } from './hooks/useModalManager';
 import { useTranslation } from './i18n/LanguageContext';
-import { getLocalizedMedal, getLocalizedDifference, getLocalizedDifferences } from './i18n';
+import { getLocalizedMedal } from './i18n';
 import { hasPendingDaily } from './utils/dailyChallenge';
 import { safeStorage } from './utils/storage';
 import { ALL_COLLECTIBLE_RELICS } from './data/collectiblesData';
 import { ALL_ACHIEVEMENTS } from './data/achievementsData';
 import { CONSULAR_VISAS } from './data/passportData';
+import { normalizeExplorerProfile, type ExplorerProfile } from './data/avatarData';
+import { useExplorerPerks } from './hooks/useExplorerPerks';
+import { useMedalWatcher } from './hooks/useMedalWatcher';
+import { useSaveSync } from './hooks/useSaveSync';
+import { createAdMobProvider, setRewardProvider } from './utils/rewards';
 import {
-  ALL_OUTFITS,
-  ALL_ACCESSORIES,
-  getActiveSetBonuses,
-  normalizeExplorerProfile,
-  type ExplorerProfile,
-} from './data/avatarData';
-import type { GameSettings } from './types/game';
+  usePersistentJson,
+  usePersistentFlag,
+  hasStoredValue,
+} from './hooks/usePersistentState';
+import type { GameSettings, PowerUpType } from './types/game';
+import { isSealedLevel, DEFAULT_SEALED_MODE } from './data/sealedLevels';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const { t, language } = useTranslation();
+  const { t, language, localizeDifference, localizeDifferences } = useTranslation();
 
   // Persistence keys
   const STORAGE_KEY_SETTINGS = 'differenze_settings_v1';
@@ -66,33 +70,22 @@ export const App: React.FC = () => {
   const STORAGE_KEY_EXPEDITION_CHOICES = 'differenze_expedition_choices_v1';
 
   // Explorer Avatar & Wardrobe Profile State
-  const [explorerProfile, setExplorerProfile] = useState<ExplorerProfile>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_AVATAR);
-    if (saved) {
-      try {
-        return normalizeExplorerProfile(JSON.parse(saved));
-      } catch {}
-    }
-    return normalizeExplorerProfile(null);
-  });
+  const [explorerProfile, setExplorerProfile] = usePersistentJson<ExplorerProfile>(
+    STORAGE_KEY_AVATAR,
+    normalizeExplorerProfile(null),
+    parsed => normalizeExplorerProfile(parsed as Partial<ExplorerProfile> | null)
+  );
 
-  const [hasCompletedAvatarSetup, setHasCompletedAvatarSetup] = useState<boolean>(() => {
-    return !!safeStorage.getItem(STORAGE_KEY_AVATAR);
-  });
+  const [hasCompletedAvatarSetup, setHasCompletedAvatarSetup] = useState<boolean>(() =>
+    hasStoredValue(STORAGE_KEY_AVATAR)
+  );
 
-  const [hasCompletedTutorial, setHasCompletedTutorial] = useState<boolean>(() => {
-    return safeStorage.getItem(STORAGE_KEY_TUTORIAL) === 'true';
-  });
+  const [hasCompletedTutorial, setHasCompletedTutorial] = usePersistentFlag(STORAGE_KEY_TUTORIAL);
 
-  const [seenStageBriefings, setSeenStageBriefings] = useState<number[]>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_SEEN_BRIEFINGS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-    return [];
-  });
+  const [seenStageBriefings, setSeenStageBriefings] = usePersistentJson<number[]>(
+    STORAGE_KEY_SEEN_BRIEFINGS,
+    []
+  );
 
   // Active Notification Flags
   const [hasUnreadDaily, setHasUnreadDaily] = useState<boolean>(() => hasPendingDaily());
@@ -104,20 +97,24 @@ export const App: React.FC = () => {
   const [isCertificateOpen, setIsCertificateOpen] = useState<boolean>(false);
 
   // Settings State
-  const [settings, setSettings] = useState<GameSettings>(() => {
-    const saved = safeStorage.getItem(STORAGE_KEY_SETTINGS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-    return {
+  const [settings, setSettings] = usePersistentJson<GameSettings>(
+    STORAGE_KEY_SETTINGS,
+    {
       soundEnabled: true,
       vibrationEnabled: true,
       zenMode: false,
       layoutMode: 'vertical',
-    };
-  });
+      sealedMode: DEFAULT_SEALED_MODE,
+    },
+    parsed => ({
+      soundEnabled: true,
+      vibrationEnabled: true,
+      zenMode: false,
+      layoutMode: 'vertical',
+      sealedMode: DEFAULT_SEALED_MODE,
+      ...(parsed as Partial<GameSettings> | null),
+    })
+  );
 
   // Modal Manager Hook
   const modals = useModalManager();
@@ -125,55 +122,14 @@ export const App: React.FC = () => {
   // Economy Hook
   const economy = useEconomy(() => modals.setIsShopOpen(true));
 
-  // Active Explorer Perks Calculation across all 8 RPG Equipment Slots
-  const activeOutfit = ALL_OUTFITS.find(o => o.id === explorerProfile.equippedOutfitId);
-  const activeHeadgear = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedHeadgearId);
-  const activeTool = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedToolId);
-  const activeOffHand = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedOffHandId);
-  const activeLegs = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedLegsId);
-  const activeBoots = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedBootsId);
-  const activeTalisman = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedTalismanId);
-  const activeBack = ALL_ACCESSORIES.find(a => a.id === explorerProfile.equippedBackId);
-
-  // Active RPG Equipment Set Bonuses (Sinergie di Set)
-  const activeSetList = getActiveSetBonuses(
-    explorerProfile.equippedOutfitId,
-    explorerProfile.equippedHeadgearId,
-    explorerProfile.equippedToolId,
-    explorerProfile.equippedOffHandId,
-    explorerProfile.equippedLegsId,
-    explorerProfile.equippedBootsId,
-    explorerProfile.equippedTalismanId,
-    explorerProfile.equippedBackId
-  );
-  const activeSets = activeSetList.filter(s => s.isActive);
-  const primaryActiveSet = activeSets[0] || null;
-
-  const equippedPerks = [
-    activeOutfit?.perk,
-    activeHeadgear?.perk,
-    activeTool?.perk,
-    activeOffHand?.perk,
-    activeLegs?.perk,
-    activeBoots?.perk,
-    activeTalisman?.perk,
-    activeBack?.perk,
-    ...activeSets.map(s => s.set.perk),
-  ].filter(Boolean) as { type: string; value: number }[];
-
-  const coinBonusPercent = equippedPerks
-    .filter(p => p.type === 'coin_boost')
-    .reduce((sum, p) => sum + p.value, 0);
-
-  const freezeBonusSeconds = equippedPerks
-    .filter(p => p.type === 'freeze_boost')
-    .reduce((sum, p) => sum + p.value, 0);
-
-  const radarBonusPercent = equippedPerks
-    .filter(p => p.type === 'radar_boost')
-    .reduce((sum, p) => sum + p.value, 0);
-
-  const hasPassiveFreeShield = equippedPerks.some(p => p.type === 'free_shield');
+  // Equipment perks across the eight RPG slots, plus any active set synergies
+  const {
+    primaryActiveSet,
+    coinBonusPercent,
+    freezeBonusSeconds,
+    radarBonusPercent,
+    hasPassiveFreeShield,
+  } = useExplorerPerks(explorerProfile);
 
   // Game Session Hook
   const game = useGameSession({
@@ -304,48 +260,44 @@ export const App: React.FC = () => {
     modals.setIsBackgroundPaused(false);
   }, [getActiveBgmTheme, game.currentLevel.chapterNumber, settings.vibrationEnabled, modals]);
 
-  // Check Passive & Milestones Expedition Medals
-  useEffect(() => {
-    if (primaryActiveSet) {
-      economy.unlockMedal('full_set_synergy');
-    }
-    if (economy.coins >= 1000) {
-      economy.unlockMedal('wealthy_explorer');
-    }
-    if (game.discoveredClues.length >= 20) {
-      economy.unlockMedal('lore_master');
-    }
-    if (game.discoveredRelicIds.length >= 3) {
-      economy.unlockMedal('relic_hunter');
-    }
-    if (game.currentLevel.chapterNumber >= 5 || game.completedLevelIds.some(id => id >= 41)) {
-      economy.unlockMedal('andes_climber');
-    }
-    if (game.currentLevel.chapterNumber >= 9 || game.completedLevelIds.some(id => id >= 81)) {
-      economy.unlockMedal('sun_priest');
-    }
-    if (game.completedLevelIds.length >= 120) {
-      economy.unlockMedal('grand_archaeologist');
-    }
-  }, [
-    economy.coins,
-    primaryActiveSet,
-    game.discoveredClues.length,
-    game.discoveredRelicIds.length,
-    game.currentLevel.chapterNumber,
-    game.completedLevelIds,
-    economy.unlockMedal,
-  ]);
+  // Destructured so these effects depend on the exact values they read. Reaching through
+  // `economy.` made the linter ask for the whole object, which changes every render.
+  const { unlockMedal, coins: currentCoins } = economy;
 
-  // Check Cartographer Medal when consulting the 3D Globe / Map
+  // Reconcile with the remote save slot on start and whenever a level is completed.
+  // No backend configured means this is a no-op (see utils/saveSync.ts).
+  useSaveSync(game.completedLevelIds.length);
+
+  // Register the rewarded-advert provider if one is configured. Without an ad unit id, or
+  // without the Capacitor plugin, this resolves to null and no advert surface is rendered.
   useEffect(() => {
-    if (modals.isTreasureMapOpen) {
-      const completedStagesCount = game.completedLevelIds.filter(id => id % 10 === 0).length;
-      if (completedStagesCount >= 10 || game.completedLevelIds.length >= 100) {
-        economy.unlockMedal('cartographer');
-      }
-    }
-  }, [modals.isTreasureMapOpen, game.completedLevelIds, economy.unlockMedal]);
+    let cancelled = false;
+    void createAdMobProvider().then(provider => {
+      if (!cancelled) setRewardProvider(provider);
+    });
+    return () => {
+      cancelled = true;
+      setRewardProvider(null);
+    };
+  }, []);
+
+  const handleRewardGranted = useCallback(
+    (powerUp: PowerUpType, quantity: number) => {
+      economy.setInventory(inv => ({ ...inv, [powerUp]: inv[powerUp] + quantity }));
+    },
+    [economy]
+  );
+
+  useMedalWatcher({
+    unlockMedal,
+    coins: currentCoins,
+    hasFullSetSynergy: !!primaryActiveSet,
+    discoveredCluesCount: game.discoveredClues.length,
+    discoveredRelicsCount: game.discoveredRelicIds.length,
+    currentChapterNumber: game.currentLevel.chapterNumber,
+    completedLevelIds: game.completedLevelIds,
+    isTreasureMapOpen: modals.isTreasureMapOpen,
+  });
 
   // Stage Lore Briefing Handlers
   const handleOpenStageBriefing = useCallback(
@@ -378,7 +330,7 @@ export const App: React.FC = () => {
         game.setIsTimerRunning(true);
       }
     },
-    [game, modals]
+    [game, modals, setSeenStageBriefings]
   );
 
   // Next Level Handler
@@ -484,7 +436,7 @@ export const App: React.FC = () => {
         game.setIsTimerRunning(true);
       }
     },
-    [hasCompletedTutorial, modals, game]
+    [hasCompletedTutorial, modals, game, setExplorerProfile]
   );
 
   const handlePrologueComplete = useCallback(() => {
@@ -513,7 +465,7 @@ export const App: React.FC = () => {
     modals.setIsTreasureMapOpen(false);
     game.loadLevel(1);
     game.setIsTimerRunning(true);
-  }, [modals, game]);
+  }, [modals, game, setHasCompletedTutorial]);
 
   const handleStartDailyLevel = useCallback(
     (levelId: number) => {
@@ -536,22 +488,24 @@ export const App: React.FC = () => {
     setHasCompletedAvatarSetup(false);
     setHasCompletedTutorial(false);
     setSeenStageBriefings([]);
-  }, [economy, game]);
+  }, [economy, game, setExplorerProfile, setHasCompletedTutorial, setSeenStageBriefings]);
 
   // Memoized localized differences & clues for current level
+  // The localisers come from the language context and are replaced when a clue dictionary
+  // finishes loading, so these memos recompute and pick up the translated strings.
   const localizedDifferences = useMemo(
-    () => getLocalizedDifferences(game.currentLevel.differences, language),
-    [game.currentLevel.differences, language]
+    () => localizeDifferences(game.currentLevel.differences),
+    [game.currentLevel.differences, localizeDifferences]
   );
 
   const localizedActiveHint = useMemo(
-    () => getLocalizedDifference(game.activeHint, language),
-    [game.activeHint, language]
+    () => localizeDifference(game.activeHint),
+    [game.activeHint, localizeDifference]
   );
 
   const localizedActiveClueToast = useMemo(
-    () => getLocalizedDifference(game.activeClueToast, language),
-    [game.activeClueToast, language]
+    () => localizeDifference(game.activeClueToast),
+    [game.activeClueToast, localizeDifference]
   );
 
   return (
@@ -643,6 +597,7 @@ export const App: React.FC = () => {
           comboStreak={game.comboStreak}
           shieldBlockedNotice={game.shieldBlockedNotice}
           chapterNumber={game.currentLevel.chapterNumber}
+          isSealed={isSealedLevel(game.currentLevel.id, settings.sealedMode ?? DEFAULT_SEALED_MODE)}
         />
 
         {/* Floating Shield Blocked Notice */}
@@ -731,6 +686,8 @@ export const App: React.FC = () => {
           inventory={economy.inventory}
           onBuyItem={economy.handleBuyShopItem}
           onClaimEmergencyFunds={economy.handleClaimEmergencyFunds}
+          onRewardGranted={handleRewardGranted}
+          vibrationEnabled={settings.vibrationEnabled}
         />
       </ErrorBoundary>
 

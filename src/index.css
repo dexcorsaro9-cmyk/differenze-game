@@ -315,3 +315,36 @@
 }
 
 
+
+/*
+ * Reduced motion: strip decorative animation while keeping the interface legible.
+ * Infinite loops (glow, shimmer, spinning rays, equaliser bars) stop entirely; one-shot
+ * transform effects (shake, stamp slam, coin bounce) collapse to an instant state change
+ * so the feedback still lands without the movement. JS-driven effects check
+ * utils/motion.ts instead.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-hint-glow,
+  .animate-relic-shimmer,
+  .animate-relic-ray-spin,
+  .eq-bar-1,
+  .eq-bar-2,
+  .eq-bar-3 {
+    animation: none !important;
+  }
+
+  .screen-shake,
+  .animate-screen-shake {
+    animation: none !important;
+    transform: none !important;
+  }
+}

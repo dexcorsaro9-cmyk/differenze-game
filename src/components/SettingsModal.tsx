@@ -29,83 +29,19 @@ import {
   downloadExpeditionOffline,
   type OfflineCacheStatus,
 } from '../utils/offlineManager';
-
-const BACKUP_STORAGE_KEYS = [
-  'differenze_progress_v1',
-  'differenze_level_stars_v1',
-  'differenze_best_times_v1',
-  'differenze_economy_v1',
-  'differenze_inventory_v1',
-  'differenze_relics_v1',
-  'differenze_medals_v1',
-  'differenze_claimed_medals_v1',
-  'differenze_claimed_visas_v1',
-  'differenze_avatar_v1',
-  'differenze_expedition_choices_v1',
-  'differenze_tutorial_v1',
-  'differenze_seen_briefings_v1',
-  'differenze_settings_v1',
-  'paititi_daily_challenge_v1',
-  'differenze_atmosphere',
-  'differenze_photofilter',
-  'differenze_vintage_crackle',
-  'differenze_bgm_enabled',
-  'paititi_seen_telegram_v1',
-  'differenze_telemetry_v1',
-];
-
-function buildBackupPayload(): Record<string, any> {
-  const data: Record<string, any> = {
-    game: 'Paititi_1928',
-    version: '2.0',
-    exportedAt: new Date().toISOString(),
-    keys: {},
-  };
-
-  BACKUP_STORAGE_KEYS.forEach((key) => {
-    const val = localStorage.getItem(key);
-    if (val !== null) {
-      try {
-        data.keys[key] = JSON.parse(val);
-      } catch {
-        data.keys[key] = val;
-      }
-    }
-  });
-
-  return data;
-}
-
-function encodeSaveCode(data: Record<string, any>): string {
-  const jsonStr = JSON.stringify(data);
-  const base64 = btoa(
-    encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, (_, p1) =>
-      String.fromCharCode(parseInt(p1, 16))
-    )
-  );
-  return `PAITITI_1928_SAVE:${base64}`;
-}
-
-function decodeSaveCode(code: string): Record<string, any> | null {
-  try {
-    let raw = code.trim();
-    if (raw.startsWith('PAITITI_1928_SAVE:')) {
-      raw = raw.replace('PAITITI_1928_SAVE:', '').trim();
-    }
-    const decodedStr = decodeURIComponent(
-      Array.prototype.map
-        .call(atob(raw), (c: string) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(decodedStr);
-  } catch {
-    try {
-      return JSON.parse(code.trim());
-    } catch {
-      return null;
-    }
-  }
-}
+import {
+  DEFAULT_SEALED_MODE,
+  countSealedLevels,
+  type SealedMode,
+} from '../data/sealedLevels';
+import {
+  BACKUP_STORAGE_KEYS,
+  buildBackupPayload,
+  applyBackupPayload,
+  isBackupPayload,
+  encodeSaveCode,
+  decodeSaveCode,
+} from '../utils/saveData';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -208,24 +144,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         const text = event.target?.result as string;
         const parsed = JSON.parse(text);
 
-        const keysToRestore = parsed.keys || parsed;
-        if (!keysToRestore || (!keysToRestore.differenze_progress_v1 && !keysToRestore.differenze_economy_v1)) {
+        if (!isBackupPayload(parsed)) {
           sound.playError();
           alert(t.settings.backupInvalidFile);
           return;
         }
 
-        let count = 0;
-        BACKUP_STORAGE_KEYS.forEach((key) => {
-          if (keysToRestore[key] !== undefined) {
-            const val =
-              typeof keysToRestore[key] === 'string'
-                ? keysToRestore[key]
-                : JSON.stringify(keysToRestore[key]);
-            localStorage.setItem(key, val);
-            count++;
-          }
-        });
+        const count = applyBackupPayload(parsed);
+        if (count === 0) {
+          sound.playError();
+          alert(t.settings.backupInvalidFile);
+          return;
+        }
 
         sound.playVictory();
         alert(interpolate(t.settings.backupImportSuccess, { count }));
@@ -282,32 +212,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       return;
     }
 
-    const keysToRestore = parsed.keys || parsed;
-    if (!keysToRestore || (!keysToRestore.differenze_progress_v1 && !keysToRestore.differenze_economy_v1)) {
+    const available = BACKUP_STORAGE_KEYS.filter((key) =>
+      Object.prototype.hasOwnProperty.call(parsed.keys, key)
+    ).length;
+    if (available === 0) {
       sound.playError();
       alert(t.settings.invalidCode);
       return;
     }
 
-    let count = 0;
-    BACKUP_STORAGE_KEYS.forEach((key) => {
-      if (keysToRestore[key] !== undefined) {
-        count++;
-      }
-    });
-
-    const confirmMsg = interpolate(t.settings.restoreConfirm, { count });
+    const confirmMsg = interpolate(t.settings.restoreConfirm, { count: available });
     if (!window.confirm(confirmMsg)) return;
 
-    BACKUP_STORAGE_KEYS.forEach((key) => {
-      if (keysToRestore[key] !== undefined) {
-        const val =
-          typeof keysToRestore[key] === 'string'
-            ? keysToRestore[key]
-            : JSON.stringify(keysToRestore[key]);
-        localStorage.setItem(key, val);
-      }
-    });
+    const count = applyBackupPayload(parsed);
 
     sound.playVictory();
     triggerHaptic('success');
@@ -477,6 +394,56 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   }`}
                 />
               </button>
+            </div>
+
+            {/* Sealed Investigation: how much of the game requires naming the riddle first */}
+            <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-2.5">
+              <div className="flex items-center gap-3">
+                <Scroll
+                  className={`w-5 h-5 ${
+                    (settings.sealedMode ?? DEFAULT_SEALED_MODE) === 'never'
+                      ? 'text-slate-500'
+                      : 'text-amber-400'
+                  }`}
+                />
+                <div>
+                  <h5 className="text-sm font-bold text-white">{t.settings.sealedMode}</h5>
+                  <p className="text-xs text-slate-400">{t.settings.sealedModeHelp}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-1.5">
+                {(
+                  [
+                    ['never', t.settings.sealedNever],
+                    ['milestones', t.settings.sealedMilestones],
+                    ['always', t.settings.sealedAlways],
+                  ] as [SealedMode, string][]
+                ).map(([mode, label]) => {
+                  const active = (settings.sealedMode ?? DEFAULT_SEALED_MODE) === mode;
+                  return (
+                    <button
+                      key={mode}
+                      onClick={() => {
+                        onUpdateSettings({ sealedMode: mode });
+                        sound.playTap();
+                        triggerHaptic('light', settings.vibrationEnabled);
+                      }}
+                      className={`px-2 py-2 rounded-xl text-[11px] font-bold border transition-colors ${
+                        active
+                          ? 'bg-amber-500 text-stone-950 border-amber-300'
+                          : 'bg-slate-900/60 text-slate-300 border-slate-700'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="text-[11px] text-slate-500">
+                {countSealedLevels(settings.sealedMode ?? DEFAULT_SEALED_MODE)} / 120
+              </p>
             </div>
 
             {/* BGM Orchestral Music Toggle & Themes */}
