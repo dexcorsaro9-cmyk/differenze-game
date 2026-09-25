@@ -17,7 +17,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # jsdom pulls in an undici that needs Node 22: on Node 20 it throws
+          # "webidl.util.markAsUncloneable is not a function" and the component test
+          # worker never starts. Node 20 is also deprecated on Actions runners.
+          node-version: 22
           cache: 'npm'
 
       - name: Install dependencies

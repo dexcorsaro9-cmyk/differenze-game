@@ -11,6 +11,9 @@ Fully localised in Italian, English and Spanish, including all 960 riddles.
 
 ## Running it
 
+Node 22 or newer is required (`.nvmrc` pins it). jsdom, used by the component tests,
+depends on an undici that calls a Node API added in 22.10.
+
 ```bash
 npm install
 npm run dev          # Vite dev server
