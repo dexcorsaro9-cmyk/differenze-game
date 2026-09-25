@@ -222,6 +222,17 @@ export const en: Translations = {
     "levelSelectBtn": "Select Level",
     "replay120": "Replay 120 levels"
   },
+  "rewards": {
+    "sectionTitle": "Support the Expedition",
+    "sectionSubtitle": "Watch a short film and receive a supply, without spending coins.",
+    "watchButton": "Watch and receive",
+    "remainingToday": "{count} left today",
+    "coolingDown": "Available in {minutes} min",
+    "dailyCapReached": "No supplies left today",
+    "dismissed": "Film cut short: no supply granted.",
+    "failed": "No film available right now.",
+    "granted": "Supply added to your field book!"
+  },
   "shop": {
     "title": "Royal Geographic Society Emporium",
     "subtitle": "Field provisions, optical surveyor tools, and investigation gear.",

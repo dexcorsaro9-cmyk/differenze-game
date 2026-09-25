@@ -125,6 +125,23 @@ Conflicts are never merged, because a half-merged save is worse than either side
 advanced payload wins whole, ranked by completed levels first, then discovered clues, then
 coins, with the more recent export breaking an exact tie.
 
+## Rewarded adverts
+
+`utils/rewards.ts` offers a power-up in exchange for watching a short video. Like sync, it
+is **inert until configured**: with no `VITE_ADMOB_REWARDED_ID` and no Capacitor plugin the
+provider resolves to null, `RewardOfferPanel` renders nothing, and no ad SDK is loaded.
+
+The model is deliberate. This is a slow observation game, so there are no interstitials and
+nothing is paywalled: an advert that interrupted a search would break the only thing the
+game asks of the player. Every offer is a power-up that can also be bought with coins, and
+watching is capped at five per day with three minutes between them, so it stays a helping
+hand rather than a grind loop.
+
+The daily count is stored device-locally on purpose — if it travelled in the save,
+restoring an older backup would reset the day's allowance.
+
+To activate, see `.env.example`.
+
 ## Licence
 
 Proprietary. All rights reserved.

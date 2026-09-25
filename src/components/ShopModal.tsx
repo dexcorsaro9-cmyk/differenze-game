@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Snowflake, Compass, Search, Shield, Package, Sparkles, Coins, Check, AlertCircle } from 'lucide-react';
-import type { PowerUpInventory, ShopItem } from '../types/game';
+import type { PowerUpInventory, PowerUpType, ShopItem } from '../types/game';
+import { RewardOfferPanel } from './RewardOfferPanel';
 import { sound } from '../utils/audio';
 import { useTranslation } from '../i18n/LanguageContext';
 import type { Translations } from '../i18n/types';
@@ -12,6 +13,9 @@ interface ShopModalProps {
   inventory: PowerUpInventory;
   onBuyItem: (item: ShopItem) => boolean;
   onClaimEmergencyFunds: () => void;
+  /** Grants a power-up earned by watching a rewarded advert, when one is configured. */
+  onRewardGranted?: (powerUp: PowerUpType, quantity: number) => void;
+  vibrationEnabled?: boolean;
 }
 
 const getLocalizedShopItems = (t: Translations): ShopItem[] => [
@@ -113,6 +117,8 @@ export const ShopModal: React.FC<ShopModalProps> = ({
   inventory,
   onBuyItem,
   onClaimEmergencyFunds,
+  onRewardGranted,
+  vibrationEnabled = true,
 }) => {
   const { t } = useTranslation();
   const [purchaseSuccessId, setPurchaseSuccessId] = useState<string | null>(null);
@@ -220,6 +226,14 @@ export const ShopModal: React.FC<ShopModalProps> = ({
 
         {/* Shop Items Grid */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-2.5 my-1 custom-scrollbar">
+          {/* Renders nothing unless a rewarded-advert provider is configured */}
+          {onRewardGranted && (
+            <RewardOfferPanel
+              onRewardGranted={onRewardGranted}
+              vibrationEnabled={vibrationEnabled}
+            />
+          )}
+
           {shopItems.map(item => {
             const canAfford = coins >= item.coinPrice;
             const isSuccess = purchaseSuccessId === item.id;

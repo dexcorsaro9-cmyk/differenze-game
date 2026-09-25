@@ -47,12 +47,13 @@ import { normalizeExplorerProfile, type ExplorerProfile } from './data/avatarDat
 import { useExplorerPerks } from './hooks/useExplorerPerks';
 import { useMedalWatcher } from './hooks/useMedalWatcher';
 import { useSaveSync } from './hooks/useSaveSync';
+import { createAdMobProvider, setRewardProvider } from './utils/rewards';
 import {
   usePersistentJson,
   usePersistentFlag,
   hasStoredValue,
 } from './hooks/usePersistentState';
-import type { GameSettings } from './types/game';
+import type { GameSettings, PowerUpType } from './types/game';
 import { isSealedLevel, DEFAULT_SEALED_MODE } from './data/sealedLevels';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
@@ -266,6 +267,26 @@ export const App: React.FC = () => {
   // Reconcile with the remote save slot on start and whenever a level is completed.
   // No backend configured means this is a no-op (see utils/saveSync.ts).
   useSaveSync(game.completedLevelIds.length);
+
+  // Register the rewarded-advert provider if one is configured. Without an ad unit id, or
+  // without the Capacitor plugin, this resolves to null and no advert surface is rendered.
+  useEffect(() => {
+    let cancelled = false;
+    void createAdMobProvider().then(provider => {
+      if (!cancelled) setRewardProvider(provider);
+    });
+    return () => {
+      cancelled = true;
+      setRewardProvider(null);
+    };
+  }, []);
+
+  const handleRewardGranted = useCallback(
+    (powerUp: PowerUpType, quantity: number) => {
+      economy.setInventory(inv => ({ ...inv, [powerUp]: inv[powerUp] + quantity }));
+    },
+    [economy]
+  );
 
   useMedalWatcher({
     unlockMedal,
@@ -665,6 +686,8 @@ export const App: React.FC = () => {
           inventory={economy.inventory}
           onBuyItem={economy.handleBuyShopItem}
           onClaimEmergencyFunds={economy.handleClaimEmergencyFunds}
+          onRewardGranted={handleRewardGranted}
+          vibrationEnabled={settings.vibrationEnabled}
         />
       </ErrorBoundary>
 

@@ -222,6 +222,17 @@ export const it: Translations = {
     "levelSelectBtn": "Seleziona Livello",
     "replay120": "Rigioca i 120 livelli"
   },
+  "rewards": {
+    "sectionTitle": "Sostieni la Spedizione",
+    "sectionSubtitle": "Guarda un breve filmato e ricevi un rifornimento, senza spendere monete.",
+    "watchButton": "Guarda e ricevi",
+    "remainingToday": "Ancora {count} oggi",
+    "coolingDown": "Disponibile tra {minutes} min",
+    "dailyCapReached": "Rifornimenti esauriti per oggi",
+    "dismissed": "Filmato interrotto: nessun rifornimento.",
+    "failed": "Filmato non disponibile al momento.",
+    "granted": "Rifornimento aggiunto al taccuino!"
+  },
   "shop": {
     "title": "Emporio della Reale Società Geografica",
     "subtitle": "Rifornimenti da campo, strumenti ottici e manufatti d'indagine.",

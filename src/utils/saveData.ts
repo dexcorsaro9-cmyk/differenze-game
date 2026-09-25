@@ -51,6 +51,9 @@ export const NON_PORTABLE_STORAGE_KEYS = [
   // When this device last reconciled with its sync slot. Restoring another device's
   // timestamp would misreport how fresh this device is.
   'differenze_last_sync_v1',
+  // Daily rewarded-advert count. Deliberately not portable: if it travelled in the save,
+  // restoring an older backup would reset the day's allowance, which is an exploit.
+  'differenze_reward_log_v1',
 ] as const;
 
 export const SAVE_CODE_PREFIX = 'PAITITI_1928_SAVE:';

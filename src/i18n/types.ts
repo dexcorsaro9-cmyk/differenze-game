@@ -222,6 +222,17 @@ export interface Translations {
     levelSelectBtn: string;
     replay120: string;
   };
+  rewards: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    watchButton: string;
+    remainingToday: string;
+    coolingDown: string;
+    dailyCapReached: string;
+    dismissed: string;
+    failed: string;
+    granted: string;
+  };
   shop: {
     title: string;
     subtitle: string;
