@@ -123,6 +123,8 @@ export const it: Translations = {
     "sealedNever": "Mai",
     "sealedMilestones": "Tappe finali",
     "sealedAlways": "Sempre",
+    "analytics": "Diario di Bordo Anonimo",
+    "analyticsHelp": "Invia quanto tempo impieghi e dove sbagli, senza alcun identificatore: serve solo a tarare la difficolta dei livelli. Disattivato di default.",
     "bgmTitle": "Musica d'Epoca (Orchestrale)",
     "bgmSubtitle": "Sinfonia procedurale d'atmosfera 1928",
     "bgmThemeTitle": "Tema Orchestrale della Spedizione:",

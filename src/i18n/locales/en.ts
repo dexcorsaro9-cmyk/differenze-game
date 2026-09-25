@@ -123,6 +123,8 @@ export const en: Translations = {
     "sealedNever": "Never",
     "sealedMilestones": "Stage finales",
     "sealedAlways": "Always",
+    "analytics": "Anonymous Field Log",
+    "analyticsHelp": "Sends how long levels take you and where you slip, with no identifier of any kind, purely to balance difficulty. Off by default.",
     "bgmTitle": "Period Music (Orchestral)",
     "bgmSubtitle": "Procedural atmospheric 1928 symphony",
     "bgmThemeTitle": "Expedition Orchestral Theme:",

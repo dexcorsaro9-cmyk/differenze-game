@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Snowflake, Compass, Search, Shield, Package, Sparkles, Coins, Check, AlertCircle } from 'lucide-react';
 import type { PowerUpInventory, PowerUpType, ShopItem } from '../types/game';
+import { POWER_UP_PRICES, BUNDLE_PRICES } from '../data/economyTuning';
 import { RewardOfferPanel } from './RewardOfferPanel';
 import { sound } from '../utils/audio';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -26,7 +27,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'freeze_time',
     powerUpType: 'freeze_time',
     quantity: 1,
-    coinPrice: 60,
+    coinPrice: POWER_UP_PRICES.freeze_time,
     iconName: 'Snowflake',
   },
   {
@@ -36,7 +37,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'freeze_time',
     powerUpType: 'freeze_time',
     quantity: 3,
-    coinPrice: 150,
+    coinPrice: BUNDLE_PRICES.freeze_triple,
     iconName: 'Snowflake',
     badge: t.shop.freezeTripleBadge,
   },
@@ -47,7 +48,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'compass_radar',
     powerUpType: 'compass_radar',
     quantity: 1,
-    coinPrice: 40,
+    coinPrice: POWER_UP_PRICES.compass_radar,
     iconName: 'Compass',
   },
   {
@@ -57,7 +58,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'compass_radar',
     powerUpType: 'compass_radar',
     quantity: 3,
-    coinPrice: 100,
+    coinPrice: BUNDLE_PRICES.compass_triple,
     iconName: 'Compass',
     badge: t.shop.compassTripleBadge,
   },
@@ -68,7 +69,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'hint',
     powerUpType: 'hint',
     quantity: 3,
-    coinPrice: 100,
+    coinPrice: BUNDLE_PRICES.hint_triple,
     iconName: 'Search',
   },
   {
@@ -78,7 +79,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'error_shield',
     powerUpType: 'error_shield',
     quantity: 1,
-    coinPrice: 45,
+    coinPrice: POWER_UP_PRICES.error_shield,
     iconName: 'Shield',
   },
   {
@@ -88,7 +89,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     type: 'error_shield',
     powerUpType: 'error_shield',
     quantity: 3,
-    coinPrice: 110,
+    coinPrice: BUNDLE_PRICES.shield_triple,
     iconName: 'Shield',
     badge: t.shop.shieldTripleBadge,
   },
@@ -98,7 +99,7 @@ const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     description: t.shop.bundleDesc,
     type: 'bundle',
     quantity: 1,
-    coinPrice: 250,
+    coinPrice: BUNDLE_PRICES.expedition_bundle,
     iconName: 'Package',
     badge: t.shop.bundleBadge,
     contents: [

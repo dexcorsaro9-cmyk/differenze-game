@@ -48,6 +48,7 @@ import { useExplorerPerks } from './hooks/useExplorerPerks';
 import { useMedalWatcher } from './hooks/useMedalWatcher';
 import { useSaveSync } from './hooks/useSaveSync';
 import { createAdMobProvider, setRewardProvider } from './utils/rewards';
+import { configureAnalytics, createConfiguredAnalyticsTransport, flushEvents } from './utils/analytics';
 import {
   usePersistentJson,
   usePersistentFlag,
@@ -267,6 +268,13 @@ export const App: React.FC = () => {
   // Reconcile with the remote save slot on start and whenever a level is completed.
   // No backend configured means this is a no-op (see utils/saveSync.ts).
   useSaveSync(game.completedLevelIds.length);
+
+  // Wire analytics to the player's consent. Turning the setting off clears anything still
+  // queued, so opting out also discards what was never sent.
+  useEffect(() => {
+    configureAnalytics(createConfiguredAnalyticsTransport(), settings.analyticsEnabled === true);
+    if (settings.analyticsEnabled) void flushEvents();
+  }, [settings.analyticsEnabled]);
 
   // Register the rewarded-advert provider if one is configured. Without an ad unit id, or
   // without the Capacitor plugin, this resolves to null and no advert surface is rendered.

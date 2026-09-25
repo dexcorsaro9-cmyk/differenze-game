@@ -128,6 +128,30 @@ Conflicts are never merged, because a half-merged save is worse than either side
 advanced payload wins whole, ranked by completed levels first, then discovered clues, then
 coins, with the more recent export breaking an exact tie.
 
+## Gameplay analytics
+
+The difficulty curve across 120 levels is currently derived from arithmetic, not from play.
+`utils/analytics.ts` exists to replace that with evidence: it records how each level went so
+you can see which ones stall players and which they abandon.
+
+Three constraints, in order:
+
+1. **No identifier is sent.** Not a player id, not a device id, nothing that links two
+   events to one person. Timestamps are rounded to the hour. That answers "which level is
+   too hard" and "where do people stop"; it cannot answer per-player retention, and that is
+   the deliberate trade.
+2. **Opt-in, off by default**, so the privacy policy's guarantee that nothing is
+   transmitted stays true for anyone who does not turn it on.
+3. **Inert unless `VITE_TELEMETRY_ENDPOINT` (or a sync endpoint) is set** — without one the
+   toggle does not appear and no queue is written.
+
+Events are queued in `localStorage` (bounded at 200, oldest dropped first) and flushed in
+batches of 25 at the end of a level. A failed send keeps its batch for the next attempt.
+Switching the toggle off discards whatever is still queued.
+
+Enabling this changes what the app does with data, so **PRIVACY_POLICY.md section 5.1
+describes it and must stay accurate** if you change what is collected.
+
 ## Rewarded adverts
 
 `utils/rewards.ts` offers a power-up in exchange for watching a short video. Like sync, it

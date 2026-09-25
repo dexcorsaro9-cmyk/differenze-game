@@ -12,7 +12,15 @@ import {
 } from '../utils/dailyChallenge';
 import { assetUrl } from '../utils/assetUrl';
 import { getEarnedStars, getStartingLives } from '../data/difficultyTuning';
+import {
+  COINS_PER_CLUE,
+  getComboMultiplier,
+  STAR_BONUS,
+  MILESTONE_BONUS,
+} from '../data/economyTuning';
 import { recordHit, recordError, recordHintUsed, recordLevelCompletion } from '../utils/telemetry';
+import { recordEvent, flushEvents } from '../utils/analytics';
+import { isSealedLevel } from '../data/sealedLevels';
 import type { Difference, Level, PowerUpInventory, PowerUpType, RadarQuadrant } from '../types/game';
 
 const STORAGE_KEY_PROGRESS = 'differenze_progress_v1';
@@ -96,6 +104,7 @@ export const useGameSession = ({
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
   const usedAssistanceThisLevelRef = useRef<boolean>(false);
+  const hintsUsedThisLevelRef = useRef<number>(0);
 
   // Power-Ups & Assists State
   const [isTimeFrozen, setIsTimeFrozen] = useState<boolean>(false);
@@ -276,8 +285,21 @@ export const useGameSession = ({
       setLevelCoinsEarned(0);
       setComboStreak(0);
       usedAssistanceThisLevelRef.current = false;
+      hintsUsedThisLevelRef.current = 0;
       if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
       setIsTimerRunning(true);
+
+      // Pairs with level_complete / level_failed: the gap between them is what reveals
+      // which level players abandon.
+      const loaded = levels.find(l => l.id === levelId);
+      if (loaded) {
+        recordEvent({
+          type: 'level_start',
+          levelId,
+          difficulty: loaded.difficulty,
+          sealed: isSealedLevel(levelId),
+        });
+      }
     },
     [hasPassiveFreeShield, levels]
   );
@@ -310,9 +332,8 @@ export const useGameSession = ({
       }
 
       // Award coins with explorer perk bonus and dynamic combo multiplier!
-      const comboMult = nextStreak >= 4 ? 1.5 : nextStreak >= 3 ? 1.3 : nextStreak >= 2 ? 1.15 : 1.0;
-      const baseCoins = 20;
-      const earnedCoins = Math.round(baseCoins * (1 + coinBonusPercent / 100) * comboMult);
+      const comboMult = getComboMultiplier(nextStreak);
+      const earnedCoins = Math.round(COINS_PER_CLUE * (1 + coinBonusPercent / 100) * comboMult);
       onEarnCoins(earnedCoins);
       setLevelCoinsEarned(c => c + earnedCoins);
 
@@ -348,6 +369,17 @@ export const useGameSession = ({
         setIsTimerRunning(false);
         setIsTimeFrozen(false);
         recordLevelCompletion(currentLevel.id, timeElapsed);
+        recordEvent({
+          type: 'level_complete',
+          levelId: currentLevel.id,
+          difficulty: currentLevel.difficulty,
+          sealed: isSealedLevel(currentLevel.id),
+          timeSeconds: timeElapsed,
+          errors: errorsCount,
+          hintsUsed: hintsUsedThisLevelRef.current,
+          stars: getEarnedStars(currentLevel.difficulty, timeElapsed),
+        });
+        void flushEvents();
 
         // Check Victory Medals
         if (errorsCount === 0) onUnlockMedal('flawless_run');
@@ -363,9 +395,9 @@ export const useGameSession = ({
           ...prev,
           [currentLevel.id]: Math.max(prev[currentLevel.id] || 0, earnedStars),
         }));
-        const starBonus = earnedStars === 3 ? 100 : earnedStars === 2 ? 60 : 30;
+        const starBonus = STAR_BONUS[earnedStars];
         const isMilestone = currentLevel.id % 10 === 0;
-        const milestoneBonus = isMilestone ? 300 : 0;
+        const milestoneBonus = isMilestone ? MILESTONE_BONUS : 0;
         let totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
 
         // Check if level was played as Daily Challenge or matches today's daily
@@ -481,13 +513,23 @@ export const useGameSession = ({
         const nextLives = prevLives - 1;
         if (nextLives <= 0) {
           setIsTimerRunning(false);
+          recordEvent({
+            type: 'level_failed',
+            levelId: currentLevel.id,
+            difficulty: currentLevel.difficulty,
+            sealed: isSealedLevel(currentLevel.id),
+            timeSeconds: timeElapsed,
+            errors: errorsCount + 1,
+            hintsUsed: hintsUsedThisLevelRef.current,
+          });
+          void flushEvents();
           onOpenGameOver();
           return 0;
         }
         return nextLives;
       });
     }
-  }, [isShieldActive, vibrationEnabled, zenMode, onOpenGameOver]);
+  }, [isShieldActive, vibrationEnabled, zenMode, onOpenGameOver, currentLevel, timeElapsed, errorsCount]);
 
   // Handle Power-Up Usage
   const handleUsePowerUp = useCallback(
@@ -502,6 +544,7 @@ export const useGameSession = ({
       } else if (type === 'compass_radar') {
         if (inventory.compass_radar <= 0) return;
         usedAssistanceThisLevelRef.current = true;
+        hintsUsedThisLevelRef.current += 1;
         recordHintUsed();
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
@@ -524,6 +567,7 @@ export const useGameSession = ({
       } else if (type === 'hint') {
         if (inventory.hint <= 0) return;
         usedAssistanceThisLevelRef.current = true;
+        hintsUsedThisLevelRef.current += 1;
         recordHintUsed();
         const unfound = currentLevel.differences.find(d => !foundDifferenceIds.includes(d.id));
         if (!unfound) return;
