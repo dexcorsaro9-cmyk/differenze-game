@@ -123,6 +123,8 @@ export interface Translations {
     sealedNever: string;
     sealedMilestones: string;
     sealedAlways: string;
+    analytics: string;
+    analyticsHelp: string;
     bgmTitle: string;
     bgmSubtitle: string;
     bgmThemeTitle: string;

@@ -123,6 +123,8 @@ export const es: Translations = {
     "sealedNever": "Nunca",
     "sealedMilestones": "Finales de etapa",
     "sealedAlways": "Siempre",
+    "analytics": "Diario de Campo Anonimo",
+    "analyticsHelp": "Envia cuanto tardas y donde fallas, sin ningun identificador, solo para ajustar la dificultad. Desactivado por defecto.",
     "bgmTitle": "Música de Época (Orquestal)",
     "bgmSubtitle": "Sinfonía atmosférica procesal de 1928",
     "bgmThemeTitle": "Tema Orquestal de Expedición:",

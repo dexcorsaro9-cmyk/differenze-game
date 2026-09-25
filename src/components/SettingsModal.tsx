@@ -19,6 +19,7 @@ import {
   Scroll,
   CheckCircle2,
   HardDriveDownload,
+  BarChart3,
 } from 'lucide-react';
 import type { GameSettings } from '../types/game';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -29,6 +30,7 @@ import {
   downloadExpeditionOffline,
   type OfflineCacheStatus,
 } from '../utils/offlineManager';
+import { createConfiguredAnalyticsTransport } from '../utils/analytics';
 import {
   DEFAULT_SEALED_MODE,
   countSealedLevels,
@@ -78,6 +80,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const { language, setLanguage, t, interpolate } = useTranslation();
   const [backupStatus, setBackupStatus] = useState<string | null>(null);
+  const [isAnalyticsConfigured] = useState<boolean>(() => createConfiguredAnalyticsTransport() !== null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Code backup sub-modal
@@ -395,6 +398,38 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 />
               </button>
             </div>
+
+            {/* Anonymous analytics: opt-in, and only rendered when a backend is configured */}
+            {isAnalyticsConfigured && (
+              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+                <div className="flex items-center gap-3">
+                  <BarChart3
+                    className={`w-5 h-5 ${settings.analyticsEnabled ? 'text-sky-400' : 'text-slate-500'}`}
+                  />
+                  <div>
+                    <h5 className="text-sm font-bold text-white">{t.settings.analytics}</h5>
+                    <p className="text-xs text-slate-400">{t.settings.analyticsHelp}</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    onUpdateSettings({ analyticsEnabled: !settings.analyticsEnabled });
+                    sound.playTap();
+                    triggerHaptic('light', settings.vibrationEnabled);
+                  }}
+                  className={`w-12 h-7 rounded-full transition-colors relative p-1 shrink-0 ${
+                    settings.analyticsEnabled ? 'bg-sky-500' : 'bg-slate-700'
+                  }`}
+                >
+                  <div
+                    className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                      settings.analyticsEnabled ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+            )}
 
             {/* Sealed Investigation: how much of the game requires naming the riddle first */}
             <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-2.5">

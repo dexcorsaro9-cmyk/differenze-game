@@ -60,6 +60,11 @@ export interface GameSettings {
   layoutMode: 'auto' | 'vertical' | 'horizontal';
   /** Which scenes require naming the riddle before claiming its object. */
   sealedMode?: import('../data/sealedLevels').SealedMode;
+  /**
+   * Opt-in anonymous gameplay analytics. Off unless the player turns it on, which is what
+   * keeps the privacy policy's "nothing is transmitted" guarantee true by default.
+   */
+  analyticsEnabled?: boolean;
 }
 
 export interface ClickFeedback {

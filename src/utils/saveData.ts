@@ -54,6 +54,9 @@ export const NON_PORTABLE_STORAGE_KEYS = [
   // Daily rewarded-advert count. Deliberately not portable: if it travelled in the save,
   // restoring an older backup would reset the day's allowance, which is an exploit.
   'differenze_reward_log_v1',
+  // Unsent analytics events. They describe this device's play and are discarded on
+  // opt-out; carrying them into another device's save would misattribute them.
+  'differenze_analytics_queue_v1',
 ] as const;
 
 export const SAVE_CODE_PREFIX = 'PAITITI_1928_SAVE:';
