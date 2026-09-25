@@ -16,7 +16,7 @@
  * scripts/generate_native_assets.py, and the PNG icons are referenced by the manifest.
  */
 import { readdir, stat, unlink, writeFile } from 'node:fs/promises';
-import { join, extname, basename } from 'node:path';
+import { join, basename } from 'node:path';
 import sharp from 'sharp';
 
 const QUALITY = 82;
