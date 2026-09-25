@@ -10,6 +10,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Per-language clue dictionaries are imported dynamically and must stay in
+          // their own async chunks; forcing them into game-i18n would put all three
+          // languages back into the initial download.
+          if (/[\\/]src[\\/]i18n[\\/]clues[\\/](en|es)[\\/]/.test(id)) {
+            return undefined;
+          }
           if (/[\\/]src[\\/]i18n[\\/]/.test(id)) {
             return 'game-i18n';
           }

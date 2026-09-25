@@ -1,10 +1,14 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { ALL_120_LEVELS } from '../data/levelRegistry';
 import { LEVEL_CLUES_REGISTRY } from '../data/levelCluesData';
 import { LEVEL_SCENES, getLevelScene } from '../data/levelScenes';
-import { getLocalizedDifference } from '../i18n';
+import {
+  getLocalizedDifference,
+  loadClueTranslations,
+  areClueTranslationsReady,
+} from '../i18n';
 import type { Language } from '../i18n/types';
 
 const EXPECTED_LEVELS = 120;
@@ -183,6 +187,21 @@ describe('clue data', () => {
 });
 
 describe('clue localisation', () => {
+  beforeAll(async () => {
+    // Clue dictionaries load per language on demand; exercising that path here is also
+    // what proves the lazy loader actually resolves every stage chunk.
+    await Promise.all(LANGUAGES.map(lang => loadClueTranslations(lang)));
+  });
+
+  it('reports Italian as ready without loading anything', () => {
+    expect(areClueTranslationsReady('it')).toBe(true);
+  });
+
+  it('loads a dictionary for each translated language', () => {
+    expect(areClueTranslationsReady('en')).toBe(true);
+    expect(areClueTranslationsReady('es')).toBe(true);
+  });
+
   it('translates every clue into every supported language', () => {
     const gaps: string[] = [];
 
@@ -198,5 +217,15 @@ describe('clue localisation', () => {
     });
 
     expect(gaps, `untranslated clues: ${gaps.slice(0, 10).join(', ')}`).toEqual([]);
+  });
+
+  it('actually changes the strings, rather than falling back to Italian', () => {
+    const sample = ALL_120_LEVELS[0].differences[0];
+    const en = getLocalizedDifference(sample, 'en');
+    const es = getLocalizedDifference(sample, 'es');
+
+    expect(en.name).not.toBe(sample.name);
+    expect(es.name).not.toBe(sample.name);
+    expect(en.name).not.toBe(es.name);
   });
 });

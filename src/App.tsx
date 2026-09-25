@@ -56,7 +56,7 @@ import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const { t, language } = useTranslation();
+  const { t, language, cluesVersion } = useTranslation();
 
   // Persistence keys
   const STORAGE_KEY_SETTINGS = 'differenze_settings_v1';
@@ -539,19 +539,22 @@ export const App: React.FC = () => {
   }, [economy, game]);
 
   // Memoized localized differences & clues for current level
+  // cluesVersion is a dependency on purpose: the clue dictionary for a non-Italian
+  // language arrives asynchronously, and without it these memos would keep the Italian
+  // fallback they computed on first render.
   const localizedDifferences = useMemo(
     () => getLocalizedDifferences(game.currentLevel.differences, language),
-    [game.currentLevel.differences, language]
+    [game.currentLevel.differences, language, cluesVersion]
   );
 
   const localizedActiveHint = useMemo(
     () => getLocalizedDifference(game.activeHint, language),
-    [game.activeHint, language]
+    [game.activeHint, language, cluesVersion]
   );
 
   const localizedActiveClueToast = useMemo(
     () => getLocalizedDifference(game.activeClueToast, language),
-    [game.activeClueToast, language]
+    [game.activeClueToast, language, cluesVersion]
   );
 
   return (
