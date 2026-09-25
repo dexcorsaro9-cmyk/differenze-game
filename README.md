@@ -1,32 +1,110 @@
-# React + TypeScript + Vite
+# I Misteri di Paititi 1928
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A mobile hidden-object adventure. You play an archaeologist in 1928 investigating the
+disappearance of Professor Bellini, working through 120 photographic scenes across 12
+stages — Oxford, Venice, Crete, Alexandria, Luxor, Siwa, Petra, Iguazú, Nazca, Machu
+Picchu and finally Paititi. Each scene hides eight objects, and each one is found by
+deciphering a written riddle from Bellini's field journal rather than by sweeping the
+image.
 
-Currently, two official plugins are available:
+Fully localised in Italian, English and Spanish, including all 960 riddles.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Running it
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev          # Vite dev server
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Typecheck (`tsc -b`) then production build |
+| `npm run preview` | Serve the production build locally |
+| `npm test` | Data-integrity and gameplay-rule tests (vitest) |
+| `npm run test:watch` | Same, in watch mode |
+| `npm run lint` | oxlint |
+| `npm run cap:build` | Build and sync the Capacitor native projects |
+| `npm run cap:android` | Open the Android project in Android Studio |
+
+The game is **mobile-only by design**: there is no keyboard navigation, and browser zoom
+is disabled on purpose because the investigation stage implements its own pinch-to-zoom.
+
+## How it fits together
+
+```
+src/
+  App.tsx              Top-level state: which modals are open, equipment perks, flags
+  hooks/
+    useGameSession.ts  A run: current level, lives, timer, found clues, power-ups
+    useEconomy.ts      Coins, inventory, medals, consular visas
+    useModalManager.ts Modal open/close state
+    usePWA.ts          Install prompt and offline status
+  components/
+    HiddenObjectView.tsx  The investigation stage: pan, zoom, magnifier, tap handling
+    …                     ~38 other screens and modals
+  data/
+    levelScenes.ts     Level id -> scene photograph (one line per level)
+    levelCluesData.ts  The 960 clues: coordinates, riddles, journal lore
+    levelRegistry.ts   Assembles the 120 Level objects from the above
+    avatarData.ts      Outfits, accessories, 8 equipment slots, set bonuses
+  utils/
+    hitDetection.ts    Pure tap-resolution rules (tolerance bands, neighbour caps)
+    saveData.ts        Which keys make up a portable save, and the save-code codec
+    motion.ts          Reduced-motion preference
+    audio.ts           Procedural Web Audio synthesiser (no audio files ship)
+  i18n/
+    locales/           UI strings per language
+    clues/             The 960 clues translated, split by stage
+```
+
+### Adding a level
+
+1. Drop the scene photograph in `public/levels/` as WebP.
+2. Add one line to `LEVEL_SCENES` in `src/data/levelScenes.ts`.
+3. Add its eight clues to `LEVEL_CLUES_REGISTRY` in `src/data/levelCluesData.ts`.
+4. Add the translations to `src/i18n/clues/stageN.ts`.
+5. Run `npm test` — the suite checks the id is registered, the file exists, the clues are
+   unique and unambiguous, and nothing is left untranslated.
+
+### Images
+
+Scene photographs are WebP at q82, 1200x896. Resolution is deliberate: finding small
+objects while pinched in is the core mechanic, so the plates are not downscaled further.
+To re-run a conversion pass:
+
+```bash
+npm i --no-save sharp
+node scripts/convert_images_webp.mjs --delete
+```
+
+## Tests
+
+The clue registry is the project's most valuable asset — 120 levels x 8 hand-authored
+riddles with hand-calibrated coordinates — so the suite asserts the invariants a careless
+recalibration would break: every level present and unique, every clue reachable and
+unambiguous on every one of the 120 real scenes, every asset referenced actually shipped,
+every clue translated in all three languages, and every persisted key covered by the
+backup.
+
+CI runs lint, typecheck and tests on every push and pull request, and the deploy workflow
+runs them before building.
+
+## Deployment
+
+Pushing to `main` builds and publishes to GitHub Pages (`base: '/differenze-game/'`). The
+Android app is a Capacitor wrapper over the same `dist/`.
+
+A service worker precaches the shell and all 120 scene plates (~28 MB) for offline play;
+players can trigger the download from Settings.
+
+## Saves
+
+Progress lives in `localStorage`. Settings offers an export to `.json` and a copyable
+"journal code", and both restore paths go through `utils/saveData.ts`, which is the single
+source of truth for which keys travel. There is no server-side save yet, so a player
+switching devices has to carry a save file across.
+
+## Licence
+
+Proprietary. All rights reserved.
