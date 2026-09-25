@@ -12,6 +12,12 @@ import {
 } from '../utils/dailyChallenge';
 import { assetUrl } from '../utils/assetUrl';
 import { getEarnedStars, getStartingLives } from '../data/difficultyTuning';
+import {
+  COINS_PER_CLUE,
+  getComboMultiplier,
+  STAR_BONUS,
+  MILESTONE_BONUS,
+} from '../data/economyTuning';
 import { recordHit, recordError, recordHintUsed, recordLevelCompletion } from '../utils/telemetry';
 import type { Difference, Level, PowerUpInventory, PowerUpType, RadarQuadrant } from '../types/game';
 
@@ -310,9 +316,8 @@ export const useGameSession = ({
       }
 
       // Award coins with explorer perk bonus and dynamic combo multiplier!
-      const comboMult = nextStreak >= 4 ? 1.5 : nextStreak >= 3 ? 1.3 : nextStreak >= 2 ? 1.15 : 1.0;
-      const baseCoins = 20;
-      const earnedCoins = Math.round(baseCoins * (1 + coinBonusPercent / 100) * comboMult);
+      const comboMult = getComboMultiplier(nextStreak);
+      const earnedCoins = Math.round(COINS_PER_CLUE * (1 + coinBonusPercent / 100) * comboMult);
       onEarnCoins(earnedCoins);
       setLevelCoinsEarned(c => c + earnedCoins);
 
@@ -363,9 +368,9 @@ export const useGameSession = ({
           ...prev,
           [currentLevel.id]: Math.max(prev[currentLevel.id] || 0, earnedStars),
         }));
-        const starBonus = earnedStars === 3 ? 100 : earnedStars === 2 ? 60 : 30;
+        const starBonus = STAR_BONUS[earnedStars];
         const isMilestone = currentLevel.id % 10 === 0;
-        const milestoneBonus = isMilestone ? 300 : 0;
+        const milestoneBonus = isMilestone ? MILESTONE_BONUS : 0;
         let totalBonus = Math.round((starBonus + milestoneBonus) * (1 + coinBonusPercent / 100));
 
         // Check if level was played as Daily Challenge or matches today's daily

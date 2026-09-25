@@ -5,6 +5,7 @@ import { triggerHaptic } from '../utils/haptics';
 import { ALL_ACHIEVEMENTS, type Achievement } from '../data/achievementsData';
 import type { ConsularVisa } from '../data/passportData';
 import type { PowerUpInventory, PowerUpType, ShopItem } from '../types/game';
+import { POWER_UP_PRICES, STARTING_COINS, EMERGENCY_FUNDS } from '../data/economyTuning';
 import type { CoinBurstEvent } from '../components/FlyingCoinParticles';
 
 const STORAGE_KEY_ECONOMY = 'differenze_economy_v1';
@@ -27,12 +28,12 @@ export const useEconomy = (onOpenShopModal?: () => void) => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return typeof parsed.coins === 'number' ? parsed.coins : 150;
+        return typeof parsed.coins === 'number' ? parsed.coins : STARTING_COINS;
       } catch {
-        return 150;
+        return STARTING_COINS;
       }
     }
-    return 150;
+    return STARTING_COINS;
   });
 
   // Power-up Inventory
@@ -161,13 +162,7 @@ export const useEconomy = (onOpenShopModal?: () => void) => {
   // Quick In-Bar Purchase with Coins
   const handleQuickBuy = useCallback(
     (type: PowerUpType, vibrationEnabled = true) => {
-      const PRICES: Record<PowerUpType, number> = {
-        freeze_time: 60,
-        compass_radar: 40,
-        hint: 50,
-        error_shield: 45,
-      };
-      const price = PRICES[type];
+      const price = POWER_UP_PRICES[type];
       if (coins >= price) {
         setCoins(c => c - price);
         setInventory(inv => ({ ...inv, [type]: inv[type] + 1 }));
@@ -207,7 +202,7 @@ export const useEconomy = (onOpenShopModal?: () => void) => {
 
   // Emergency expedition relief
   const handleClaimEmergencyFunds = useCallback(() => {
-    setCoins(c => c + 60);
+    setCoins(c => c + EMERGENCY_FUNDS);
   }, []);
 
   // Coin particle handlers
@@ -239,7 +234,7 @@ export const useEconomy = (onOpenShopModal?: () => void) => {
     safeStorage.removeItem(STORAGE_KEY_MEDALS);
     safeStorage.removeItem(STORAGE_KEY_CLAIMED_MEDALS);
     safeStorage.removeItem(STORAGE_KEY_CLAIMED_VISAS);
-    setCoins(150);
+    setCoins(STARTING_COINS);
     setInventory(DEFAULT_INVENTORY);
     setUnlockedMedalIds([]);
     setClaimedMedalIds([]);
