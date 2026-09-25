@@ -16,9 +16,6 @@ export default defineConfig({
           if (/[\\/]src[\\/]data[\\/]/.test(id)) {
             return 'game-data';
           }
-          if (/[\\/]node_modules[\\/]three/.test(id)) {
-            return 'vendor-three';
-          }
           if (/[\\/]node_modules[\\/](lucide-react|canvas-confetti)/.test(id)) {
             return 'vendor-ui';
           }

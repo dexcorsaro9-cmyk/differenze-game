@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { ALL_120_LEVELS } from '../data/levelRegistry';
 import { LEVEL_CLUES_REGISTRY } from '../data/levelCluesData';
+import { LEVEL_SCENES, getLevelScene } from '../data/levelScenes';
 import { getLocalizedDifference } from '../i18n';
 import type { Language } from '../i18n/types';
 
@@ -102,6 +103,23 @@ describe('referenced assets', () => {
     expect(checked, 'asset references scanned').toBeGreaterThan(200);
     expect([...missing], `assets referenced but absent from public/: ${[...missing].join(', ')}`)
       .toEqual([]);
+  });
+});
+
+describe('scene map', () => {
+  it('registers a scene for every level from 1 to 120', () => {
+    const ids = Object.keys(LEVEL_SCENES).map(Number).sort((a, b) => a - b);
+    expect(ids).toEqual(Array.from({ length: EXPECTED_LEVELS }, (_, i) => i + 1));
+  });
+
+  it('gives each level its own photograph', () => {
+    const paths = Object.values(LEVEL_SCENES).map(p => p.split('?')[0]);
+    expect(new Set(paths).size).toBe(paths.length);
+  });
+
+  it('refuses an unregistered level rather than silently returning nothing', () => {
+    expect(() => getLevelScene(121)).toThrow(/level 121/);
+    expect(() => getLevelScene(0)).toThrow();
   });
 });
 

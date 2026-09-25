@@ -23,12 +23,10 @@
     "@capacitor/ios": "^8.5.2",
     "@capacitor/screen-orientation": "^8.0.1",
     "@capacitor/status-bar": "^8.0.3",
-    "@types/three": "^0.185.4",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "three": "^0.185.1"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
