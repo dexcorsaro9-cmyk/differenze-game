@@ -4,7 +4,8 @@ import { it } from './locales/it';
 import { en } from './locales/en';
 import { es } from './locales/es';
 import { safeStorage } from '../utils/storage';
-import { loadClueTranslations, areClueTranslationsReady } from './clues';
+import { loadClueTranslations, areClueTranslationsReady, getLocalizedDifference, getLocalizedDifferences } from './clues';
+import type { Difference } from '../types/game';
 
 const STORAGE_KEY_LANGUAGE = 'differenze_language_v1';
 
@@ -20,11 +21,13 @@ interface LanguageContextType {
   t: Translations;
   interpolate: (template: string, params?: Record<string, string | number>) => string;
   /**
-   * Bumped when a language's clue dictionary finishes loading. Memoised localisations of
-   * clue text must list it as a dependency, or they keep the Italian fallback they
-   * computed before the chunks arrived.
+   * Clue localisers bound to the current language and to whichever dictionary has
+   * arrived. Consumers depend on these identities rather than tracking load state
+   * themselves: the function is replaced once the chunks land, so a memo that lists it
+   * recomputes and picks up the translated strings.
    */
-  cluesVersion: number;
+  localizeDifference: (diff: Difference | null) => Difference | null;
+  localizeDifferences: (diffs: Difference[]) => Difference[];
 }
 
 export const LanguageContext = createContext<LanguageContextType | null>(null);
@@ -51,7 +54,9 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     safeStorage.setItem(STORAGE_KEY_LANGUAGE, lang);
   };
 
-  const [cluesVersion, setCluesVersion] = useState<number>(0);
+  // Incremented only when an async dictionary load completes, which is what makes the
+  // localisers below a fresh identity. Readiness itself is read during render, not stored.
+  const [loadedTick, setLoadedTick] = useState<number>(0);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -59,22 +64,34 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   }, [language]);
 
-  // Fetch this language's clue dictionary (a no-op for Italian, the source language) and
-  // re-render consumers once it is in place.
+  // Fetch this language's clue dictionary (a no-op for Italian, the source language).
+  // Nothing is set synchronously here: if the dictionary is already in the cache, the
+  // localisers below already see it on this render.
   useEffect(() => {
-    if (areClueTranslationsReady(language)) {
-      setCluesVersion(v => v + 1);
-      return;
-    }
+    if (areClueTranslationsReady(language)) return;
 
     let cancelled = false;
     loadClueTranslations(language).then(() => {
-      if (!cancelled) setCluesVersion(v => v + 1);
+      if (!cancelled) setLoadedTick(tick => tick + 1);
     });
     return () => {
       cancelled = true;
     };
   }, [language]);
+
+  const localizeDifference = useMemo(
+    () => (diff: Difference | null) => getLocalizedDifference(diff, language),
+    // loadedTick is the point of this memo: the dictionary it reads lives in a module
+    // cache the linter cannot see, so a completed load has to invalidate the identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [language, loadedTick]
+  );
+
+  const localizeDifferences = useMemo(
+    () => (diffs: Difference[]) => getLocalizedDifferences(diffs, language),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [language, loadedTick]
+  );
 
   const t = useMemo(() => dictionaries[language] || dictionaries.it, [language]);
 
@@ -123,7 +140,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, interpolate, cluesVersion }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, interpolate, localizeDifference, localizeDifferences }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -143,7 +160,8 @@ export function useTranslation(): LanguageContextType {
       setLanguage: () => {},
       t: dictionaries.it,
       interpolate,
-      cluesVersion: 0,
+      localizeDifference: diff => diff,
+      localizeDifferences: diffs => diffs,
     };
   }
   return context;

@@ -37,7 +37,7 @@ import { useEconomy } from './hooks/useEconomy';
 import { useGameSession } from './hooks/useGameSession';
 import { useModalManager } from './hooks/useModalManager';
 import { useTranslation } from './i18n/LanguageContext';
-import { getLocalizedMedal, getLocalizedDifference, getLocalizedDifferences } from './i18n';
+import { getLocalizedMedal } from './i18n';
 import { hasPendingDaily } from './utils/dailyChallenge';
 import { safeStorage } from './utils/storage';
 import { ALL_COLLECTIBLE_RELICS } from './data/collectiblesData';
@@ -56,7 +56,7 @@ import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const { t, language, cluesVersion } = useTranslation();
+  const { t, language, localizeDifference, localizeDifferences } = useTranslation();
 
   // Persistence keys
   const STORAGE_KEY_SETTINGS = 'differenze_settings_v1';
@@ -539,22 +539,21 @@ export const App: React.FC = () => {
   }, [economy, game]);
 
   // Memoized localized differences & clues for current level
-  // cluesVersion is a dependency on purpose: the clue dictionary for a non-Italian
-  // language arrives asynchronously, and without it these memos would keep the Italian
-  // fallback they computed on first render.
+  // The localisers come from the language context and are replaced when a clue dictionary
+  // finishes loading, so these memos recompute and pick up the translated strings.
   const localizedDifferences = useMemo(
-    () => getLocalizedDifferences(game.currentLevel.differences, language),
-    [game.currentLevel.differences, language, cluesVersion]
+    () => localizeDifferences(game.currentLevel.differences),
+    [game.currentLevel.differences, localizeDifferences]
   );
 
   const localizedActiveHint = useMemo(
-    () => getLocalizedDifference(game.activeHint, language),
-    [game.activeHint, language, cluesVersion]
+    () => localizeDifference(game.activeHint),
+    [game.activeHint, localizeDifference]
   );
 
   const localizedActiveClueToast = useMemo(
-    () => getLocalizedDifference(game.activeClueToast, language),
-    [game.activeClueToast, language, cluesVersion]
+    () => localizeDifference(game.activeClueToast),
+    [game.activeClueToast, localizeDifference]
   );
 
   return (
