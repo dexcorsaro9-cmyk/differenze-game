@@ -190,7 +190,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
   // Load World Map Texture
   useEffect(() => {
     const img = new Image();
-    img.src = assetUrl('/antique_world_map.jpg');
+    img.src = assetUrl('/antique_world_map.webp');
     img.onload = () => {
       const off = document.createElement('canvas');
       off.width = img.width;

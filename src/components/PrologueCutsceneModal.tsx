@@ -34,7 +34,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'Per secoli, gli archivi hanno trattato la Città d\'Oro come un semplice miraggio. Ma le antiche iscrizioni parlano chiaro: i templi pre-incaici comunicano attraverso frequenze sacre.'
             : 'I cartografi coloniali disegnarono mappe ingannevoli per nascondere l\'accesso alle valli proibite. Ma i riferimenti geodetici incisi sulla roccia non mentono mai.',
-        image: '/splash_screen.jpg',
+        image: '/splash_screen.webp',
       },
       {
         caption: 'VERSO LA GIUNGLA INESPLORATA',
@@ -43,7 +43,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'Questo taccuino d\'epoca custodisce i rilievi originali della spedizione perduta. Confrontando ogni schizzo con il terreno reale, possiamo decifrare la rotta per Paititi.'
             : 'Ogni pagina di questo taccuino contiene indizi di triangolazione topografica. Tra l\'archivio storico e lo scavo sul campo si celano le differenze decisive.',
-        image: '/antique_world_map.jpg',
+        image: '/antique_world_map.webp',
       },
       {
         caption: 'L\'INIZIO DELLA SPEDIZIONE',
@@ -63,7 +63,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'For centuries, archives considered the City of Gold a mere mirage. But ancient inscriptions reveal the truth: pre-Incan temples communicate through sacred acoustic frequencies.'
             : 'Colonial cartographers drew deceitful maps to conceal the forbidden valley paths. But geodetic survey points carved into ancient rock never lie.',
-        image: '/splash_screen.jpg',
+        image: '/splash_screen.webp',
       },
       {
         caption: 'TOWARDS THE UNCHARTED JUNGLE',
@@ -72,7 +72,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'This vintage notebook preserves original survey sketches of the lost trek. Comparing each sketch with the terrain, we can chart our course to Paititi.'
             : 'Every page of this journal holds topographic triangulation clues. The key differences between historical archives and the field will unlock the path.',
-        image: '/antique_world_map.jpg',
+        image: '/antique_world_map.webp',
       },
       {
         caption: 'EXPEDITION COMMENCES',
@@ -92,7 +92,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'Durante siglos, los archivos trataron la Ciudad de Oro como un espejismo. Pero las inscripciones antiguas hablan claro: los templos preincaicos resuenan con frecuencias sagradas.'
             : 'Los cartógrafos coloniales trazaron mapas engañosos para ocultar las rutas prohibidas. Pero las marcas geodésicas talladas en la roca nunca mienten.',
-        image: '/splash_screen.jpg',
+        image: '/splash_screen.webp',
       },
       {
         caption: 'HACIA LA SELVA INEXPLORADA',
@@ -101,7 +101,7 @@ export const PrologueCutsceneModal: React.FC<PrologueCutsceneModalProps> = ({
           profile.avatarId === 'samira'
             ? 'Este cuaderno de campo custodia los bocetos originales de la expedición perdida. Comparando cada dibujo con el terreno real, descifraremos la ruta hacia Paititi.'
             : 'Cada página de este diario contiene pistas de triangulación topográfica. Entre el archivo histórico y la excavación se ocultan las diferencias clave.',
-        image: '/antique_world_map.jpg',
+        image: '/antique_world_map.webp',
       },
       {
         caption: 'EL COMIENZO DE LA EXPEDICIÓN',

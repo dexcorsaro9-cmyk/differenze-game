@@ -159,570 +159,570 @@ export function generateAll120Levels(): Level[] {
 
     // Realistic masterwork photographs for all levels in Stages 1 to 12
     const imageA = isLevelTwo
-      ? '/levels/stage1_lvl2_A.jpg?v=4'
+      ? '/levels/stage1_lvl2_A.webp?v=4'
       : isLevelThree
-      ? '/levels/stage1_lvl3_A.jpg?v=2'
+      ? '/levels/stage1_lvl3_A.webp?v=2'
       : isLevelFour
-      ? '/levels/stage1_lvl4_A.jpg?v=2'
+      ? '/levels/stage1_lvl4_A.webp?v=2'
       : isLevelFive
-      ? '/levels/stage1_lvl5_A.jpg?v=2'
+      ? '/levels/stage1_lvl5_A.webp?v=2'
       : isLevelSix
-      ? '/levels/stage1_lvl6_A.jpg?v=2'
+      ? '/levels/stage1_lvl6_A.webp?v=2'
       : isLevelSeven
-      ? '/levels/stage1_lvl7_A.jpg?v=2'
+      ? '/levels/stage1_lvl7_A.webp?v=2'
       : isLevelEight
-      ? '/levels/stage1_lvl8_A.jpg?v=2'
+      ? '/levels/stage1_lvl8_A.webp?v=2'
       : isLevelNine
-      ? '/levels/stage1_lvl9_A.jpg?v=2'
+      ? '/levels/stage1_lvl9_A.webp?v=2'
       : isLevelTen
-      ? '/levels/stage1_lvl10_A.jpg?v=2'
+      ? '/levels/stage1_lvl10_A.webp?v=2'
       : isLevelEleven
-      ? '/levels/stage2_lvl11_A.jpg?v=2'
+      ? '/levels/stage2_lvl11_A.webp?v=2'
       : isLevelTwelve
-      ? '/levels/stage2_lvl12_A.jpg?v=2'
+      ? '/levels/stage2_lvl12_A.webp?v=2'
       : isLevelThirteen
-      ? '/levels/stage2_lvl13_A.jpg?v=2'
+      ? '/levels/stage2_lvl13_A.webp?v=2'
       : isLevelFourteen
-      ? '/levels/stage2_lvl14_A.jpg?v=2'
+      ? '/levels/stage2_lvl14_A.webp?v=2'
       : isLevelFifteen
-      ? '/levels/stage2_lvl15_A.jpg?v=2'
+      ? '/levels/stage2_lvl15_A.webp?v=2'
       : isLevelSixteen
-      ? '/levels/stage2_lvl16_A.jpg?v=2'
+      ? '/levels/stage2_lvl16_A.webp?v=2'
       : isLevelSeventeen
-      ? '/levels/stage2_lvl17_A.jpg?v=2'
+      ? '/levels/stage2_lvl17_A.webp?v=2'
       : isLevelEighteen
-      ? '/levels/stage2_lvl18_A.jpg?v=2'
+      ? '/levels/stage2_lvl18_A.webp?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_A.jpg?v=3'
+      ? '/levels/stage2_lvl19_A.webp?v=3'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_A.jpg?v=3'
+      ? '/levels/stage2_lvl20_A.webp?v=3'
       : isLevelTwentyOne
-      ? '/levels/stage3_lvl21_A.jpg?v=2'
+      ? '/levels/stage3_lvl21_A.webp?v=2'
       : isLevelTwentyTwo
-      ? '/levels/stage3_lvl22_A.jpg?v=2'
+      ? '/levels/stage3_lvl22_A.webp?v=2'
       : isLevelTwentyThree
-      ? '/levels/stage3_lvl23_A.jpg?v=2'
+      ? '/levels/stage3_lvl23_A.webp?v=2'
       : isLevelTwentyFour
-      ? '/levels/stage3_lvl24_A.jpg?v=2'
+      ? '/levels/stage3_lvl24_A.webp?v=2'
       : isLevelTwentyFive
-      ? '/levels/stage3_lvl25_A.jpg?v=2'
+      ? '/levels/stage3_lvl25_A.webp?v=2'
       : isLevelTwentySix
-      ? '/levels/stage3_lvl26_A.jpg?v=2'
+      ? '/levels/stage3_lvl26_A.webp?v=2'
       : isLevelTwentySeven
-      ? '/levels/stage3_lvl27_A.jpg?v=2'
+      ? '/levels/stage3_lvl27_A.webp?v=2'
       : isLevelTwentyEight
-      ? '/levels/stage3_lvl28_A.jpg?v=2'
+      ? '/levels/stage3_lvl28_A.webp?v=2'
       : isLevelTwentyNine
-      ? '/levels/stage3_lvl29_A.jpg?v=2'
+      ? '/levels/stage3_lvl29_A.webp?v=2'
       : isLevelThirty
-      ? '/levels/stage3_lvl30_A.jpg?v=2'
+      ? '/levels/stage3_lvl30_A.webp?v=2'
       : isLevelThirtyOne
-      ? '/levels/stage4_lvl31_A.jpg?v=2'
+      ? '/levels/stage4_lvl31_A.webp?v=2'
       : isLevelThirtyTwo
-      ? '/levels/stage4_lvl32_A.jpg?v=2'
+      ? '/levels/stage4_lvl32_A.webp?v=2'
       : isLevelThirtyThree
-      ? '/levels/stage4_lvl33_A.jpg?v=2'
+      ? '/levels/stage4_lvl33_A.webp?v=2'
       : isLevelThirtyFour
-      ? '/levels/stage4_lvl34_A.jpg?v=2'
+      ? '/levels/stage4_lvl34_A.webp?v=2'
       : isLevelThirtyFive
-      ? '/levels/stage4_lvl35_A.jpg?v=2'
+      ? '/levels/stage4_lvl35_A.webp?v=2'
       : isLevelThirtySix
-      ? '/levels/stage4_lvl36_A.jpg?v=2'
+      ? '/levels/stage4_lvl36_A.webp?v=2'
       : isLevelThirtySeven
-      ? '/levels/stage4_lvl37_A.jpg?v=2'
+      ? '/levels/stage4_lvl37_A.webp?v=2'
       : isLevelThirtyEight
-      ? '/levels/stage4_lvl38_A.jpg?v=2'
+      ? '/levels/stage4_lvl38_A.webp?v=2'
       : isLevelThirtyNine
-      ? '/levels/stage4_lvl39_A.jpg?v=2'
+      ? '/levels/stage4_lvl39_A.webp?v=2'
       : isLevelForty
-      ? '/levels/stage4_lvl40_A.jpg?v=2'
+      ? '/levels/stage4_lvl40_A.webp?v=2'
       : isLevelFortyOne
-      ? '/levels/stage5_lvl41_A.jpg?v=2'
+      ? '/levels/stage5_lvl41_A.webp?v=2'
       : isLevelFortyTwo
-      ? '/levels/stage5_lvl42_A.jpg?v=2'
+      ? '/levels/stage5_lvl42_A.webp?v=2'
       : isLevelFortyThree
-      ? '/levels/stage5_lvl43_A.jpg?v=2'
+      ? '/levels/stage5_lvl43_A.webp?v=2'
       : isLevelFortyFour
-      ? '/levels/stage5_lvl44_A.jpg?v=2'
+      ? '/levels/stage5_lvl44_A.webp?v=2'
       : isLevelFortyFive
-      ? '/levels/stage5_lvl45_A.jpg?v=2'
+      ? '/levels/stage5_lvl45_A.webp?v=2'
       : isLevelFortySix
-      ? '/levels/stage5_lvl46_A.jpg?v=2'
+      ? '/levels/stage5_lvl46_A.webp?v=2'
       : isLevelFortySeven
-      ? '/levels/stage5_lvl47_A.jpg?v=2'
+      ? '/levels/stage5_lvl47_A.webp?v=2'
       : isLevelFortyEight
-      ? '/levels/stage5_lvl48_A.jpg?v=2'
+      ? '/levels/stage5_lvl48_A.webp?v=2'
       : isLevelFortyNine
-      ? '/levels/stage5_lvl49_A.jpg?v=2'
+      ? '/levels/stage5_lvl49_A.webp?v=2'
       : isLevelFifty
-      ? '/levels/stage5_lvl50_A.jpg?v=2'
+      ? '/levels/stage5_lvl50_A.webp?v=2'
       : isLevelFiftyOne
-      ? '/levels/stage6_lvl51_A.jpg?v=2'
+      ? '/levels/stage6_lvl51_A.webp?v=2'
       : isLevelFiftyTwo
-      ? '/levels/stage6_lvl52_A.jpg?v=2'
+      ? '/levels/stage6_lvl52_A.webp?v=2'
       : isLevelFiftyThree
-      ? '/levels/stage6_lvl53_A.jpg?v=2'
+      ? '/levels/stage6_lvl53_A.webp?v=2'
       : isLevelFiftyFour
-      ? '/levels/stage6_lvl54_A.jpg?v=2'
+      ? '/levels/stage6_lvl54_A.webp?v=2'
       : isLevelFiftyFive
-      ? '/levels/stage6_lvl55_A.jpg?v=2'
+      ? '/levels/stage6_lvl55_A.webp?v=2'
       : isLevelFiftySix
-      ? '/levels/stage6_lvl56_A.jpg?v=2'
+      ? '/levels/stage6_lvl56_A.webp?v=2'
       : isLevelFiftySeven
-      ? '/levels/stage6_lvl57_A.jpg?v=2'
+      ? '/levels/stage6_lvl57_A.webp?v=2'
       : isLevelFiftyEight
-      ? '/levels/stage6_lvl58_A.jpg?v=2'
+      ? '/levels/stage6_lvl58_A.webp?v=2'
       : isLevelFiftyNine
-      ? '/levels/stage6_lvl59_A.jpg?v=2'
+      ? '/levels/stage6_lvl59_A.webp?v=2'
       : isLevelSixty
-      ? '/levels/stage6_lvl60_A.jpg?v=2'
+      ? '/levels/stage6_lvl60_A.webp?v=2'
       : isLevelSixtyOne
-      ? '/levels/stage7_lvl61_A.jpg?v=2'
+      ? '/levels/stage7_lvl61_A.webp?v=2'
       : isLevelSixtyTwo
-      ? '/levels/stage7_lvl62_A.jpg?v=2'
+      ? '/levels/stage7_lvl62_A.webp?v=2'
       : isLevelSixtyThree
-      ? '/levels/stage7_lvl63_A.jpg?v=2'
+      ? '/levels/stage7_lvl63_A.webp?v=2'
       : isLevelSixtyFour
-      ? '/levels/stage7_lvl64_A.jpg?v=2'
+      ? '/levels/stage7_lvl64_A.webp?v=2'
       : isLevelSixtyFive
-      ? '/levels/stage7_lvl65_A.jpg?v=2'
+      ? '/levels/stage7_lvl65_A.webp?v=2'
       : isLevelSixtySix
-      ? '/levels/stage7_lvl66_A.jpg?v=2'
+      ? '/levels/stage7_lvl66_A.webp?v=2'
       : isLevelSixtySeven
-      ? '/levels/stage7_lvl67_A.jpg?v=2'
+      ? '/levels/stage7_lvl67_A.webp?v=2'
       : isLevelSixtyEight
-      ? '/levels/stage7_lvl68_A.jpg?v=2'
+      ? '/levels/stage7_lvl68_A.webp?v=2'
       : isLevelSixtyNine
-      ? '/levels/stage7_lvl69_A.jpg?v=2'
+      ? '/levels/stage7_lvl69_A.webp?v=2'
       : isLevelSeventy
-      ? '/levels/stage7_lvl70_A.jpg?v=2'
+      ? '/levels/stage7_lvl70_A.webp?v=2'
       : isLevelSeventyOne
-      ? '/levels/stage8_lvl71_A.jpg?v=2'
+      ? '/levels/stage8_lvl71_A.webp?v=2'
       : isLevelSeventyTwo
-      ? '/levels/stage8_lvl72_A.jpg?v=2'
+      ? '/levels/stage8_lvl72_A.webp?v=2'
       : isLevelSeventyThree
-      ? '/levels/stage8_lvl73_A.jpg?v=2'
+      ? '/levels/stage8_lvl73_A.webp?v=2'
       : isLevelSeventyFour
-      ? '/levels/stage8_lvl74_A.jpg?v=2'
+      ? '/levels/stage8_lvl74_A.webp?v=2'
       : isLevelSeventyFive
-      ? '/levels/stage8_lvl75_A.jpg?v=2'
+      ? '/levels/stage8_lvl75_A.webp?v=2'
       : isLevelSeventySix
-      ? '/levels/stage8_lvl76_A.jpg?v=2'
+      ? '/levels/stage8_lvl76_A.webp?v=2'
       : isLevelSeventySeven
-      ? '/levels/stage8_lvl77_A.jpg?v=2'
+      ? '/levels/stage8_lvl77_A.webp?v=2'
       : isLevelSeventyEight
-      ? '/levels/stage8_lvl78_A.jpg?v=2'
+      ? '/levels/stage8_lvl78_A.webp?v=2'
       : isLevelSeventyNine
-      ? '/levels/stage8_lvl79_A.jpg?v=2'
+      ? '/levels/stage8_lvl79_A.webp?v=2'
       : isLevelEighty
-      ? '/levels/stage8_lvl80_A.jpg?v=2'
+      ? '/levels/stage8_lvl80_A.webp?v=2'
       : isLevelEightyOne
-      ? '/levels/stage9_lvl81_A.jpg?v=2'
+      ? '/levels/stage9_lvl81_A.webp?v=2'
       : isLevelEightyTwo
-      ? '/levels/stage9_lvl82_A.jpg?v=2'
+      ? '/levels/stage9_lvl82_A.webp?v=2'
       : isLevelEightyThree
-      ? '/levels/stage9_lvl83_A.jpg?v=2'
+      ? '/levels/stage9_lvl83_A.webp?v=2'
       : isLevelEightyFour
-      ? '/levels/stage9_lvl84_A.jpg?v=2'
+      ? '/levels/stage9_lvl84_A.webp?v=2'
       : isLevelEightyFive
-      ? '/levels/stage9_lvl85_A.jpg?v=2'
+      ? '/levels/stage9_lvl85_A.webp?v=2'
       : isLevelEightySix
-      ? '/levels/stage9_lvl86_A.jpg?v=2'
+      ? '/levels/stage9_lvl86_A.webp?v=2'
       : isLevelEightySeven
-      ? '/levels/stage9_lvl87_A.jpg?v=2'
+      ? '/levels/stage9_lvl87_A.webp?v=2'
       : isLevelEightyEight
-      ? '/levels/stage9_lvl88_A.jpg?v=2'
+      ? '/levels/stage9_lvl88_A.webp?v=2'
       : isLevelEightyNine
-      ? '/levels/stage9_lvl89_A.jpg?v=2'
+      ? '/levels/stage9_lvl89_A.webp?v=2'
       : isLevelNinety
-      ? '/levels/stage9_lvl90_A.jpg?v=2'
+      ? '/levels/stage9_lvl90_A.webp?v=2'
       : isLevelNinetyOne
-      ? '/levels/stage10_lvl91_A.jpg?v=2'
+      ? '/levels/stage10_lvl91_A.webp?v=2'
       : isLevelNinetyTwo
-      ? '/levels/stage10_lvl92_A.jpg?v=2'
+      ? '/levels/stage10_lvl92_A.webp?v=2'
       : isLevelNinetyThree
-      ? '/levels/stage10_lvl93_A.jpg?v=2'
+      ? '/levels/stage10_lvl93_A.webp?v=2'
       : isLevelNinetyFour
-      ? '/levels/stage10_lvl94_A.jpg?v=2'
+      ? '/levels/stage10_lvl94_A.webp?v=2'
       : isLevelNinetyFive
-      ? '/levels/stage10_lvl95_A.jpg?v=2'
+      ? '/levels/stage10_lvl95_A.webp?v=2'
       : isLevelNinetySix
-      ? '/levels/stage10_lvl96_A.jpg?v=2'
+      ? '/levels/stage10_lvl96_A.webp?v=2'
       : isLevelNinetySeven
-      ? '/levels/stage10_lvl97_A.jpg?v=2'
+      ? '/levels/stage10_lvl97_A.webp?v=2'
       : isLevelNinetyEight
-      ? '/levels/stage10_lvl98_A.jpg?v=2'
+      ? '/levels/stage10_lvl98_A.webp?v=2'
       : isLevelNinetyNine
-      ? '/levels/stage10_lvl99_A.jpg?v=2'
+      ? '/levels/stage10_lvl99_A.webp?v=2'
       : isLevelOneHundred
-      ? '/levels/stage10_lvl100_A.jpg?v=2'
+      ? '/levels/stage10_lvl100_A.webp?v=2'
       : isLevelOneHundredOne
-      ? '/levels/stage11_lvl101_A.jpg?v=2'
+      ? '/levels/stage11_lvl101_A.webp?v=2'
       : isLevelOneHundredTwo
-      ? '/levels/stage11_lvl102_A.jpg?v=2'
+      ? '/levels/stage11_lvl102_A.webp?v=2'
       : isLevelOneHundredThree
-      ? '/levels/stage11_lvl103_A.jpg?v=2'
+      ? '/levels/stage11_lvl103_A.webp?v=2'
       : isLevelOneHundredFour
-      ? '/levels/stage11_lvl104_A.jpg?v=2'
+      ? '/levels/stage11_lvl104_A.webp?v=2'
       : isLevelOneHundredFive
-      ? '/levels/stage11_lvl105_A.jpg?v=2'
+      ? '/levels/stage11_lvl105_A.webp?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_A.jpg?v=3'
+      ? '/levels/stage11_lvl106_A.webp?v=3'
       : isLevelOneHundredSeven
-      ? '/levels/stage11_lvl107_A.jpg?v=2'
+      ? '/levels/stage11_lvl107_A.webp?v=2'
       : isLevelOneHundredEight
-      ? '/levels/stage11_lvl108_A.jpg?v=2'
+      ? '/levels/stage11_lvl108_A.webp?v=2'
       : isLevelOneHundredNine
-      ? '/levels/stage11_lvl109_A.jpg?v=2'
+      ? '/levels/stage11_lvl109_A.webp?v=2'
       : isLevelOneHundredTen
-      ? '/levels/stage11_lvl110_A.jpg?v=2'
+      ? '/levels/stage11_lvl110_A.webp?v=2'
       : isLevelOneHundredEleven
-      ? '/levels/stage12_lvl111_A.jpg?v=2'
+      ? '/levels/stage12_lvl111_A.webp?v=2'
       : isLevelOneHundredTwelve
-      ? '/levels/stage12_lvl112_A.jpg?v=2'
+      ? '/levels/stage12_lvl112_A.webp?v=2'
       : isLevelOneHundredThirteen
-      ? '/levels/stage12_lvl113_A.jpg?v=2'
+      ? '/levels/stage12_lvl113_A.webp?v=2'
       : isLevelOneHundredFourteen
-      ? '/levels/stage12_lvl114_A.jpg?v=2'
+      ? '/levels/stage12_lvl114_A.webp?v=2'
       : isLevelOneHundredFifteen
-      ? '/levels/stage12_lvl115_A.jpg?v=2'
+      ? '/levels/stage12_lvl115_A.webp?v=2'
       : isLevelOneHundredSixteen
-      ? '/levels/stage12_lvl116_A.jpg?v=2'
+      ? '/levels/stage12_lvl116_A.webp?v=2'
       : isLevelOneHundredSeventeen
-      ? '/levels/stage12_lvl117_A.jpg?v=2'
+      ? '/levels/stage12_lvl117_A.webp?v=2'
       : isLevelOneHundredEighteen
-      ? '/levels/stage12_lvl118_A.jpg?v=2'
+      ? '/levels/stage12_lvl118_A.webp?v=2'
       : isLevelOneHundredNineteen
-      ? '/levels/stage12_lvl119_A.jpg?v=2'
+      ? '/levels/stage12_lvl119_A.webp?v=2'
       : isLevelOneHundredTwenty
-      ? '/levels/stage12_lvl120_A.jpg?v=2'
+      ? '/levels/stage12_lvl120_A.webp?v=2'
       : isLevelSeventyOne
-      ? '/levels/stage8_lvl71_A.jpg?v=2'
+      ? '/levels/stage8_lvl71_A.webp?v=2'
       : isLevelSeventyTwo
-      ? '/levels/stage8_lvl72_A.jpg?v=2'
+      ? '/levels/stage8_lvl72_A.webp?v=2'
       : isLevelSeventyThree
-      ? '/levels/stage8_lvl73_A.jpg?v=2'
+      ? '/levels/stage8_lvl73_A.webp?v=2'
       : isLevelSeventyFour
-      ? '/levels/stage8_lvl74_A.jpg?v=2'
+      ? '/levels/stage8_lvl74_A.webp?v=2'
       : isLevelSeventyFive
-      ? '/levels/stage8_lvl75_A.jpg?v=2'
+      ? '/levels/stage8_lvl75_A.webp?v=2'
       : isLevelSeventySix
-      ? '/levels/stage8_lvl76_A.jpg?v=2'
+      ? '/levels/stage8_lvl76_A.webp?v=2'
       : isLevelSeventySeven
-      ? '/levels/stage8_lvl77_A.jpg?v=2'
+      ? '/levels/stage8_lvl77_A.webp?v=2'
       : isLevelSeventyEight
-      ? '/levels/stage8_lvl78_A.jpg?v=2'
+      ? '/levels/stage8_lvl78_A.webp?v=2'
       : isLevelSeventyNine
-      ? '/levels/stage8_lvl79_A.jpg?v=2'
+      ? '/levels/stage8_lvl79_A.webp?v=2'
       : isLevelEighty
-      ? '/levels/stage8_lvl80_A.jpg?v=2'
+      ? '/levels/stage8_lvl80_A.webp?v=2'
       : isStageOne
-      ? '/oxford_study_A.jpg?v=5'
+      ? '/oxford_study_A.webp?v=5'
       : isStageTwo
-      ? '/stage2_crypt_A.jpg?v=3'
+      ? '/stage2_crypt_A.webp?v=3'
       : isStageThree
-      ? '/stage3_venice_A.jpg'
+      ? '/stage3_venice_A.webp'
       : isStageFour
-      ? '/stage4_crete_A.jpg'
+      ? '/stage4_crete_A.webp'
       : isStageFive
-      ? '/stage5_alexandria_A.jpg'
+      ? '/stage5_alexandria_A.webp'
       : isStageSix
-      ? '/stage6_luxor_A.jpg'
+      ? '/stage6_luxor_A.webp'
       : isStageSeven
-      ? '/stage7_siwa_A.jpg'
+      ? '/stage7_siwa_A.webp'
       : isStageEight
-      ? '/stage8_petra_A.jpg'
+      ? '/stage8_petra_A.webp'
       : isStageNine
-      ? '/stage9_iguazu_A.jpg'
+      ? '/stage9_iguazu_A.webp'
       : isStageTen
-      ? '/stage10_nazca_A.jpg'
+      ? '/stage10_nazca_A.webp'
       : isStageEleven
-      ? '/stage11_machupicchu_A.jpg'
+      ? '/stage11_machupicchu_A.webp'
       : isStageTwelve
-      ? '/stage12_paititi_A.jpg'
+      ? '/stage12_paititi_A.webp'
       : generateStageScene(stageNumber, levelNumberInStage, 'A');
     const imageB = isLevelTwo
-      ? '/levels/stage1_lvl2_B.jpg?v=4'
+      ? '/levels/stage1_lvl2_B.webp?v=4'
       : isLevelThree
-      ? '/levels/stage1_lvl3_B.jpg?v=3'
+      ? '/levels/stage1_lvl3_B.webp?v=3'
       : isLevelFour
-      ? '/levels/stage1_lvl4_B.jpg?v=2'
+      ? '/levels/stage1_lvl4_B.webp?v=2'
       : isLevelFive
-      ? '/levels/stage1_lvl5_B.jpg?v=2'
+      ? '/levels/stage1_lvl5_B.webp?v=2'
       : isLevelSix
-      ? '/levels/stage1_lvl6_B.jpg?v=2'
+      ? '/levels/stage1_lvl6_B.webp?v=2'
       : isLevelSeven
-      ? '/levels/stage1_lvl7_B.jpg?v=2'
+      ? '/levels/stage1_lvl7_B.webp?v=2'
       : isLevelEight
-      ? '/levels/stage1_lvl8_B.jpg?v=2'
+      ? '/levels/stage1_lvl8_B.webp?v=2'
       : isLevelNine
-      ? '/levels/stage1_lvl9_B.jpg?v=2'
+      ? '/levels/stage1_lvl9_B.webp?v=2'
       : isLevelTen
-      ? '/levels/stage1_lvl10_B.jpg?v=2'
+      ? '/levels/stage1_lvl10_B.webp?v=2'
       : isLevelEleven
-      ? '/levels/stage2_lvl11_B.jpg?v=2'
+      ? '/levels/stage2_lvl11_B.webp?v=2'
       : isLevelTwelve
-      ? '/levels/stage2_lvl12_B.jpg?v=2'
+      ? '/levels/stage2_lvl12_B.webp?v=2'
       : isLevelThirteen
-      ? '/levels/stage2_lvl13_B.jpg?v=2'
+      ? '/levels/stage2_lvl13_B.webp?v=2'
       : isLevelFourteen
-      ? '/levels/stage2_lvl14_B.jpg?v=2'
+      ? '/levels/stage2_lvl14_B.webp?v=2'
       : isLevelFifteen
-      ? '/levels/stage2_lvl15_B.jpg?v=2'
+      ? '/levels/stage2_lvl15_B.webp?v=2'
       : isLevelSixteen
-      ? '/levels/stage2_lvl16_B.jpg?v=2'
+      ? '/levels/stage2_lvl16_B.webp?v=2'
       : isLevelSeventeen
-      ? '/levels/stage2_lvl17_B.jpg?v=2'
+      ? '/levels/stage2_lvl17_B.webp?v=2'
       : isLevelEighteen
-      ? '/levels/stage2_lvl18_B.jpg?v=2'
+      ? '/levels/stage2_lvl18_B.webp?v=2'
       : isLevelNineteen
-      ? '/levels/stage2_lvl19_B.jpg?v=3'
+      ? '/levels/stage2_lvl19_B.webp?v=3'
       : isLevelTwenty
-      ? '/levels/stage2_lvl20_B.jpg?v=3'
+      ? '/levels/stage2_lvl20_B.webp?v=3'
       : isLevelTwentyOne
-      ? '/levels/stage3_lvl21_B.jpg?v=2'
+      ? '/levels/stage3_lvl21_B.webp?v=2'
       : isLevelTwentyTwo
-      ? '/levels/stage3_lvl22_B.jpg?v=2'
+      ? '/levels/stage3_lvl22_B.webp?v=2'
       : isLevelTwentyThree
-      ? '/levels/stage3_lvl23_B.jpg?v=2'
+      ? '/levels/stage3_lvl23_B.webp?v=2'
       : isLevelTwentyFour
-      ? '/levels/stage3_lvl24_B.jpg?v=2'
+      ? '/levels/stage3_lvl24_B.webp?v=2'
       : isLevelTwentyFive
-      ? '/levels/stage3_lvl25_B.jpg?v=2'
+      ? '/levels/stage3_lvl25_B.webp?v=2'
       : isLevelTwentySix
-      ? '/levels/stage3_lvl26_B.jpg?v=2'
+      ? '/levels/stage3_lvl26_B.webp?v=2'
       : isLevelTwentySeven
-      ? '/levels/stage3_lvl27_B.jpg?v=2'
+      ? '/levels/stage3_lvl27_B.webp?v=2'
       : isLevelTwentyEight
-      ? '/levels/stage3_lvl28_B.jpg?v=2'
+      ? '/levels/stage3_lvl28_B.webp?v=2'
       : isLevelTwentyNine
-      ? '/levels/stage3_lvl29_B.jpg?v=2'
+      ? '/levels/stage3_lvl29_B.webp?v=2'
       : isLevelThirty
-      ? '/levels/stage3_lvl30_B.jpg?v=2'
+      ? '/levels/stage3_lvl30_B.webp?v=2'
       : isLevelThirtyOne
-      ? '/levels/stage4_lvl31_B.jpg?v=2'
+      ? '/levels/stage4_lvl31_B.webp?v=2'
       : isLevelThirtyTwo
-      ? '/levels/stage4_lvl32_B.jpg?v=2'
+      ? '/levels/stage4_lvl32_B.webp?v=2'
       : isLevelThirtyThree
-      ? '/levels/stage4_lvl33_B.jpg?v=2'
+      ? '/levels/stage4_lvl33_B.webp?v=2'
       : isLevelThirtyFour
-      ? '/levels/stage4_lvl34_B.jpg?v=2'
+      ? '/levels/stage4_lvl34_B.webp?v=2'
       : isLevelThirtyFive
-      ? '/levels/stage4_lvl35_B.jpg?v=2'
+      ? '/levels/stage4_lvl35_B.webp?v=2'
       : isLevelThirtySix
-      ? '/levels/stage4_lvl36_B.jpg?v=2'
+      ? '/levels/stage4_lvl36_B.webp?v=2'
       : isLevelThirtySeven
-      ? '/levels/stage4_lvl37_B.jpg?v=2'
+      ? '/levels/stage4_lvl37_B.webp?v=2'
       : isLevelThirtyEight
-      ? '/levels/stage4_lvl38_B.jpg?v=2'
+      ? '/levels/stage4_lvl38_B.webp?v=2'
       : isLevelThirtyNine
-      ? '/levels/stage4_lvl39_B.jpg?v=2'
+      ? '/levels/stage4_lvl39_B.webp?v=2'
       : isLevelForty
-      ? '/levels/stage4_lvl40_B.jpg?v=2'
+      ? '/levels/stage4_lvl40_B.webp?v=2'
       : isLevelFortyOne
-      ? '/levels/stage5_lvl41_B.jpg?v=2'
+      ? '/levels/stage5_lvl41_B.webp?v=2'
       : isLevelFortyTwo
-      ? '/levels/stage5_lvl42_B.jpg?v=2'
+      ? '/levels/stage5_lvl42_B.webp?v=2'
       : isLevelFortyThree
-      ? '/levels/stage5_lvl43_B.jpg?v=2'
+      ? '/levels/stage5_lvl43_B.webp?v=2'
       : isLevelFortyFour
-      ? '/levels/stage5_lvl44_B.jpg?v=2'
+      ? '/levels/stage5_lvl44_B.webp?v=2'
       : isLevelFortyFive
-      ? '/levels/stage5_lvl45_B.jpg?v=2'
+      ? '/levels/stage5_lvl45_B.webp?v=2'
       : isLevelFortySix
-      ? '/levels/stage5_lvl46_B.jpg?v=2'
+      ? '/levels/stage5_lvl46_B.webp?v=2'
       : isLevelFortySeven
-      ? '/levels/stage5_lvl47_B.jpg?v=2'
+      ? '/levels/stage5_lvl47_B.webp?v=2'
       : isLevelFortyEight
-      ? '/levels/stage5_lvl48_B.jpg?v=2'
+      ? '/levels/stage5_lvl48_B.webp?v=2'
       : isLevelFortyNine
-      ? '/levels/stage5_lvl49_B.jpg?v=2'
+      ? '/levels/stage5_lvl49_B.webp?v=2'
       : isLevelFifty
-      ? '/levels/stage5_lvl50_B.jpg?v=2'
+      ? '/levels/stage5_lvl50_B.webp?v=2'
       : isLevelFiftyOne
-      ? '/levels/stage6_lvl51_B.jpg?v=2'
+      ? '/levels/stage6_lvl51_B.webp?v=2'
       : isLevelFiftyTwo
-      ? '/levels/stage6_lvl52_B.jpg?v=2'
+      ? '/levels/stage6_lvl52_B.webp?v=2'
       : isLevelFiftyThree
-      ? '/levels/stage6_lvl53_B.jpg?v=2'
+      ? '/levels/stage6_lvl53_B.webp?v=2'
       : isLevelFiftyFour
-      ? '/levels/stage6_lvl54_B.jpg?v=2'
+      ? '/levels/stage6_lvl54_B.webp?v=2'
       : isLevelFiftyFive
-      ? '/levels/stage6_lvl55_B.jpg?v=2'
+      ? '/levels/stage6_lvl55_B.webp?v=2'
       : isLevelFiftySix
-      ? '/levels/stage6_lvl56_B.jpg?v=2'
+      ? '/levels/stage6_lvl56_B.webp?v=2'
       : isLevelFiftySeven
-      ? '/levels/stage6_lvl57_B.jpg?v=2'
+      ? '/levels/stage6_lvl57_B.webp?v=2'
       : isLevelFiftyEight
-      ? '/levels/stage6_lvl58_B.jpg?v=2'
+      ? '/levels/stage6_lvl58_B.webp?v=2'
       : isLevelFiftyNine
-      ? '/levels/stage6_lvl59_B.jpg?v=2'
+      ? '/levels/stage6_lvl59_B.webp?v=2'
       : isLevelSixty
-      ? '/levels/stage6_lvl60_B.jpg?v=2'
+      ? '/levels/stage6_lvl60_B.webp?v=2'
       : isLevelSixtyOne
-      ? '/levels/stage7_lvl61_B.jpg?v=2'
+      ? '/levels/stage7_lvl61_B.webp?v=2'
       : isLevelSixtyTwo
-      ? '/levels/stage7_lvl62_B.jpg?v=2'
+      ? '/levels/stage7_lvl62_B.webp?v=2'
       : isLevelSixtyThree
-      ? '/levels/stage7_lvl63_B.jpg?v=2'
+      ? '/levels/stage7_lvl63_B.webp?v=2'
       : isLevelSixtyFour
-      ? '/levels/stage7_lvl64_B.jpg?v=2'
+      ? '/levels/stage7_lvl64_B.webp?v=2'
       : isLevelSixtyFive
-      ? '/levels/stage7_lvl65_B.jpg?v=2'
+      ? '/levels/stage7_lvl65_B.webp?v=2'
       : isLevelSixtySix
-      ? '/levels/stage7_lvl66_B.jpg?v=2'
+      ? '/levels/stage7_lvl66_B.webp?v=2'
       : isLevelSixtySeven
-      ? '/levels/stage7_lvl67_B.jpg?v=2'
+      ? '/levels/stage7_lvl67_B.webp?v=2'
       : isLevelSixtyEight
-      ? '/levels/stage7_lvl68_B.jpg?v=2'
+      ? '/levels/stage7_lvl68_B.webp?v=2'
       : isLevelSixtyNine
-      ? '/levels/stage7_lvl69_B.jpg?v=2'
+      ? '/levels/stage7_lvl69_B.webp?v=2'
       : isLevelSeventy
-      ? '/levels/stage7_lvl70_B.jpg?v=2'
+      ? '/levels/stage7_lvl70_B.webp?v=2'
       : isLevelSeventyOne
-      ? '/levels/stage8_lvl71_B.jpg?v=2'
+      ? '/levels/stage8_lvl71_B.webp?v=2'
       : isLevelSeventyTwo
-      ? '/levels/stage8_lvl72_B.jpg?v=2'
+      ? '/levels/stage8_lvl72_B.webp?v=2'
       : isLevelSeventyThree
-      ? '/levels/stage8_lvl73_B.jpg?v=2'
+      ? '/levels/stage8_lvl73_B.webp?v=2'
       : isLevelSeventyFour
-      ? '/levels/stage8_lvl74_B.jpg?v=2'
+      ? '/levels/stage8_lvl74_B.webp?v=2'
       : isLevelSeventyFive
-      ? '/levels/stage8_lvl75_B.jpg?v=2'
+      ? '/levels/stage8_lvl75_B.webp?v=2'
       : isLevelSeventySix
-      ? '/levels/stage8_lvl76_B.jpg?v=2'
+      ? '/levels/stage8_lvl76_B.webp?v=2'
       : isLevelSeventySeven
-      ? '/levels/stage8_lvl77_B.jpg?v=2'
+      ? '/levels/stage8_lvl77_B.webp?v=2'
       : isLevelSeventyEight
-      ? '/levels/stage8_lvl78_B.jpg?v=2'
+      ? '/levels/stage8_lvl78_B.webp?v=2'
       : isLevelSeventyNine
-      ? '/levels/stage8_lvl79_B.jpg?v=2'
+      ? '/levels/stage8_lvl79_B.webp?v=2'
       : isLevelEighty
-      ? '/levels/stage8_lvl80_B.jpg?v=2'
+      ? '/levels/stage8_lvl80_B.webp?v=2'
       : isLevelEightyOne
-      ? '/levels/stage9_lvl81_B.jpg?v=2'
+      ? '/levels/stage9_lvl81_B.webp?v=2'
       : isLevelEightyTwo
-      ? '/levels/stage9_lvl82_B.jpg?v=2'
+      ? '/levels/stage9_lvl82_B.webp?v=2'
       : isLevelEightyThree
-      ? '/levels/stage9_lvl83_B.jpg?v=2'
+      ? '/levels/stage9_lvl83_B.webp?v=2'
       : isLevelEightyFour
-      ? '/levels/stage9_lvl84_B.jpg?v=2'
+      ? '/levels/stage9_lvl84_B.webp?v=2'
       : isLevelEightyFive
-      ? '/levels/stage9_lvl85_B.jpg?v=2'
+      ? '/levels/stage9_lvl85_B.webp?v=2'
       : isLevelEightySix
-      ? '/levels/stage9_lvl86_B.jpg?v=2'
+      ? '/levels/stage9_lvl86_B.webp?v=2'
       : isLevelEightySeven
-      ? '/levels/stage9_lvl87_B.jpg?v=2'
+      ? '/levels/stage9_lvl87_B.webp?v=2'
       : isLevelEightyEight
-      ? '/levels/stage9_lvl88_B.jpg?v=2'
+      ? '/levels/stage9_lvl88_B.webp?v=2'
       : isLevelEightyNine
-      ? '/levels/stage9_lvl89_B.jpg?v=2'
+      ? '/levels/stage9_lvl89_B.webp?v=2'
       : isLevelNinety
-      ? '/levels/stage9_lvl90_B.jpg?v=2'
+      ? '/levels/stage9_lvl90_B.webp?v=2'
       : isLevelNinetyOne
-      ? '/levels/stage10_lvl91_B.jpg?v=2'
+      ? '/levels/stage10_lvl91_B.webp?v=2'
       : isLevelNinetyTwo
-      ? '/levels/stage10_lvl92_B.jpg?v=2'
+      ? '/levels/stage10_lvl92_B.webp?v=2'
       : isLevelNinetyThree
-      ? '/levels/stage10_lvl93_B.jpg?v=2'
+      ? '/levels/stage10_lvl93_B.webp?v=2'
       : isLevelNinetyFour
-      ? '/levels/stage10_lvl94_B.jpg?v=2'
+      ? '/levels/stage10_lvl94_B.webp?v=2'
       : isLevelNinetyFive
-      ? '/levels/stage10_lvl95_B.jpg?v=2'
+      ? '/levels/stage10_lvl95_B.webp?v=2'
       : isLevelNinetySix
-      ? '/levels/stage10_lvl96_B.jpg?v=2'
+      ? '/levels/stage10_lvl96_B.webp?v=2'
       : isLevelNinetySeven
-      ? '/levels/stage10_lvl97_B.jpg?v=2'
+      ? '/levels/stage10_lvl97_B.webp?v=2'
       : isLevelNinetyEight
-      ? '/levels/stage10_lvl98_B.jpg?v=2'
+      ? '/levels/stage10_lvl98_B.webp?v=2'
       : isLevelNinetyNine
-      ? '/levels/stage10_lvl99_B.jpg?v=2'
+      ? '/levels/stage10_lvl99_B.webp?v=2'
       : isLevelOneHundred
-      ? '/levels/stage10_lvl100_B.jpg?v=2'
+      ? '/levels/stage10_lvl100_B.webp?v=2'
       : isLevelOneHundredOne
-      ? '/levels/stage11_lvl101_B.jpg?v=2'
+      ? '/levels/stage11_lvl101_B.webp?v=2'
       : isLevelOneHundredTwo
-      ? '/levels/stage11_lvl102_B.jpg?v=2'
+      ? '/levels/stage11_lvl102_B.webp?v=2'
       : isLevelOneHundredThree
-      ? '/levels/stage11_lvl103_B.jpg?v=2'
+      ? '/levels/stage11_lvl103_B.webp?v=2'
       : isLevelOneHundredFour
-      ? '/levels/stage11_lvl104_B.jpg?v=2'
+      ? '/levels/stage11_lvl104_B.webp?v=2'
       : isLevelOneHundredFive
-      ? '/levels/stage11_lvl105_B.jpg?v=2'
+      ? '/levels/stage11_lvl105_B.webp?v=2'
       : isLevelOneHundredSix
-      ? '/levels/stage11_lvl106_B.jpg?v=3'
+      ? '/levels/stage11_lvl106_B.webp?v=3'
       : isLevelOneHundredSeven
-      ? '/levels/stage11_lvl107_B.jpg?v=2'
+      ? '/levels/stage11_lvl107_B.webp?v=2'
       : isLevelOneHundredEight
-      ? '/levels/stage11_lvl108_B.jpg?v=2'
+      ? '/levels/stage11_lvl108_B.webp?v=2'
       : isLevelOneHundredNine
-      ? '/levels/stage11_lvl109_B.jpg?v=2'
+      ? '/levels/stage11_lvl109_B.webp?v=2'
       : isLevelOneHundredTen
-      ? '/levels/stage11_lvl110_B.jpg?v=2'
+      ? '/levels/stage11_lvl110_B.webp?v=2'
       : isLevelOneHundredEleven
-      ? '/levels/stage12_lvl111_B.jpg?v=2'
+      ? '/levels/stage12_lvl111_B.webp?v=2'
       : isLevelOneHundredTwelve
-      ? '/levels/stage12_lvl112_B.jpg?v=2'
+      ? '/levels/stage12_lvl112_B.webp?v=2'
       : isLevelOneHundredThirteen
-      ? '/levels/stage12_lvl113_B.jpg?v=2'
+      ? '/levels/stage12_lvl113_B.webp?v=2'
       : isLevelOneHundredFourteen
-      ? '/levels/stage12_lvl114_B.jpg?v=2'
+      ? '/levels/stage12_lvl114_B.webp?v=2'
       : isLevelOneHundredFifteen
-      ? '/levels/stage12_lvl115_B.jpg?v=2'
+      ? '/levels/stage12_lvl115_B.webp?v=2'
       : isLevelOneHundredSixteen
-      ? '/levels/stage12_lvl116_B.jpg?v=2'
+      ? '/levels/stage12_lvl116_B.webp?v=2'
       : isLevelOneHundredSeventeen
-      ? '/levels/stage12_lvl117_B.jpg?v=2'
+      ? '/levels/stage12_lvl117_B.webp?v=2'
       : isLevelOneHundredEighteen
-      ? '/levels/stage12_lvl118_B.jpg?v=2'
+      ? '/levels/stage12_lvl118_B.webp?v=2'
       : isLevelOneHundredNineteen
-      ? '/levels/stage12_lvl119_B.jpg?v=2'
+      ? '/levels/stage12_lvl119_B.webp?v=2'
       : isLevelOneHundredTwenty
-      ? '/levels/stage12_lvl120_B.jpg?v=2'
+      ? '/levels/stage12_lvl120_B.webp?v=2'
       : isLevelSeventyOne
-      ? '/levels/stage8_lvl71_B.jpg?v=2'
+      ? '/levels/stage8_lvl71_B.webp?v=2'
       : isLevelSeventyTwo
-      ? '/levels/stage8_lvl72_B.jpg?v=2'
+      ? '/levels/stage8_lvl72_B.webp?v=2'
       : isLevelSeventyThree
-      ? '/levels/stage8_lvl73_B.jpg?v=2'
+      ? '/levels/stage8_lvl73_B.webp?v=2'
       : isLevelSeventyFour
-      ? '/levels/stage8_lvl74_B.jpg?v=2'
+      ? '/levels/stage8_lvl74_B.webp?v=2'
       : isLevelSeventyFive
-      ? '/levels/stage8_lvl75_B.jpg?v=2'
+      ? '/levels/stage8_lvl75_B.webp?v=2'
       : isLevelSeventySix
-      ? '/levels/stage8_lvl76_B.jpg?v=2'
+      ? '/levels/stage8_lvl76_B.webp?v=2'
       : isLevelSeventySeven
-      ? '/levels/stage8_lvl77_B.jpg?v=2'
+      ? '/levels/stage8_lvl77_B.webp?v=2'
       : isLevelSeventyEight
-      ? '/levels/stage8_lvl78_B.jpg?v=2'
+      ? '/levels/stage8_lvl78_B.webp?v=2'
       : isLevelSeventyNine
-      ? '/levels/stage8_lvl79_B.jpg?v=2'
+      ? '/levels/stage8_lvl79_B.webp?v=2'
       : isLevelEighty
-      ? '/levels/stage8_lvl80_B.jpg?v=2'
+      ? '/levels/stage8_lvl80_B.webp?v=2'
       : isStageOne
-      ? '/oxford_study_B.jpg?v=5'
+      ? '/oxford_study_B.webp?v=5'
       : isStageTwo
-      ? '/stage2_crypt_B.jpg?v=3'
+      ? '/stage2_crypt_B.webp?v=3'
       : isStageThree
-      ? '/stage3_venice_B.jpg'
+      ? '/stage3_venice_B.webp'
       : isStageFour
-      ? '/stage4_crete_B.jpg'
+      ? '/stage4_crete_B.webp'
       : isStageFive
-      ? '/stage5_alexandria_B.jpg'
+      ? '/stage5_alexandria_B.webp'
       : isStageSix
-      ? '/stage6_luxor_B.jpg'
+      ? '/stage6_luxor_B.webp'
       : isStageSeven
-      ? '/stage7_siwa_B.jpg'
+      ? '/stage7_siwa_B.webp'
       : isStageEight
-      ? '/stage8_petra_B.jpg'
+      ? '/stage8_petra_B.webp'
       : isStageNine
-      ? '/stage9_iguazu_B.jpg'
+      ? '/stage9_iguazu_B.webp'
       : isStageTen
-      ? '/stage10_nazca_B.jpg'
+      ? '/stage10_nazca_B.webp'
       : isStageEleven
-      ? '/stage11_machupicchu_B.jpg'
+      ? '/stage11_machupicchu_B.webp'
       : isStageTwelve
-      ? '/stage12_paititi_B.jpg'
+      ? '/stage12_paititi_B.webp'
       : generateStageScene(stageNumber, levelNumberInStage, 'B');
 
     // Fully calibrated, unique, bespoke differences for all 120 levels
