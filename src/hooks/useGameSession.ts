@@ -11,6 +11,7 @@ import {
   getTodayDateString,
 } from '../utils/dailyChallenge';
 import { assetUrl } from '../utils/assetUrl';
+import { getEarnedStars, getStartingLives } from '../data/difficultyTuning';
 import { recordHit, recordError, recordHintUsed, recordLevelCompletion } from '../utils/telemetry';
 import type { Difference, Level, PowerUpInventory, PowerUpType, RadarQuadrant } from '../types/game';
 
@@ -90,7 +91,7 @@ export const useGameSession = ({
 
   // Gameplay State
   const [foundDifferenceIds, setFoundDifferenceIds] = useState<string[]>([]);
-  const [lives, setLives] = useState<number>(3);
+  const [lives, setLives] = useState<number>(() => getStartingLives(currentLevel.difficulty));
   const [errorsCount, setErrorsCount] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
@@ -263,7 +264,7 @@ export const useGameSession = ({
     (levelId: number) => {
       setCurrentLevelId(levelId);
       setFoundDifferenceIds([]);
-      setLives(3);
+      setLives(getStartingLives(levels.find(l => l.id === levelId)?.difficulty || 'Normale'));
       setErrorsCount(0);
       setTimeElapsed(0);
       setIsTimeFrozen(false);
@@ -278,7 +279,7 @@ export const useGameSession = ({
       if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
       setIsTimerRunning(true);
     },
-    [hasPassiveFreeShield]
+    [hasPassiveFreeShield, levels]
   );
 
   // Handle Finding a Difference
@@ -357,7 +358,7 @@ export const useGameSession = ({
         if (!usedAssistanceThisLevelRef.current) onUnlockMedal('hawk_eye');
 
         // Calculate time-based 3-star speed bonus coins
-        const earnedStars = timeElapsed <= 105 ? 3 : timeElapsed <= 210 ? 2 : 1;
+        const earnedStars = getEarnedStars(currentLevel.difficulty, timeElapsed);
         setLevelStars(prev => ({
           ...prev,
           [currentLevel.id]: Math.max(prev[currentLevel.id] || 0, earnedStars),
