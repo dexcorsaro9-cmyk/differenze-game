@@ -39,10 +39,8 @@ export function getAllExpeditionAssetUrls(): string[] {
     }
   });
 
-  // 3. All 120 Levels: the scene photograph the investigation actually renders.
-  // `imageB` is deliberately excluded: the game is a single-plate hidden-object hunt and
-  // HiddenObjectView only ever draws imageA, so precaching the B plates was downloading
-  // tens of megabytes that never reach the screen.
+  // 3. All 120 Levels: the one scene photograph each investigation renders.
+  // This is a single-plate hidden-object hunt, so there is exactly one image per level.
   const allLevels = generateAll120Levels();
   allLevels.forEach((lvl) => {
     if (lvl.imageA) urls.add(assetUrl(lvl.imageA));

@@ -40,7 +40,6 @@ export interface Level {
   category: string;
   difficulty: 'Facile' | 'Normale' | 'Esperto';
   imageA: string;
-  imageB: string;
   differences: Difference[];
   story: ChapterStory;
   milestone?: SagaMilestone; // Populated every 10 levels

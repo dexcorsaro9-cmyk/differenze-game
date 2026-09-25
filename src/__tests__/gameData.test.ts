@@ -97,8 +97,9 @@ describe('referenced assets', () => {
       }
     });
 
-    // Fails loudly if the scan stops finding references (a refactor could make it vacuous)
-    expect(checked, 'asset references scanned').toBeGreaterThan(300);
+    // Vacuity guard, not a target: fails if the scan stops finding references at all,
+    // which would silently turn this test into a no-op after a refactor.
+    expect(checked, 'asset references scanned').toBeGreaterThan(200);
     expect([...missing], `assets referenced but absent from public/: ${[...missing].join(', ')}`)
       .toEqual([]);
   });
