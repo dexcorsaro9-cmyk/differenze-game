@@ -83,8 +83,12 @@ describe('referenced assets', () => {
       const out: string[] = [];
       readdirSync(dir).forEach(entry => {
         const full = join(dir, entry);
-        if (statSync(full).isDirectory()) out.push(...walk(full));
-        else if (/\.(ts|tsx)$/.test(entry)) out.push(full);
+        // Test fixtures reference paths that are deliberately not shipped assets.
+        if (statSync(full).isDirectory()) {
+          if (entry !== '__tests__') out.push(...walk(full));
+        } else if (/\.(ts|tsx)$/.test(entry)) {
+          out.push(full);
+        }
       });
       return out;
     };
