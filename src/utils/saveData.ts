@@ -36,6 +36,8 @@ export const BACKUP_STORAGE_KEYS = [
   'differenze_bgm_enabled',
   // Statistics
   'differenze_telemetry_v1',
+  // Cloud sync slot: the same id on two devices is what makes them one save
+  'differenze_player_id_v1',
 ] as const;
 
 /**
@@ -44,7 +46,12 @@ export const BACKUP_STORAGE_KEYS = [
  * invalidation on startup; restoring a stale value from another device would suppress
  * that check, so it stays device-local.
  */
-export const NON_PORTABLE_STORAGE_KEYS = ['paititi_app_build'] as const;
+export const NON_PORTABLE_STORAGE_KEYS = [
+  'paititi_app_build',
+  // When this device last reconciled with its sync slot. Restoring another device's
+  // timestamp would misreport how fresh this device is.
+  'differenze_last_sync_v1',
+] as const;
 
 export const SAVE_CODE_PREFIX = 'PAITITI_1928_SAVE:';
 export const SAVE_FORMAT_VERSION = '2.0';

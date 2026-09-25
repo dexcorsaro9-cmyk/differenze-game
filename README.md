@@ -102,8 +102,28 @@ players can trigger the download from Settings.
 
 Progress lives in `localStorage`. Settings offers an export to `.json` and a copyable
 "journal code", and both restore paths go through `utils/saveData.ts`, which is the single
-source of truth for which keys travel. There is no server-side save yet, so a player
-switching devices has to carry a save file across.
+source of truth for which keys travel.
+
+`utils/saveSync.ts` adds optional cross-device sync on top of the same payload. It is
+**inert until a backend is configured**: with `VITE_SYNC_ENDPOINT` unset the transport is
+null, every sync short-circuits, and the game behaves exactly as it does on local storage
+alone. See `.env.example`.
+
+To activate, point `VITE_SYNC_ENDPOINT` at a slot supporting two verbs on `/<playerId>`:
+
+| Verb | Behaviour |
+| --- | --- |
+| `GET` | 200 with the stored payload, or 404 when the slot is empty |
+| `PUT` | stores the JSON body |
+
+Any backend serving those works — a Supabase edge function, a Firebase callable behind a
+rewrite, or a small server of your own. The player id is a readable code (`ABCD-2345-WXYZ`,
+with no characters that are easy to misread aloud) that travels in the backup, so entering
+it on a second device joins both to one save.
+
+Conflicts are never merged, because a half-merged save is worse than either side. The more
+advanced payload wins whole, ranked by completed levels first, then discovered clues, then
+coins, with the more recent export breaking an exact tie.
 
 ## Licence
 

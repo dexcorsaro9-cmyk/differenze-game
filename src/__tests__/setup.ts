@@ -61,5 +61,8 @@ if (typeof window !== 'undefined') {
 
 afterEach(() => {
   vi.clearAllMocks();
-  if (typeof localStorage !== 'undefined') localStorage.clear();
+  // A suite may stub localStorage with only the methods it needs.
+  if (typeof localStorage !== 'undefined' && typeof localStorage.clear === 'function') {
+    localStorage.clear();
+  }
 });

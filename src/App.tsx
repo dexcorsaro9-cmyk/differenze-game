@@ -46,6 +46,7 @@ import { CONSULAR_VISAS } from './data/passportData';
 import { normalizeExplorerProfile, type ExplorerProfile } from './data/avatarData';
 import { useExplorerPerks } from './hooks/useExplorerPerks';
 import { useMedalWatcher } from './hooks/useMedalWatcher';
+import { useSaveSync } from './hooks/useSaveSync';
 import {
   usePersistentJson,
   usePersistentFlag,
@@ -261,6 +262,10 @@ export const App: React.FC = () => {
   // Destructured so these effects depend on the exact values they read. Reaching through
   // `economy.` made the linter ask for the whole object, which changes every render.
   const { unlockMedal, coins: currentCoins } = economy;
+
+  // Reconcile with the remote save slot on start and whenever a level is completed.
+  // No backend configured means this is a no-op (see utils/saveSync.ts).
+  useSaveSync(game.completedLevelIds.length);
 
   useMedalWatcher({
     unlockMedal,
