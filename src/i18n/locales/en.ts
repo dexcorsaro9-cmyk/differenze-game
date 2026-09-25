@@ -578,6 +578,7 @@ export const en: Translations = {
     "toFind": "TO FIND",
     "pinchHint": "Pinch with two fingers to zoom into the photograph",
     "errorTap": "No discrepancy here. Tread carefully!",
+    "tapPenalty": "Observe, do not flail: that haste cost you a life.",
     "evidenceFound": "Clue #{index} recovered!",
     "evidenceHidden": "Clue #{index} concealed by the Obsidian Brotherhood",
     "evidenceLabel": "Clues"

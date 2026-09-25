@@ -578,6 +578,7 @@ export const es: Translations = {
     "toFind": "POR ENCONTRAR",
     "pinchHint": "Pellizca con dos dedos para ampliar la fotografía",
     "errorTap": "No hay diferencias aquí. ¡Observa con atención!",
+    "tapPenalty": "Observa, no golpees a ciegas: esa prisa te cost\u00f3 una vida.",
     "evidenceFound": "¡Pista #{index} recuperada!",
     "evidenceHidden": "Pista #{index} ocultada por la Hermandad de Obsidiana",
     "evidenceLabel": "Pistas"

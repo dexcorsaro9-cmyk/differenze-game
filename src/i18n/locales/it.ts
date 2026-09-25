@@ -578,6 +578,7 @@ export const it: Translations = {
     "toFind": "DA TROVARE",
     "pinchHint": "Pinch con due dita per zoomare sulla foto",
     "errorTap": "Nessuna discrepanza qui. Fai attenzione!",
+    "tapPenalty": "Osserva, non tempestare: la fretta \u00e8 costata una vita.",
     "evidenceFound": "Prova #{index} recuperata!",
     "evidenceHidden": "Prova #{index} occultata dalla Mano Oscura",
     "evidenceLabel": "Prove"

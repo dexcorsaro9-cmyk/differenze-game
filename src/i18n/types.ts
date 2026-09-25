@@ -578,6 +578,7 @@ export interface Translations {
     toFind: string;
     pinchHint: string;
     errorTap: string;
+    tapPenalty: string;
     evidenceFound: string;
     evidenceHidden: string;
     evidenceLabel: string;
