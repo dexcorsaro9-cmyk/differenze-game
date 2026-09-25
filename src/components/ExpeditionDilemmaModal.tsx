@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
+import { prefersReducedMotion } from '../utils/motion';
 import {
   Compass,
   Award,
@@ -48,7 +49,7 @@ export const ExpeditionDilemmaModal: React.FC<ExpeditionDilemmaModalProps> = ({
     triggerHaptic('success');
 
     try {
-      confetti({
+      if (!prefersReducedMotion()) confetti({
         particleCount: 75,
         spread: 70,
         origin: { y: 0.6 },

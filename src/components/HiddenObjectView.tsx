@@ -26,6 +26,7 @@ import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
 import { safeStorage } from '../utils/storage';
 import { buildNeighbourCaps, findHitDifference } from '../utils/hitDetection';
+import { useReducedMotion } from '../utils/motion';
 import { useTranslation } from '../i18n/LanguageContext';
 
 interface HiddenObjectViewProps {
@@ -83,6 +84,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   levelId,
 }) => {
   const { t, interpolate } = useTranslation();
+  const reducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -422,8 +424,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   }, []);
 
   const addErrorFeedback = (x: number, y: number) => {
-    setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 380);
+    if (!reducedMotion) {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 380);
+    }
 
     const newRipple: ErrorRipple = {
       id: `${Date.now()}_${Math.random()}`,
@@ -839,9 +843,15 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
                 top: `${magnesiumFlash.y}%`,
               }}
             >
-              <div className="w-32 h-32 rounded-full bg-amber-100/95 blur-md animate-ping" />
+              <div
+                className={`w-32 h-32 rounded-full blur-md ${
+                  reducedMotion ? 'bg-amber-100/40' : 'bg-amber-100/95 animate-ping'
+                }`}
+              />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="w-12 h-12 text-amber-200 animate-spin" />
+                <Sparkles
+                  className={`w-12 h-12 text-amber-200 ${reducedMotion ? '' : 'animate-spin'}`}
+                />
               </div>
             </div>
           )}

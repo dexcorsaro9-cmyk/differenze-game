@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
+import { prefersReducedMotion } from '../utils/motion';
 import {
   Star,
   Clock,
@@ -113,26 +114,30 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       }, 50);
     }, 900);
 
-    // 4. Confetti Cannon
+    // 4. Confetti Cannon. Not started at all under reduced motion, so the 2.5s interval
+    // never ticks instead of firing no-ops eight times.
     const duration = 2.5 * 1000;
     const end = Date.now() + duration;
 
-    const interval = setInterval(() => {
-      if (Date.now() > end) {
-        return clearInterval(interval);
-      }
+    const interval = prefersReducedMotion()
+      ? null
+      : setInterval(() => {
+          if (Date.now() > end) {
+            if (interval) clearInterval(interval);
+            return;
+          }
 
-      try {
-        confetti({
-          startVelocity: 30,
-          spread: 360,
-          ticks: 60,
-          origin: { x: Math.random(), y: Math.random() - 0.2 },
-        });
-      } catch {
-        // Confetti unavailable in certain embedded environments
-      }
-    }, 300);
+          try {
+            confetti({
+              startVelocity: 30,
+              spread: 360,
+              ticks: 60,
+              origin: { x: Math.random(), y: Math.random() - 0.2 },
+            });
+          } catch {
+            // Confetti unavailable in certain embedded environments
+          }
+        }, 300);
 
     return () => {
       clearTimeout(t1);
@@ -141,7 +146,7 @@ export const LevelCompleteModal: React.FC<LevelCompleteModalProps> = ({
       clearTimeout(stampTimer);
       clearTimeout(coinTimer);
       if (coinInterval) clearInterval(coinInterval);
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
   }, [stars, coinsEarned]);
 

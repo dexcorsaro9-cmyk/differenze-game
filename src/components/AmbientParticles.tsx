@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { prefersReducedMotion } from '../utils/motion';
 
 interface AmbientParticlesProps {
   imageIndex: 0 | 1; // 0 for Image A, 1 for Image B
@@ -39,6 +40,10 @@ export const AmbientParticles: React.FC<AmbientParticlesProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // A continuous drifting particle field is pure decoration: skip it outright when the
+    // player has asked for reduced motion, rather than animating it more slowly.
+    if (prefersReducedMotion()) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
+import { prefersReducedMotion } from '../utils/motion';
 import { X, Sparkles, Coins, Landmark, BookOpen } from 'lucide-react';
 import type { CollectibleRelic } from '../data/collectiblesData';
 import { assetUrl } from '../utils/assetUrl';
@@ -23,7 +24,10 @@ export const RelicFoundModal: React.FC<RelicFoundModalProps> = ({
 
   useEffect(() => {
     if (isOpen && relic) {
-      // Golden fireworks confetti burst
+      // Golden fireworks confetti burst. Skipped wholesale under reduced motion so the
+      // 1.8s requestAnimationFrame loop never starts, rather than spinning on no-ops.
+      if (prefersReducedMotion()) return;
+
       const end = Date.now() + 1800;
       const colors = ['#f59e0b', '#fbbf24', '#fef08a', '#d97706'];
       let animId: number | null = null;
