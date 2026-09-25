@@ -29,6 +29,11 @@ if (typeof window !== 'undefined') {
     Object.defineProperty(navigator, 'vibrate', { value: () => true, writable: true });
   }
 
+  if (!HTMLCanvasElement.prototype.getContext) {
+    // jsdom has no canvas backend; the ambient particle field only needs it to exist.
+    HTMLCanvasElement.prototype.getContext = (() => null) as unknown as typeof HTMLCanvasElement.prototype.getContext;
+  }
+
   if (!window.AudioContext) {
     // The procedural synthesiser builds its graph lazily; a stub keeps it from throwing.
     Object.defineProperty(window, 'AudioContext', {

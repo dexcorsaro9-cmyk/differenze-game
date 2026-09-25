@@ -135,3 +135,45 @@ export function findHitDifference({
 
   return matched;
 }
+
+/**
+ * Sealed investigation.
+ *
+ * In a sealed scene the player must first choose which riddle they are answering, and only
+ * the object that riddle describes will register. Tapping a different object that happens
+ * to be a clue is a mismatch: the deduction was wrong, even though the eye was right.
+ *
+ * This is what makes the 960 written riddles load-bearing. Without it a player can ignore
+ * the text entirely and sweep the photograph, which is how the game played before.
+ */
+export type StageTapKind = 'hit' | 'mismatch' | 'miss';
+
+export interface StageTapResult {
+  kind: StageTapKind;
+  /** The clue that was touched, for a hit or a mismatch. */
+  difference: Difference | null;
+}
+
+export interface StageTapInput extends HitTestInput {
+  /**
+   * When set, only this clue can be claimed. Touching any other unfound clue resolves as
+   * a mismatch instead of a hit. Leave undefined for a free-search scene.
+   */
+  requiredDifferenceId?: string | null;
+}
+
+export function resolveStageTap({
+  requiredDifferenceId = null,
+  ...hitTest
+}: StageTapInput): StageTapResult {
+  const touched = findHitDifference(hitTest);
+
+  if (!touched) return { kind: 'miss', difference: null };
+  if (!requiredDifferenceId) return { kind: 'hit', difference: touched };
+
+  if (touched.id === requiredDifferenceId) {
+    return { kind: 'hit', difference: touched };
+  }
+
+  return { kind: 'mismatch', difference: touched };
+}

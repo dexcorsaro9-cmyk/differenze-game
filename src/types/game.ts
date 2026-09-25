@@ -58,6 +58,8 @@ export interface GameSettings {
   vibrationEnabled: boolean;
   zenMode: boolean; // Infinite lives
   layoutMode: 'auto' | 'vertical' | 'horizontal';
+  /** Which scenes require naming the riddle before claiming its object. */
+  sealedMode?: import('../data/sealedLevels').SealedMode;
 }
 
 export interface ClickFeedback {

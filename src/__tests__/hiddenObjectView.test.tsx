@@ -189,3 +189,41 @@ describe('spam penalty', () => {
     expect(onDifferenceClick).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('sealed investigation', () => {
+  it('claims the object that answers the selected riddle', () => {
+    const { onDifferenceClick, onErrorClick } = renderStage({ isSealed: true });
+
+    // The first riddle is selected by default, so its object is the claimable one.
+    tapStage(pointFor(clues[0]));
+
+    expect(onDifferenceClick).toHaveBeenCalledTimes(1);
+    expect(onDifferenceClick.mock.calls[0][0].id).toBe('a');
+    expect(onErrorClick).not.toHaveBeenCalled();
+  });
+
+  it('refuses a real clue that does not answer the selected riddle', () => {
+    const { onDifferenceClick, onErrorClick } = renderStage({ isSealed: true });
+
+    tapStage(pointFor(clues[1]));
+
+    expect(onDifferenceClick).not.toHaveBeenCalled();
+    expect(onErrorClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByText(/non e quello che l'indovinello descrive/i)).toBeTruthy();
+  });
+
+  it('tells the player the scene is sealed before they tap', () => {
+    renderStage({ isSealed: true });
+    expect(screen.getByText(/Indagine Sigillata/i)).toBeTruthy();
+  });
+
+  it('leaves a free-search scene unsealed', () => {
+    const { onDifferenceClick } = renderStage({ isSealed: false });
+
+    tapStage(pointFor(clues[1]));
+
+    expect(onDifferenceClick).toHaveBeenCalledTimes(1);
+    expect(onDifferenceClick.mock.calls[0][0].id).toBe('b');
+    expect(screen.queryByText(/Indagine Sigillata/i)).toBeNull();
+  });
+});

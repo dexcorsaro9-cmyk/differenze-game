@@ -52,6 +52,7 @@ import {
   hasStoredValue,
 } from './hooks/usePersistentState';
 import type { GameSettings } from './types/game';
+import { isSealedLevel, DEFAULT_SEALED_MODE } from './data/sealedLevels';
 import { sound } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
 import { Shield, Award, Compass, Play } from 'lucide-react';
@@ -94,12 +95,24 @@ export const App: React.FC = () => {
   const [isCertificateOpen, setIsCertificateOpen] = useState<boolean>(false);
 
   // Settings State
-  const [settings, setSettings] = usePersistentJson<GameSettings>(STORAGE_KEY_SETTINGS, {
-    soundEnabled: true,
-    vibrationEnabled: true,
-    zenMode: false,
-    layoutMode: 'vertical',
-  });
+  const [settings, setSettings] = usePersistentJson<GameSettings>(
+    STORAGE_KEY_SETTINGS,
+    {
+      soundEnabled: true,
+      vibrationEnabled: true,
+      zenMode: false,
+      layoutMode: 'vertical',
+      sealedMode: DEFAULT_SEALED_MODE,
+    },
+    parsed => ({
+      soundEnabled: true,
+      vibrationEnabled: true,
+      zenMode: false,
+      layoutMode: 'vertical',
+      sealedMode: DEFAULT_SEALED_MODE,
+      ...(parsed as Partial<GameSettings> | null),
+    })
+  );
 
   // Modal Manager Hook
   const modals = useModalManager();
@@ -558,6 +571,7 @@ export const App: React.FC = () => {
           comboStreak={game.comboStreak}
           shieldBlockedNotice={game.shieldBlockedNotice}
           chapterNumber={game.currentLevel.chapterNumber}
+          isSealed={isSealedLevel(game.currentLevel.id, settings.sealedMode ?? DEFAULT_SEALED_MODE)}
         />
 
         {/* Floating Shield Blocked Notice */}

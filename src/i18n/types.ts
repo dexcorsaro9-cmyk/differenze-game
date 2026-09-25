@@ -118,6 +118,11 @@ export interface Translations {
     vibrationHelp: string;
     zenMode: string;
     zenModeHelp: string;
+    sealedMode: string;
+    sealedModeHelp: string;
+    sealedNever: string;
+    sealedMilestones: string;
+    sealedAlways: string;
     bgmTitle: string;
     bgmSubtitle: string;
     bgmThemeTitle: string;
@@ -579,6 +584,9 @@ export interface Translations {
     pinchHint: string;
     errorTap: string;
     tapPenalty: string;
+    sealedBadge: string;
+    sealedHint: string;
+    sealedMismatch: string;
     evidenceFound: string;
     evidenceHidden: string;
     evidenceLabel: string;

@@ -8,6 +8,7 @@ import {
   buildNeighbourCaps,
   resolveHitTolerance,
   findHitDifference,
+  resolveStageTap,
 } from '../utils/hitDetection';
 import { ALL_120_LEVELS } from '../data/levelRegistry';
 import type { Difference } from '../types/game';
@@ -200,5 +201,42 @@ describe('every shipped level is unambiguous', () => {
     });
 
     expect(failures, failures.slice(0, 10).join(' | ')).toEqual([]);
+  });
+});
+
+describe('sealed investigation', () => {
+  const scene = [clue('a', 25, 25), clue('b', 75, 75)];
+
+  const tap = (x: number, y: number, requiredDifferenceId?: string | null) =>
+    resolveStageTap({
+      differences: scene,
+      foundDifferenceIds: [],
+      x,
+      y,
+      levelId: 1,
+      requiredDifferenceId,
+    });
+
+  it('claims the object when it matches the chosen riddle', () => {
+    const result = tap(25, 25, 'a');
+    expect(result.kind).toBe('hit');
+    expect(result.difference?.id).toBe('a');
+  });
+
+  it('rejects the right eye with the wrong deduction', () => {
+    // The player found a real clue, but not the one their riddle describes.
+    const result = tap(75, 75, 'a');
+    expect(result.kind).toBe('mismatch');
+    expect(result.difference?.id).toBe('b');
+  });
+
+  it('still calls empty space a miss, not a mismatch', () => {
+    expect(tap(50, 50, 'a').kind).toBe('miss');
+  });
+
+  it('behaves exactly like a free search when nothing is required', () => {
+    expect(tap(75, 75, null).kind).toBe('hit');
+    expect(tap(25, 25).kind).toBe('hit');
+    expect(tap(50, 50).kind).toBe('miss');
   });
 });

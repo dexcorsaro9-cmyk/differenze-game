@@ -25,7 +25,7 @@ import { sound } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
 import { assetUrl } from '../utils/assetUrl';
 import { safeStorage } from '../utils/storage';
-import { buildNeighbourCaps, findHitDifference } from '../utils/hitDetection';
+import { buildNeighbourCaps, resolveStageTap } from '../utils/hitDetection';
 import { useReducedMotion } from '../utils/motion';
 import { useTranslation } from '../i18n/LanguageContext';
 
@@ -50,6 +50,12 @@ interface HiddenObjectViewProps {
   shieldBlockedNotice?: boolean;
   chapterNumber?: number;
   levelId?: number;
+  /**
+   * Sealed investigation: the player must select the riddle they are answering, and only
+   * the object that riddle describes will register. Touching a different clue is a
+   * mismatch, which costs the same as a miss but says so differently.
+   */
+  isSealed?: boolean;
 }
 
 interface ErrorRipple {
@@ -82,6 +88,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   shieldBlockedNotice = false,
   chapterNumber = 1,
   levelId,
+  isSealed = false,
 }) => {
   const { t, interpolate } = useTranslation();
   const reducedMotion = useReducedMotion();
@@ -116,6 +123,8 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
   const [isInputLocked, setIsInputLocked] = useState<boolean>(false);
+  const [sealMismatch, setSealMismatch] = useState<boolean>(false);
+  const mismatchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Mirrors isDraggingRef for rendering. The ref stays the source of truth inside the
   // gesture handlers (it must update synchronously mid-move); this only flips at the
   // start and end of a drag, so the transform transition can actually react to it.
@@ -171,6 +180,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   useEffect(() => {
     return () => {
       if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+      if (mismatchTimeoutRef.current) clearTimeout(mismatchTimeoutRef.current);
     };
   }, []);
 
@@ -193,10 +203,19 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       return;
     }
     const firstUnfoundIdx = differences.findIndex(d => !foundDifferenceIds.includes(d.id));
-    if (firstUnfoundIdx !== -1) {
-      setSelectedRiddleIndex(firstUnfoundIdx);
+    if (firstUnfoundIdx === -1) return;
+
+    // Under seal the choice of riddle is the player's move, so only skip past one they
+    // have already solved rather than steering them to the next.
+    if (isSealed) {
+      setSelectedRiddleIndex(current =>
+        foundDifferenceIds.includes(differences[current]?.id) ? firstUnfoundIdx : current
+      );
+      return;
     }
-  }, [foundDifferenceIds, differences]);
+
+    setSelectedRiddleIndex(firstUnfoundIdx);
+  }, [foundDifferenceIds, differences, isSealed]);
 
   const cycleAtmosphere = () => {
     const modes: ('dawn' | 'noon' | 'dusk' | 'lantern')[] = ['dawn', 'noon', 'dusk', 'lantern'];
@@ -473,7 +492,9 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
     // Tap resolution lives in utils/hitDetection.ts so the rule is unit-tested against all
     // 120 levels of real clue data (band floors, zoom assist, neighbour caps, hint radius).
-    const matchedDiff = findHitDifference({
+    const requiredDifferenceId = isSealed ? differences[selectedRiddleIndex]?.id ?? null : null;
+
+    const tapResult = resolveStageTap({
       differences,
       foundDifferenceIds,
       x: clickXPercent,
@@ -482,12 +503,29 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       scale,
       activeHintId: activeHint ? activeHint.id : null,
       neighbourCaps,
+      requiredDifferenceId,
     });
+
+    // Right eye, wrong deduction: the object is a real clue, but not the one the chosen
+    // riddle describes. It costs what a miss costs; the feedback is what differs.
+    if (tapResult.kind === 'mismatch') {
+      missTimestampsRef.current = [];
+      lastTapRef.current = null;
+      setSealMismatch(true);
+      if (mismatchTimeoutRef.current) clearTimeout(mismatchTimeoutRef.current);
+      mismatchTimeoutRef.current = setTimeout(() => setSealMismatch(false), 2600);
+      addErrorFeedback(clickXPercent, clickYPercent);
+      onErrorClick({ x: clickXPercent, y: clickYPercent }, 0);
+      return;
+    }
+
+    const matchedDiff = tapResult.kind === 'hit' ? tapResult.difference : null;
 
     if (matchedDiff) {
       // Object found! Clear spam tracker & zoom tap ref
       missTimestampsRef.current = [];
       lastTapRef.current = null;
+      setSealMismatch(false);
 
       // 1928 Magnesium Flash Celebration
       setMagnesiumFlash({ id: String(Date.now()), x: clickXPercent, y: clickYPercent });
@@ -608,6 +646,22 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           <span className="text-xs font-bold">
             {t.powerUps.shieldBlocked}
           </span>
+        </div>
+      )}
+
+      {isSealed && !isInputLocked && !sealMismatch && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-amber-950/95 border border-amber-500/80 text-amber-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2">
+          <Scroll className="w-4 h-4 text-amber-300 shrink-0" />
+          <span className="text-[11px] font-bold leading-tight text-center">
+            {t.hiddenObject.sealedBadge} — {t.hiddenObject.sealedHint}
+          </span>
+        </div>
+      )}
+
+      {sealMismatch && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-sm bg-orange-950/95 border border-orange-400 text-orange-200 px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center justify-center gap-2 animate-fade-in">
+          <HelpCircle className="w-4 h-4 text-orange-300 shrink-0" />
+          <span className="text-xs font-bold text-center">{t.hiddenObject.sealedMismatch}</span>
         </div>
       )}
 

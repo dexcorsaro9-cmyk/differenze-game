@@ -30,6 +30,11 @@ import {
   type OfflineCacheStatus,
 } from '../utils/offlineManager';
 import {
+  DEFAULT_SEALED_MODE,
+  countSealedLevels,
+  type SealedMode,
+} from '../data/sealedLevels';
+import {
   BACKUP_STORAGE_KEYS,
   buildBackupPayload,
   applyBackupPayload,
@@ -389,6 +394,56 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   }`}
                 />
               </button>
+            </div>
+
+            {/* Sealed Investigation: how much of the game requires naming the riddle first */}
+            <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-2.5">
+              <div className="flex items-center gap-3">
+                <Scroll
+                  className={`w-5 h-5 ${
+                    (settings.sealedMode ?? DEFAULT_SEALED_MODE) === 'never'
+                      ? 'text-slate-500'
+                      : 'text-amber-400'
+                  }`}
+                />
+                <div>
+                  <h5 className="text-sm font-bold text-white">{t.settings.sealedMode}</h5>
+                  <p className="text-xs text-slate-400">{t.settings.sealedModeHelp}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-1.5">
+                {(
+                  [
+                    ['never', t.settings.sealedNever],
+                    ['milestones', t.settings.sealedMilestones],
+                    ['always', t.settings.sealedAlways],
+                  ] as [SealedMode, string][]
+                ).map(([mode, label]) => {
+                  const active = (settings.sealedMode ?? DEFAULT_SEALED_MODE) === mode;
+                  return (
+                    <button
+                      key={mode}
+                      onClick={() => {
+                        onUpdateSettings({ sealedMode: mode });
+                        sound.playTap();
+                        triggerHaptic('light', settings.vibrationEnabled);
+                      }}
+                      className={`px-2 py-2 rounded-xl text-[11px] font-bold border transition-colors ${
+                        active
+                          ? 'bg-amber-500 text-stone-950 border-amber-300'
+                          : 'bg-slate-900/60 text-slate-300 border-slate-700'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="text-[11px] text-slate-500">
+                {countSealedLevels(settings.sealedMode ?? DEFAULT_SEALED_MODE)} / 120
+              </p>
             </div>
 
             {/* BGM Orchestral Music Toggle & Themes */}
