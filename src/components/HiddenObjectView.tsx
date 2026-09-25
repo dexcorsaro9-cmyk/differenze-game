@@ -116,6 +116,10 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
   const [discoveryPops, setDiscoveryPops] = useState<DiscoveryPop[]>([]);
   const [isShaking, setIsShaking] = useState<boolean>(false);
   const [isInputLocked, setIsInputLocked] = useState<boolean>(false);
+  // Mirrors isDraggingRef for rendering. The ref stays the source of truth inside the
+  // gesture handlers (it must update synchronously mid-move); this only flips at the
+  // start and end of a drag, so the transform transition can actually react to it.
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [magnesiumFlash, setMagnesiumFlash] = useState<{ id: string; x: number; y: number } | null>(null);
 
   // Per-scene hitbox caps: recomputed only when the scene's clue set changes
@@ -333,6 +337,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       const dx = t.clientX - singleTouchStartRef.current.x;
       const dy = t.clientY - singleTouchStartRef.current.y;
       if (Math.hypot(dx, dy) > 8) {
+        if (!isDraggingRef.current) setIsDragging(true);
         isDraggingRef.current = true;
       }
       if (isDraggingRef.current) {
@@ -351,16 +356,17 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     touchStartCenterRef.current = null;
 
     // Check for clean mobile tap gesture (< 18px movement, < 400ms duration)
-    if (
-      singleTouchStartRef.current &&
-      !isDraggingRef.current &&
-      Date.now() - singleTouchStartRef.current.time < 400
-    ) {
+    const tapDuration =
+      // oxlint-disable-next-line react/purity -- touch event handler, never called during render
+      Date.now() - (singleTouchStartRef.current?.time ?? 0);
+
+    if (singleTouchStartRef.current && !isDraggingRef.current && tapDuration < 400) {
       const t = e.changedTouches[0];
       if (t) {
         const dx = t.clientX - singleTouchStartRef.current.x;
         const dy = t.clientY - singleTouchStartRef.current.y;
         if (Math.hypot(dx, dy) < 18) {
+          // oxlint-disable-next-line react/purity -- touch event handler, not render
           lastTouchProcessedRef.current = Date.now();
           processStageTap(t.clientX, t.clientY);
         }
@@ -369,6 +375,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
 
     setTimeout(() => {
       isDraggingRef.current = false;
+      setIsDragging(false);
     }, 50);
   };
 
@@ -395,6 +402,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
       updateMagnifierPosition(e.clientX, e.clientY);
     }
     if (mouseDragStartRef.current && scale > 1) {
+      if (!isDraggingRef.current) setIsDragging(true);
       isDraggingRef.current = true;
       const newX = e.clientX - mouseDragStartRef.current.x;
       const newY = e.clientY - mouseDragStartRef.current.y;
@@ -410,6 +418,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
     mouseDragStartRef.current = null;
     setTimeout(() => {
       isDraggingRef.current = false;
+      setIsDragging(false);
     }, 50);
   };
 
@@ -691,7 +700,7 @@ export const HiddenObjectView: React.FC<HiddenObjectViewProps> = ({
           className="relative max-w-full max-h-full aspect-[1200/896] flex items-center justify-center cursor-crosshair rounded-lg overflow-hidden shadow-2xl border border-amber-900/40 bg-stone-900"
           style={{
             transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
-            transition: isDraggingRef.current ? 'none' : 'transform 0.15s ease-out',
+            transition: isDragging ? 'none' : 'transform 0.15s ease-out',
           }}
           onClick={handleStageClick}
           onMouseEnter={() => isMagnifierActive && setIsMagnifierHovering(true)}

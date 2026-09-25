@@ -224,7 +224,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
     }
   }, [isOpen, currentLevelId]);
 
-  const startFlightSequence = () => {
+  function startFlightSequence() {
     setIsFlightActive(true);
     setFlightProgress(0);
     setIsAutoRotating(false);
@@ -259,9 +259,9 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
     };
 
     animFrameRef.current = requestAnimationFrame(tick);
-  };
+  }
 
-  const completeTouchdown = () => {
+  function completeTouchdown() {
     cancelAnimationFrame(animFrameRef.current);
     setIsFlightActive(false);
     setFlightProgress(1);
@@ -271,7 +271,7 @@ export const MappamondoModal: React.FC<MappamondoModalProps> = ({
     setRotX(Math.max(-25, Math.min(35, destLat * 0.6)));
     sound.playLevelWin();
     triggerHaptic('success');
-  };
+  }
 
   const skipFlight = () => {
     completeTouchdown();

@@ -11,10 +11,18 @@ interface LoreClueToastProps {
 export const LoreClueToast: React.FC<LoreClueToastProps> = ({ difference, onDismiss }) => {
   const { t } = useTranslation();
   const onDismissRef = useRef(onDismiss);
-  onDismissRef.current = onDismiss;
+
+  // Kept in a ref so the dismiss timer below is never restarted by a new callback
+  // identity from the parent. Assigned in an effect, not during render.
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
+
+  // Only the clue's identity should restart the timer, not a new object for the same clue.
+  const differenceId = difference?.id;
 
   useEffect(() => {
-    if (!difference) return;
+    if (!differenceId) return;
 
     // Fixed 2.3 second auto-dismiss timer (unaffected by parent re-renders)
     const timer = setTimeout(() => {
@@ -22,7 +30,7 @@ export const LoreClueToast: React.FC<LoreClueToastProps> = ({ difference, onDism
     }, 2300);
 
     return () => clearTimeout(timer);
-  }, [difference?.id]);
+  }, [differenceId]);
 
   if (!difference) return null;
 

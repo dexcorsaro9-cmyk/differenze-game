@@ -14,7 +14,7 @@ interface ShopModalProps {
   onClaimEmergencyFunds: () => void;
 }
 
-export const getLocalizedShopItems = (t: Translations): ShopItem[] => [
+const getLocalizedShopItems = (t: Translations): ShopItem[] => [
   {
     id: 'freeze_single',
     name: t.shop.freezeSingleName,
@@ -105,31 +105,6 @@ export const getLocalizedShopItems = (t: Translations): ShopItem[] => [
     ],
   },
 ];
-
-export const SHOP_ITEMS = getLocalizedShopItems({
-  shop: {
-    freezeSingleName: 'Congela Tempo (20s)',
-    freezeSingleDesc: 'Ferma il cronometro per 20 secondi. Mantieni il tempo basso per conquistare le 3 stelle!',
-    freezeTripleName: 'Tris Congela Tempo (x3)',
-    freezeTripleDesc: 'Scorta da 3 utilizzi di Ferma-Tempo da 20 secondi ciascuno.',
-    freezeTripleBadge: 'Risparmi 30🪙',
-    compassSingleName: "Bussola d'Astrolabio (x1)",
-    compassSingleDesc: 'Punta ed evidenzia il quadrante della scena contenente un indizio per 8 secondi.',
-    compassTripleName: 'Kit Bussole d\'Oro (x3)',
-    compassTripleDesc: 'Pacco da 3 bussole di rilevamento per i settori più complessi.',
-    compassTripleBadge: 'Risparmi 20🪙',
-    hintTripleName: 'Lente d\'Ingrandimento (x3)',
-    hintTripleDesc: 'Punta e centra direttamente la lente sul punto esatto della differenza.',
-    shieldSingleName: 'Scudo del Guardiano (x1)',
-    shieldSingleDesc: 'Attiva una barriera sacra: assorbe il prossimo tocco errato senza perdere cuori.',
-    shieldTripleName: 'Bastione Runico (x3)',
-    shieldTripleDesc: '3 Scudi protettivi per esplorare le rovine senza timore di sbagliare.',
-    shieldTripleBadge: 'Risparmi 25🪙',
-    bundleName: 'Baule della Spedizione',
-    bundleDesc: 'Pacco completo di scorte: 2x Ferma-Tempo, 2x Bussole, 2x Scudi e 3x Lenti d\'Ingrandimento!',
-    bundleBadge: 'Super Valore!',
-  }
-} as any);
 
 export const ShopModal: React.FC<ShopModalProps> = ({
   isOpen,

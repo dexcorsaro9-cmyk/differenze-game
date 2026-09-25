@@ -304,37 +304,41 @@ export const App: React.FC = () => {
     modals.setIsBackgroundPaused(false);
   }, [getActiveBgmTheme, game.currentLevel.chapterNumber, settings.vibrationEnabled, modals]);
 
+  // Destructured so these effects depend on the exact values they read. Reaching through
+  // `economy.` made the linter ask for the whole object, which changes every render.
+  const { unlockMedal, coins: currentCoins } = economy;
+
   // Check Passive & Milestones Expedition Medals
   useEffect(() => {
     if (primaryActiveSet) {
-      economy.unlockMedal('full_set_synergy');
+      unlockMedal('full_set_synergy');
     }
-    if (economy.coins >= 1000) {
-      economy.unlockMedal('wealthy_explorer');
+    if (currentCoins >= 1000) {
+      unlockMedal('wealthy_explorer');
     }
     if (game.discoveredClues.length >= 20) {
-      economy.unlockMedal('lore_master');
+      unlockMedal('lore_master');
     }
     if (game.discoveredRelicIds.length >= 3) {
-      economy.unlockMedal('relic_hunter');
+      unlockMedal('relic_hunter');
     }
     if (game.currentLevel.chapterNumber >= 5 || game.completedLevelIds.some(id => id >= 41)) {
-      economy.unlockMedal('andes_climber');
+      unlockMedal('andes_climber');
     }
     if (game.currentLevel.chapterNumber >= 9 || game.completedLevelIds.some(id => id >= 81)) {
-      economy.unlockMedal('sun_priest');
+      unlockMedal('sun_priest');
     }
     if (game.completedLevelIds.length >= 120) {
-      economy.unlockMedal('grand_archaeologist');
+      unlockMedal('grand_archaeologist');
     }
   }, [
-    economy.coins,
+    currentCoins,
     primaryActiveSet,
     game.discoveredClues.length,
     game.discoveredRelicIds.length,
     game.currentLevel.chapterNumber,
     game.completedLevelIds,
-    economy.unlockMedal,
+    unlockMedal,
   ]);
 
   // Check Cartographer Medal when consulting the 3D Globe / Map
@@ -342,10 +346,10 @@ export const App: React.FC = () => {
     if (modals.isTreasureMapOpen) {
       const completedStagesCount = game.completedLevelIds.filter(id => id % 10 === 0).length;
       if (completedStagesCount >= 10 || game.completedLevelIds.length >= 100) {
-        economy.unlockMedal('cartographer');
+        unlockMedal('cartographer');
       }
     }
-  }, [modals.isTreasureMapOpen, game.completedLevelIds, economy.unlockMedal]);
+  }, [modals.isTreasureMapOpen, game.completedLevelIds, unlockMedal]);
 
   // Stage Lore Briefing Handlers
   const handleOpenStageBriefing = useCallback(
